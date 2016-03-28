@@ -1,0 +1,25 @@
+<div ng-controller="ProductMainController">
+  Product Main
+  <div class="Layout">
+    <div>
+      <form>
+        <input type="text" ng-model="productCtx.currentProductType" />
+        <button ng-click="addProductType()">save type</button>
+      </form>
+      <ul>
+        <li ng-repeat="type in productCtx.currentProductTypes">{{type.name}} <button ng-click="deleteProductType(type)">(X)</button></li>
+      </ul>
+    </div>
+    <div>
+      <form>
+        <input type="text"  ng-model="productCtx.currentProductSubType" />
+        <button ng-click="addProductSubType()">save sub type</button>
+      </form>
+      <ul>
+        <li ng-repeat="subType in productCtx.currentProductSubTypes | orderBy:'name'">{{subType.name}}</li>
+      </ul>
+
+    </div>
+
+  </div>
+</div>

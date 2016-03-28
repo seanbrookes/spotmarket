@@ -1,0 +1,73 @@
+<div ng-controller="AskMainController">
+  <div class="MainCenteredContainer Layout">
+    <form class="StandardForm">
+      <div ng-show="askCtx.currentAsk.productSubType" class="StandardForm__FieldContainer">
+        <label>Headline:</label>
+        <button uib-popover="{{dynamicPopover.content}}" popover-title="{{dynamicPopover.title}}">
+          <span class="glyphicon glyphicon-question-sign"></span>
+        </button>
+        <input type="text" class="AskHeadlineInput" ng-model="askCtx.currentAsk.headline"/>
+      </div>
+
+      <div class="Layout">
+        <div class="StandardForm__FieldContainer">
+          <label ng-show="!askCtx.currentAsk.productType">What are you selling?</label>
+          <div class="StandardDropDownComponent Layout">
+            <input placeholder="eg: Hop Pellets" type="text" ng-model="askCtx.currentAsk.productType"/>
+            <button ng-click="productCtx.toggleProductTypeMenu()"><span class="glyphicon glyphicon-circle-arrow-down"></span></button>
+            <div class="StandardDropDownMenuContainer" ng-show="productCtx.isShowProductTypeMenu">
+              <ul class="UDTADropDownList">
+                <li class="UDTADropDownListItem" ng-repeat="productType in productCtx.currentProductTypes">
+                  <button class="UDTADropDownListButton" ng-click="askCtx.setCurrentProductType(productType)">{{productType.name}}</button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div ng-show="askCtx.currentAsk.productType" class="StandardForm__FieldContainer Layout">
+            <div class="StandardDropDownComponent">
+              <input placeholder="variety" type="text" ng-model="askCtx.currentAsk.productSubType" />
+              <button ng-click="productCtx.toggleProductSubTypeMenu()"><span class="glyphicon glyphicon-circle-arrow-down"></span></button>
+              <div class="StandardDropDownMenuContainer" ng-show="productCtx.isShowProductSubTypeMenu">
+                <ul class="UDTADropDownList">
+                  <li class="UDTADropDownListItem" ng-repeat="productSubType in productCtx.currentProductSubTypes">
+                    <button class="UDTADropDownListButton" ng-click="askCtx.setCurrentProductSubType(productSubType)">{{productSubType.name}}</button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div  class="StandardForm__FieldContainer" ng-show="askCtx.currentAsk.productSubType">
+        <header>
+          <h4>Lot pricing</h4>
+        </header>
+        <ggt-lot-form ng-show="isShowAddLotPrice" currentAsk="askCtx.currentAsk"></ggt-lot-form>
+        <button ng-show="!isShowAddLotPrice" ng-click="togglePriceLotForm()">add price options</button>
+      </div>
+      <div ng-show="isShowFullDetails">
+        <div class="StandardForm__FieldContainer">
+          <label>Total quantity:</label>
+          <input type="text" ng-model="askCtx.currentAsk.totalQuantity"/>
+        </div>
+        <ul>
+          <li><label><input type="checkbox" />certified organic</label></li>
+          <li><label><input type="checkbox" />organically grown</label></li>
+        </ul>
+        <div class="StandardForm__FieldContainer">
+          <label>Details</label>
+          <textarea ng-model="askCtx.currentAsk.details"></textarea>
+        </div>
+      </div>
+      <div class="Layout">
+        <button ng-click="askCtx.clearCurrentAsk()">cancel</button>
+        <button ng-disabled="!askCtx.isFormValid()">save</button>
+      </div>
+
+
+    </form>
+  </div>
+
+</div>

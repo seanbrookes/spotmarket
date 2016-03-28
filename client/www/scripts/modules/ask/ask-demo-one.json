@@ -1,0 +1,37 @@
+[
+  {
+    "productType": "Hop Pellets",
+    "subType": "Green Bullet",
+    "grade":"",
+    "attributes":["organic"],
+    "location": {
+      "name":"wisconsin",
+      "address": {},
+      "country":"US",
+      "region":"",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -123.105347,
+          49.263779
+        ]
+      }
+    },
+    "source": "New Zealand",
+    "description": "",
+    "pricing": [
+      {
+        "price": "5.8",
+        "currency": "USD",
+        "lot":{
+          "size":"4",
+          "metric":"USOZ",
+          "max":"",
+          "min":""
+        },
+        "status":"active"
+      }
+    ]
+
+  }
+]
