@@ -1,5 +1,11 @@
 <div ng-controller="AskMainController">
   <div class="MainCenteredContainer Layout">
+    <div>
+      <dl>
+        <dt ng-show="askCtx.currentAsk.productType">what</dt>
+        <dd ng-show="askCtx.currentAsk.productType">{{askCtx.currentAsk.productType}} - {{askCtx.currentAsk.productSubType}}</dd>
+      </dl>
+    </div>
     <form class="StandardForm">
       <div ng-show="askCtx.currentAsk.productSubType" class="StandardForm__FieldContainer">
         <label>Headline:</label>
@@ -9,21 +15,36 @@
         <input type="text" class="AskHeadlineInput" ng-model="askCtx.currentAsk.headline"/>
       </div>
 
-      <div class="Layout">
-        <div class="StandardForm__FieldContainer">
+      <div>
+        <div ng-show="!askCtx.currentAsk.productType">
           <label ng-show="!askCtx.currentAsk.productType">What are you selling?</label>
-          <div class="StandardDropDownComponent Layout">
-            <input placeholder="eg: Hop Pellets" type="text" ng-model="askCtx.currentAsk.productType"/>
-            <button ng-click="productCtx.toggleProductTypeMenu()"><span class="glyphicon glyphicon-circle-arrow-down"></span></button>
-            <div class="StandardDropDownMenuContainer" ng-show="productCtx.isShowProductTypeMenu">
-              <ul class="UDTADropDownList">
-                <li class="UDTADropDownListItem" ng-repeat="productType in productCtx.currentProductTypes">
-                  <button class="UDTADropDownListButton" ng-click="askCtx.setCurrentProductType(productType)">{{productType.name}}</button>
-                </li>
-              </ul>
-            </div>
-          </div>
+          <button class="ImageChoiceButton" ng-click="askCtx.setCurrentProductType('Hop Leaf')">
+            <img src="./images/hop-leaf.jpg" />
+            <span class="ImageChoiceButton__Text">Hop Leaf</span>
+          </button>
+          <br />
+          <button class="ImageChoiceButton" ng-click="askCtx.setCurrentProductType('Hop Pellets')">
+            <img src="./images/hop-pellets.jpg" />
+            <span class="ImageChoiceButton__Text">Hop Pellets</span>
+          </button>
         </div>
+
+
+
+
+
+          <!--<div class="StandardDropDownComponent Layout">-->
+            <!--<input placeholder="eg: Hop Pellets" type="text" ng-model="askCtx.currentAsk.productType"/>-->
+            <!--<button ng-click="productCtx.toggleProductTypeMenu()"><span class="glyphicon glyphicon-circle-arrow-down"></span></button>-->
+            <!--<div class="StandardDropDownMenuContainer" ng-show="productCtx.isShowProductTypeMenu">-->
+              <!--<ul class="UDTADropDownList">-->
+                <!--<li class="UDTADropDownListItem" ng-repeat="productType in productCtx.currentProductTypes">-->
+                  <!--<button class="UDTADropDownListButton" ng-click="askCtx.setCurrentProductType(productType)">{{productType.name}}</button>-->
+                <!--</li>-->
+              <!--</ul>-->
+            <!--</div>-->
+          <!--</div>-->
+
         <div>
           <div ng-show="askCtx.currentAsk.productType" class="StandardForm__FieldContainer Layout">
             <div class="StandardDropDownComponent">
@@ -61,7 +82,7 @@
           <textarea ng-model="askCtx.currentAsk.details"></textarea>
         </div>
       </div>
-      <div class="Layout">
+      <div class="Layout" ng-show="askCtx.currentAsk.productSubType">
         <button ng-click="askCtx.clearCurrentAsk()">cancel</button>
         <button ng-disabled="!askCtx.isFormValid()">save</button>
       </div>

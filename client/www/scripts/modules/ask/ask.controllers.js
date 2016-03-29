@@ -64,7 +64,7 @@ Ask.controller('AskMainController', [
         });
     };
     $scope.askCtx.setCurrentProductType = function(productType) {
-      $scope.askCtx.currentAsk.productType = productType.name;
+      $scope.askCtx.currentAsk.productType = productType;
       $scope.askCtx.currentAsk.headline = 'I am selling: ' + $scope.askCtx.currentAsk.productType;
       if ($scope.askCtx.currentAsk.productSubType) {
         $scope.askCtx.currentAsk.headline += ' variety: ' +  $scope.askCtx.currentAsk.productSubType

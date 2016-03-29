@@ -66,3 +66,45 @@ body {
     text-decoration: underline;
   }
 }
+.ImageChoiceButton {
+  margin:0;
+  padding:0;
+  border:0;
+  background:transparent;
+  position:relative;
+  display:block;
+  border-radius:1.5rem;
+  border:1px solid #ffffff;
+  overflow:hidden;
+
+
+  &:hover {
+    border-top:1px solid #999999;
+    border-left:1px solid #999999;
+    -webkit-box-shadow: 4px 6px 5px 0px rgba(133,133,133,1);
+    -moz-box-shadow: 4px 6px 5px 0px rgba(133,133,133,1);
+    box-shadow: 4px 6px 5px 0px rgba(133,133,133,1);
+  }
+  &:active {
+    border-top:1px solid #444444;
+    border-left:1px solid #444444;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+
+  }
+
+  img {
+    margin:0;
+    padding:0;
+  }
+  .ImageChoiceButton__Text {
+
+    position:absolute;
+    top:1rem;
+    left:.5rem;
+    color:#ffffff;
+
+
+  }
+}
