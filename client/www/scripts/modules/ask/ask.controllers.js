@@ -8,6 +8,10 @@ Ask.controller('AskMainController', [
     var socket = io.connect();
     $scope.askCtx = {};
     $scope.lotCtx = {currentLot:{}};
+    function resetCurrentLot() {
+      $scope.lotCtx.currentLot = {};
+    }
+
 
     $scope.helpCtx = {
       content :{
@@ -41,6 +45,13 @@ Ask.controller('AskMainController', [
     $scope.isShowAddLotPrice = false;
     $scope.togglePriceLotForm = function() {
       $scope.isShowAddLotPrice = !$scope.isShowAddLotPrice;
+      resetCurrentLot();
+    };
+    $scope.addLotPriceToAsk = function() {
+      if ($scope.lotCtx.currentLot && $scope.lotCtx.currentLot.price &&  $scope.lotCtx.currentLot.size &&  $scope.lotCtx.currentLot.measure) {
+        $scope.askCtx.currentAsk.lotPrices.push($scope.lotCtx.currentLot);
+        resetCurrentLot();
+      }
     };
 
     $scope.productCtx = {
