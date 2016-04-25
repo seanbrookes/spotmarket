@@ -8,6 +8,7 @@ var Main = angular.module('Main', [
   'lbServices',
   'ngCookies',
   'Acme',
+  'User',
   'Product',
   'Ask',
   'Common',
@@ -31,6 +32,10 @@ Main.config([
       .state('product', {
         url: '/product',
         templateUrl: './scripts/modules/product/templates/product.main.html'
+      })
+      .state('user', {
+        url: '/user',
+        templateUrl: './scripts/modules/user/templates/user.main.html'
       })
       .state('ask', {
         url: '/ask',

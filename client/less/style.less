@@ -1,28 +1,70 @@
 body {
   font-size: 16px;
   width: 100%;
-  background-color:#ffffff;
+  background-color:#0e0e0e;
   margin: 0;
   font-family: 'helvetica neue', helvetica, arial, sans-serif;
 }
-
-.page-header {
+.Layout {
+  display:flex;
+  flex-direction: row;
+}
+[data-id="AppContainer"] {
+  background-image: url('images/ladybug.jpg');
+  background-repeat: no-repeat;
+  background-position: right top;
+  height:150rem;
+}
+.PageHeader {
   padding-bottom: 9px;
   margin: .2rem 0 20px;
-  border-bottom: 1px solid #eeeeee;
+  justify-content: flex-start;
+
+  .branding {
+    width:7rem;
+    margin-left:2rem;
+    padding:.5rem;
+    background-color: #ffffff;
+    border-radius: 6rem;
+    display:flex;
+    justify-content: center;
+    align-content: center;
+
+
+    .logo {
+      height: 5.6rem;
+    }
+  }
+
+  .Title {
+    margin-left:2rem;
+
+    h1 {
+      color:#ffffff;
+
+    }
+
+  }
+
+}
+
+.InnerAppContainer {
+  flex-direction: column;
+  padding:2rem;
+
+
+  .ModuleContainer {
+    margin-right:30rem;
+    background-color:#ffffff;
+    border:1px solid #ffffff;
+    padding:2rem;
+    border-radius: 2rem;
+    min-height:40rem;
+  }
+
 }
 
 
-.logo {
-  height: 5rem;
-  margin-left:2rem;
-}
-
-.Layout {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
 .StandardDropDownComponent {
   position:relative;
 }

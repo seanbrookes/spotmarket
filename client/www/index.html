@@ -12,14 +12,21 @@
   </head>
   <body>
 
-    <div  class="page-header">
-      <div class="branding">
-        <a ui-sref="home"><img src="./images/logo.svg" alt="logo" class="logo"></a>
+    <div data-id="AppContainer">
+      <div  class="PageHeader Layout">
+        <div class="branding">
+          <a ui-sref="home"><img src="./images/logo.png" alt="logo" class="logo"></a>
+        </div>
+        <div class="Title">
+          <h1>Spot Market</h1>
+        </div>
       </div>
+
+      <div class="InnerAppContainer Layout">
+        <div ui-view autoscroll="false" class="MainContainer"></div>
+      </div>
+
     </div>
-
-    <div ui-view autoscroll="false" class="app-module-container"></div>
-
     <!-- angular -->
     <script src="./scripts/vendor/angular/angular.min.js"></script>
 
@@ -58,6 +65,7 @@
     <!-- main -->
     <script src="./scripts/modules/main/main.module.js"></script>
     <script src="./scripts/modules/main/main.controllers.js"></script>
+    <script src="./scripts/modules/main/main.services.js"></script>
 
     <!-- common -->
     <script src="./scripts/modules/common/common.module.js"></script>
@@ -80,6 +88,12 @@
     <script src="./scripts/modules/ask/ask.controllers.js"></script>
     <script src="./scripts/modules/ask/ask.directives.js"></script>
     <script src="./scripts/modules/ask/ask.services.js"></script>
+
+    <!-- user -->
+    <script src="./scripts/modules/user/user.module.js"></script>
+    <script src="./scripts/modules/user/user.controllers.js"></script>
+    <script src="./scripts/modules/user/user.directives.js"></script>
+    <script src="./scripts/modules/user/user.services.js"></script>
 
   </body>
 </html>
