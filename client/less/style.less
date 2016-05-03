@@ -5,91 +5,16 @@ body {
   margin: 0;
   font-family: 'helvetica neue', helvetica, arial, sans-serif;
 }
-.Layout {
-  display:flex;
-  flex-direction: row;
-}
+
 [data-id="AppContainer"] {
-
+  margin:0;
+  padding:0;
 }
-.PageHeader {
-  padding-bottom: 9px;
-  margin: .2rem 0 20px;
-  justify-content: flex-start;
 
-  .branding {
-    width:7rem;
-    margin-left:2rem;
-    padding:.5rem;
-    background-color: #ffffff;
-    border-radius: 6rem;
-    display:flex;
-    justify-content: center;
-    align-content: center;
-
-
-    .logo {
-      height: 5.6rem;
-    }
-  }
-
-  .Title {
-    margin-left:2rem;
-
-    h1 {
-      color:#ffffff;
-      margin:0;
-      font-size:350%;
-      font-family: Tahoma, "Trebuchet MS", Verdana, sans-serif;
-
-    }
-
-  }
-
-}
 
 .InnerAppContainer {
   flex-direction: column;
 
-
-  .ModuleViewContainer {
-    background-color:#ffffff;
-    min-height:40rem;
-  }
-
-}
-.BodyHeadline {
-  font-size:270%;
-  font-weight: 400;
-}
-.HopBines {
-  background-image: url('images/hop-bines.jpg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  color:#ffffff;
-  text-shadow: 4px 4px 2px rgba(0, 0, 0, 1);
-  display:flex;
-  flex-direction: column;
-  justify-content: center;
-  align-content: center;
-
-}
-.FishMarket {
-  background-image: url('images/fish-market.jpg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  color:#ffffff;
-  text-shadow: 4px 4px 2px rgba(0, 0, 0, 1);
-  font-size:125%;
-}
-.Pointer {
-  background-image: url('images/pointer-block.jpg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  color:#ffffff;
 }
 
 .ExplainerBulletContainer {
@@ -105,9 +30,7 @@ body {
 
   }
 }
-.BlogPostPage {
-  background:#ffffff;
-}
+
 .AppFooter {
   background:#111111;
   color:#ffffff;
@@ -214,4 +137,6 @@ body {
 }
 
 
+@import "layouts";
+@import "theme1";
 @import "hop-report";
