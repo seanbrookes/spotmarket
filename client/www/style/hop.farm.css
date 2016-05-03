@@ -1,0 +1,25 @@
+#HopFarmMap {
+  height:30rem;
+  width:900px;
+  margin:0 auto 0 auto;
+
+}
+.FarmSizeList {
+  list-style: none;
+}
+.FarmSizeList__ListItem {
+  display:inline-block;
+}
+.FarmSizeList__ListIcon {
+  height:3rem;
+}
+
+#HopFarmChart {
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+
+}
+#HopFarmChart svg {
+
+}

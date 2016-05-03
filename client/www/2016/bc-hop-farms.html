@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Spotmarket - BC Hop Farms 2016</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="stylesheet" type="text/css" href="./style/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="../style/leaflet.css">
+  <link rel="stylesheet" type="text/css" href="../style/hop.farm.css">
+  <link rel="stylesheet" type="text/css" href="../style/style.css">
+
+</head>
+<body>
+
+
+<div data-id="AppContainer">
+  <header  class="PageHeader Layout">
+    <div class="branding">
+      <a href="/"><img src="../images/logo.png" alt="logo" class="logo"></a>
+    </div>
+    <div class="Title">
+      <h1>Spot Market</h1>
+    </div>
+  </header>
+
+
+  <div class="main-content-container BlogPostPage" >
+
+    <article class="main-article  first-level-container" data-region="mainArticleRegion">
+      <h1 class="article-title">Hop Farms British Columbia March 2016</h1>
+      <div class="AttributionContainer">
+        <label class="post-publish-date">published: <span>March 8, 2016</span></label>
+        <label class="post-author">author: <span>Sean Brookes</span></label>
+      </div>
+
+      <div class="post-body">
+        <p><span>I'm not alone in having fond memories of the hop yards that used to line Highway 1 through the Fraser Valley as a kid.</span><br></p>
+        <p><span>I began to wonder about the hops. &nbsp;Where did they go, why did they go? &nbsp;Can they come back?</span><br></p>
+        <p>Turns out yes they can. &nbsp;There is a less well known movement occurring behind the scenes of the brewery explosion: hop farming is having a renaissance as well.</p>
+        <p>Today the scale is a little smaller but the dreams are big. &nbsp;</p>
+        <p>I spent some time trying to figure out who is leading the charge in the hop growing revival in BC and here is a summary of what I have found to date.</p>
+        <p>If I missed your hop yard or got something wrong here please contact me and I'll be happy to correct it.</p>
+        <p>76+ craft breweries in BC <b>require</b>&nbsp;<span>approximately 360,000+ kg of dried hops annually (792,000+ lbs), or the equivalent of <b>450-500 acres of farmland </b>in full production&nbsp;</span></p>
+        <p><span>src: http://www.persephonebrewing.com/wp-content/uploads/2015/07/TR1FeasibilityStudy.pdf</span></p>
+
+          <h3>Locations</h3>
+          <div class="VisualizationContainer--vertical">
+            <div id="HopFarmMap"></div>
+            <div id="HopFarmChart"></div>
+          <div>
+
+          <h3>Listing</h3>
+            <div>
+              <p><br></p>
+              <h2>BC Hop Company / Valley Hops / Kinloch Farms<br></h2>
+              <p>Abbotsford &nbsp;-&nbsp;<a href="http://www.valleyhops.com/home.html">url</a>&nbsp;-&nbsp;<span>&nbsp;</span><a href="https://twitter.com/bchopco">twitter</a><span>&nbsp;</span></p>
+              <p>25 acres</p>
+              <p>size 8</p>
+              <ul class="FarmSizeList">
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+              </ul>
+              <p>Dwayne and Dianne Stewart</p>
+              <p>These guys are in it to win it. &nbsp;Currently have 10 acres under cultivation with another 15 coming online plus a vision of 375 acres in the future. &nbsp;They just invested $500k in a Wolf hop harvester from Germany which should be an indication of how serious they are.</p>
+              <p>They also hosted the inaugural BC Hop Fest last October and look to do the same this year</p>
+              <h2><span>Cascadia Hops</span><br></h2>
+              <p>Chilliwack -&nbsp;<a href="http://www.cascadia-hops.com/">url</a><span>&nbsp;</span></p>
+              <p>10 acres<br></p>
+              <p>size 5</p>
+              <ul class="FarmSizeList">
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+              </ul>
+
+              <p>"medium size acreage devoted to Cascade and Centennial Hops."</p>
+              <p>"Fall 2016 will see the first crop Cascade and Centennial Hops and&nbsp;a number of other varieties of hops for the craft beer brewer.&nbsp;&nbsp;"</p>
+              <p><br></p>
+              <h2>Cedar Valley Hop Yards<br></h2>
+              <p>Nanaimo -&nbsp;<a href="http://www.cedarvalleyhops.com/">url</a></p>
+              <p>10 acres</p>
+              <p>size 6</p>
+              <ul class="FarmSizeList">
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+              </ul>
+
+              <p>Vancouver Island mom and pop&nbsp;</p>
+              <p>of 83 acres<br></p>
+              <p>wolf 140 processor in 2012&nbsp;<br></p>
+              <p><br></p>
+              <h2>Chilliwack Hop Farms</h2>
+              <p>Chilliwack -&nbsp;<a href="http://chilliwackhopfarms.com/">url</a></p>
+              <p>20 acres</p>
+              <p>size 7</p>
+              <ul class="FarmSizeList">
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+
+              </ul>
+
+              <p>"...is on a mission to bring back large-scale hop growing to the Fraser Valley and to feed the insatiable demand for locally grown hops in bc’s booming craft brewing industry."</p>
+              <p>difficult to know how big they are but the dreams are big:</p>
+              <p>"Chilliwack Hop Farms will be the largest single hop grower in Canada with the sole purpose of supplying the exploding craft brewing industry.<span></span><span>"</span></p>
+              <p>From 2013:</p>
+              <p>"Chilliwack Hop Farms is a new start-up in our area. On Unsworth Rd, in the Sardis side of town,<br>Chilliwack Hop Farms has 8 varietals ready for commercial harvest this year with several acres of<br>newer varietals under planting. Last year, since the oldest bines were only in their 2nd and 3rd year and<br>not considered ready for commercial sale.<br></p>
+              <p>They also just purchased a picker from Poland and are currently erecting a drying<br>and peletizing facility, the intent is to pelletize a portion this year, but the facility may not be at full<br>capacity until the 2014 harvest."<br></p>
+              <p>http://calvinandhops.quaite.net/chilliwack-still-hop-mecca/<br></p>
+              <h2>Eagle Valley Hops Estate<br></h2>
+              <p>Malakwa -&nbsp;<a href="http://www.eaglevalleyhops.com/">url</a></p>
+              <p>Located between Siccamoose and Revelstoke.</p>
+              <p>7 -10 acres<br></p>
+              <p>size 5 &nbsp;</p>
+              <ul class="FarmSizeList">
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+              </ul>
+
+              <p>"... crop expansion comes the purchase of a harvester" 2014<br></p>
+              <h2>Grandview Farm<br></h2>
+              <p>Salt Spring Island -&nbsp;<a href="http://bcfarmsandfood.com/farms/grandview-farms/">url</a></p>
+              <p>size ?</p>
+              <p>"In Spring of 2012, we partnered with a second farm on the North of the island to grow even more hops, this time adding Willamette, Challenger and Magnum hops to our collection. 2013 saw the addition of 2 more farms, and we now have over 400 hop plants in production on the island."</p>
+              <h2><span>Harvesters Of Organic Hops (HOOH) (</span><span>Bitterbine</span><span>)</span></h2>
+              <p>Lillooet &nbsp;-&nbsp;<a href="https://www.facebook.com/harvestersoforganichops">facebook</a><span>&nbsp;</span></p>
+              <p></p>
+              <p></p>
+              <p><span>old&nbsp;(2003)&nbsp;</span><a href="http://bitterbinehops.blogspot.ca/">url</a><br></p>
+              <p>5 acres (a guess based on original farm plus some anecdotal references to collective farming and processing in the area)<br></p>
+              <p>size 4&nbsp;</p>
+              <ul class="FarmSizeList">
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+              </ul>
+
+              <p><span>Looks like Bitterbine has morphed into a more collective farm/central processor model under the banner HOOP</span></p>
+              <p><span>"<a href="http://www.crannogales.com/pages/farm-and-hops">An offshoot of Bitterbine in Lillooet, HOOH is a creative approach to hops production: many farms, one processing facility. If you are within 1 hour of Lillooet, this is a great solution for new farmers.</a>"<br></span></p>
+              <p><span>"We are building a fabulous empire of hops...right here in British Columbia.</span></p>
+              <p><span>We are Harvesters of Organic Hops, but we like the simplicity of HooH. HooH hails from the original Bitterbine Hop Farm established in 2009 and now includes a team of growers from across the Fraser Canyon. "</span></p>
+              <p></p>
+              <p><br></p>
+              <p>Organic hop farm based in Lillooet in the interior. &nbsp;</p>
+              <p>The state of organic hop farming in BC has a certain gravitational pull to the Lillooet region. &nbsp;A fellow named Rick Rindero looks to have set up shop there around 10 years ago but looks to have moved on sometime around 2008 around the same time Bitterbine started up.</p>
+              <p>See: HOOH below for more of the story. &nbsp;Also connected with Left Fields out of Sorrento (see below)</p>
+              <p>the blog has been quiet since 2013 so they may not be active anymore. Although there is mention of them in 2015 Lillooet visitor guide so any updates would be welcome.</p>
+              <p><a href="http://bitterbinehops.blogspot.ca/2013/03/rhizomeville-gift-that-keeps-on-giving.html">May have morphed into a rhizome supplier to Left Fields in Sorrento</a>&nbsp;</p>
+              <p>"We are a certified organic hop farm located in Canada's hottest place, Lillooet British Columbia. Our farm is located on 20 acres (8 hectares) of mixed open pine forest, shrubland"</p>
+              <p><span><br></span></p>
+              <p><span><br></span></p>
+              <p></p>
+              <h2><span>Hopanagan Farms</span></h2>
+              <p></p>
+              <p><span>Vernon - <a href="https://www.facebook.com/hopanaganfarms/">facebook</a></span></p>
+              <p><span>2 acres<br></span></p>
+              <p><span>size 3 &nbsp;</span></p>
+              <ul class="FarmSizeList">
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+              </ul>
+
+              <p><span>"Hi there! We have 5 year old plants and one producing acre of centennial, cascade and Zeus. We are expanding to a second acre this year. We dry and pelletize on site and have excellent lab results too! We have been working with two breweries in kelowna and are hoping to do a wet hop beer in the fall with BNA brewery! That's our centennials in their amazing Earl brew! We are also hoping to plant more types of hops soon as well. Let me know if you need anymore info! Thanks for the tag in your blog too, it's hard to get the word out about us! We appreciate it! Deb Gorman and Guy Thibault at Hopanagan Farms!"</span></p>
+              <h2>Hope Bay Hop Farm<br></h2>
+              <p>Pender Island -&nbsp;<a href="http://masselinkdesign.com/wordpress/farm/">url</a>&nbsp;-&nbsp;<a href="http://www.facebook.com/hopebayfarm">facebook</a>&nbsp;-&nbsp;<a href="https://twitter.com/hopebayfarm">twitter</a><span>&nbsp;</span></p>
+              <p><span>size ?</span></p>
+              <p>"Hope Bay Farm is a family-run operation on North Pender Island"&nbsp;</p>
+              <p>The facebook link is dead and the twitter feed hasn't been updated since 2014 so likely not in full operation anymore.</p>
+              <h2>Hops Canada<br></h2>
+              <p>Kamlooops -&nbsp;<a href="http://hops-canada.com/">url</a>&nbsp;-&nbsp;<a href="https://www.facebook.com/">facebook</a>&nbsp;-&nbsp;<a href="https://twitter.com/HopsCanada">twitter</a></p>
+              <p>240 acres</p>
+              <p>size 10&nbsp;</p>
+              <ul class="FarmSizeList">
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+              </ul>
+
+              <p>up to 1000 acres<br></p>
+              <p>According to a business directory called fyple.com:</p>
+              <p>"We are the premier beer hops producer in Canada; currently growing about 240 acres of hops a year, while purchasing an additional 50 acres from other Canadian farmers. Our long term goals include expanding by 660 acres, designing our own proprietary types of beer hops and pelletizing/distributing hops for brewers throughout western Canada."</p>
+              <h2>Hops Connect<br></h2>
+              <p>Pemberton -&nbsp;<a href="https://www.hopsconnect.com/">url</a></p>
+              <p>1 - 2 acres<br></p>
+              <p>size 2 &nbsp; &nbsp;&nbsp;</p>
+              <ul class="FarmSizeList">
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+              </ul>
+              <p>1.5 acres (2013) -&nbsp;http://www.piquenewsmagazine.com/whistler/hops-company-dreaming-big/Content?oid=2457220</p>
+              <p>"We have five interested growers right now so we will be growing hops this year in five different places in Pemberton."</p>
+              <p>"We also wanted to encourage people to grow hops in Pemberton because the climate is suited to grow hops,"</p>
+              <p>These guys look pretty serious in terms of not only hop farming but also Rizome supply and hop distribution globally. &nbsp;Look to have a fairly sizeable operation up in Pemberton but I can only find a record of 1.5 acres under cultivation as of 2013</p>
+              <h2>Left Fields Farm<br></h2>
+              <p>Sorrento -&nbsp;<a href="http://www.crannogales.com/pages/farm-and-hops">url</a>&nbsp;-&nbsp;<a href="https://www.facebook.com/Crann%C3%B3g-Ales-147130382004277/">facebook</a></p>
+              <p>1 - 2 acres</p>
+              <p>size 2</p>
+              <ul class="FarmSizeList">
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+              </ul>
+              <p>Relatively small scale (1 -2 acres) organic hop farm up in the Thomson Okanagan. &nbsp;Purveyors of Cranog Ales</p>
+              <p>"Left Fields is the certified organic farm on which Crannóg Ales stands. We grow hops for the brewery and sell rhizomes to other commercial producers and the general public."</p>
+              <p><span></span></p>
+              <h2>Persephone Brewing Co.<br></h2>
+              <p>Gibsons -&nbsp;<a href="http://www.persephonebrewing.com/">url</a><span>&nbsp;-&nbsp;</span><a href="https://twitter.com/Persephonebeer">twiter</a>&nbsp;-&nbsp;<a href="https://www.facebook.com/PersephoneBrewing">facebook</a></p>
+              <p>6 - 11 acres</p>
+              <p>size 6</p>
+              <ul class="FarmSizeList">
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+              </ul>
+              <p>Pioneering farm and brewery on the Sunshine Coast.&nbsp;</p>
+              <p>"At least 30 Sunshine Coast land owners have already approached the brewery, anxious to begin farming hops or have someone come in and farm for them - See more at: http://www.vancouversun.com/life/brewers/10083699/story.html#sthash.OlsAHxPX.dpuf" Aug 2014</p>
+              <h2><br></h2>
+              <h2>Sartori Hop Farm<br></h2>
+              <p>Lindell Beach (Columbia Valley) -&nbsp;<a href="http://sartorihops.com/">url</a>&nbsp;-&nbsp;<a href="https://twitter.com/sartorihops">twitter</a></p>
+              <p>15 acres</p>
+              <p>size 7</p>
+              <ul class="FarmSizeList">
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+              </ul>
+              <p>planted first hops 8 years ago (2008)</p>
+              <p>specially selected by Molson to grow hops for &nbsp;a special receipe</p>
+              <p>Rick Knight, former foreman of the last John I. Haas Hop Farm operation in Chilliwack, and<br>current custodian of Sartori Cedar Ranch Hop Farms in Columbia Valley<br></p>
+              <h2>Section 10 Fieldworks<br></h2>
+              <p>Sorrento &nbsp;-&nbsp;<a href="http://www.myfarmpal.com/listing/section-10-fieldworks/">url (myfarmpal)&nbsp;</a></p>
+              <p>size ?</p>
+              <p>Not much to find out about these guys except they are liked to the more famous Crannog Ales / Left Fields organic folks out of Sorrento</p>
+              <p><a href="http://www.certifiedorganic.bc.ca/cb/memberinfo.php?id=1504">Certified organic BC link</a></p>
+              <h2><span>Topp's Hops</span><br></h2>
+              <p>Abbotsford -&nbsp;<a href="http://www.topps-hops.ca/home.html">url</a>&nbsp;-&nbsp;<a href="https://www.facebook.com/Topps.Hops.Farm/">facebook</a><span>&nbsp;</span></p>
+              <p></p>
+              <p>7 - 15 acres<br></p>
+              <p>size 6 &nbsp; &nbsp;</p>
+              <ul class="FarmSizeList">
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+                <li class="FarmSizeList__ListItem">
+                  <img class="FarmSizeList__ListIcon" src="./hop-icon.jpg" />
+                </li>
+              </ul>
+              <p></p>
+              <p class="p1"><span class="s1">varieties: Cashmere, Triple Pearl, Cascade, Golding, Mt Hood, Challenger, Zeus, Galena.</span></p>
+              <p class="p1"><span class="s1">We are still a young farm being in our second growing season but we are fully invested into growing premium hops. We are growing as well as processing and packaging all of our hops right here in Abbotsford</span></p>
+              <p><br></p>
+              <p>Hops in the closet: &nbsp;</p>
+              <p>Aug 2014</p>
+              <p>Vic Davies supplies Phillips Brewing out of Saanich</p>
+              <p>The guy from Off the Rails brewing is supposed to have a few acres under cultivation around Mission BC but its difficult to find anything concrete</p>
+              <p>O’Connor has sold rhizomes to about two dozen would-be farmers, while Rebecca Kneen of Left Fields farm in Sorrento has supplied at least 40 agri-optimists with roots for planting. - See more at: http://www.vancouversun.com/life/brewers/10083699/story.html#sthash.OlsAHxPX.dpuf<br></p>
+            </div>
+
+
+
+
+</div> <!-- post body -->
+
+
+    </article>
+
+
+  </div> <!-- outside article -->
+
+  <footer class="AppFooter">
+    <nav class="AppFooter__Nav">
+      <ul>
+        <li class="AppFooter__NavItem">
+          <a href="" class="AppFooter__NavLink">Terms of Service</a>
+        </li>
+        <li>
+          <a href="">Contact</a>
+        </li>
+        <li>
+          <a href="">Twitter</a>
+        </li>
+      </ul>
+    </nav>
+  </footer>
+
+
+
+</div> <!-- app container -->
+
+
+<script src="../scripts/vendor/jquery-2.1.4.min.js"></script>
+<script src="../scripts/vendor/d3.js"></script>
+<script src="../scripts/vendor/d3.layout.cloud.js"></script>
+<script src="../scripts/vendor/bootstrap.min.js"></script>
+<script src="../scripts/modules/common/hop.farms.js"></script>
+<script src="../scripts/vendor/leaflet.js"></script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-77051357-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+
+</body>
+</html>
+

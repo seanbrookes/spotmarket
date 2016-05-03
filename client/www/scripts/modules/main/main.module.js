@@ -33,6 +33,10 @@ Main.config([
         url: '/product',
         templateUrl: './scripts/modules/product/templates/product.main.html'
       })
+      .state('hopreport', {
+        url: '/hopreport',
+        templateUrl: './scripts/modules/common/templates/hop.farm.report.html'
+      })
       .state('user', {
         url: '/user',
         templateUrl: './scripts/modules/user/templates/user.main.html'
