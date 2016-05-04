@@ -24,6 +24,10 @@ body {
   padding: 5rem;
   font-size: 120%;
 }
+.CommandButton {
+  border: none;
+  background: transparent;
+}
 .AppFooter {
   background: #111111;
   color: #ffffff;
@@ -123,6 +127,15 @@ body {
   background-color: #ffffff;
   min-height: 40rem;
 }
+.UserRegistration {
+  border: 1px solid #eeeeee;
+  min-width: 50rem;
+  padding: 2rem;
+  border-radius: 1rem;
+}
+.UserRegistration .UserRegistration__Label {
+  width: 20rem;
+}
 [data-id="AppContainer"] {
   background-color: #ffffff;
 }
@@ -130,7 +143,7 @@ body {
   padding-bottom: 9px;
   justify-content: flex-start;
 }
-.PageHeader .branding {
+.PageHeader .Branding {
   width: 7rem;
   margin-left: 2rem;
   padding: .5rem;
@@ -139,7 +152,7 @@ body {
   justify-content: center;
   align-content: center;
 }
-.PageHeader .branding .logo {
+.PageHeader .Branding .logo {
   height: 5.6rem;
 }
 .PageHeader .Title h1 {
@@ -156,6 +169,12 @@ body {
   font-family: "Lantinghei SC", "Comic Sans MS", sans-serif;
   font-style: italic;
 }
+.PageHeader .GlobalNav ul {
+  list-style: none;
+}
+.PageHeader .GlobalNav ul li {
+  display: inline-block;
+}
 .MoreInfo {
   margin-top: 4rem;
   max-width: 70rem;
@@ -171,6 +190,10 @@ body {
 .MoreInfo__Label {
   font-size: 130%;
   display: block;
+}
+.MoreInfo__Button {
+  padding: 1rem;
+  border-radius: .4rem;
 }
 .Button {
   color: #444444;

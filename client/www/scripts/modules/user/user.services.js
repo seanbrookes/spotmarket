@@ -69,3 +69,26 @@ User.service('UserServices', [
     return svc;
   }
 ]);
+User.service("UserSessionService", [
+  "$cookies", function($cookies) {
+
+    var svc = this;
+    var userName = "";
+
+    svc.setCookieData = function(username) {
+      userName = username;
+      $cookies.put("userName", username);
+    };
+    svc.getCookieData = function() {
+      userName = $cookies.get("userName");
+      return userName;
+    };
+    svc.clearCookieData = function() {
+      userName = "";
+      $cookies.remove("userName");
+    };
+
+    return svc;
+
+  }
+]);

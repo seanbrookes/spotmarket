@@ -14,13 +14,20 @@
 
     <div data-id="AppContainer">
       <header  class="PageHeader Layout">
-        <div class="branding">
+        <div class="Branding">
           <a ui-sref="home"><img src="images/logo.png" alt="logo" class="logo"></a>
         </div>
         <div class="Title">
           <h1>Spot Market</h1>
-          <p class="Title__SubTitle">A market space for local farmers and vendors</p>
+          <p class="Title__SubTitle">A market space serving local farmers and vendors</p>
         </div>
+        <nav class="GlobalNav">
+          <ul>
+            <li>
+              <button class="CommandButton" ng-click="navRequest('register')">Register</button>
+            </li>
+          </ul>
+        </nav>
       </header>
 
       <div class="InnerAppContainer Layout">
@@ -37,7 +44,7 @@
               <a href="">Contact</a>
             </li>
             <li>
-              <a href="">Twitter</a>
+              <a href="https://twitter.com/thespotmarket">Twitter</a>
             </li>
           </ul>
         </nav>
@@ -45,7 +52,7 @@
 
     </div>
     <!-- angular -->
-    <script src="./scripts/vendor/angular/angular.min.js"></script>
+    <script src="./scripts/vendor/angular/angular.js"></script>
 
 
     <script src="./scripts/vendor/lodash.min.js"></script>

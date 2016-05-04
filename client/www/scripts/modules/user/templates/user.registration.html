@@ -1,0 +1,24 @@
+<div class="UserRegistration">
+  <form class="UserRegistration__Form">
+    <div class="UserRegistration__FormField">
+      <label class="UserRegistration__Label">User name</label>
+      <input type="text" ng-model="registrationCtx.userName" />
+    </div>
+    <div class="UserRegistration__FormField">
+      <label class="UserRegistration__Label UserRegistration__Label--Required">Email</label>
+      <input type="text" ng-model="registrationCtx.email" />
+    </div>
+    <div class="UserRegistration__FormField">
+      <label class="UserRegistration__Label UserRegistration__Label--Required">Password</label>
+      <input type="text" ng-model="registrationCtx.password" />
+    </div>
+    <div class="UserRegistration__FormField">
+      <label class="UserRegistration__Label UserRegistration__Label--Required">Confirm Password</label>
+      <input type="text" ng-model="registrationCtx.confirmPassword" />
+    </div>
+    <div class="UserRegistration__ButtonContainer">
+      <button ng-click="regisrationCtx.submitRegistration()">Register</button>
+    </div>
+  </form>
+
+</div>

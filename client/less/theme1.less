@@ -1,4 +1,5 @@
 @import "theme1-variables";
+@import "registration";
 
 [data-id="AppContainer"] {
   background-color:@bg-color-home;
@@ -9,7 +10,7 @@
   padding-bottom: 9px;
   justify-content: flex-start;
 
-  .branding {
+  .Branding {
     width:7rem;
     margin-left:2rem;
     padding:.5rem;
@@ -46,6 +47,16 @@
     }
 
   }
+  .GlobalNav {
+    ul {
+      list-style: none;
+
+      li {
+        display:inline-block;
+      }
+    }
+  }
+
 
 }
 
@@ -73,9 +84,12 @@
   display:block;
 
 }
+.MoreInfo__Button {
+  padding:1rem;
+  border-radius: .4rem;
+}
 .Button {
   color:#444444;
-
 }
 
 .Button--primary {

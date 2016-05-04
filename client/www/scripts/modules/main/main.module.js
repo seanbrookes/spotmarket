@@ -30,6 +30,10 @@ Main.config([
         url: '/',
         templateUrl: './scripts/modules/home/templates/home.main.html'
       })
+      .state('register', {
+        url: '/register',
+        templateUrl: './scripts/modules/user/templates/user.registration.main.html'
+      })
       .state('product', {
         url: '/product',
         templateUrl: './scripts/modules/product/templates/product.main.html'
@@ -53,3 +57,9 @@ Main.config([
 
   }
 ]);
+
+Main.run(function($rootScope, $state) {
+  $rootScope.navRequest = function(state, options) {
+    $state.go(state);
+  };
+});
