@@ -3,10 +3,32 @@ var boot = require('loopback-boot');
 var express = require('express');
 var path = require('path');
 var http = require('http');
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
 
 var app = module.exports = loopback();
 
+function genuuid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4();
+}
+
 app.use(express.static(path.join(__dirname, '../client/www')));
+app.use(session({
+  genid: function(req) {
+    return genuuid(); // use UUIDs for session IDs
+  },
+  secret: 'stoney wall'
+}));
+
+app.use(cookieParser());
+
+
 
 app.start = function() {
   // start the web server

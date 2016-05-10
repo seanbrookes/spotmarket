@@ -69,23 +69,91 @@ User.service('UserServices', [
     return svc;
   }
 ]);
-User.service("UserSessionService", [
-  "$cookies", function($cookies) {
+User.service('UserSessionService', [
+  '$cookies',
+  function($cookies) {
 
     var svc = this;
-    var userName = "";
+    var userName = '';
+    var email = '';
+    var appSessionId = '';
+    var userId = '';
+    var authToken = '';
 
-    svc.setCookieData = function(username) {
-      userName = username;
-      $cookies.put("userName", username);
+    // User Name
+    svc.setUserName = function(username) {
+      if (username) {
+        userName = username;
+        $cookies.put('smUserName', username);
+      }
     };
-    svc.getCookieData = function() {
-      userName = $cookies.get("userName");
+    svc.getUserName = function() {
+      userName = $cookies.get('smUserName');
       return userName;
     };
-    svc.clearCookieData = function() {
-      userName = "";
-      $cookies.remove("userName");
+    svc.clearUserName = function() {
+      userName = '';
+      $cookies.remove('smUserName');
+    };
+    // User Id
+    svc.setUserId = function(userid) {
+      if (userid) {
+        userId = userid;
+        $cookies.put('smUserId', userid);
+      }
+    };
+    svc.getUserId = function() {
+      userId = $cookies.get('smUserId');
+      return userId;
+    };
+    svc.clearUserId = function() {
+      userId = '';
+      $cookies.remove('smUserId');
+    };
+    // App Session Id
+    svc.setAppSessionId = function(appsessionid) {
+      if (appsessionid) {
+        appSessionId = appsessionid;
+        $cookies.put('smAppSessionId', appSessionId);
+      }
+    };
+    svc.getAppSessionId = function() {
+      appSessionId = $cookies.get('smAppSessionId');
+      return appSessionId;
+    };
+    svc.clearAppSessionId = function() {
+      appSessionId = '';
+      $cookies.remove('smAppSessionId');
+    };
+    //  Email
+    svc.setUserEmail = function(email) {
+      if (email) {
+        email = email;
+        $cookies.put('smEmail', email);
+      }
+    };
+    svc.getUserEmail = function() {
+      email = $cookies.get('smEmail');
+      return email;
+    };
+    svc.clearUserEmail = function() {
+      email = '';
+      $cookies.remove('smEmail');
+    };
+    //  AuthToken
+    svc.setAuthToken = function(token) {
+      if (token) {
+        authToken = token;
+        $cookies.put('smAuthToken', authToken);
+      }
+    };
+    svc.getAuthToken = function() {
+      authToken = $cookies.get('smAuthToken');
+      return authToken;
+    };
+    svc.clearAuthToken = function() {
+      authToken = '';
+      $cookies.remove('smAuthToken');
     };
 
     return svc;

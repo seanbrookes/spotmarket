@@ -8,8 +8,10 @@
   },
   "dependencies": {
     "compression": "^1.0.3",
+    "cookie-parser": "^1.4.1",
     "cors": "^2.5.2",
     "express": "^4.13.4",
+    "express-session": "^1.13.0",
     "gulp": "^3.9.1",
     "gulp-less": "^3.0.5",
     "gulp-watch": "^4.3.5",
@@ -22,6 +24,7 @@
     "socket.io": "^1.4.5"
   },
   "devDependencies": {
+    "gulp-react": "^3.1.0",
     "jshint": "^2.5.6"
   },
   "repository": {

@@ -1,0 +1,29 @@
+<header  class="PageHeader Layout">
+  <div class="Branding">
+    <!--<a ui-sref="home"><img src="images/logo.png" alt="logo" class="logo"></a>-->
+    <ggt-tracked-command class="CommandButton"
+                         action="home, navRequest">
+      <img src="images/logo.png" alt="logo" class="logo">
+    </ggt-tracked-command>
+  </div>
+  <div class="Title">
+    <h1>Spot Market</h1>
+    <p class="Title__SubTitle">A market space serving local farmers and vendors</p>
+  </div>
+  <nav class="GlobalNav">
+    <ul>
+      <li>
+        <ggt-tracked-command class="CommandButton"
+                             action="register, navRequest"
+                             label="Register">
+        </ggt-tracked-command>
+      </li>
+      <li>
+        <ggt-tracked-command class="CommandButton"
+                             action="test, globalNav"
+                             label="Test">
+        </ggt-tracked-command>
+      </li>
+    </ul>
+  </nav>
+</header>

@@ -13,22 +13,8 @@
   <body>
 
     <div data-id="AppContainer">
-      <header  class="PageHeader Layout">
-        <div class="Branding">
-          <a ui-sref="home"><img src="images/logo.png" alt="logo" class="logo"></a>
-        </div>
-        <div class="Title">
-          <h1>Spot Market</h1>
-          <p class="Title__SubTitle">A market space serving local farmers and vendors</p>
-        </div>
-        <nav class="GlobalNav">
-          <ul>
-            <li>
-              <button class="CommandButton" ng-click="navRequest('register')">Register</button>
-            </li>
-          </ul>
-        </nav>
-      </header>
+      <sm-page-header></sm-page-header>
+
 
       <div class="InnerAppContainer Layout">
         <div ui-view autoscroll="false" class="MainContainer"></div>
@@ -52,7 +38,11 @@
 
     </div>
     <!-- angular -->
-    <script src="./scripts/vendor/angular/angular.js"></script>
+    <script src="./scripts/vendor/angular/angular.min.js"></script>
+
+    <!-- react -->
+    <script src="./scripts/vendor/react/react.js"></script>
+    <script src="./scripts/vendor/react/react-dom.min.js"></script>
 
 
     <script src="./scripts/vendor/lodash.min.js"></script>
@@ -129,6 +119,7 @@
     <script src="./scripts/modules/ask/ask.services.js"></script>
 
     <!-- user -->
+    <script src="scripts/modules/user/user.react.js"></script>
     <script src="./scripts/modules/user/user.module.js"></script>
     <script src="./scripts/modules/user/user.controllers.js"></script>
     <script src="./scripts/modules/user/user.directives.js"></script>

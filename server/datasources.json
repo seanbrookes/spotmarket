@@ -8,5 +8,12 @@
     "database": "spotmarketapi",
     "name": "spotmarketapi",
     "connector": "mongodb"
+  },
+  "spotmarkettest": {
+    "host": "localhost",
+    "port": 27017,
+    "database": "spotmarkettest",
+    "name": "spotmarkettest",
+    "connector": "mongodb"
   }
 }

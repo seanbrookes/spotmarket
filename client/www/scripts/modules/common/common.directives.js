@@ -281,7 +281,28 @@ Common.directive('ggtHopFarmReport', [
   }
 ]);
 
+Common.directive('smPageHeader', [
+  function() {
+    return {
+      templateUrl: './scripts/modules/common/templates/page.header.html',
+      controller: ['$scope', '$log', 'Track', function($scope, $log, Track) {
+        $scope.globalNav = function(targetState, userName) {
+          $log.debug('| booya ', targetState);
+          Track.addTrack({track:{test:'oy yah'}})
+          .$promise
+          .then(function(response) {
+            var trackResponse = JSON.parse(response.ack);
+            $log.debug('Good Track', trackResponse);
+          })
+          .catch(function(error) {
+            $log.warn('bad create track', error);
+          });
+        };
+      }]
 
+    }
+  }
+]);
 
 
 
