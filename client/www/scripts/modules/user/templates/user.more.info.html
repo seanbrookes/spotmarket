@@ -2,6 +2,9 @@
   <form>
     <label class="MoreInfo__Label">Enter your email for more information:</label>
     <input type="text" class="MoreInfo__Input" placeholder="email address" ng-model="userCtx.moreInfoEmail" />
-    <button type="button" class="MoreInfo__Button Button--primary" ng-click="submitMoreInfoEmail()">more info</button>
+    <sm-tracked-command class-name="MoreInfo__Button Button--primary"
+                        action="submitMoreInfoEmail"
+                        label="more info">
+    </sm-tracked-command>
   </form>
 </div>

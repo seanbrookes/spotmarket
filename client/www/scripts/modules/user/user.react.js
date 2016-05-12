@@ -102,7 +102,7 @@ var TrackedCommand = React.createClass({displayName: "TrackedCommand",
       child = scope.label;
     }
 
-    return (React.createElement("button", {className: scope.class, disabled: isDisabled, onClick: this.handleClick}, child))
+    return (React.createElement("button", {className: scope.className, disabled: isDisabled, onClick: this.handleClick}, child))
   }
 
 });

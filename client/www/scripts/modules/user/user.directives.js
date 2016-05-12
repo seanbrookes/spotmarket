@@ -7,7 +7,7 @@ User.directive('smTrackedCommand', [
       scope: {
         label: '@',
         action: '@',
-        class: '@',
+        className: '@',
         disabled: '@'
       },
       link: function(scope, el, attrs) {
