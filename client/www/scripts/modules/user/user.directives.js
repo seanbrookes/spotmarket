@@ -171,7 +171,7 @@ User.directive('ggtUserMoreInfo', [
 
               }
               else {
-                $log.debug('Email address doesn\'t seem to vbe valid');
+                $log.debug('Email address does not seem to be valid');
               }
             }
           }

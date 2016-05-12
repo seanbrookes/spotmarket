@@ -22,6 +22,29 @@ module.exports = function(Track) {
       ]
     }
   );
+  Track.addErrorTrack = function(track, req, res, cb) {
+
+    track.meta = req.cookies;
+    track.headers = req.headers;
+    delete track.headers.cookie;  // redundant
+    track.timestamp = (new Date).getTime();
+// Create Error record here
+    cb(null, JSON.stringify(track));
+  };
+
+  Track.remoteMethod(
+    'addErrorTrack',
+    {
+      returns: {arg: 'ack', type: 'string'},
+      http: {path: '/adderrortrack', verb: 'post'},
+      accepts: [
+        {arg: 'track', type: 'object'},
+        {arg: 'req', type: 'object', 'http': {source: 'req'}},
+        {arg: 'res', type: 'object', 'http': {source: 'res'}}
+      ]
+    }
+  );
+
 };
 
 
