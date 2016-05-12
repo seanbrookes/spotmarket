@@ -1,16 +1,38 @@
 var TrackedCommand = React.createClass({displayName: "TrackedCommand",
 
+  /*
+  *
+  * tracked calls may:
+  * - have no arguments
+  * - be a dot notated context eg: registrationCtx.methodName
+  *
+  * */
   handleClick: function() {
     var component = this;
     if (component.props.scope && component.props.scope.action) {
       var scope = component.props.scope;
-      var action = scope.action.split(',');
-      var actionMethod = _.trim(action[action.length-1]);
-      action.pop();
+      // confirm if there is more than one argument
+      var action = component.props.scope.action;
+      var actionMethod = action;
+      // check to see if there are arguments to the main method
+      if (scope.action.indexOf(',') > -1) {
+        action = scope.action.split(',');
+        actionMethod = _.trim(action[action.length-1]);
+        action.pop();
+      }
       scope.$apply(function() {
-        scope.$root.trackRequest({actionMethod:actionMethod, actionData:action.toString()});
-        scope.$parent[actionMethod](_.trim(action.toString()));
+        scope.$root.trackRequest({action:actionMethod, options:action.toString()});
+        // if the method is compounded on a namespace we need to drill down to the method call
+        var actionContext = actionArray[0];
+        var actionContext2 = actionArray[1];
+        var trimmedArg = _.trim(action.toString());
+        var aMethod = scope.$parent[actionContext];
+        var bMethod = aMethod[actionContext2];
+        bMethod(trimmedArg);
       });
+    }
+    else {
+      scope.$root.trackRequest({action:'badTrackCmd', options:''});
     }
   },
 

@@ -79,5 +79,11 @@
     "public": true,
     "$promise": {},
     "$resolved": true
+  },
+  "error": {
+    "dataSource": "db",
+    "public": true,
+    "$promise": {},
+    "$resolved": true
   }
 }

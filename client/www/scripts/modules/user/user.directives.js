@@ -1,4 +1,4 @@
-User.directive('ggtTrackedCommand', [
+User.directive('smTrackedCommand', [
   '$log',
   '$timeout',
   function($log, $timeout) {

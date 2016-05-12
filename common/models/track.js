@@ -3,8 +3,10 @@ module.exports = function(Track) {
 
   Track.addTrack = function(track, req, res, cb) {
 
+    track.meta = req.cookies;
     track.headers = req.headers;
-    track.cookie = req.cookies;
+    delete track.headers.cookie;  // redundant
+    track.timestamp = (new Date).getTime();
 
     cb(null, JSON.stringify(track));
   };

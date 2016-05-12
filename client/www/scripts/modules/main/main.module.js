@@ -85,7 +85,24 @@ Main.run([
     $state.go(state);
   };
   $rootScope.linkRequest = function(url) {
-    console.log('Track This', url);
+    $rootScope.trackRequest({action:'linkRequest', options:url});
+  };
+  $rootScope.trackErrors = function(data) {
+    if (data) {
+      data.sessionId = getUserSessionId();
+      data.userId = UserSessionService.getUserId();
+      data.email = UserSessionService.getUserEmail();
+      data.appSessionId = UserSessionService.getAppSessionId();
+      //Track.addErrorTrack({track:data})
+      //  .$promise
+      //  .then(function(response) {
+      //    var trackResponse = JSON.parse(response.ack);
+      //    $log.debug('Good Track', trackResponse);
+      //  })
+      //  .catch(function(error) {
+      //    $log.warn('bad create track', error);
+      //  });
+    }
   };
   $rootScope.trackRequest = function(data) {
     if (data) {

@@ -23,11 +23,12 @@ app.use(session({
   genid: function(req) {
     return genuuid(); // use UUIDs for session IDs
   },
-  secret: 'stoney wall'
+  secret: 'stoney wall',
+  name: 'smTraceId'
 }));
 
 app.use(cookieParser());
-
+app.disable('x-powered-by');
 
 
 app.start = function() {
