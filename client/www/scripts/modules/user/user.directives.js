@@ -137,7 +137,8 @@ User.directive('ggtUserMoreInfo', [
         '$log',
         'UserServices',
         'socket',
-        function($scope, $log, UserServices, socket) {
+        'CommonServices',
+        function($scope, $log, UserServices, socket, CommonServices) {
 
           if (!$scope.userCtx) {
             $scope.userCtx = {};
@@ -149,29 +150,36 @@ User.directive('ggtUserMoreInfo', [
             UserServices.getUsers()
               .then(function(response) {
                 $scope.userCtx.allUsers = response;
-                log.debug('all users', response);
+                $log.debug('all users', response);
               });
           }
+
           socket.on('newMoreInfoSignUp', function(data) {
-            $log.debug('you hea 2', data);
-            $scope.userCtx.allUsers = data;
+            $log.debug('Socket response', data);
+            loadUsers();
+
+          });
+          socket.on('sendTextReceived', function(data) {
+            $log.debug('Socket response sendTextReceived', data);
 
           });
           $scope.submitMoreInfoEmail = function() {
-            if ($scope.userCtx.moreInfoEmail) {
-              var emailToSubmit = $scope.userCtx.moreInfoEmail;
-              if (UserServices.isValidEmail(emailToSubmit)) {
+            if ($scope.userCtx && $scope.userCtx.moreInfoEmail) {
+              if (CommonServices.isValidEmail($scope.userCtx.moreInfoEmail)) {
+                var emailToSubmit = $scope.userCtx.moreInfoEmail;
+                if (UserServices.isValidEmail(emailToSubmit)) {
 
-                socket.emit('sendEmail', emailToSubmit);
+                  socket.emit('sendEmail', emailToSubmit);
 
-                UserServices.saveUser({email:emailToSubmit})
-                  .then(function(response) {
-                    $log.debug('Submit Email', emailToSubmit);
-                  });
+                  UserServices.saveUser({email:emailToSubmit})
+                    .then(function(response) {
+                      $log.debug('Submit Email', emailToSubmit);
+                    });
 
-              }
-              else {
-                $log.debug('Email address does not seem to be valid');
+                }
+                else {
+                  $log.debug('Email address does not seem to be valid');
+                }
               }
             }
           }

@@ -9,6 +9,7 @@ var Main = angular.module('Main', [
   'ngCookies',
   'Acme',
   'Home',
+  'Admin',
   'User',
   'Product',
   'Ask',
@@ -16,6 +17,11 @@ var Main = angular.module('Main', [
   'ui.bootstrap',
   'ui.utils'
 ]);
+
+Main.constant('ACTION_CONST', {
+  LOGO_HOME: 'main logo home nav'
+
+});
 
 Main.config([
   '$stateProvider',
@@ -41,6 +47,10 @@ Main.config([
       .state('hopreport', {
         url: '/hopreport',
         templateUrl: './scripts/modules/common/templates/hop.farm.report.html'
+      })
+      .state('admin', {
+        url: '/admin',
+        templateUrl: './scripts/modules/admin/templates/admin.main.html'
       })
       .state('user', {
         url: '/user',

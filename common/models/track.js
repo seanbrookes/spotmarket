@@ -8,7 +8,13 @@ module.exports = function(Track) {
     delete track.headers.cookie;  // redundant
     track.timestamp = (new Date).getTime();
 
-    cb(null, JSON.stringify(track));
+    Track.create(track, function(error, response) {
+      if (error) {
+        cb(error);
+      }
+      cb(null, JSON.stringify(response));
+    });
+
   };
   Track.remoteMethod(
     'addTrack',

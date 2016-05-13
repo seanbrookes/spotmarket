@@ -14,29 +14,25 @@
 
     <div data-id="AppContainer">
       <sm-page-header></sm-page-header>
-
-
-      <div class="InnerAppContainer Layout">
+      <div class="InnerAppContainer">
         <div ui-view autoscroll="false" class="MainContainer"></div>
       </div>
-
-      <footer class="AppFooter">
-        <nav class="AppFooter__Nav">
-          <ul>
-            <li class="AppFooter__NavItem">
-              <a href="" class="AppFooter__NavLink">Terms of Service</a>
-            </li>
-            <li>
-              <a href="">Contact</a>
-            </li>
-            <li>
-              <a href="https://twitter.com/thespotmarket">Twitter</a>
-            </li>
-          </ul>
-        </nav>
-      </footer>
-
     </div>
+    <footer class="AppFooter">
+      <nav class="AppFooter__Nav">
+        <ul>
+          <li class="AppFooter__NavItem">
+            <a href="" class="AppFooter__NavLink">Terms of Service</a>
+          </li>
+          <li class="AppFooter__NavItem">
+            <a href="">Contact</a>
+          </li>
+          <li class="AppFooter__NavItem">
+            <a href="https://twitter.com/thespotmarket">Twitter</a>
+          </li>
+        </ul>
+      </nav>
+    </footer>
     <!-- angular -->
     <script src="./scripts/vendor/angular/angular.min.js"></script>
 
@@ -93,6 +89,7 @@
     <script src="./scripts/modules/common/common.module.js"></script>
     <script src="./scripts/modules/common/common.directives.js"></script>
     <script src="./scripts/modules/common/common.controllers.js"></script>
+    <script src="./scripts/modules/common/common.services.js"></script>
 
     <!-- acme -->
     <script src="./scripts/modules/acme/acme.module.js"></script>
@@ -117,6 +114,12 @@
     <script src="./scripts/modules/ask/ask.controllers.js"></script>
     <script src="./scripts/modules/ask/ask.directives.js"></script>
     <script src="./scripts/modules/ask/ask.services.js"></script>
+
+    <!-- admin -->
+    <script src="./scripts/modules/admin/admin.module.js"></script>
+    <script src="./scripts/modules/admin/admin.controllers.js"></script>
+    <script src="./scripts/modules/admin/admin.directives.js"></script>
+    <script src="./scripts/modules/admin/admin.services.js"></script>
 
     <!-- user -->
     <script src="scripts/modules/user/user.react.js"></script>
