@@ -52,6 +52,14 @@ Main.config([
         url: '/admin',
         templateUrl: './scripts/modules/admin/templates/admin.main.html'
       })
+      .state('blog', {
+        url: '/blog',
+        templateUrl: './scripts/modules/blog/templates/blog.main.html'
+      })
+      .state('market', {
+        url: '/market',
+        templateUrl: './scripts/modules/market/templates/market.main.html'
+      })
       .state('user', {
         url: '/user',
         templateUrl: './scripts/modules/user/templates/user.main.html'

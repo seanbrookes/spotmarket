@@ -23,14 +23,14 @@ var TrackedCommand = React.createClass({
         isDisabled = true;
       }
     }
-    if (scope.childTag) {
-      child = React.createElement(scope.childTag, scope.childAttributes);
-    }
-    else {
-      child = scope.label;
-    }
+    //if (scope.childTag) {
+    //  child = React.createElement(scope.childTag, scope.childAttributes);
+    //}
+    //else {
+    //  child = scope.label;
+    //}
 
-    return (<button className={scope.class} disabled={isDisabled} onClick={this.handleClick}>{child}</button>)
+    return (<button className={scope.class} disabled={isDisabled} onClick={this.handleClick}>{scope.label}</button>)
   }
 
 });

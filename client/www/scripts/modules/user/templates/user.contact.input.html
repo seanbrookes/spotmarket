@@ -1,0 +1,19 @@
+<div class="ContactInput">
+  <label ng-show="contactCtx.isShowGreeting" class="ContactInput__Label">Enter your email for more information:</label>
+  <label ng-show="contactCtx.isShowThankYou" class="ContactInput__Label">Thank you, we'll be in touch</label>
+  <form ng-show="contactCtx.isShowContactForm">
+    <span ng-show="contactCtx.isShowValidation" class="ContactInput__ValidationMessage">Oops that does not seem to be a valid email. Please try again</span>
+    <input type="text"
+           class="ContactInput__Input"
+           placeholder="email address"
+           ng-change=""
+           ng-model="contactCtx.email" />
+    <sm-tracked-command class-name="ContactInput__Button Button--primary"
+                        disabled="{{ contactCtx.isSubmitButtonDisabled }}"
+                        action="submitContactEmail"
+                        label="Send">
+    </sm-tracked-command>
+  </form>
+  <a href="{{contactCtx.visitMarketUrl}}" class="ContactInput__CallToAction" ng-click="linkRequest(contactCtx.visitMarketUrl)">go to the market</a>
+  <a href="{{contactCtx.visitBlogUrl}}" class="ContactInput__CallToAction" ng-click="linkRequest(contactCtx.visitBlogUrl)">visit our blog</a>
+</div>
