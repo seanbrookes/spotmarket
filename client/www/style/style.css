@@ -191,6 +191,7 @@ body {
   padding: 6rem;
   border: 1px solid #eeeeee;
   border-radius: 2rem;
+  background-color: rgba(100, 100, 150, 0.5);
 }
 .ContactInput__Input {
   padding: 1rem;
@@ -199,12 +200,20 @@ body {
   width: 26rem;
 }
 .ContactInput__Label {
-  font-size: 130%;
+  font-size: 106%;
+  font-weight: 500;
+  letter-spacing: .2rem;
   display: block;
 }
 .ContactInput__Button {
-  padding: 1rem;
-  border-radius: .4rem;
+  padding: .8rem;
+  border-radius: 1rem;
+}
+.ContactInput__CallToAction {
+  color: #ffffff;
+}
+.ContactInput__CallToAction:hover {
+  color: #33acfe;
 }
 .Button {
   color: #444444;
@@ -244,8 +253,16 @@ body {
 .BlogPostPage {
   background: #ffffff;
 }
-.ContactInput {
-  color: #ffffff;
+.TrackTable tr:nth-child(odd) {
+  background-color: #eeeeee;
+}
+.TrackTable__ClipCol {
+  max-width: 18rem;
+  overflow: hidden;
+}
+.TrackTable__ClipCol .TrackTable__ClipContainer {
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .ContactInput button[disabled] {
   background-color: #dddddd;

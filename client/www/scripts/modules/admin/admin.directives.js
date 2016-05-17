@@ -6,6 +6,71 @@ Admin.directive('smAdminMain', [
     }
   }
 ]);
+Admin.directive('smAdminTracksRecent', [
+  '$timeout',
+  function($timeout) {
+    return {
+      restrict: 'E',
+      controller: [
+        '$scope',
+        '$log',
+        '$filter',
+        'TrackingServices',
+        function($scope, $log, $filter, TrackingServices) {
+          $scope.trackAdminCtx = {
+            recentTracks: []
+          };
+
+
+          $scope.titleSearchValue = '';
+          $scope.isFilterChanged = false;
+          $scope.sortDir = {};
+          $scope.sortDir['action'] = true;
+          $scope.sortDir['options'] = true;
+          $scope.sortDir['email'] = true;
+          $scope.sortDir['userAgent'] = true;
+          $scope.sortDir['sessionId'] = true;
+          $scope.sortDir['language'] = true;
+          $scope.sortDir['userName'] = true;
+          $scope.sortDir['referer'] = true;
+          $scope.isReverse = function(colName) {
+            return $scope.sortDir[colName] = !$scope.sortDir[colName];
+          };
+          $scope.sortTracks = function(colName) {
+            $scope.currentTracks = $filter('orderBy')($scope.currentTracks, colName, $scope.isReverse(colName));
+          };
+
+
+          $scope.currentTracks = [];
+          $scope.trackAdminCtx.recentTracks = TrackingServices.getRecentTracks()
+            .then(function (response) {
+              if (response && response.map) {
+                response.map(function(trackItem) {
+                  trackItem.email = trackItem.meta.smEmail;
+                  trackItem.userAgent = trackItem.headers['user-agent'];
+                  trackItem.sessionId = trackItem.meta.smTraceId;
+                  trackItem.language = trackItem.headers['accept-language'];
+                  trackItem.userName = trackItem.meta.currentUserName;
+                  trackItem.referer = trackItem.headers.referer;
+                })
+              }
+              $scope.trackAdminCtx.recentTracks = response;
+              $scope.currentTracks = $scope.trackAdminCtx.recentTracks;
+            });
+        }
+      ],
+      link: function(scope, el, attrs) {
+
+        scope.$watch('currentTracks', function(newVal, oldVal) {
+          $timeout(function() {
+            ReactDOM.render(React.createElement(RecentTracks, {scope:scope}), el[0]);
+
+          }, 400);
+        });
+      }
+    }
+  }
+]);
 Admin.directive('smAdminUsersList', [
 
   function() {

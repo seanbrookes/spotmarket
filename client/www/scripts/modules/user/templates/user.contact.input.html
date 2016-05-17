@@ -14,6 +14,6 @@
                         label="Send">
     </sm-tracked-command>
   </form>
-  <a href="{{contactCtx.visitMarketUrl}}" class="ContactInput__CallToAction" ng-click="linkRequest(contactCtx.visitMarketUrl)">go to the market</a>
-  <a href="{{contactCtx.visitBlogUrl}}" class="ContactInput__CallToAction" ng-click="linkRequest(contactCtx.visitBlogUrl)">visit our blog</a>
+  <a ng-show="contactCtx.isShowCallToAction" href="{{contactCtx.visitMarketUrl}}" class="ContactInput__CallToAction" ng-click="linkRequest(contactCtx.visitMarketUrl)">go to the market</a>
+  <a ng-show="contactCtx.isShowCallToAction" href="{{contactCtx.visitBlogUrl}}" class="ContactInput__CallToAction" ng-click="linkRequest(contactCtx.visitBlogUrl)">visit our blog</a>
 </div>

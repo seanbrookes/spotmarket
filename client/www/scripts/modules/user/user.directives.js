@@ -12,21 +12,7 @@ User.directive('smTrackedCommand', [
       },
       link: function(scope, el, attrs) {
 
-
-        function getReactElementAttributesFromDomObj(obj) {
-          var retVar = {};
-
-          if (obj && obj.length) {
-            for (var i = 0;i < obj.length;i++) {
-              var attributeName = obj[i].name;
-              if (attributeName === 'class') {
-                attributeName = 'className';
-              }
-              retVar[attributeName] = obj[i].value;
-            }
-          }
-          return retVar;
-        }
+        ReactDOM.render(React.createElement(TrackedCommand, {scope:scope}), el[0]);
 
         scope.$watch('disabled', function(newVal, oldVal) {
           if (newVal) {
@@ -37,7 +23,6 @@ User.directive('smTrackedCommand', [
               }
             }
             ReactDOM.render(React.createElement(TrackedCommand, {scope:scope}), el[0]);
-
           }
         }, true);
       }
@@ -110,8 +95,9 @@ User.directive('smUserContactInput', [
                   .then(function(response) {
                     $scope.contactCtx.isShowGreeting = false;
                     $scope.contactCtx.isShowContactForm = false;
+                    $scope.contactCtx.isShowThankYou = true;
                     $scope.contactCtx.isShowCallToAction = true;
-                    $log.debug('Submit Email', emailToSubmit);
+
                   });
 
               }
@@ -150,76 +136,7 @@ User.directive('smUserContactInput', [
     }
   }
 ]);
-User.directive('smTrackedCommandBak', [
-  '$log',
-  '$timeout',
-  function($log, $timeout) {
-    return {
-      restrict: 'E',
-      scope: {
-        label: '@',
-        action: '@',
-        className: '@',
-        disabled: '@'
-      },
-      link: function(scope, el, attrs) {
 
-
-        function getReactElementAttributesFromDomObj(obj) {
-          var retVar = {};
-
-          if (obj && obj.length) {
-            for (var i = 0;i < obj.length;i++) {
-              var attributeName = obj[i].name;
-              if (attributeName === 'class') {
-                attributeName = 'className';
-              }
-              retVar[attributeName] = obj[i].value;
-            }
-          }
-          return retVar;
-        }
-
-        if (el.children(0)[0] && el.children(0)[0].tagName) {
-          scope.childTag = el.children(0)[0].tagName;
-          var attribDomObj = el.children(0)[0].attributes;
-          scope.childAttributes = getReactElementAttributesFromDomObj(attribDomObj);
-        }
-        if (attrs.disabled && attrs.hasOwnProperty('disabled')) {
-          scope.disabled = 'disabled';
-        }
-        ReactDOM.render(React.createElement(TrackedCommand, {scope:scope}), el[0]);
-
-      }
-    }
-  }
-]);
-User.directive('smTrackLink', [
-  function() {
-    return {
-      restrict: 'A',
-      link:function(scope, el, attrs) {
-
-      }
-    }
-  }
-]);
-User.directive('ggtTrackedCommand-bak', [
-  '$log',
-  function($log) {
-    return {
-      restrict: 'E',
-      scope: {
-        label: '=',
-        ggtClick: '='
-      },
-      templateUrl: './scripts/modules/user/templates/tracked.command.button.html',
-      link: function(scope, el, attrs) {
-        $log.debug('TRACEKD Command', scope.label);
-      }
-    }
-  }
-]);
 User.directive('ggtUserRegistration', [
   function() {
     return {
@@ -241,12 +158,6 @@ User.directive('ggtUserRegistration', [
             }
 
           };
-
-          //socket.on('newMoreInfoSignUp', function(data) {
-          //  $log.debug('you hea', data);
-          //  $scope.userCtx.allUsers = data;
-          //
-          //})
         }
       ]
     }

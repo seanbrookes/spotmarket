@@ -1,0 +1,15 @@
+<div>
+  <ul>
+    <li ng-repeat="track in trackAdminCtx.recentTracks">
+      Action: {{track.action}}<br />
+      Options: {{track.options}}<br />
+      UserName: {{track.meta.currentUserName}}<br />
+      Email: {{track.meta.smEmail}}<br />
+      TraceId: {{track.meta.smTraceId}}<br />
+      UserAgent: {{track.headers['user-agent']}}<br />
+      Referer: {{track.headers.referer}}<br />
+      Language: {{track.headers['accept-language']}}<br />
+      Timestamp: {{track.timestamp}}<hr />
+    </li>
+  </ul>
+</div>

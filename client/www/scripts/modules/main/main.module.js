@@ -10,6 +10,7 @@ var Main = angular.module('Main', [
   'Acme',
   'Home',
   'Admin',
+  'Tracking',
   'User',
   'Product',
   'Ask',
