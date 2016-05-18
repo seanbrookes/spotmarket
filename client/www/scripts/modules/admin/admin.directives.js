@@ -15,12 +15,18 @@ Admin.directive('smAdminTracksRecent', [
         '$scope',
         '$log',
         '$filter',
+        'socket',
         'TrackingServices',
-        function($scope, $log, $filter, TrackingServices) {
+        function($scope, $log, $filter, socket, TrackingServices) {
           $scope.trackAdminCtx = {
             recentTracks: []
           };
 
+
+          $scope.cTracks = [];
+
+
+//          Track.app.io.emit( "newTrack", { track: response } );
 
           $scope.titleSearchValue = '';
           $scope.isFilterChanged = false;
@@ -42,21 +48,36 @@ Admin.directive('smAdminTracksRecent', [
 
 
           $scope.currentTracks = [];
-          $scope.trackAdminCtx.recentTracks = TrackingServices.getRecentTracks()
-            .then(function (response) {
-              if (response && response.map) {
-                response.map(function(trackItem) {
-                  trackItem.email = trackItem.meta.smEmail;
-                  trackItem.userAgent = trackItem.headers['user-agent'];
-                  trackItem.sessionId = trackItem.meta.smTraceId;
-                  trackItem.language = trackItem.headers['accept-language'];
-                  trackItem.userName = trackItem.meta.currentUserName;
-                  trackItem.referer = trackItem.headers.referer;
-                })
-              }
-              $scope.trackAdminCtx.recentTracks = response;
-              $scope.currentTracks = $scope.trackAdminCtx.recentTracks;
-            });
+          socket.on('broadCastTracks', function(data) {
+           // $scope.cTracks = data;
+
+            if (data && data.map) {
+              data.map(function(trackItem) {
+                if (!trackItem.meta) {
+                  trackItem.meta = {};
+                }
+                trackItem.email = trackItem.meta.smEmail || '';
+                trackItem.userAgent = trackItem.headers['user-agent'];
+                trackItem.sessionId = trackItem.meta.smTraceId || '';
+                trackItem.language = trackItem.headers['accept-language'];
+                trackItem.userName = trackItem.meta.currentUserName || '';
+                trackItem.referer = trackItem.headers.referer;
+              })
+            }
+            data = $filter('orderBy')(data, 'timestamp', true);
+
+            $scope.trackAdminCtx.recentTracks = data;
+            $scope.currentTracks = $scope.trackAdminCtx.recentTracks;
+
+
+
+          });
+
+          socket.emit('fetchTracks');
+          //$scope.trackAdminCtx.recentTracks = TrackingServices.getRecentTracks()
+          //  .then(function (response) {
+          //
+          //  });
         }
       ],
       link: function(scope, el, attrs) {

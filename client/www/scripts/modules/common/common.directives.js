@@ -1,4 +1,4 @@
-Common.directive('ggtHopFarmReport', [
+Common.directive('smHopFarmReport', [
   '$timeout',
   function($timeout) {
     return {
@@ -6,6 +6,7 @@ Common.directive('ggtHopFarmReport', [
       templateUrl: './scripts/modules/common/templates/hop.report.content.html',
       controller:['$scope', function($scope) {
         $scope.hopIconImagePath = './scripts/modules/common/templates/images/hop-icon.jpg';
+        $scope.$parent.trackViewInit('smHopFarmReport');
       }],
       link:function(scope, el, attrs) {
         $timeout(function() {
@@ -287,10 +288,10 @@ Common.directive('smPageHeader', [
     return {
       templateUrl: './scripts/modules/common/templates/page.header.html',
       controller: ['$scope', '$log', 'Track', function($scope, $log, Track) {
-        $scope.globalNav = function(target) {
-          $state.go(target);
-
-        };
+        //$scope.globalNav = function(target) {
+        //  $state.go(target);
+        //
+        //};
       }]
 
     }

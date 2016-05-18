@@ -74,6 +74,7 @@ User.directive('smUserContactInput', [
               $scope.contactCtx.isShowContactForm = false;
               $scope.contactCtx.isShowCallToAction = true;
             }
+
           }
 
 
@@ -108,6 +109,7 @@ User.directive('smUserContactInput', [
             }
           };
           init();
+          $scope.$parent.trackViewInit('smUserContactInput');
         }
 
       ],
@@ -158,6 +160,7 @@ User.directive('ggtUserRegistration', [
             }
 
           };
+          $scope.$parent.trackViewInit('ggtUserRegistration');
         }
       ]
     }

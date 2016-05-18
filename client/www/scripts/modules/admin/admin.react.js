@@ -46,7 +46,7 @@ var RecentTracks = React.createClass({displayName: "RecentTracks",
       contactRowItems = scope.currentTracks.map(function(track) {
 
         return (
-          React.createElement("tr", null, 
+          React.createElement("tr", {key: track.timestamp}, 
             React.createElement("td", {className: "PrimaryCol"}, 
                 track.action
             ), 

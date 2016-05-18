@@ -21,7 +21,6 @@ var Main = angular.module('Main', [
 
 Main.constant('ACTION_CONST', {
   LOGO_HOME: 'main logo home nav'
-
 });
 
 Main.config([
@@ -100,8 +99,12 @@ Main.run([
 
   }
 
-  $rootScope.navRequest = function(state, options) {
+  $rootScope.navRequest = function(state) {
+    $rootScope.trackRequest({action:'navRequest', options:state});
     $state.go(state);
+  };
+  $rootScope.trackViewInit = function(viewName) {
+    $rootScope.trackRequest({action:'viewInit', options:viewName});
   };
   $rootScope.linkRequest = function(url) {
     $rootScope.trackRequest({action:'linkRequest', options:url});
@@ -148,28 +151,54 @@ Main.run([
 }]);
 
 
-/*
-*
-*
-*
-*
-myapp.config(function($httpProvider) {
- function exampleInterceptor($q, $log) {
- function success(response) {
- $log.info('Successful response: ' + response);
- return response;
- }
- function error(response) {
- var status = response.status;
- $log.error('Response status: ' + status + '. ' + response);
- return $q.reject(response); //similar to throw response;
- }
- return function(promise) {
- return promise.then(success, error);
- }
- }
- $httpProvider.responseInterceptors.push(exampleInterceptor);
- });
-*
-*
-* */
+Main.config([
+  '$httpProvider',
+  function ($httpProvider) {
+    $httpProvider.interceptors.push('smRequestInterceptor');
+  }
+]);
+
+Main.factory('smRequestInterceptor', [
+  '$q',
+  '$location',
+  '$log',
+  '$cookieStore',
+  function ($q, $location, $log, $cookieStore) {
+    function isLocal(url, host){
+      var isLocal = false;
+
+      if ( url.indexOf('./') === 0 || url.indexOf('/') === 0 ) {
+        isLocal = true;
+      } else if ( url.indexOf(host) > -1 ) {
+        isLocal = true;
+      }
+
+      return isLocal;
+    }
+
+
+    return {
+      'request': function (config) {
+        var at = $cookieStore.get('smAccessToken');
+
+       // $log.debug('HTTP request intercepted', config);
+
+        //if (at) {
+        //  if (isLocal(config.url, $location.host())) {
+        //    config.headers.authorization = at;
+        //  } else {
+        //    delete config.headers.authorization;
+        //  }
+        //}
+
+        return config;
+      },
+      responseError: function (rejection) {
+        if (rejection.status == 401) {
+
+        }
+        return $q.reject(rejection);
+      }
+    };
+  }
+]);

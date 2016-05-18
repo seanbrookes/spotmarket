@@ -12,6 +12,7 @@ module.exports = function(Track) {
       if (error) {
         cb(error);
       }
+      Track.app.io.emit( "newTrack", { track: response } );
       cb(null, JSON.stringify(response));
     });
 
