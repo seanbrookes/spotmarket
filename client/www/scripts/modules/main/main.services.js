@@ -1,5 +1,6 @@
 Main.factory('socket', function ($rootScope) {
-  var socket = io.connect('http://spotmarketapi.herokuapp.com/');
+  var socket = io.connect('http://localhost:4546/');
+  //var socket = io.connect('http://spotmarketapi.herokuapp.com/');
   return {
     on: function (eventName, callback) {
       socket.on(eventName, function () {

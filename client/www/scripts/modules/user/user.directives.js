@@ -45,6 +45,16 @@ User.directive('smUserContactInput', [
 
         function($scope, $log, UserServices, UserSessionService, socket, CommonServices ) {
 
+          socket.emit('fetchUserTag');
+
+          socket.on('smUserTag', function(data) {
+            $log.debug('|');
+            $log.debug('|');
+            $log.debug('|  userTag', data);
+            $log.debug('|');
+            $log.debug('|');
+          });
+
           $scope.contactCtx = {
             visitMarketUrl: '/#/market',
             visitBlogUrl: '/blog',
@@ -187,7 +197,7 @@ User.directive('ggtUserMoreInfoList', [
             $log.debug('you hea', data);
             $scope.userCtx.allUsers = data;
 
-          })
+          });
         }
       ]
     }

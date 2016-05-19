@@ -89,41 +89,38 @@ var RecentTracks = React.createClass({displayName: "RecentTracks",
 
     return (
       React.createElement("div", {className: "post-summary-list-container"}, 
-        React.createElement("div", {className: "flex-container"}, 
-          React.createElement("input", {placeholder: "search", value: titleSearchValue, onChange: component.updateTitleSearchValue, type: "text", className: "form-control"}), 
-          React.createElement("button", {onClick: component.clearTitleSearch.bind(component), className: "link-cmd"}, 
-            React.createElement("span", {className: "glyphicon glyphicon-remove-circle"})
-          )
+        React.createElement("div", {className: "flex-container"}
+
         ), 
         React.createElement("table", {className: "TrackTable"}, 
           React.createElement("thead", null, 
             React.createElement("tr", null, 
               React.createElement("th", null, 
-                React.createElement("button", {onClick: component.sortIt.bind(component, 'action'), className: "CommandButton"}, "Action")
+                React.createElement("button", {onClick: component.sortIt.bind(null, 'action'), className: "CommandButton"}, "Action")
               ), 
               React.createElement("th", null, 
-                React.createElement("button", {onClick: component.sortIt.bind(component, 'options'), className: "CommandButton"}, "Options")
+                React.createElement("button", {onClick: component.sortIt.bind(null, 'options'), className: "CommandButton"}, "Options")
               ), 
               React.createElement("th", null, 
-                React.createElement("button", {onClick: component.sortIt.bind(component, 'email'), className: "CommandButton"}, "Email")
+                React.createElement("button", {onClick: component.sortIt.bind(null, 'email'), className: "CommandButton"}, "Email")
               ), 
               React.createElement("th", null, 
-                React.createElement("button", {onClick: component.sortIt.bind(component, 'userAgent'), className: "CommandButton"}, "Browser")
+                React.createElement("button", {onClick: component.sortIt.bind(null, 'userAgent'), className: "CommandButton"}, "Browser")
               ), 
               React.createElement("th", null, 
-                React.createElement("button", {onClick: component.sortIt.bind(component, 'sessionId'), className: "CommandButton"}, "Session")
+                React.createElement("button", {onClick: component.sortIt.bind(null, 'sessionId'), className: "CommandButton"}, "Session")
               ), 
               React.createElement("th", null, 
-                React.createElement("button", {onClick: component.sortIt.bind(component, 'language'), className: "CommandButton"}, "Language")
+                React.createElement("button", {onClick: component.sortIt.bind(null, 'language'), className: "CommandButton"}, "Language")
               ), 
               React.createElement("th", null, 
-                React.createElement("button", {onClick: component.sortIt.bind(component, 'userName'), className: "CommandButton"}, "User Name")
+                React.createElement("button", {onClick: component.sortIt.bind(null, 'userName'), className: "CommandButton"}, "User Name")
               ), 
               React.createElement("th", null, 
-                React.createElement("button", {onClick: component.sortIt.bind(component, 'referer'), className: "CommandButton"}, "Referer")
+                React.createElement("button", {onClick: component.sortIt.bind(null, 'referer'), className: "CommandButton"}, "Referer")
               ), 
               React.createElement("th", null, 
-                React.createElement("button", {onClick: component.sortIt.bind(component, 'timestamp'), className: "CommandButton"}, "Timestamp")
+                React.createElement("button", {onClick: component.sortIt.bind(null, 'timestamp'), className: "CommandButton"}, "Timestamp")
               )
             )
           ), 

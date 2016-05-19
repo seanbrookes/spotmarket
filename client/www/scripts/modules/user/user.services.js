@@ -80,6 +80,14 @@ User.service('UserSessionService', [
     var userId = '';
     var authToken = '';
 
+    svc.isCookiesEnabled = function() {
+      $cookies.put('smTestCookiesEnabled', 'true');
+      if (!$cookies.get('smTestCookiesEnabled')) {
+        return false;
+      }
+      return true;
+    };
+
     // User Name
     svc.setUserName = function(username) {
       if (username) {
@@ -118,12 +126,12 @@ User.service('UserSessionService', [
       }
     };
     svc.getAppSessionId = function() {
-      appSessionId = $cookies.get('smAppSessionId');
+      appSessionId = $cookies.get('smTraceId');
       return appSessionId;
     };
     svc.clearAppSessionId = function() {
       appSessionId = '';
-      $cookies.remove('smAppSessionId');
+      $cookies.remove('smTraceId');
     };
     //  Email
     svc.setUserEmail = function(email) {

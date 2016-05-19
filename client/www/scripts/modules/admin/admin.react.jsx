@@ -90,40 +90,37 @@ var RecentTracks = React.createClass({displayName: "RecentTracks",
     return (
       <div className="post-summary-list-container">
         <div className="flex-container">
-          <input placeholder="search" value={titleSearchValue} onChange={component.updateTitleSearchValue} type="text" className="form-control" />
-          <button onClick={component.clearTitleSearch.bind(component)} className="link-cmd">
-            <span className="glyphicon glyphicon-remove-circle"></span>
-          </button>
+
         </div>
         <table className="TrackTable">
           <thead>
             <tr>
               <th>
-                <button onClick={component.sortIt.bind(component, 'action')} className="CommandButton">Action</button>
+                <button onClick={component.sortIt.bind(null, 'action')} className="CommandButton">Action</button>
               </th>
               <th>
-                <button onClick={component.sortIt.bind(component, 'options')} className="CommandButton">Options</button>
+                <button onClick={component.sortIt.bind(null, 'options')} className="CommandButton">Options</button>
               </th>
               <th>
-                <button onClick={component.sortIt.bind(component, 'email')} className="CommandButton">Email</button>
+                <button onClick={component.sortIt.bind(null, 'email')} className="CommandButton">Email</button>
               </th>
               <th>
-                <button onClick={component.sortIt.bind(component, 'userAgent')}  className="CommandButton">Browser</button>
+                <button onClick={component.sortIt.bind(null, 'userAgent')}  className="CommandButton">Browser</button>
               </th>
               <th>
-                <button onClick={component.sortIt.bind(component, 'sessionId')}  className="CommandButton">Session</button>
+                <button onClick={component.sortIt.bind(null, 'sessionId')}  className="CommandButton">Session</button>
               </th>
               <th>
-                <button onClick={component.sortIt.bind(component, 'language')}  className="CommandButton">Language</button>
+                <button onClick={component.sortIt.bind(null, 'language')}  className="CommandButton">Language</button>
               </th>
               <th>
-                <button onClick={component.sortIt.bind(component, 'userName')}  className="CommandButton">User Name</button>
+                <button onClick={component.sortIt.bind(null, 'userName')}  className="CommandButton">User Name</button>
               </th>
               <th>
-                <button onClick={component.sortIt.bind(component, 'referer')}  className="CommandButton">Referer</button>
+                <button onClick={component.sortIt.bind(null, 'referer')}  className="CommandButton">Referer</button>
               </th>
               <th>
-                <button onClick={component.sortIt.bind(component, 'timestamp')}  className="CommandButton">Timestamp</button>
+                <button onClick={component.sortIt.bind(null, 'timestamp')}  className="CommandButton">Timestamp</button>
               </th>
             </tr>
           </thead>

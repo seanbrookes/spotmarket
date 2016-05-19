@@ -23,11 +23,6 @@ Admin.directive('smAdminTracksRecent', [
           };
 
 
-          $scope.cTracks = [];
-
-
-//          Track.app.io.emit( "newTrack", { track: response } );
-
           $scope.titleSearchValue = '';
           $scope.isFilterChanged = false;
           $scope.sortDir = {};
@@ -49,7 +44,6 @@ Admin.directive('smAdminTracksRecent', [
 
           $scope.currentTracks = [];
           socket.on('broadCastTracks', function(data) {
-           // $scope.cTracks = data;
 
             if (data && data.map) {
               data.map(function(trackItem) {
