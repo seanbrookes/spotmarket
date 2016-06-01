@@ -2,7 +2,10 @@ Admin.directive('smAdminMain', [
   function() {
     return {
       restrict:'E',
-      templateUrl: './scripts/modules/admin/templates/admin.main.html'
+      templateUrl: './scripts/modules/admin/templates/admin.main.html',
+      controller: ['AdminServices', function(AdminServices) {
+
+      }]
     }
   }
 ]);

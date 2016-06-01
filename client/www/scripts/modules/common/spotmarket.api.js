@@ -10,9 +10,13 @@ if (typeof module !== 'undefined' && typeof exports !== 'undefined' && module.ex
 }
 
 (function(window, angular, undefined) {'use strict';
-
-  var urlBase = "http://localhost:4546/api";
-  var urlBase = "http://spotmarketapi.herokuapp.com/api";
+  //console.log('|');
+  //console.log('|');
+  //console.log('|  LBSERVICES ');
+  //console.log('|');
+  //console.log('|');
+  var urlBase = "/api";
+  //var urlBase = "http://spotmarketapi.herokuapp.com/api";
 var authHeader = 'authorization';
 
 function getHost(url) {

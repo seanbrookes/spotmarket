@@ -1,3 +1,14 @@
+window.isLocal = function(){
+  var host = window.location.hostname;
+  var isLocal = false;
+
+  if ( host.indexOf('localhost') !== -1 ) {
+    isLocal = true;
+  }
+
+  return isLocal;
+};
+
 var Main = angular.module('Main', [
   'ui.router',
   'ngResource',
@@ -23,6 +34,37 @@ Main.constant('ACTION_CONST', {
   LOGO_HOME: 'main logo home nav'
 });
 
+
+Main.constant('globalValues', {
+  isLocal: false,
+  productionUrlBase:'http://spotmarketapi.herokuapp.com/',
+  localUrlBase: 'http://localhost:4546/api/'
+});
+Main.config(['LoopBackResourceProvider', 'globalValues', function(LoopBackResourceProvider, globalValues) {
+
+  // Use a custom auth header instead of the default 'Authorization'
+  //LoopBackResourceProvider.setAuthHeader('X-Access-Token');
+
+  var urlBase = '';
+
+  console.log('|   HOST CONFIG 3 ', window.location.hostname);
+
+
+  if (window.isLocal()) {
+    LoopBackResourceProvider.setUrlBase(globalValues.localUrlBase);
+  }
+  else {
+    LoopBackResourceProvider.setUrlBase(globalValues.productionUrlBase);
+  }
+  /*
+  *
+    * var urlBase = "http://localhost:4546/api";
+   //var urlBase = "http://spotmarketapi.herokuapp.com/api";
+  * */
+
+  // Change the URL where to access the LoopBack REST API server
+
+}]);
 Main.config([
   '$stateProvider',
   '$urlRouterProvider',
@@ -75,7 +117,18 @@ Main.config([
 
   }
 ]);
-
+Main.config([
+  '$httpProvider',
+  function ($httpProvider) {
+    console.log('|');
+    console.log('|');
+    console.log('|  MAIN CONFIG 2 $httpProvider.interceptors');
+    console.log('|');
+    console.log('|');
+//http://www.webdeveasy.com/interceptors-in-angularjs-and-useful-examples/
+    $httpProvider.interceptors.push('smRequestInterceptor');
+  }
+]);
 Main.run([
   '$rootScope',
   '$state',
@@ -85,18 +138,19 @@ Main.run([
   'socket',
   function($rootScope, $state, Track, UserSessionService, $log, socket) {
 
+
     socket.on('smRealTimeConnection', function(smUserTag) {
-      $log.debug('|');
-      $log.debug('|');
-      $log.debug('|   smRealTimeConnection', smUserTag);
-      $log.debug('|');
-      $log.debug('|');
-      $log.debug('|');
-      $log.debug('|  isCookiesEnabled', UserSessionService.isCookiesEnabled());
-      $log.debug('|');
-      $log.debug('|');
-      $log.debug('|');
-      $log.debug('|');
+      //$log.debug('|');
+      //$log.debug('|');
+      //$log.debug('|   smRealTimeConnection', smUserTag);
+      //$log.debug('|');
+      //$log.debug('|');
+      //$log.debug('|');
+      //$log.debug('|  isCookiesEnabled', UserSessionService.isCookiesEnabled());
+      //$log.debug('|');
+      //$log.debug('|');
+      //$log.debug('|');
+      //$log.debug('|');
 
       if (!UserSessionService.isCookiesEnabled()) {
         // track this issue
@@ -194,54 +248,6 @@ Main.run([
 ]);
 
 
-Main.config([
-  '$httpProvider',
-  function ($httpProvider) {
-    $httpProvider.interceptors.push('smRequestInterceptor');
-  }
-]);
-
-Main.factory('smRequestInterceptor', [
-  '$q',
-  '$location',
-  '$log',
-  '$cookieStore',
-  function ($q, $location, $log, $cookieStore) {
-    function isLocal(url, host){
-      var isLocal = false;
-
-      if ( url.indexOf('./') === 0 || url.indexOf('/') === 0 ) {
-        isLocal = true;
-      } else if ( url.indexOf(host) > -1 ) {
-        isLocal = true;
-      }
-
-      return isLocal;
-    }
 
 
-    return {
-      'request': function (config) {
-        var at = $cookieStore.get('smAccessToken');
 
-       // $log.debug('HTTP request intercepted', config);
-
-        //if (at) {
-        //  if (isLocal(config.url, $location.host())) {
-        //    config.headers.authorization = at;
-        //  } else {
-        //    delete config.headers.authorization;
-        //  }
-        //}
-
-        return config;
-      },
-      responseError: function (rejection) {
-        if (rejection.status == 401) {
-
-        }
-        return $q.reject(rejection);
-      }
-    };
-  }
-]);

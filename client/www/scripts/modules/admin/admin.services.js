@@ -3,7 +3,11 @@ Admin.service('AdminServices', [
   function() {
     var svc = this;
 
-
+    console.log('|');
+    console.log('|');
+    console.log('|  ADMIN SERVICE - AdminServices');
+    console.log('|');
+    console.log('|');
 
 
     return svc;

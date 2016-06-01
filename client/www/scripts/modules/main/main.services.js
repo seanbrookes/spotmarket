@@ -1,6 +1,74 @@
-Main.factory('socket', function ($rootScope) {
-  var socket = io.connect('http://localhost:4546/');
-  //var socket = io.connect('http://spotmarketapi.herokuapp.com/');
+Main.factory('smRequestInterceptor', [
+  '$q',
+  '$location',
+  '$log',
+  '$cookieStore',
+  'globalValues',
+  function ($q, $location, $log, $cookieStore, globalValues) {
+    //$log.debug('|');
+    //$log.debug('|');
+    //$log.debug('|  MAIN FACTORY - REQUEST INTERCEPTOR host:', $location.host());
+    //$log.debug('|');
+    //$log.debug('|');
+    //$log.debug('|');
+    //$log.debug('| REQUEST isLocal', isLocal($location.host()));
+    //$log.debug('|');
+    //$log.debug('|');
+    globalValues.isLocal = window.isLocal();
+    function isInternal(url, host){
+      var isInternal = false;
+
+      if ( url.indexOf('./') === 0 || url.indexOf('/') === 0 ) {
+        isInternal = true;
+      }
+      return isInternal;
+    }
+
+
+
+    return {
+      'request': function (config) {
+        var at = $cookieStore.get('smAccessToken');
+
+
+
+        // $log.debug('HTTP request intercepted', config);
+
+        //if (at) {
+        //  if (isLocal(config.url, $location.host())) {
+        //    config.headers.authorization = at;
+        //  } else {
+        //    delete config.headers.authorization;
+        //  }
+        //}
+
+        return config;
+      },
+      responseError: function (rejection) {
+        if (rejection.status == 401) {
+
+        }
+        return $q.reject(rejection);
+      }
+    };
+  }
+]);
+Main.factory('socket',[
+  '$rootScope',
+  '$log',
+  'globalValues',
+  function ($rootScope, $log, globalValues) {
+
+
+  var socket;
+  if (globalValues.isLocal) {
+    socket = io.connect(globalValues.localUrlBase);
+  }
+  else {
+    socket = io.connect(globalValues.productionUrlBase);
+  }
+
+
   return {
     on: function (eventName, callback) {
       socket.on(eventName, function () {
@@ -21,4 +89,4 @@ Main.factory('socket', function ($rootScope) {
       })
     }
   };
-});
+}]);
