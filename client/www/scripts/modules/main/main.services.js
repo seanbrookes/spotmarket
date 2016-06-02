@@ -62,10 +62,10 @@ Main.factory('socket',[
 
   var socket;
   if (globalValues.isLocal) {
-    socket = io.connect(globalValues.localUrlBase);
+    socket = io.connect(globalValues.localSocketBase);
   }
   else {
-    socket = io.connect(globalValues.productionUrlBase);
+    socket = io.connect(globalValues.productionSocketBase);
   }
 
 

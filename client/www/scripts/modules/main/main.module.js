@@ -38,7 +38,9 @@ Main.constant('ACTION_CONST', {
 Main.constant('globalValues', {
   isLocal: false,
   productionUrlBase:'http://spotmarketapi.herokuapp.com/api/',
-  localUrlBase: 'http://localhost:4546/api/'
+  localUrlBase: 'http://localhost:4546/api/',
+  productionSocketBase:'http://spotmarketapi.herokuapp.com/',
+  localSocketBase: 'http://localhost:4546/'
 });
 Main.config(['LoopBackResourceProvider', 'globalValues', function(LoopBackResourceProvider, globalValues) {
 
