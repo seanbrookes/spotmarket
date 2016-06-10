@@ -21,6 +21,7 @@ var Main = angular.module('Main', [
   'Acme',
   'Home',
   'Admin',
+  'Market',
   'Tracking',
   'User',
   'Product',
@@ -35,28 +36,47 @@ Main.constant('ACTION_CONST', {
 });
 
 
-Main.constant('globalValues', {
+Main.constant('smGlobalConstants', {
   isLocal: false,
-  productionUrlBase:'http://spotmarketapi.herokuapp.com/api/',
-  localUrlBase: 'http://localhost:4546/api/',
-  productionSocketBase:'http://spotmarketapi.herokuapp.com/',
-  localSocketBase: 'http://localhost:4546/'
+  productionUrlBase:'//spotmarketapi.herokuapp.com/api/',
+  localUrlBase: '//localhost:4546/api/',
+  productionSocketBase:'//spotmarketapi.herokuapp.com/',
+  localSocketBase: '//localhost:4546/'
 });
-Main.config(['LoopBackResourceProvider', 'globalValues', function(LoopBackResourceProvider, globalValues) {
+/*
+
+ - smUserTag ( semi persistent user id (initial socket client id))
+ - smSessionId ( session id )
+ - smUserId ( unique user id associated with a ‘registration’ event / when we create a user account)
+ - smEmail ( user primary email )
+ - smAuthToken ( unique token generated when logging in, if it doesn’t exist the user is not logged in )
+ - smTTL ( time to live for auth token, checked per request to see if expired, if not refresh it  )
+ - isCurrentUserLoggedIn returns false if there is no smAuthToken
+
+*/
+Main.value('smGlobalValues', {
+    currentUser: {}
+  }
+);
+
+Main.config([
+  'LoopBackResourceProvider',
+  'smGlobalConstants',
+  function(LoopBackResourceProvider, smGlobalConstants) {
 
   // Use a custom auth header instead of the default 'Authorization'
   //LoopBackResourceProvider.setAuthHeader('X-Access-Token');
 
   var urlBase = '';
 
-  console.log('|   HOST CONFIG 3 ', window.location.hostname);
+  //console.log('|   HOST CONFIG 3 ', window.location.hostname);
 
 
   if (window.isLocal()) {
-    LoopBackResourceProvider.setUrlBase(globalValues.localUrlBase);
+    LoopBackResourceProvider.setUrlBase(smGlobalConstants.localUrlBase);
   }
   else {
-    LoopBackResourceProvider.setUrlBase(globalValues.productionUrlBase);
+    LoopBackResourceProvider.setUrlBase(smGlobalConstants.productionUrlBase);
   }
   /*
   *
@@ -122,11 +142,11 @@ Main.config([
 Main.config([
   '$httpProvider',
   function ($httpProvider) {
-    console.log('|');
-    console.log('|');
-    console.log('|  MAIN CONFIG 2 $httpProvider.interceptors');
-    console.log('|');
-    console.log('|');
+    //console.log('|');
+    //console.log('|');
+    //console.log('|  MAIN CONFIG 2 $httpProvider.interceptors');
+    //console.log('|');
+    //console.log('|');
 //http://www.webdeveasy.com/interceptors-in-angularjs-and-useful-examples/
     $httpProvider.interceptors.push('smRequestInterceptor');
   }
@@ -136,30 +156,84 @@ Main.run([
   '$state',
   'Track',
   'UserSessionService',
+  'UserServices',
   '$log',
   'socket',
-  function($rootScope, $state, Track, UserSessionService, $log, socket) {
+  '$cookies',
+  'smGlobalValues',
+  function($rootScope, $state, Track, UserSessionService, UserServices, $log, socket, $cookies, smGlobalValues) {
+
+    /*
+    *
+    * this is where we need to ensure we have a valid smUserTag
+    * - check the cookie for user tracking information
+    * - smUserTag
+    * - smEmail
+    * - smUserName
+    * - smUserId
+    *
+    * */
 
 
-    socket.on('smRealTimeConnection', function(smUserTag) {
-      //$log.debug('|');
-      //$log.debug('|');
-      //$log.debug('|   smRealTimeConnection', smUserTag);
-      //$log.debug('|');
-      //$log.debug('|');
-      //$log.debug('|');
-      //$log.debug('|  isCookiesEnabled', UserSessionService.isCookiesEnabled());
-      //$log.debug('|');
-      //$log.debug('|');
-      //$log.debug('|');
-      //$log.debug('|');
 
+    socket.on('smRealTimeConnection', function(socketClientId) {
+
+      /*
+      * NO COOKIE SUPPORT !!!
+      *
+      * */
       if (!UserSessionService.isCookiesEnabled()) {
         // track this issue
-        $rootScope.trackRequest({action:'noCookieSupport', options:smUserTag});
-      }
-      else {
+        $rootScope.trackRequest({action:'noCookieSupport', options:socketClientId});
 
+
+        // TODO set global values currentUser values
+
+        smGlobalValues.currentUser.smUserTag = socketClientId;
+
+        smGlobalValues.currentUser.smSessionId = socketClientId;
+
+        smGlobalValues.currentUser.smUserId = socketClientId;
+
+      }
+
+
+
+      else {
+        // make sure smUserTag has been set in the coookie.
+        // if not then set it
+
+        var currentUser = UserServices.getCurrentUser();
+
+        if (!currentUser.smUserTag) {
+          currentUser.smUserTag = socketClientId;
+          UserSessionService.putValueByKey('smUserTag', currentUser.smUserTag);
+        }
+        if (!currentUser.smSessionId) {
+          currentUser.smSessionId = socketClientId;
+          UserSessionService.putValueByKey('smSessionId', currentUser.smSessionId);
+        }
+        if (!currentUser.smUserId) {
+          currentUser.smUserId = socketClientId;
+          UserSessionService.putValueByKey('smUserId', currentUser.smSessionId);
+        }
+        else {
+          // the user has a preset smUserId
+          // we need to 'inflate' the user profile from the server
+          UserSessionService.getUserSessionProfileById(currentUser.smUserId)
+            .then(function(response) {
+              if (response && response.length && response.length > 0) {
+                $log.debug('we have a pre existing user');
+              }
+              else {
+                $log.debug('we do not have a pre existing user');
+                $log.debug('we should create one with this id: ', currentUser.smUserId);
+                // we should create one
+              }
+
+          });
+        }
+        $log.debug('|   currentUser.smUserId', currentUser.smUserId);
       }
 
       /*

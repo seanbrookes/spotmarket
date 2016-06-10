@@ -2,9 +2,9 @@ Main.factory('smRequestInterceptor', [
   '$q',
   '$location',
   '$log',
-  '$cookieStore',
-  'globalValues',
-  function ($q, $location, $log, $cookieStore, globalValues) {
+  '$cookies',
+  'smGlobalConstants',
+  function ($q, $location, $log, $cookies, smGlobalConstants) {
     //$log.debug('|');
     //$log.debug('|');
     //$log.debug('|  MAIN FACTORY - REQUEST INTERCEPTOR host:', $location.host());
@@ -14,7 +14,7 @@ Main.factory('smRequestInterceptor', [
     //$log.debug('| REQUEST isLocal', isLocal($location.host()));
     //$log.debug('|');
     //$log.debug('|');
-    globalValues.isLocal = window.isLocal();
+    smGlobalConstants.isLocal = window.isLocal();
     function isInternal(url, host){
       var isInternal = false;
 
@@ -28,7 +28,8 @@ Main.factory('smRequestInterceptor', [
 
     return {
       'request': function (config) {
-        var at = $cookieStore.get('smAccessToken');
+        var ut = $cookies.get('smUserTag');
+        var at = $cookies.get('smAccessToken');
 
 
 
@@ -56,37 +57,38 @@ Main.factory('smRequestInterceptor', [
 Main.factory('socket',[
   '$rootScope',
   '$log',
-  'globalValues',
-  function ($rootScope, $log, globalValues) {
+  'smGlobalConstants',
+  function ($rootScope, $log, smGlobalConstants) {
 
 
-  var socket;
-  if (globalValues.isLocal) {
-    socket = io.connect(globalValues.localSocketBase);
-  }
-  else {
-    socket = io.connect(globalValues.productionSocketBase);
-  }
-
-
-  return {
-    on: function (eventName, callback) {
-      socket.on(eventName, function () {
-        var args = arguments;
-        $rootScope.$apply(function () {
-          callback.apply(socket, args);
-        });
-      });
-    },
-    emit: function (eventName, data, callback) {
-      socket.emit(eventName, data, function () {
-        var args = arguments;
-        $rootScope.$apply(function () {
-          if (callback) {
-            callback.apply(socket, args);
-          }
-        });
-      })
+    var socket;
+    if (smGlobalConstants.isLocal) {
+      socket = io.connect(smGlobalConstants.localSocketBase);
     }
-  };
-}]);
+    else {
+      socket = io.connect(smGlobalConstants.productionSocketBase);
+    }
+
+
+    return {
+      on: function (eventName, callback) {
+        socket.on(eventName, function () {
+          var args = arguments;
+          $rootScope.$apply(function () {
+            callback.apply(socket, args);
+          });
+        });
+      },
+      emit: function (eventName, data, callback) {
+        socket.emit(eventName, data, function () {
+          var args = arguments;
+          $rootScope.$apply(function () {
+            if (callback) {
+              callback.apply(socket, args);
+            }
+          });
+        })
+      }
+    };
+  }
+]);

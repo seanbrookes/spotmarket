@@ -89,6 +89,18 @@ Admin.directive('smAdminTracksRecent', [
     }
   }
 ]);
+
+/*
+*
+*
+* app.controller( 'MainCtrl', function( $scope, AuthService ) {
+ $scope.$watch( AuthService.isLoggedIn, function ( isLoggedIn ) {
+ $scope.isLoggedIn = isLoggedIn;
+ $scope.currentUser = AuthService.currentUser();
+ });
+ });
+*
+* */
 Admin.directive('smAdminUsersList', [
 
   function() {
@@ -99,7 +111,13 @@ Admin.directive('smAdminUsersList', [
         '$scope',
         'UserServices',
         'socket',
-        function($scope, UserServices, socket) {
+        'UserSessionService',
+        function($scope, UserServices, socket, UserSessionService) {
+
+          $scope.$watch( UserSessionService.isLoggedIn, function ( isLoggedIn ) {
+            $scope.isLoggedIn = isLoggedIn;
+            $scope.currentUser = UserServices.getCurrentUser();
+          });
 
           $scope.currentUsers = [];
           socket.on('broadCastUsers', function(data) {

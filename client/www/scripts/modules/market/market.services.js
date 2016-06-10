@@ -1,4 +1,4 @@
-Acme.service('AcmeServices', [
+Market.service('MarketServices', [
   'UserProfile',
   function(UserProfile) {
     var svc = this;

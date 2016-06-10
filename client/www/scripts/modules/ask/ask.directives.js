@@ -1,4 +1,4 @@
-Ask.directive('ggtAsk', [
+Ask.directive('smAsk', [
   function() {
     return {
       restrict:'E',
@@ -6,7 +6,7 @@ Ask.directive('ggtAsk', [
     }
   }
 ]);
-Ask.directive('ggtLotForm', [
+Ask.directive('smLotForm', [
   function() {
     return {
       restrict: 'E',

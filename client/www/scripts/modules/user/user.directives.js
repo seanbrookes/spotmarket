@@ -48,11 +48,11 @@ User.directive('smUserContactInput', [
           socket.emit('fetchUserTag');
 
           socket.on('smUserTag', function(data) {
-            $log.debug('|');
-            $log.debug('|');
-            $log.debug('|  userTag', data);
-            $log.debug('|');
-            $log.debug('|');
+            //$log.debug('|');
+            //$log.debug('|');
+            //$log.debug('|  userTag', data);
+            //$log.debug('|');
+            //$log.debug('|');
           });
 
           $scope.contactCtx = {

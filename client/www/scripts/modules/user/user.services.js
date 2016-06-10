@@ -1,8 +1,22 @@
 User.service('UserServices', [
   'UserProfile',
-  function(UserProfile) {
+  'smGlobalValues',
+  'UserSessionService',
+  function(UserProfile, smGlobalValues, UserSessionService) {
     var svc = this;
 
+    svc.getCurrentUser = function() {
+      smGlobalValues.currentUser.smUserTag = UserSessionService.getValueByKey('smUserTag');
+      smGlobalValues.currentUser.smSessionId = UserSessionService.getValueByKey('smSessionId');
+      smGlobalValues.currentUser.smUserId = UserSessionService.getValueByKey('smUserId');
+      smGlobalValues.currentUser.smEmail = UserSessionService.getValueByKey('smEmail');
+      smGlobalValues.currentUser.smAuthToken = UserSessionService.getValueByKey('smAuthToken');
+      smGlobalValues.currentUser.smTTL = UserSessionService.getValueByKey('smTTL');
+      smGlobalValues.currentUser.isCurrentUserLoggedIn = UserSessionService.getValueByKey('isCurrentUserLoggedIn');
+
+      return smGlobalValues.currentUser;
+
+    };
     svc.saveUser = function(user) {
       if (!user.createdDate) {
         user.createdDate = (new Date).getTime();
@@ -70,8 +84,10 @@ User.service('UserServices', [
   }
 ]);
 User.service('UserSessionService', [
+  'UserProfile',
   '$cookies',
-  function($cookies) {
+  '$log',
+  function(UserProfile, $cookies, $log) {
 
     var svc = this;
     var userName = '';
@@ -86,6 +102,15 @@ User.service('UserSessionService', [
         return false;
       }
       return true;
+    };
+    svc.getValueByKey = function(key) {
+      if (key) {
+        return $cookies.get(key);
+      }
+      return null;
+    };
+    svc.putValueByKey = function(key, value) {
+      $cookies.put(key, value);
     };
 
     // User Name
@@ -162,6 +187,38 @@ User.service('UserSessionService', [
     svc.clearAuthToken = function() {
       authToken = '';
       $cookies.remove('smAuthToken');
+    };
+    svc.isCurrentUserLoggedIn = function() {
+      if (!$cookies.get('smAuthToken')) {
+        return false;
+      }
+      var currentTimeStamp = new Date().getTime();
+      var ttl = $cookies.get('smTTL');
+
+      if (currentTimeStamp > ttl) {
+        // track the problem / issue
+        return false;
+      }
+      if (currentTimeStamp < smTTL) {
+        return true;
+      }
+      return false;
+    };
+    svc.getUserSessionProfileById = function(id) {
+      return UserProfile.find({userId: id})
+        .$promise
+        .then(function(response) {
+          if (response && response.length && response.length > 0) {
+
+            return response[0];
+          }
+          else {
+            return null;
+          }
+        })
+        .catch(function(error) {
+          $log.warn('bad get user profile', error);
+        })
     };
 
     return svc;
