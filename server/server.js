@@ -55,25 +55,7 @@ boot(app, __dirname, function(err) {
 
   // start the server if `$ node server.js`
   if (require.main === module) {
-    //app.start();
+    app.start();
 
-    app.io = require('socket.io')(app.start());
-
-    app.io.on('connection', function(socket) {
-      console.log('a user connected');
-      socket.on('nickName', function(data) {
-        console.log('Nick Name', data);
-      });
-      socket.on('setGeometry', function(data) {
-        console.log('Geometry', data);
-      });
-      socket.on('creatAsk', function(data) {
-        console.log('Ask', data);
-      });
-    });
-
-    app.io.on('disconnect', function() {
-      console.log('user disconnected');
-    });
   }
 });

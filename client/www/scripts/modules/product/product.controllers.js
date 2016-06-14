@@ -6,8 +6,6 @@ Product.controller('ProductMainController', [
   function($scope, $log, $http, ProductServices) {
     $log.debug('Hello World Product Controller');
 
-    var socket = io.connect();
-
     $scope.productCtx = {
       currentProductType: '',
       currentProductSubType: '',

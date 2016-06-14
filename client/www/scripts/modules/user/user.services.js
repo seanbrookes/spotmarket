@@ -79,6 +79,16 @@ User.service('UserServices', [
           return response || [];
         });
     };
+    svc.createTaggedUser = function() {
+      return UserProfile.create({})
+        .$promise
+        .then(function(response) {
+          return response || [];
+        })
+        .catch(function(error) {
+          $log.warn('bad create tagged user', error);
+        });
+    };
 
     return svc;
   }
@@ -144,13 +154,13 @@ User.service('UserSessionService', [
       $cookies.remove('smUserId');
     };
     // App Session Id
-    svc.setAppSessionId = function(appsessionid) {
+    svc.setUserSessionId = function(appsessionid) {
       if (appsessionid) {
         appSessionId = appsessionid;
         $cookies.put('smAppSessionId', appSessionId);
       }
     };
-    svc.getAppSessionId = function() {
+    svc.getUserSessionId = function() {
       appSessionId = $cookies.get('smTraceId');
       return appSessionId;
     };

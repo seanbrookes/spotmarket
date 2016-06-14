@@ -54,7 +54,7 @@ Main.factory('smRequestInterceptor', [
     };
   }
 ]);
-Main.factory('socket',[
+Main.factory('smSocket',[
   '$rootScope',
   '$log',
   'smGlobalConstants',

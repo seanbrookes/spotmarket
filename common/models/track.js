@@ -3,18 +3,18 @@ module.exports = function(Track) {
 
   Track.addTrack = function(track, req, res, cb) {
 
-    track.meta = req.cookies;
-    track.headers = req.headers;
-    delete track.headers.cookie;  // redundant
-    track.timestamp = (new Date).getTime();
-
-    Track.create(track, function(error, response) {
-      if (error) {
-        cb(error);
-      }
-      Track.app.io.emit( "newTrack", { track: response } );
-      cb(null, JSON.stringify(response));
-    });
+    //track.meta = req.cookies;
+    //track.headers = req.headers;
+    //delete track.headers.cookie;  // redundant
+    //track.timestamp = (new Date).getTime();
+    //
+    //Track.create(track, function(error, response) {
+    //  if (error) {
+    //    cb(error);
+    //  }
+    //  Track.app.io.emit( "newTrack", { track: response } );
+    //  cb(null, JSON.stringify(response));
+    //});
 
   };
   Track.remoteMethod(

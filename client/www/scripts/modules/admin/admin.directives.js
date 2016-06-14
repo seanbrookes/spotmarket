@@ -18,9 +18,9 @@ Admin.directive('smAdminTracksRecent', [
         '$scope',
         '$log',
         '$filter',
-        'socket',
+        'smSocket',
         'TrackingServices',
-        function($scope, $log, $filter, socket, TrackingServices) {
+        function($scope, $log, $filter, smSocket, TrackingServices) {
           $scope.trackAdminCtx = {
             recentTracks: []
           };
@@ -46,7 +46,7 @@ Admin.directive('smAdminTracksRecent', [
 
 
           $scope.currentTracks = [];
-          socket.on('broadCastTracks', function(data) {
+          smSocket.on('broadCastTracks', function(data) {
 
             if (data && data.map) {
               data.map(function(trackItem) {
@@ -70,7 +70,7 @@ Admin.directive('smAdminTracksRecent', [
 
           });
 
-          socket.emit('fetchTracks');
+          smSocket.emit('fetchTracks');
           //$scope.trackAdminCtx.recentTracks = TrackingServices.getRecentTracks()
           //  .then(function (response) {
           //
@@ -110,9 +110,9 @@ Admin.directive('smAdminUsersList', [
       controller: [
         '$scope',
         'UserServices',
-        'socket',
+        'smSocket',
         'UserSessionService',
-        function($scope, UserServices, socket, UserSessionService) {
+        function($scope, UserServices, smSocket, UserSessionService) {
 
           $scope.$watch( UserSessionService.isLoggedIn, function ( isLoggedIn ) {
             $scope.isLoggedIn = isLoggedIn;
@@ -120,11 +120,11 @@ Admin.directive('smAdminUsersList', [
           });
 
           $scope.currentUsers = [];
-          socket.on('broadCastUsers', function(data) {
+          smSocket.on('broadCastUsers', function(data) {
             $scope.currentUsers = data;
           });
           function init() {
-            socket.emit('fetchUsers');
+            smSocket.emit('fetchUsers');
           }
           init();
         }

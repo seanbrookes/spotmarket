@@ -158,11 +158,20 @@ Main.run([
   'UserSessionService',
   'UserServices',
   '$log',
-  'socket',
+  'smSocket',
   '$cookies',
   'smGlobalValues',
-  function($rootScope, $state, Track, UserSessionService, UserServices, $log, socket, $cookies, smGlobalValues) {
+  function($rootScope, $state, Track, UserSessionService, UserServices, $log, smSocket, $cookies, smGlobalValues) {
 
+    $log.debug('|');
+    $log.debug('|');
+    $log.debug('| Main Run');
+    $log.debug('|');
+    $log.debug('|');
+    if (!smGlobalValues.currentUser) {
+      $log.warn('no currentUser defined');
+
+    }
     /*
     *
     * this is where we need to ensure we have a valid smUserTag
@@ -174,10 +183,31 @@ Main.run([
     *
     * */
 
+    // check if there is a
+    if (!smGlobalValues.currentUser.smUserTag) {
+      // generate a user
+      smGlobalValues.currentUser.smUserTag = UserServices.createTaggedUser()
+        .then(function(response) {
+          $log.debug('User created');
+          // then set the jwt
+          // then store the jwt on the client
+          // then initialize the socket connection / authentication
+        });
+
+    }
+    else {
+      // update the user last visit
+      // then initialize the socket connection / authentication
+    }
 
 
-    socket.on('smRealTimeConnection', function(socketClientId) {
 
+    smSocket.on('smRealTimeConnection', function(socketClientId) {
+      $log.debug('|');
+      $log.debug('|');
+      $log.debug('| smRealTimeConnection');
+      $log.debug('|');
+      $log.debug('|');
       /*
       * NO COOKIE SUPPORT !!!
       *
@@ -186,6 +216,7 @@ Main.run([
         // track this issue
         $rootScope.trackRequest({action:'noCookieSupport', options:socketClientId});
 
+        $log.warn('Cookies do not appear to be  supported');
 
         // TODO set global values currentUser values
 
@@ -254,22 +285,6 @@ Main.run([
       * */
     });
 
-
-    function getUserSessionId() {
-
-    }
-    function getUserId() {
-      // check the cookie and return smUserId if found
-    }
-    function getUserEmail() {
-      // check the cookie and return smEmail if found
-
-    }
-    function getUserAppSessionId() {
-      // check the cookie and return smUserAppSessionId if found
-
-    }
-
     $rootScope.navRequest = function(state) {
       $rootScope.trackRequest({action:'navRequest', options:state});
       $state.go(state);
@@ -304,7 +319,7 @@ Main.run([
     };
     $rootScope.trackError = function(data) {
       if (data) {
-        data.sessionId = getUserSessionId();
+        data.sessionId = UserSessionService.getUserSessionId();
         data.userId = UserSessionService.getUserId();
         data.email = UserSessionService.getUserEmail();
         data.appSessionId = UserSessionService.getAppSessionId();

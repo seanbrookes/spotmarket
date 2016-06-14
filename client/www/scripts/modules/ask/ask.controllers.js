@@ -5,7 +5,6 @@ Ask.controller('AskMainController', [
   'ProductServices',
   function($scope, $log, $http, ProductServices) {
 
-    var socket = io.connect();
     $scope.askCtx = {};
     $scope.lotCtx = {currentLot:{}};
     function resetCurrentLot() {

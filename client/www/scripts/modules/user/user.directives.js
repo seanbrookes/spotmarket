@@ -40,14 +40,14 @@ User.directive('smUserContactInput', [
         '$log',
         'UserServices',
         'UserSessionService',
-        'socket',
+        'smSocket',
         'CommonServices',
 
-        function($scope, $log, UserServices, UserSessionService, socket, CommonServices ) {
+        function($scope, $log, UserServices, UserSessionService, smSocket, CommonServices ) {
 
-          socket.emit('fetchUserTag');
+          smSocket.emit('fetchUserTag');
 
-          socket.on('smUserTag', function(data) {
+          smSocket.on('smUserTag', function(data) {
             //$log.debug('|');
             //$log.debug('|');
             //$log.debug('|  userTag', data);
@@ -100,7 +100,7 @@ User.directive('smUserContactInput', [
               var emailToSubmit = $scope.contactCtx.email;
               if (UserServices.isValidEmail(emailToSubmit)) {
 
-                socket.emit('sendEmail', emailToSubmit);
+                smSocket.emit('sendEmail', emailToSubmit);
 
                 UserServices.saveUser({email:emailToSubmit})
                   .then(function(response) {
@@ -193,7 +193,7 @@ User.directive('ggtUserMoreInfoList', [
           if (!$scope.userCtx.allUsers) {
             $scope.userCtx.allUsers = [];
           }
-          socket.on('newMoreInfoSignUp', function(data) {
+          smSocket.on('newMoreInfoSignUp', function(data) {
             $log.debug('you hea', data);
             $scope.userCtx.allUsers = data;
 
