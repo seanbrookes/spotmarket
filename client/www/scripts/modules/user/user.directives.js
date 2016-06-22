@@ -149,7 +149,7 @@ User.directive('smUserContactInput', [
   }
 ]);
 
-User.directive('ggtUserRegistration', [
+User.directive('smUserRegistration', [
   function() {
     return {
       restrict: 'E',
@@ -158,19 +158,82 @@ User.directive('ggtUserRegistration', [
         '$scope',
         '$log',
         'UserServices',
-        'socket',
-        function($scope, $log, UserServices, socket) {
+        'smGlobalValues',
+        function($scope, $log, UserServices, smGlobalValues) {
           if (!$scope.registrationCtx) {
             $scope.registrationCtx = {};
           }
           $scope.registrationCtx.submitRegistration = function() {
 
             if ($scope.registrationCtx.email && $scope.registrationCtx.password && $scope.registrationCtx.confirmPassword) {
-              $log.debug('CREATE ACCOUNT: ', $scope.registrationCtx.email );
+
+              if ($scope.registrationCtx.password === $scope.registrationCtx.confirmPassword) {
+                var tempCurrentUser = smGlobalValues.currentUser;
+                if (smGlobalValues.currentUser && smGlobalValues.currentUser.smToken) {
+                  // register existing user
+                  $scope.registrationCtx.smToken = smGlobalValues.currentUser.smToken;
+                  UserServices.registerExistingUser({user:$scope.registrationCtx})
+                    .then(function(response) {
+                      $scope.registrationCtx = {
+                        registrationComplete: true
+                      };
+                    });
+                }
+                $log.debug('CREATE ACCOUNT: ', $scope.registrationCtx.email );
+
+              }
+              else {
+                $log.warn('validation error: passwords do not match');
+              }
             }
 
           };
-          $scope.$parent.trackViewInit('ggtUserRegistration');
+          $scope.$parent.trackViewInit('smUserRegistration');
+        }
+      ]
+    }
+  }
+]);
+User.directive('smUserLogin', [
+  function() {
+    return {
+      restrict: 'E',
+      templateUrl: './scripts/modules/user/templates/user.login.html',
+      controller: [
+        '$scope',
+        '$log',
+        'UserSessionService',
+        function($scope, $log, UserSessionService) {
+
+          $scope.loginCtx = {
+            isLoginActive:false
+          };
+          function resetLoginCtx() {
+            $scope.loginCtx = {
+              isLoginActive:false
+            };
+          }
+          $scope.submitLoginRequest =  function() {
+            $log.debug('submit login');
+            if ($scope.loginCtx.email && $scope.loginCtx.password ) {
+              UserSessionService.requestLoginToken($scope.loginCtx)
+                .then(function(response) {
+                  if (response.authToken) {
+                    // save the token
+                    UserSessionService.putValueByKey('smAuthToken', response.authToken);
+                    // clear the login
+                    resetLoginCtx();
+                    // redirect if necessary
+                  }
+                })
+            }
+
+          };
+          $scope.activateLogin = function() {
+            $scope.loginCtx.isLoginActive = true;
+          };
+
+
         }
       ]
     }
@@ -185,8 +248,7 @@ User.directive('ggtUserMoreInfoList', [
         '$scope',
         '$log',
         'UserServices',
-        'socket',
-        function($scope, $log, UserServices, socket) {
+        function($scope, $log, UserServices) {
           if (!$scope.userCtx) {
             $scope.userCtx = {};
           }

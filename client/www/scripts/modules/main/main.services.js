@@ -6,9 +6,9 @@ Main.factory('smRequestInterceptor', [
   'smGlobalConstants',
   function ($q, $location, $log, $cookies, smGlobalConstants) {
     //$log.debug('|');
-    //$log.debug('|');
-    //$log.debug('|  MAIN FACTORY - REQUEST INTERCEPTOR host:', $location.host());
-    //$log.debug('|');
+    $log.debug('|');
+    $log.debug('|  MAIN FACTORY - REQUEST INTERCEPTOR host:', $location.host());
+    $log.debug('|');
     //$log.debug('|');
     //$log.debug('|');
     //$log.debug('| REQUEST isLocal', isLocal($location.host()));
@@ -33,7 +33,7 @@ Main.factory('smRequestInterceptor', [
 
 
 
-        // $log.debug('HTTP request intercepted', config);
+         //$log.debug('HTTP request intercepted', config);
 
         //if (at) {
         //  if (isLocal(config.url, $location.host())) {

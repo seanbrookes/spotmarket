@@ -33,49 +33,49 @@
     "public": false
   },
   "tickerStream": {
-    "dataSource": "spotmarketapi",
+    "dataSource": "db",
     "public": true,
     "$promise": {},
     "$resolved": true
   },
   "userProfile": {
-    "dataSource": "spotmarketapi",
+    "dataSource": "db",
     "public": true,
     "$promise": {},
     "$resolved": true
   },
   "ask": {
-    "dataSource": "spotmarketapi",
+    "dataSource": "db",
     "public": true,
     "$promise": {},
     "$resolved": true
   },
   "bid": {
-    "dataSource": "spotmarketapi",
+    "dataSource": "db",
     "public": true,
     "$promise": {},
     "$resolved": true
   },
   "channel": {
-    "dataSource": "spotmarketapi",
+    "dataSource": "db",
     "public": true,
     "$promise": {},
     "$resolved": true
   },
   "productType": {
-    "dataSource": "spotmarketapi",
+    "dataSource": "db",
     "public": true,
     "$promise": {},
     "$resolved": true
   },
   "productSubType": {
-    "dataSource": "spotmarketapi",
+    "dataSource": "db",
     "public": true,
     "$promise": {},
     "$resolved": true
   },
   "track": {
-    "dataSource": "spotmarkettest",
+    "dataSource": "db",
     "public": true,
     "$promise": {},
     "$resolved": true

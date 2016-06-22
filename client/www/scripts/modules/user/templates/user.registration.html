@@ -1,24 +1,30 @@
 <div class="UserRegistration">
-  <h2>Sign up</h2>
-  <form class="UserRegistration__Form">
-    <div class="UserRegistration__FormField">
-      <label class="UserRegistration__Label UserRegistration__Label--Required">Email</label>
-      <input type="text" ng-model="registrationCtx.email" />
-    </div>
-    <div class="UserRegistration__FormField">
-      <label class="UserRegistration__Label UserRegistration__Label--Required">Password</label>
-      <input type="password" ng-model="registrationCtx.password" />
-    </div>
-    <div class="UserRegistration__FormField">
-      <label class="UserRegistration__Label UserRegistration__Label--Required">Confirm Password</label>
-      <input type="password" ng-model="registrationCtx.confirmPassword" />
-    </div>
-    <div class="UserRegistration__ButtonContainer Layout FlexEnd">
-      <sm-tracked-command action="registrationCtx.submitRegistration"
-                          class-name="Button--primary"
-                          label="Register">
-      </sm-tracked-command>
-    </div>
-  </form>
+  <div ng-hide="registrationCtx.registrationComplete" >
+    <h2>Sign up</h2>
+    <form class="UserRegistration__Form">
+      <div class="UserRegistration__FormField">
+        <label class="UserRegistration__Label UserRegistration__Label--Required">Email</label>
+        <input type="text" ng-model="registrationCtx.email" />
+      </div>
+      <div class="UserRegistration__FormField">
+        <label class="UserRegistration__Label UserRegistration__Label--Required">Password</label>
+        <input type="password" ng-model="registrationCtx.password" />
+      </div>
+      <div class="UserRegistration__FormField">
+        <label class="UserRegistration__Label UserRegistration__Label--Required">Confirm Password</label>
+        <input type="password" ng-model="registrationCtx.confirmPassword" />
+      </div>
+      <div class="UserRegistration__ButtonContainer Layout FlexEnd">
+        <sm-tracked-command action="registrationCtx.submitRegistration"
+                            class-name="Button--primary"
+                            label="Register">
+        </sm-tracked-command>
+      </div>
+    </form>
+
+  </div>
+  <div ng-show="registrationCtx.registrationComplete" >
+    <p>Thank you a link has been sent to your email address.  Click the link to complete the registration process</p>
+  </div>
 
 </div>

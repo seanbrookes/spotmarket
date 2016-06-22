@@ -142,11 +142,11 @@ Main.config([
 Main.config([
   '$httpProvider',
   function ($httpProvider) {
-    //console.log('|');
-    //console.log('|');
-    //console.log('|  MAIN CONFIG 2 $httpProvider.interceptors');
-    //console.log('|');
-    //console.log('|');
+    console.log('|');
+    console.log('|');
+    console.log('|  MAIN CONFIG 2 $httpProvider.interceptors');
+    console.log('|');
+    console.log('|');
 //http://www.webdeveasy.com/interceptors-in-angularjs-and-useful-examples/
     $httpProvider.interceptors.push('smRequestInterceptor');
   }
@@ -168,10 +168,63 @@ Main.run([
     $log.debug('| Main Run');
     $log.debug('|');
     $log.debug('|');
-    if (!smGlobalValues.currentUser) {
-      $log.warn('no currentUser defined');
+
+    if (!UserSessionService.isCookiesEnabled()) {
+      /*
+       * NO COOKIE SUPPORT !!!
+       *
+       * */
+      // track this issue
+      $rootScope.trackRequest({action:'noCookieSupport'});
+
+      $log.warn('Cookies do not appear to be  supported');
 
     }
+    // first thing to check:  do we have an smToken?
+    // if so then get the currentUserFromToken
+    // if no token then create initial user
+    var token = UserSessionService.getValueByKey('smToken');
+    if (!token) {
+      /*
+       *
+       * Register the user
+       *
+       * - make sure we have an id from the server
+       * - (what if we don't get an id)
+       * - check if user allows cookies
+       * - what if they don't
+       * - pass the userid to the user sesssion service
+       * - check if id already exists
+       * - if so, then leave it
+       * - if not then add to cookie
+       * - ensure userprofile created or updated
+       * - last visit / update visit count
+       *
+       * */
+      // generate initial user
+      smGlobalValues.currentUser = UserServices.createInitialUserProfile()
+        .then(function(initialUser) {
+          $log.debug('Initial User created');
+          if (initialUser && initialUser.smToken) {
+            smGlobalValues.currentUser = initialUser;
+            if (smGlobalValues.currentUser.smToken) {
+              UserSessionService.putValueByKey('smToken',smGlobalValues.currentUser.smToken);
+            }
+          }
+        });
+    }
+    else {
+      // get user based on the token
+      UserSessionService.getCurrentUserByToken(token)
+        .then(function(currentUserResponse) {
+          smGlobalValues.currentUser = currentUserResponse;
+          if (smGlobalValues.token) {
+            UserSessionService.putValueByKey('smToken',smGlobalValues.token);
+          }
+        });
+    }
+
+
     /*
     *
     * this is where we need to ensure we have a valid smUserTag
@@ -180,111 +233,21 @@ Main.run([
     * - smEmail
     * - smUserName
     * - smUserId
+    * - smToken
     *
     * */
 
-    // check if there is a
-    if (!smGlobalValues.currentUser.smUserTag) {
-      // generate a user
-      smGlobalValues.currentUser.smUserTag = UserServices.createTaggedUser()
-        .then(function(response) {
-          $log.debug('User created');
-          // then set the jwt
-          // then store the jwt on the client
-          // then initialize the socket connection / authentication
-        });
-
-    }
-    else {
-      // update the user last visit
-      // then initialize the socket connection / authentication
-    }
 
 
 
-    smSocket.on('smRealTimeConnection', function(socketClientId) {
-      $log.debug('|');
-      $log.debug('|');
-      $log.debug('| smRealTimeConnection');
-      $log.debug('|');
-      $log.debug('|');
-      /*
-      * NO COOKIE SUPPORT !!!
-      *
-      * */
-      if (!UserSessionService.isCookiesEnabled()) {
-        // track this issue
-        $rootScope.trackRequest({action:'noCookieSupport', options:socketClientId});
-
-        $log.warn('Cookies do not appear to be  supported');
-
-        // TODO set global values currentUser values
-
-        smGlobalValues.currentUser.smUserTag = socketClientId;
-
-        smGlobalValues.currentUser.smSessionId = socketClientId;
-
-        smGlobalValues.currentUser.smUserId = socketClientId;
-
-      }
 
 
 
-      else {
-        // make sure smUserTag has been set in the coookie.
-        // if not then set it
-
-        var currentUser = UserServices.getCurrentUser();
-
-        if (!currentUser.smUserTag) {
-          currentUser.smUserTag = socketClientId;
-          UserSessionService.putValueByKey('smUserTag', currentUser.smUserTag);
-        }
-        if (!currentUser.smSessionId) {
-          currentUser.smSessionId = socketClientId;
-          UserSessionService.putValueByKey('smSessionId', currentUser.smSessionId);
-        }
-        if (!currentUser.smUserId) {
-          currentUser.smUserId = socketClientId;
-          UserSessionService.putValueByKey('smUserId', currentUser.smSessionId);
-        }
-        else {
-          // the user has a preset smUserId
-          // we need to 'inflate' the user profile from the server
-          UserSessionService.getUserSessionProfileById(currentUser.smUserId)
-            .then(function(response) {
-              if (response && response.length && response.length > 0) {
-                $log.debug('we have a pre existing user');
-              }
-              else {
-                $log.debug('we do not have a pre existing user');
-                $log.debug('we should create one with this id: ', currentUser.smUserId);
-                // we should create one
-              }
-
-          });
-        }
-        $log.debug('|   currentUser.smUserId', currentUser.smUserId);
-      }
-
-      /*
-      *
-      * Register the user
-      *
-      * - make sure we have an id from the server
-      * - (what if we don't get an id)
-      * - check if user allows cookies
-      * - what if they don't
-      * - pass the userid to the user sesssion service
-      * - check if id already exists
-      * - if so, then leave it
-      * - if not then add to cookie
-      * - ensure userprofile created or updated
-      * - last visit / update visit count
-      *
-      * */
-    });
-
+    /*
+    *
+    * Global Methods
+    *
+    * */
     $rootScope.navRequest = function(state) {
       $rootScope.trackRequest({action:'navRequest', options:state});
       $state.go(state);
@@ -306,6 +269,9 @@ Main.run([
 
         //      {sessionId:'xyasdfaklsdjfasfdlkj5233524-234234lsdfsdfs',actionMethod:actionMethod, actionData:action.toString(),  userId: 'r4rrwr-wrwer--wesdfsdfs-sdvdfwer-wers', userName:'centrinoblue', email:'sean@greengrowtech.ca'}
 
+        if (!data.meta) {
+          data.meta = smGlobalValues.currentUser;
+        }
         Track.addTrack({track:data})
           .$promise
           .then(function(response) {

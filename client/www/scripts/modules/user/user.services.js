@@ -2,20 +2,22 @@ User.service('UserServices', [
   'UserProfile',
   'smGlobalValues',
   'UserSessionService',
-  function(UserProfile, smGlobalValues, UserSessionService) {
+  '$log',
+  function(UserProfile, smGlobalValues, UserSessionService, $log) {
     var svc = this;
 
-    svc.getCurrentUser = function() {
-      smGlobalValues.currentUser.smUserTag = UserSessionService.getValueByKey('smUserTag');
-      smGlobalValues.currentUser.smSessionId = UserSessionService.getValueByKey('smSessionId');
-      smGlobalValues.currentUser.smUserId = UserSessionService.getValueByKey('smUserId');
-      smGlobalValues.currentUser.smEmail = UserSessionService.getValueByKey('smEmail');
-      smGlobalValues.currentUser.smAuthToken = UserSessionService.getValueByKey('smAuthToken');
-      smGlobalValues.currentUser.smTTL = UserSessionService.getValueByKey('smTTL');
-      smGlobalValues.currentUser.isCurrentUserLoggedIn = UserSessionService.getValueByKey('isCurrentUserLoggedIn');
 
-      return smGlobalValues.currentUser;
+    svc.registerExistingUser = function(userCtx) {
+      return UserProfile.registerExistingUser(userCtx)
+        .$promise
+        .then(function(registrationResponse) {
+          $log.debug('good register existing user', registrationResponse);
+          return registrationResponse;
 
+        })
+        .catch(function(error) {
+          $log.warn('bad register existing user', error);
+        });
     };
     svc.saveUser = function(user) {
       if (!user.createdDate) {
@@ -79,14 +81,20 @@ User.service('UserServices', [
           return response || [];
         });
     };
-    svc.createTaggedUser = function() {
+    svc.createInitialUserProfile = function() {
       return UserProfile.create({})
         .$promise
-        .then(function(response) {
-          return response || [];
+        .then(function(currentUserResponse) {
+          if (currentUserResponse.token) {
+
+            UserSessionService.putValueByKey('smToken', currentUserResponse.token);
+
+            return UserSessionService.getCurrentUserFromClientState();
+          }
         })
         .catch(function(error) {
           $log.warn('bad create tagged user', error);
+          return {};
         });
     };
 
@@ -97,7 +105,8 @@ User.service('UserSessionService', [
   'UserProfile',
   '$cookies',
   '$log',
-  function(UserProfile, $cookies, $log) {
+  '$timeout',
+  function(UserProfile, $cookies, $log, $timeout) {
 
     var svc = this;
     var userName = '';
@@ -148,6 +157,50 @@ User.service('UserSessionService', [
     svc.getUserId = function() {
       userId = $cookies.get('smUserId');
       return userId;
+    };
+    svc.setUserTag = function(userTag) {
+      if (svc.isCookiesEnabled()) {
+        $cookies.put('smUserTag', userTag);
+        return true;
+      }
+      return false;
+
+    };
+    svc.setToken = function(token) {
+      if (svc.isCookiesEnabled()) {
+        $cookies.put('smToken', token);
+        return true;
+      }
+      return false;
+    };
+    svc.setAuthToken = function(authToken) {
+      if (svc.isCookiesEnabled()) {
+        $cookies.put('smAuthToken', authToken);
+        return true;
+      }
+      return false;
+    };
+    svc.getCurrentUserTag = function() {
+      var userTag;
+      if (svc.isCookiesEnabled() && $cookies.get('smUserTag')) {
+        userTag = $cookies.get('smUserTag');
+      }
+      return userTag;
+    };
+
+    svc.getCurrentToken = function() {
+      var token;
+      if (svc.isCookiesEnabled() && $cookies.get('smToken')) {
+        token = $cookies.get('smToken');
+      }
+      return token;
+    };
+    svc.getCurrentAuthToken = function() {
+      var authToken;
+      if (svc.isCookiesEnabled() && $cookies.get('smAuthToken')) {
+        authToken = $cookies.get('smAuthToken');
+      }
+      return authToken;
     };
     svc.clearUserId = function() {
       userId = '';
@@ -214,13 +267,44 @@ User.service('UserSessionService', [
       }
       return false;
     };
+    svc.requestLoginToken = function(loginCtx) {
+      if (loginCtx.email && loginCtx.password) {
+        loginCtx.smToken = svc.getCurrentToken();
+        return UserProfile.login({ctx:loginCtx})
+          .$promise
+          .then(function(response) {
+            return response.token;
+          })
+          .catch(function(error){
+            $log.warn('bad login attempt');
+            return null;
+          });
+      }
+    }
+    svc.getCurrentUserFromClientState = function() {
+      var user = {};
+      user.smUserTag = svc.getValueByKey('smUserTag');
+      user.smSessionId = svc.getValueByKey('smSessionId');
+      user.smUserId = svc.getValueByKey('smUserId');
+      user.smToken = svc.getValueByKey('smToken');
+      user.smEmail = svc.getValueByKey('smEmail');
+      user.smUserName = svc.getValueByKey('smUserName');
+      user.smAuthToken = svc.getValueByKey('smAuthToken');
+      user.smTTL = svc.getValueByKey('smTTL');
+      user.isCurrentUserLoggedIn = svc.getValueByKey('isCurrentUserLoggedIn');
+
+      return user;
+
+    };
     svc.getUserSessionProfileById = function(id) {
       return UserProfile.find({userId: id})
         .$promise
         .then(function(response) {
           if (response && response.length && response.length > 0) {
 
-            return response[0];
+            var returnUser = response[0];
+            var clientStateUser = svc.getCurrentUserFromClientState();
+            return angular.extend(returnUser, clientStateUser);
           }
           else {
             return null;
@@ -230,7 +314,39 @@ User.service('UserSessionService', [
           $log.warn('bad get user profile', error);
         })
     };
+    svc.getCurrentUserByToken = function() {
+      var currentToken = svc.getCurrentToken();
+      if (currentToken) {
+        return UserProfile.findByToken({token: svc.getCurrentToken()})
+          .$promise
+          .then(function(response) {
+            if (response.user && response.user.length && response.user.length > 0) {
 
+              $log.debug('Response current User request', response.user[0]);
+              var returnUser = response.user[0];
+              var clientStateUser = svc.getCurrentUserFromClientState();
+              return angular.extend(returnUser, clientStateUser);
+            }
+            else {
+              return null;
+            }
+          })
+          .catch(function(error) {
+            $log.warn('bad get user by token', error);
+          });
+
+      }
+      else {
+        $log.warn(' no current token found on client');
+        $timeout(function() {
+          return;
+
+        }, 25);
+
+      }
+
+
+    };
     return svc;
 
   }

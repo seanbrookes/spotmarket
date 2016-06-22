@@ -3,12 +3,6 @@
     "name": "db",
     "connector": "memory"
   },
-  "spotmarketapi": {
-    "url": "mongodb://heroku_tvj0n8j9:v588pdcr8s67gir21p4bo1s9ou@ds059125.mlab.com:59125/heroku_tvj0n8j9",
-    "database": "spotmarketapi",
-    "name": "spotmarketapi",
-    "connector": "mongodb"
-  },
   "spotmarkettest": {
     "host": "localhost",
     "port": 27017,
