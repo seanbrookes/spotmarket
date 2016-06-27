@@ -2,8 +2,9 @@ User.service('UserServices', [
   'UserProfile',
   'smGlobalValues',
   'UserSessionService',
+  'UserLocation',
   '$log',
-  function(UserProfile, smGlobalValues, UserSessionService, $log) {
+  function(UserProfile, smGlobalValues, UserSessionService, UserLocation, $log) {
     var svc = this;
 
 
@@ -18,6 +19,48 @@ User.service('UserServices', [
         .catch(function(error) {
           $log.warn('bad register existing user', error);
         });
+    };
+    svc.updateCurrentUserPosition = function(position) {
+      if (position && position.geometry) {
+        var userId = UserSessionService.getValueByKey('smUserTag');
+        UserSessionService.getUserProfileById(userId)
+          .then(function(responseUser) {
+            responseUser.lastPosition = position;
+            svc.saveUser(responseUser)
+              .then(function(responseUpdatedUser) {
+                UserSessionService.putValueByKey('smCurrentPosition', JSON.stringify(position));
+                return responseUpdatedUser;
+              })
+              .catch(function(error) {
+                $log.warn('bad update user latest position', error);
+              });
+            var timestamp = new Date().getTime();
+            var newLocation = {
+              userId: responseUser.id,
+              location: position,
+              timestamp:timestamp
+            };
+            UserLocation.create(newLocation)
+              .$promise
+              .then(function(resopnseLocation) {
+                $log.debug('ADDED NEW POSITION HISTORY');
+              })
+              .catch(function(error) {
+                $log.warn('bad add new location');
+              });
+            //svc.saveUser(responseUser)
+            //  .then(function(responseUpdatedUser) {
+            //    return responseUpdatedUser;
+            //  })
+            //  .catch(function(error) {
+            //    $log.warn('bad update user latest position', error);
+            //  });
+          })
+          .catch(function(error) {
+            $log.warn('bad get user profile', error);
+          });
+
+      }
     };
     svc.saveUser = function(user) {
       if (!user.createdDate) {
@@ -290,13 +333,14 @@ User.service('UserSessionService', [
       user.smEmail = svc.getValueByKey('smEmail');
       user.smUserName = svc.getValueByKey('smUserName');
       user.smAuthToken = svc.getValueByKey('smAuthToken');
+      user.smCurrentPosition = svc.getValueByKey('smCurrentPosition');
       user.smTTL = svc.getValueByKey('smTTL');
       user.isCurrentUserLoggedIn = svc.getValueByKey('isCurrentUserLoggedIn');
 
       return user;
 
     };
-    svc.getUserSessionProfileById = function(id) {
+    svc.getUserProfileById = function(id) {
       return UserProfile.find({userId: id})
         .$promise
         .then(function(response) {

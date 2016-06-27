@@ -149,6 +149,9 @@ body {
 [data-id="AppContainer"] {
   background-color: #ffffff;
 }
+.Title__TagImage {
+  height: 3.6rem;
+}
 .PageHeader {
   padding-bottom: 9px;
   justify-content: flex-start;
@@ -163,7 +166,7 @@ body {
   align-content: center;
 }
 .PageHeader .Branding .logo {
-  height: 5.6rem;
+  height: 3.2rem;
 }
 .PageHeader .Title h1 {
   text-transform: uppercase;

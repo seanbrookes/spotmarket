@@ -54,6 +54,39 @@ Main.factory('smRequestInterceptor', [
     };
   }
 ]);
+Main.factory('smGeolocationService', [
+  '$q',
+  '$log',
+  '$window',
+  function ($q, $log, $window) {
+
+  'use strict';
+
+  function getCurrentPosition() {
+    var deferred = $q.defer();
+
+    if (!$window.navigator.geolocation) {
+      // TODO track this
+      $log.warn('Geolocation not support in user agent');
+      deferred.reject('Geolocation not supported.');
+    }
+    else {
+      $window.navigator.geolocation.getCurrentPosition(
+        function (position) {
+          deferred.resolve(position);
+        },
+        function (err) {
+          deferred.reject(err);
+        });
+    }
+
+    return deferred.promise;
+  }
+
+  return {
+    getCurrentPosition: getCurrentPosition
+  };
+}]);
 Main.factory('smSocket',[
   '$rootScope',
   '$log',
