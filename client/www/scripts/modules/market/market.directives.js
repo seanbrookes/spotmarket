@@ -1,3 +1,75 @@
+Market.directive('smMarketAskView', [
+  function() {
+    return {
+      restrict:'E',
+      templateUrl: './scripts/modules/market/templates/market.ask.view.html',
+      controller: [
+        '$scope',
+        '$log',
+        'Ask',
+        'UserMarket',
+        'UserSessionService',
+        function($scope, $log, Ask, UserMarket, UserSessionService) {
+          /*
+           *
+           * In this view we render a collection of asks from within a
+           * certain geographical space
+           *
+           * first basic way to do this is give a point and max distance to
+           * query within 'sphere'
+           *
+           *
+           * */
+          $log.debug('Market Ask View');
+          $scope.marketRange = 220000;
+
+
+
+
+
+
+          $scope.updateMarketRange = function() {
+
+            var currentUser = UserSessionService.getCurrentUserFromClientState();
+
+
+            var currentPosition = JSON.parse(currentUser.smCurrentPosition);
+
+            var filter = {
+
+              position: {
+                near:{
+                  lng:currentPosition.geometry.coordinates[0],
+                  lat:currentPosition.geometry.coordinates[1]
+                },
+                maxDistance:$scope.marketRange,
+                unit: 'meters'
+              }
+
+
+            };
+
+            UserMarket.createUserMarket({filter:filter})
+              .$promise
+              .then(function(response) {
+                $log.debug('Market Asks', response);
+                $scope.marketAsks = response.data;
+              })
+              .catch(function(error) {
+                $log.warn('bad get asks', error);
+              });
+
+          };
+
+
+          $scope.updateMarketRange();
+
+
+        }
+      ]
+    }
+  }
+]);
 Market.directive('smMarketGeoView', [
   function() {
     return {
@@ -61,7 +133,7 @@ Market.directive('smMarketGeoView', [
                         "type": "Feature",
                         "geometry": {
                           "type": "Point",
-                          "coordinates": [location.coords.longitude, location.coords.latitude]
+                          "coordinates": [parseFloat(location.coords.longitude), parseFloat(location.coords.latitude)]
                         },
                         "properties": {
                           "name": reverseLookupResponse.display_name
@@ -84,10 +156,9 @@ Market.directive('smMarketGeoView', [
               });
           };
 
-
           $scope.selectThisPosition = function(position) {
             if (position.geometry && position.geometry.coordinates) {
-              updateMapCenter(geoX.geometry.coordinates[1], geoX.geometry.coordinates[0]);
+              updateMapCenter(position.geometry.coordinates[1], position.geometry.coordinates[0]);
               $scope.geoCtx.position = position;
               $scope.geoCtx.positionChoiceList = [];
               UserSessionService.putValueByKey('smCurrentPosition', JSON.stringify($scope.geoCtx.position));
@@ -101,7 +172,7 @@ Market.directive('smMarketGeoView', [
                     "type": "Feature",
                     "geometry": {
                       "type": "Point",
-                      "coordinates": [position.lon, position.lat]
+                      "coordinates": [parseFloat(position.lon), parseFloat(position.lat)]
                     },
                     "properties": {
                       "name": reverseLookupResponse.display_name
@@ -127,7 +198,7 @@ Market.directive('smMarketGeoView', [
                   "type": "Feature",
                   "geometry": {
                     "type": "Point",
-                    "coordinates": [location.lon, location.lat]
+                    "coordinates": [parseFloat(location.lon), parseFloat(location.lat)]
                   },
                   "properties": {
                     "name": location.display_name
@@ -152,7 +223,7 @@ Market.directive('smMarketGeoView', [
                         "type": "Feature",
                         "geometry": {
                           "type": "Point",
-                          "coordinates": [locations[0].lon, locations[0].lat]
+                          "coordinates": [parseFloat(locations[0].lon), parseFloat(locations[0].lat)]
                         },
                         "properties": {
                           "name": locations[0].display_name
@@ -175,14 +246,18 @@ Market.directive('smMarketGeoView', [
                 });
 
             }
-          }
+          };
           $scope.init = function() {
             // check for current postion
             var tempCurrentUser = UserSessionService.getCurrentUserFromClientState();
-            tempCurrentUser.smCurrentPosition = JSON.parse(tempCurrentUser.smCurrentPosition);
             if (tempCurrentUser.smCurrentPosition) {
+              tempCurrentUser.smCurrentPosition = JSON.parse(tempCurrentUser.smCurrentPosition);
               $scope.geoCtx.position = tempCurrentUser.smCurrentPosition;
               updateMapCenter(tempCurrentUser.smCurrentPosition.geometry.coordinates[1], tempCurrentUser.smCurrentPosition.geometry.coordinates[0]);
+
+              // get all products near you
+
+
 
             }
           }();
@@ -271,3 +346,6 @@ Market.directive('smMarketMain', [
     }
   }
 ]);
+
+
+

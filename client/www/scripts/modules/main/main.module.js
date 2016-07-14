@@ -41,7 +41,7 @@ Main.constant('ACTION_CONST', {
 Main.constant('smGlobalConstants', {
   isLocal: false,
   productionUrlBase:'//spotmarketapi.herokuapp.com/api/',
-  localUrlBase: '//localhost:4546/api/',
+  localUrlBase: '//localhost:4546/api',
   productionSocketBase:'//spotmarketapi.herokuapp.com/',
   localSocketBase: '//localhost:4546/'
 });

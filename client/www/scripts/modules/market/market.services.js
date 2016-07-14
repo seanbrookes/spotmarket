@@ -19,6 +19,14 @@ Market.service('MarketServices', [
 
     };
 
+    svc.getLocalMarketData = function(position) {
+
+      // determine if it is a point or a polygon
+      // if point we need a range in meters
+      // query for asks relative to the position
+
+    };
+
     return svc;
   }
 ]);

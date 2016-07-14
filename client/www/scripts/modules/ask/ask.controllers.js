@@ -3,7 +3,9 @@ Ask.controller('AskMainController', [
   '$log',
   '$http',
   'ProductServices',
-  function($scope, $log, $http, ProductServices) {
+  'UserSessionService',
+  'AskServices',
+  function($scope, $log, $http, ProductServices, UserSessionService, AskServices) {
 
     $scope.askCtx = {};
     $scope.lotCtx = {currentLot:{}};
@@ -138,6 +140,28 @@ Ask.controller('AskMainController', [
     };
     $scope.askCtx.clearCurrentAsk = function() {
       initializeCurrentAsk();
+    };
+
+    $scope.saveAsk = function() {
+      if ($scope.askCtx.currentAsk.productType) {
+        var tempCurrentUser = UserSessionService.getCurrentUserFromClientState();
+        var tempPos = JSON.parse(tempCurrentUser.smCurrentPosition);
+        var tLon = parseFloat(tempPos.geometry.coordinates[0]);
+        var tLat = parseFloat(tempPos.geometry.coordinates[1]);
+
+        tempPos.geometry.coordinates[0] = tLon;
+        tempPos.geometry.coordinates[1] = tLat;
+        $scope.askCtx.currentAsk.geopoint = {
+          'lng': tLon,
+          'lat': tLat
+        };
+
+        $scope.askCtx.currentAsk.position = tempPos.geometry;
+        AskServices.saveAsk($scope.askCtx.currentAsk)
+          .then(function(response) {
+            $log.debug('Ask Saved')
+          });
+      }
     };
     initializeCurrentAsk();
   }

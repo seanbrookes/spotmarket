@@ -188,6 +188,9 @@ body {
 .PageHeader .GlobalNav ul li {
   display: inline-block;
 }
+.MainContentContainer {
+  padding: 1.5rem;
+}
 .ContactInput {
   margin-top: 4rem;
   max-width: 70rem;
