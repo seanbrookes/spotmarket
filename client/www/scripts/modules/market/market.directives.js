@@ -1,15 +1,20 @@
 Market.directive('smMarketAskView', [
-  function() {
+  '$log',
+  function($log) {
     return {
       restrict:'E',
       templateUrl: './scripts/modules/market/templates/market.ask.view.html',
       controller: [
         '$scope',
-        '$log',
         'Ask',
         'UserMarket',
         'UserSessionService',
-        function($scope, $log, Ask, UserMarket, UserSessionService) {
+        'leafletBoundsHelpers',
+        'leafletData',
+        'GeoServices',
+        'GEO_CONST',
+        '$timeout',
+        function($scope, Ask, UserMarket, UserSessionService, leafletBoundsHelpers, leafletData, GeoServices, GEO_CONST, $timeout) {
           /*
            *
            * In this view we render a collection of asks from within a
@@ -21,14 +26,28 @@ Market.directive('smMarketAskView', [
            *
            * */
           $log.debug('Market Ask View');
-          $scope.marketRange = 220000;
+          $scope.marketRange = 2200;
+          $scope.marketRangeKms = 2;
 
 
+          var bBox;
 
+          var lats = [];
+          var lngs = [];
+          $scope.mapCenter = {
+            lat:49.1501186,
+              lng:-122.2577094
+          };
 
+          $scope.bounds = [];
 
+          $scope.userMarketCtx = {
+            mapCenter: {}
+          };
 
           $scope.updateMarketRange = function() {
+            lats = [];
+            lngs = [];
 
             var currentUser = UserSessionService.getCurrentUserFromClientState();
 
@@ -42,18 +61,107 @@ Market.directive('smMarketAskView', [
                   lng:currentPosition.geometry.coordinates[0],
                   lat:currentPosition.geometry.coordinates[1]
                 },
-                maxDistance:$scope.marketRange,
+                maxDistance:($scope.marketRangeKms * 1000),
                 unit: 'meters'
               }
 
 
             };
 
+            /*
+            *
+            * Assemble the data to generate a personalized market view
+            * - location
+            * - range (geo fence geometry layer)
+            * - filters
+            * - display options
+            * - dashboard configurations
+            *
+            *
+            * get a list of coordinates (plus metadata)
+            * present it to the user
+            * - map
+            * - sortable list
+            *
+            * make it easy for the user to further personalize
+            * the display and dashboard configurations
+            *
+            *
+            * */
             UserMarket.createUserMarket({filter:filter})
               .$promise
               .then(function(response) {
                 $log.debug('Market Asks', response);
-                $scope.marketAsks = response.data;
+                var returnCollection = response.data;
+                var collectionCoords = [];
+                var mapViewCoordsCollection = [];
+
+                leafletData.getMap('UserMarketMain')
+                  .then(function(mainUserMarketMap) {
+                    $log.info(mainUserMarketMap);
+
+
+
+
+
+                    returnCollection.map(function(mapItem) {
+                      mapItem.position.lat = mapItem.position.coordinates[1];
+                      mapItem.position.lng = mapItem.position.coordinates[0];
+                      lats.push(mapItem.position.lat);
+                      lngs.push(mapItem.position.lng);
+                      collectionCoords.push([mapItem.position.lat, mapItem.position.lng]);
+                      mapViewCoordsCollection.push([L.latLng(mapItem.position.lat, mapItem.position.lng)]);
+                    });
+
+                    // sort damn coordinates to find the two corners of the box
+                    // I must be missing something b/c this should be automated
+                    var northWest = GeoServices.getBoundingCoordinateByName(GEO_CONST.NW_COORDINATE, collectionCoords);
+                    var northEast = GeoServices.getBoundingCoordinateByName(GEO_CONST.NE_COORDINATE, collectionCoords);
+                    var southWest = GeoServices.getBoundingCoordinateByName(GEO_CONST.SW_COORDINATE, collectionCoords);
+                    var southEast = GeoServices.getBoundingCoordinateByName(GEO_CONST.SE_COORDINATE, collectionCoords);
+
+
+                    var minLat = Math.min.apply(null, lats),
+                      maxLat = Math.max.apply(null, lats);
+                    var minLng = Math.min.apply(null, lngs),
+                      maxLng = Math.max.apply(null, lngs);
+
+                    northWest = [maxLat, minLng];
+                    northEast = [maxLat, maxLng];
+                    southWest = [minLat, minLng];
+                    southEast = [minLat, maxLng];
+
+                    // var bounds = [[minlat,minlng],[maxlat,maxlng]];
+
+                    var bounds = leafletBoundsHelpers.createBoundsFromArray([northEast, southWest]);
+                    var resetBounds = leafletBoundsHelpers.createBoundsFromArray([northEast, northEast]);
+
+                    angular.extend($scope, {
+                      bounds: resetBounds,
+                      center: {}
+                    });
+                    $timeout(function() {
+                      angular.extend($scope, {
+                        bounds: bounds,
+                        center: {}
+                      });
+
+                    }, 400);
+                    //$scope.bounds = bounds;
+                    //$scope.center = center;
+
+                    $scope.marketAsks = returnCollection;
+
+
+
+
+                  })
+                  .catch(function(error) {
+                    $log.warn('bad get main user market map', error);
+                  });
+
+
+
               })
               .catch(function(error) {
                 $log.warn('bad get asks', error);
@@ -66,7 +174,12 @@ Market.directive('smMarketAskView', [
 
 
         }
-      ]
+      ],
+      link: function(scope, el, attrs) {
+        scope.$watch('marketRangeKms', function(newVal, oldVal) {
+          $log.debug('marketRangeKms', newVal);
+        }, true);
+      }
     }
   }
 ]);

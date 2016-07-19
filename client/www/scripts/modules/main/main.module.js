@@ -38,6 +38,7 @@ Main.constant('ACTION_CONST', {
 });
 
 
+
 Main.constant('smGlobalConstants', {
   isLocal: false,
   productionUrlBase:'//spotmarketapi.herokuapp.com/api/',

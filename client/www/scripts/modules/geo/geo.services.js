@@ -3,7 +3,8 @@ Geo.service('GeoServices', [
   '$log',
   '$q',
   '$window',
-  function($http, $log, $q, $window) {
+  'GEO_CONST',
+  function($http, $log, $q, $window, GEO_CONST) {
     var svc = this;
 
 
@@ -21,6 +22,33 @@ Geo.service('GeoServices', [
         });
 
 
+    };
+    svc.getBoundingCoordinateByName = function(pointName, coordsCollection) {
+
+      var coordinatesSortedByLatitude = coordsCollection.map(function(collectionItem) {
+        var internalLat = collectionItem[0];
+        var internalLon = collectionItem[1];
+      });
+
+
+      switch(pointName) {
+        case GEO_CONST.NW_COORDINATE:
+
+          break;
+        case GEO_CONST.NE_COORDINATE:
+
+          break;
+
+        case GEO_CONST.SW_COORDINATE:
+
+          break;
+        case GEO_CONST.SE_COORDINATE:
+
+          break;
+
+        default:
+
+      }
     };
     svc.reverseLookup = function(lat, lon) {
       if (lat && lon) {
