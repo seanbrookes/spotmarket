@@ -1,14 +1,17 @@
 <div>
-  this is where market list goes
-  What is your range in kilometers?
-  <input type="text" ng-model="marketRangeKms" />
+  <h2>What is for sale within</h2>
+  <input type="text" ng-model="marketRangeKms" />kms?
+  <br />
   <button ng-click="updateMarketRange()">update range</button>
-  <div class="Layout">
+  <div>
+    <h3>The following is for sale</h3>
     <ul>
       <li ng-repeat="ask in marketAsks">{{ask.productType}} - {{ask.position.lat}}:{{ask.position.lng}}</li>
     </ul>
     <div id="MarketMap">
-      <leaflet  id="UserMarketMain" bounds="bounds" center="userMarketCtx.mapCenter" height="500px" width="500px"></leaflet>
+      <div id="UserMarketMap" class="UserMarketMap--Main"></div>
+      <!--<leaflet id="UserMarketMain" layers="layers" markers="markers" center="center" bounds="bounds" height="500px" width="500px"></leaflet>-->
+      <!--<leaflet ng-show="!hasResults" id="UserMarketCentered" markers="markers" center="center" height="500px" width="500px"></leaflet>-->
     </div>
 
   </div>

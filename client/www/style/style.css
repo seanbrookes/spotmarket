@@ -299,3 +299,7 @@ body {
   flex-direction: row;
   justify-content: center;
 }
+.UserMarketMap--Main {
+  height: 40rem;
+  width: 40rem;
+}

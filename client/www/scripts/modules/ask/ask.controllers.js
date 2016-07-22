@@ -32,13 +32,12 @@ Ask.controller('AskMainController', [
       title: 'Lot size metric'
     };
 
-
-
     function initializeCurrentAsk() {
       $scope.askCtx.currentAsk = {
+        productTypeName: 'Beer Hops',
         productType: '',
         productSubType: '',
-        headline: 'I am selling: ',
+        headline: '',
         lotPrices: []
       };
     }
@@ -85,7 +84,7 @@ Ask.controller('AskMainController', [
     };
     $scope.askCtx.setCurrentProductSubType = function(productSubType) {
       $scope.askCtx.currentAsk.productSubType = productSubType.name;
-      $scope.askCtx.currentAsk.headline = 'I am selling: ' + $scope.askCtx.currentAsk.productType;
+      $scope.askCtx.currentAsk.headline = $scope.askCtx.currentAsk.productType;
       if ($scope.askCtx.currentAsk.productSubType) {
         $scope.askCtx.currentAsk.headline += ' variety: ' +  $scope.askCtx.currentAsk.productSubType
       }

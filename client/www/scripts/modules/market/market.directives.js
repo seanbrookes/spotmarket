@@ -27,7 +27,12 @@ Market.directive('smMarketAskView', [
            * */
           $log.debug('Market Ask View');
           $scope.marketRange = 2200;
-          $scope.marketRangeKms = 2;
+          $scope.marketRangeKms = 160;
+          $scope.layers;
+          $scope.userMarketMap;
+          $scope.toggleMapLoad = false;
+          $scope.markersCollection = [];
+
 
 
           var bBox;
@@ -38,8 +43,10 @@ Market.directive('smMarketAskView', [
             lat:49.1501186,
               lng:-122.2577094
           };
-
           $scope.bounds = [];
+          $scope.resetBounds = [];
+          $scope.markers = {};
+          $scope.center = {};
 
           $scope.userMarketCtx = {
             mapCenter: {}
@@ -95,70 +102,191 @@ Market.directive('smMarketAskView', [
                 var returnCollection = response.data;
                 var collectionCoords = [];
                 var mapViewCoordsCollection = [];
+                $scope.bounds = [];
+                $scope.resetBounds = [];
+                $scope.markers = {};
+                $scope.center = {};
+                $scope.layers = {};
 
-                leafletData.getMap('UserMarketMain')
-                  .then(function(mainUserMarketMap) {
-                    $log.info(mainUserMarketMap);
+                returnCollection.map(function(mapItem) {
+                  mapItem.position.lat = mapItem.position.coordinates[1];
+                  mapItem.position.lng = mapItem.position.coordinates[0];
+                  lats.push(mapItem.position.lat);
+                  lngs.push(mapItem.position.lng);
 
+                  collectionCoords.push([mapItem.position.lat, mapItem.position.lng]);
+                  mapViewCoordsCollection.push([L.latLng(mapItem.position.lat, mapItem.position.lng)]);
 
+                  /*
+                   *
+                   * marker initializations
+                   *
+                   * */
+                  //var marker = L.marker([mapItem.position.lat, mapItem.position.lng])
+                  //  .addTo(mainUserMarketMap);
 
-
-
-                    returnCollection.map(function(mapItem) {
-                      mapItem.position.lat = mapItem.position.coordinates[1];
-                      mapItem.position.lng = mapItem.position.coordinates[0];
-                      lats.push(mapItem.position.lat);
-                      lngs.push(mapItem.position.lng);
-                      collectionCoords.push([mapItem.position.lat, mapItem.position.lng]);
-                      mapViewCoordsCollection.push([L.latLng(mapItem.position.lat, mapItem.position.lng)]);
-                    });
-
-                    // sort damn coordinates to find the two corners of the box
-                    // I must be missing something b/c this should be automated
-                    var northWest = GeoServices.getBoundingCoordinateByName(GEO_CONST.NW_COORDINATE, collectionCoords);
-                    var northEast = GeoServices.getBoundingCoordinateByName(GEO_CONST.NE_COORDINATE, collectionCoords);
-                    var southWest = GeoServices.getBoundingCoordinateByName(GEO_CONST.SW_COORDINATE, collectionCoords);
-                    var southEast = GeoServices.getBoundingCoordinateByName(GEO_CONST.SE_COORDINATE, collectionCoords);
-
-
-                    var minLat = Math.min.apply(null, lats),
-                      maxLat = Math.max.apply(null, lats);
-                    var minLng = Math.min.apply(null, lngs),
-                      maxLng = Math.max.apply(null, lngs);
-
-                    northWest = [maxLat, minLng];
-                    northEast = [maxLat, maxLng];
-                    southWest = [minLat, minLng];
-                    southEast = [minLat, maxLng];
-
-                    // var bounds = [[minlat,minlng],[maxlat,maxlng]];
-
-                    var bounds = leafletBoundsHelpers.createBoundsFromArray([northEast, southWest]);
-                    var resetBounds = leafletBoundsHelpers.createBoundsFromArray([northEast, northEast]);
-
-                    angular.extend($scope, {
-                      bounds: resetBounds,
-                      center: {}
-                    });
-                    $timeout(function() {
-                      angular.extend($scope, {
-                        bounds: bounds,
-                        center: {}
-                      });
-
-                    }, 400);
-                    //$scope.bounds = bounds;
-                    //$scope.center = center;
-
-                    $scope.marketAsks = returnCollection;
-
-
-
-
-                  })
-                  .catch(function(error) {
-                    $log.warn('bad get main user market map', error);
+                  $scope.markers[mapItem.id] = {
+                    lat: mapItem.position.lat,
+                    lng: mapItem.position.lng
+                  };
+                  $scope.markersCollection.push( {
+                    lat: mapItem.position.lat,
+                    lng: mapItem.position.lng
                   });
+
+
+                });
+
+                if (lats && lngs) {
+                  // sort damn coordinates to find the two corners of the box
+                  // I must be missing something b/c this should be automated
+                  var northWest = GeoServices.getBoundingCoordinateByName(GEO_CONST.NW_COORDINATE, collectionCoords);
+                  var northEast = GeoServices.getBoundingCoordinateByName(GEO_CONST.NE_COORDINATE, collectionCoords);
+                  var southWest = GeoServices.getBoundingCoordinateByName(GEO_CONST.SW_COORDINATE, collectionCoords);
+                  var southEast = GeoServices.getBoundingCoordinateByName(GEO_CONST.SE_COORDINATE, collectionCoords);
+
+
+                  var minLat = Math.min.apply(null, lats),
+                    maxLat = Math.max.apply(null, lats);
+                  var minLng = Math.min.apply(null, lngs),
+                    maxLng = Math.max.apply(null, lngs);
+
+                  northWest = [maxLat, minLng];
+                  northEast = [maxLat, maxLng];
+                  southWest = [minLat, minLng];
+                  southEast = [minLat, maxLng];
+
+                  // var bounds = [[minlat,minlng],[maxlat,maxlng]];
+
+                  $scope.bounds = leafletBoundsHelpers.createBoundsFromArray([northEast, southWest]);
+                  $scope.resetBounds = leafletBoundsHelpers.createBoundsFromArray([northEast, northEast]);
+
+                }
+
+
+                function isMarkersPopulated(markers) {
+                  for(var prop in markers) {
+                    if (markers.hasOwnProperty(prop)) {
+                      return true;
+                    }
+                  }
+
+                  return false;
+                }
+                $scope.center = {
+                  lat: currentPosition.geometry.coordinates[1],
+                  lng: currentPosition.geometry.coordinates[0]
+                };
+                $scope.hasResults = false;
+
+                $scope.layers.overlays = {
+                  circleLayer:  L.circle([$scope.center.lat, $scope.center.lng], 500, {
+                    color: 'red',
+                    fillColor: '#f03',
+                    fillOpacity: 0.2
+                  })
+                };
+
+                /*
+                 *
+                 * We have at least 1 ask
+                 *
+                 * - we need a minimum sized zoom level
+                 * - should be based on on range value
+                 * - range should be depicted as a translucent circle like a radar range view
+                 * - users should be able to toggle the range view on and off
+                 *
+                 * */
+                if ($scope.resetBounds.northEast && $scope.resetBounds.northEast.lat && (!isNaN($scope.resetBounds.northEast.lat)) && isMarkersPopulated($scope.markers)) {
+                  //angular.extend($scope, {
+                  //  bounds: $scope.resetBounds,
+                  //  markers: $scope.markers
+                  //});
+                  $scope.hasResults = true;
+                  $timeout(function() {
+                    angular.extend($scope, {
+                      bounds: $scope.bounds,
+                      markers: $scope.markers,
+                      center: $scope.center,
+                      circle: $scope.circle
+                    });
+
+                  }, 400);
+                  $scope.toggleMapLoad = !$scope.toggleMapLoad;
+                }
+                else {
+                  northEast = [currentPosition.geometry.coordinates[1], currentPosition.geometry.coordinates[0]];
+                  southWest = [currentPosition.geometry.coordinates[1], currentPosition.geometry.coordinates[0]];
+
+                  $scope.bounds = mainUserMarketMap.getBounds();
+
+                  $scope.hasResults = false;
+//                      $scope.center.zoom = 8;
+
+
+                  //$timeout(function() {
+
+                  angular.extend($scope, {
+                    bounds: $scope.bounds,
+                    center: $scope.center,
+                    circle: $scope.circle
+                  });
+                  $scope.toggleMapLoad = !$scope.toggleMapLoad;
+                  //}, 400);
+                }
+                //$scope.bounds = bounds;
+                //$scope.center = center;
+
+                $scope.marketAsks = returnCollection;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                /*
+                *
+                * Instantiate the map
+                *
+                * */
+                //leafletData.getMap('UserMarketMain')
+                //  .then(function(mainUserMarketMap) {
+                //    $log.info(mainUserMarketMap);
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                //  })
+                //  .catch(function(error) {
+                //    $log.warn('bad get main user market map', error);
+                //  });
 
 
 
@@ -176,9 +304,40 @@ Market.directive('smMarketAskView', [
         }
       ],
       link: function(scope, el, attrs) {
+        scope.userMarketMap = L.map('UserMarketMap');
+        function renderUserMarketMap() {
+          scope.userMarketMap.setView([scope.center.lat, scope.center.lng], 7);
+          L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          }).addTo(scope.userMarketMap);
+          L.circle([scope.center.lat, scope.center.lng], (scope.marketRangeKms * 1000), {
+            color: 'white',
+            fillColor: '#f03',
+            fillOpacity: 0.1
+          }).addTo(scope.userMarketMap);
+
+          if (scope.markersCollection && scope.markersCollection.length > 0) {
+            scope.markersCollection.map(function(mapItem) {
+              L.marker([mapItem.lat, mapItem.lng]).addTo(scope.userMarketMap);
+            });
+
+          }
+        }
+
         scope.$watch('marketRangeKms', function(newVal, oldVal) {
           $log.debug('marketRangeKms', newVal);
         }, true);
+        scope.$watch('toggleMapLoad', function(newVal, oldVal) {
+          if (scope.center.lat && scope.center.lng) {
+            renderUserMarketMap();
+
+          }
+        }, true);
+        //scope.userMarketMap = L.map('UserMarketMap').setView([49.955, -122.483], 7);
+        //L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        //  attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        //}).addTo(scope.userMarketMap);
+
       }
     }
   }
