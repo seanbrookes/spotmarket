@@ -9,6 +9,64 @@ Admin.directive('smAdminMain', [
     }
   }
 ]);
+Admin.directive('smAdminProductType', [
+  function() {
+    return {
+      restrict:'E',
+      templateUrl: './scripts/modules/admin/templates/admin.product.type.html',
+      controller: [
+        '$scope',
+        '$log',
+        'AdminServices',
+        'ProductServices',
+        function($scope, $log, AdminServices, ProductServices) {
+          $scope.productTypeCtx = {
+            currentProductType : {
+              name: ''
+            },
+            currentProductTypes: []
+          };
+          function resetCurrentProductType() {
+            $scope.productTypeCtx.currentProductType = {name:''};
+          }
+          function loadCurrentProductTypes() {
+            $scope.productTypeCtx.currentProductTypes = ProductServices.getProductTypes()
+              .then(function(allProductTypes) {
+                $scope.productTypeCtx.currentProductTypes = allProductTypes;
+              });
+          }
+          $scope.editProductType = function(productType) {
+            if (productType.name) {
+              $scope.productTypeCtx.currentProductType = productType;
+            }
+
+          };
+          $scope.deleteProductType = function(id) {
+            if (confirm('delete product type?')) {
+              // what about the implication of existing and historical asks and their product type name references
+              $log.debug('this functionality needs more consideration before implementation');
+            }
+          };
+
+          $scope.saveCurrentProductType = function() {
+            if ($scope.productTypeCtx.currentProductType.name) {
+              ProductServices.saveProductType($scope.productTypeCtx.currentProductType)
+                .then(function(saveProductTypeResponse) {
+                  resetCurrentProductType();
+                  loadCurrentProductTypes();
+                });
+            }
+          };
+
+          function init() {
+            loadCurrentProductTypes();
+          }
+          init();
+        }
+      ]
+    }
+  }
+]);
 Admin.directive('smAdminTracksRecent', [
   '$timeout',
   function($timeout) {
@@ -116,7 +174,7 @@ Admin.directive('smAdminUsersList', [
 
           $scope.$watch( UserSessionService.isLoggedIn, function ( isLoggedIn ) {
             $scope.isLoggedIn = isLoggedIn;
-            $scope.currentUser = UserServices.getCurrentUser();
+            $scope.currentUser = UserSessionService.getCurrentUserFromClientState();
           });
 
           $scope.currentUsers = [];

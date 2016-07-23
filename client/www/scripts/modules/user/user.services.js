@@ -323,7 +323,7 @@ User.service('UserSessionService', [
             return null;
           });
       }
-    }
+    };
     svc.getCurrentUserFromClientState = function() {
       var user = {};
       user.smUserTag = svc.getValueByKey('smUserTag');

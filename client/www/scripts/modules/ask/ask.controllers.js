@@ -156,7 +156,7 @@ Ask.controller('AskMainController', [
         };
 
         $scope.askCtx.currentAsk.position = tempPos.geometry;
-        AskServices.saveAsk($scope.askCtx.currentAsk)
+        AskServices.savePendingAsk($scope.askCtx.currentAsk)
           .then(function(response) {
             $log.debug('Ask Saved')
           });
