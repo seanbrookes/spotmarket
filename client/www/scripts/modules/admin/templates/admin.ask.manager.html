@@ -1,0 +1,25 @@
+<div>
+  <p>Ask Manager</p>
+  <p>Ask Approval Queue:</p>
+  <ul>
+    <li ng-repeat="ask in askAdminCtx.pendingAsks">
+      <div class="PendingAskItemContainer">
+        <div class="Layout">
+          <span>please review:</span><span>{{ask.headline}}</span>
+        </div>
+        <div class="Layout">
+          <span>Product Type</span><span>{{ask.productType}}</span>
+        </div>
+        <div class="Layout">
+          <span>Product Variant</span><span>{{ask.variant}}</span>
+        </div>
+        <div class="Layout">
+          <span>submission date</span><span>{{ask.createdDate}}</span>
+        </div>
+        <div class="Layout">
+          <span>seller</span><span>{{ask.variant}}</span>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>

@@ -1,57 +1,97 @@
-<div>
-  <button name="Close form" ng-click="togglePriceLotForm()"><span class="glyphicon glyphicon-remove-sign"></span></span></button>
+<div class="LotPricingContainer">
 
+  <button class="CloseButton" name="Close form" ng-click="togglePriceLotForm()">
+    <span class="glyphicon glyphicon-remove-sign"></span>
+  </button>
+  <h3>Lot Pricing</h3>
 
   <div class="Layout">
-
     <div>
-      <span ng-hide="lotCtx.currentLot.measure">Choose the lot measure metric</span>
-      <button uib-popover="{{lotMeasurePopover.content}}" popover-title="{{dynamicPopover.title}}">
-        <span class="glyphicon glyphicon-question-sign"></span>
-      </button>
-      <ul>
-        <li><label><input type="radio" ng-change="askCtx.onLotMeasureChoice()" ng-model="lotCtx.currentLot.measure" value="lb"/>lb</label></li>
-        <li><label><input type="radio" ng-change="askCtx.onLotMeasureChoice()" ng-model="lotCtx.currentLot.measure" value="kg"/>kg</label></li>
-        <li><label><input type="radio" ng-change="askCtx.onLotMeasureChoice()" ng-model="lotCtx.currentLot.measure" value="oz (us)"/>oz (us)</label></li>
-        <li><label><input type="radio" ng-change="askCtx.onLotMeasureChoice()" ng-model="lotCtx.currentLot.measure" value="oz (imp)"/>oz (imp)</label></li>
-        <li><label><input type="radio" ng-change="askCtx.onLotMeasureChoice()" ng-model="lotCtx.currentLot.measure" value="tonne"/>tonne</label></li>
-        <li><label><input type="radio" ng-change="askCtx.onLotMeasureChoice()" ng-model="lotCtx.currentLot.measure" value="gram"/>gram</label></li>
-        <li><label><input type="radio" ng-change="askCtx.onLotMeasureChoice()" ng-model="lotCtx.currentLot.measure" value="bale"/>bale</label></li>
-        <li>
-          <label>
-            <input type="radio" ng-change="askCtx.onOtherLotMeasureChoice()" ng-model="lotCtx.currentLot.otherMeasure" value="other" />
-            other
-          </label>
-          <input ng-show="isShowOtherLotMeasureInput" type="text" ng-model="lotCtx.currentLot.measure" />
-        </li>
-      </ul>
+      <label>Price:</label>
+      <input placeholder="eg: $13" type="number" class="LotPriceInput" ng-model="lotCtx.currentLot.price" />
     </div>
-
-
     <div>
+      <label>
+        per:
+      </label>
+      <input placeholder="lot size" class="LotSizeInput" type="number" ng-model="lotCtx.currentLot.size" />
+      <select>
+        <option value="lb">lb</option>
+        <option value="kg">kg</option>
+        <option value="oz (us)">oz (us)</option>
+        <option value="oz (imp)">oz (imp)</option>
+        <option value="tonne">tonne</option>
+        <option value="gram">gram</option>
+        <option value="bale">bale</option>
+        <option value="other" >other</option>
 
-      <div ng-show="lotCtx.currentLot.measure">
-        <div>
-          <label>Price:</label>
-          <input placeholder="eg: $13" type="text" ng-model="lotCtx.currentLot.price" />
-          <div>
-            per:
-          </div>
-          <input placeholder="lot size" type="text" ng-model="lotCtx.currentLot.size" /><span>{{lotCtx.currentLot.measure}}</span>
-        </div>
-        <div>
-          <input placeholder="lot max limit" type="text" ng-model="lotCtx.currentLot.max" />
-        </div>
-        <div>
-          <input placeholder="lot min limit" type="text" ng-model="lotCtx.currentLot.min" />
-        </div>
-      </div>
+      </select>
+    </div>
+    <div>
+      <!--<select>-->
+        <!--<option value="lb">lb</option>-->
+        <!--<option value="kg">kg</option>-->
+        <!--<option value="oz (us)">oz (us)</option>-->
+        <!--<option value="oz (imp)">oz (imp)</option>-->
+        <!--<option value="tonne">tonne</option>-->
+        <!--<option value="gram">gram</option>-->
+        <!--<option value="bale">bale</option>-->
+        <!--<option value="other" >other</option>-->
+
+      <!--</select>-->
+      <!--<ul>-->
+        <!--<li><label><input type="radio" ng-change="askCtx.onLotMeasureChoice()" ng-model="lotCtx.currentLot.measure" value="lb"/>lb</label></li>-->
+        <!--<li><label><input type="radio" ng-change="askCtx.onLotMeasureChoice()" ng-model="lotCtx.currentLot.measure" value="kg"/>kg</label></li>-->
+        <!--<li><label><input type="radio" ng-change="askCtx.onLotMeasureChoice()" ng-model="lotCtx.currentLot.measure" value="oz (us)"/>oz (us)</label></li>-->
+        <!--<li><label><input type="radio" ng-change="askCtx.onLotMeasureChoice()" ng-model="lotCtx.currentLot.measure" value="oz (imp)"/>oz (imp)</label></li>-->
+        <!--<li><label><input type="radio" ng-change="askCtx.onLotMeasureChoice()" ng-model="lotCtx.currentLot.measure" value="tonne"/>tonne</label></li>-->
+        <!--<li><label><input type="radio" ng-change="askCtx.onLotMeasureChoice()" ng-model="lotCtx.currentLot.measure" value="gram"/>gram</label></li>-->
+        <!--<li><label><input type="radio" ng-change="askCtx.onLotMeasureChoice()" ng-model="lotCtx.currentLot.measure" value="bale"/>bale</label></li>-->
+        <!--<li>-->
+          <!--<label>-->
+            <!--<input type="radio" ng-change="askCtx.onOtherLotMeasureChoice()" ng-model="lotCtx.currentLot.otherMeasure" value="other" />-->
+            <!--other-->
+          <!--</label>-->
+          <!--<input ng-show="isShowOtherLotMeasureInput" type="text" ng-model="lotCtx.currentLot.measure" />-->
+        <!--</li>-->
+      <!--</ul>-->
 
 
+
+
+      <!--<ul>-->
+        <!--<li><label><input type="radio" ng-change="askCtx.onLotMeasureChoice()" ng-model="lotCtx.currentLot.measure" value="lb"/>lb</label></li>-->
+        <!--<li><label><input type="radio" ng-change="askCtx.onLotMeasureChoice()" ng-model="lotCtx.currentLot.measure" value="kg"/>kg</label></li>-->
+        <!--<li><label><input type="radio" ng-change="askCtx.onLotMeasureChoice()" ng-model="lotCtx.currentLot.measure" value="oz (us)"/>oz (us)</label></li>-->
+        <!--<li><label><input type="radio" ng-change="askCtx.onLotMeasureChoice()" ng-model="lotCtx.currentLot.measure" value="oz (imp)"/>oz (imp)</label></li>-->
+        <!--<li><label><input type="radio" ng-change="askCtx.onLotMeasureChoice()" ng-model="lotCtx.currentLot.measure" value="tonne"/>tonne</label></li>-->
+        <!--<li><label><input type="radio" ng-change="askCtx.onLotMeasureChoice()" ng-model="lotCtx.currentLot.measure" value="gram"/>gram</label></li>-->
+        <!--<li><label><input type="radio" ng-change="askCtx.onLotMeasureChoice()" ng-model="lotCtx.currentLot.measure" value="bale"/>bale</label></li>-->
+        <!--<li>-->
+          <!--<label>-->
+            <!--<input type="radio" ng-change="askCtx.onOtherLotMeasureChoice()" ng-model="lotCtx.currentLot.otherMeasure" value="other" />-->
+            <!--other-->
+          <!--</label>-->
+          <!--<input ng-show="isShowOtherLotMeasureInput" type="text" ng-model="lotCtx.currentLot.measure" />-->
+        <!--</li>-->
+      <!--</ul>-->
     </div>
   </div>
 
+  <div>
 
+    <div ng-show="lotCtx.currentLot.measure">
+
+      <div>
+        <input placeholder="lot max limit" type="text" ng-model="lotCtx.currentLot.max" />
+      </div>
+      <div>
+        <input placeholder="lot min limit" type="text" ng-model="lotCtx.currentLot.min" />
+      </div>
+    </div>
+
+
+  </div>
   <div>
     <button ng-click="addLotPriceToAsk()" >add</button>
   </div>

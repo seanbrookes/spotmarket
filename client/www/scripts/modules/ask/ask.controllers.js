@@ -2,15 +2,31 @@ Ask.controller('AskMainController', [
   '$scope',
   '$log',
   '$http',
+  '$timeout',
   'ProductServices',
   'UserSessionService',
   'AskServices',
-  function($scope, $log, $http, ProductServices, UserSessionService, AskServices) {
+  'CommonServices',
+  function($scope, $log, $http, $timeout, ProductServices, UserSessionService, AskServices, CommonServices) {
 
-    $scope.askCtx = {};
-    $scope.lotCtx = {currentLot:{}};
+    $scope.askCtx = {
+      productFilters: {
+        productTypeDirectMatchCollection: [],
+        productTypeIndirectMatchCollection: [],
+        productVariantDirectMatchCollection: [],
+        productVariantIndirectMatchCollection: []
+      }
+    };
+    $scope.validationClassNames = {askSellerEmailInput: 'SellerInput--invalid'};
+    $scope.lotCtx = {currentLot:{
+      measure:'kg',
+      size:1
+    }};
     function resetCurrentLot() {
-      $scope.lotCtx.currentLot = {};
+      $scope.lotCtx.currentLot = {
+        measure:'kg',
+        size:1
+      };
     }
 
 
@@ -32,14 +48,44 @@ Ask.controller('AskMainController', [
       title: 'Lot size metric'
     };
 
-    function initializeCurrentAsk() {
+    function initializeCurrentAsk(user) {
+      if (!user) {
+        user = UserSessionService.getCurrentUserFromClientState();
+      }
       $scope.askCtx.currentAsk = {
-        productTypeName: 'Beer Hops',
-        productType: '',
-        productSubType: '',
+        seller: {},
+        productType: '',  // ask converts to a string for name property shortand
+        variant: '',
         headline: '',
         lotPrices: []
       };
+
+      if (user.smEmail) {
+        $scope.askCtx.currentAsk.seller.email = user.smEmail;
+      }
+      if (user.smToken) {
+        $scope.askCtx.currentAsk.seller.smToken = user.smToken;
+      }
+      if (user.smAuthToken) {
+        $scope.askCtx.currentAsk.seller.smAuthToken = user.smAuthToken;
+      }
+      if (user.smUserTag) {
+        $scope.askCtx.currentAsk.seller.handle = user.smUserTag;
+      }
+      else {
+        $scope.askCtx.currentAsk.seller.handle = UserSessionService.generateNewUserTag()
+          .then(function(response) {
+            $scope.askCtx.currentAsk.seller.handle = response;
+          });
+      }
+      if (user.smHandle) {
+        $scope.askCtx.currentAsk.seller.smHandle = user.smHandle;
+      }
+
+      // check if user has user preferences for lot price option
+      // set default user price lot measure option
+      $scope.lotCtx.currentLot.measure = 'kg';
+      //lotCtx.currentLot.measure
     }
 
     $scope.isShowAddLotPrice = false;
@@ -58,8 +104,8 @@ Ask.controller('AskMainController', [
       currentProductType: {},
       isShowProductTypeMenu: false,
       isShowProductSubTypeMenu: false,
-      currentProductSubType: {},
-      currentProductSubTypes: [],
+      currentProductVariant: {},
+      currentProductVariants: [],
       currentProductTypes: []
     };
     loadProductTypes = function() {
@@ -71,25 +117,50 @@ Ask.controller('AskMainController', [
     loadProductSubTypes = function() {
       ProductServices.getProductSubTypes()
         .then(function(response) {
-          $scope.productCtx.currentProductSubTypes = response;
+          $scope.productCtx.currentProductVariants = response;
         });
     };
+    function resetProductTypeUIFilters() {
+
+        $scope.askCtx.productFilters = {
+          productTypeDirectMatchCollection: [],
+          productTypeIndirectMatchCollection: [],
+          productVariantDirectMatchCollection: [],
+          productVariantIndirectMatchCollection: []
+        };
+
+
+    }
+    function resetProductVariantUIFilters() {
+      $scope.askCtx.productFilters = {
+        productVariantDirectMatchCollection: [],
+        productVariantIndirectMatchCollection: []
+      };
+    }
     $scope.askCtx.setCurrentProductType = function(productType) {
-      $scope.askCtx.currentAsk.productType = productType;
+      $scope.askCtx.currentAsk.productType = productType.name;
+      $scope.productCtx.currentProductVariants = productType.variants;
+      $timeout(function() {
+        resetProductTypeUIFilters();
+
+      }, 10);
       $scope.askCtx.currentAsk.headline = 'I am selling: ' + $scope.askCtx.currentAsk.productType;
-      if ($scope.askCtx.currentAsk.productSubType) {
-        $scope.askCtx.currentAsk.headline += ' variety: ' +  $scope.askCtx.currentAsk.productSubType
+      if ($scope.askCtx.currentAsk.variant) {
+        $scope.askCtx.currentAsk.headline += ' variety: ' +  $scope.askCtx.currentAsk.variant
       }
       $scope.productCtx.isShowProductTypeMenu = false;
+      $scope.productCtx.isShowProductTypeMenu = false;
     };
-    $scope.askCtx.setCurrentProductSubType = function(productSubType) {
-      $scope.askCtx.currentAsk.productSubType = productSubType.name;
+    $scope.askCtx.setCurrentProductVariant = function(productVariantObj) {
+      $scope.askCtx.currentAsk.variant = productVariantObj.name;
       $scope.askCtx.currentAsk.headline = $scope.askCtx.currentAsk.productType;
-      if ($scope.askCtx.currentAsk.productSubType) {
-        $scope.askCtx.currentAsk.headline += ' variety: ' +  $scope.askCtx.currentAsk.productSubType
+      if ($scope.askCtx.currentAsk.variant) {
+        $scope.askCtx.currentAsk.headline += ' variety: ' +  $scope.askCtx.currentAsk.variant
       }
-
-      $scope.productCtx.isShowProductSubTypeMenu = false;
+      resetProductVariantUIFilters();
+      //$scope.isShowAddLotPrice = !$scope.isShowAddLotPrice;
+      resetCurrentLot();
+      $scope.isShowAddLotPrice = true;
     };
 
     $scope.askCtx.clearCurrentProductType = function() {
@@ -108,6 +179,7 @@ Ask.controller('AskMainController', [
     };
     $scope.askCtx.onLotMeasureChoice = function() {
       $scope.isShowOtherLotMeasureInput = false;
+      // save as personal preference
       $scope.lotCtx.currentLot.otherMeasure = '';
     };
     $scope.productCtx.toggleProductSubTypeMenu = function() {
@@ -123,16 +195,16 @@ Ask.controller('AskMainController', [
       }
     };
     $scope.addProductSubType = function() {
-      if ($scope.productCtx.currentProductSubType) {
-        ProductServices.saveProductSubType({name:$scope.productCtx.currentProductSubType})
+      if ($scope.productCtx.currentProductVariant) {
+        ProductServices.saveProductSubType({name:$scope.productCtx.currentProductVariant})
           .then(function(response) {
-            $scope.productCtx.currentProductSubType = '';
+            $scope.productCtx.currentProductVariant = '';
             loadProductSubTypes();
           });
       }
     };
     $scope.askCtx.isFormValid = function() {
-      if ($scope.askCtx.currentAsk.productType && $scope.askCtx.currentAsk.productSubType && ($scope.askCtx.currentAsk.lotPrices.length > 0)) {
+      if ($scope.askCtx.currentAsk.productType && $scope.askCtx.currentAsk.variant && ($scope.askCtx.currentAsk.lotPrices.length > 0)) {
         return true;
       }
       return false;
@@ -142,8 +214,19 @@ Ask.controller('AskMainController', [
     };
 
     $scope.saveAsk = function() {
+      var userEmail = UserSessionService.getValueByKey('smEmail');
+      if (!userEmail) {
+        alert('| STOP!!!  we need your email before you can proceed');
+        return;
+      }
       if ($scope.askCtx.currentAsk.productType) {
         var tempCurrentUser = UserSessionService.getCurrentUserFromClientState();
+        if (!tempCurrentUser.smAuthToken) {
+          $log.warn('you need to log in to post an ask');
+          return;
+        }
+        $scope.askCtx.currentAsk.smToken = tempCurrentUser.smToken;
+
         var tempPos = JSON.parse(tempCurrentUser.smCurrentPosition);
         var tLon = parseFloat(tempPos.geometry.coordinates[0]);
         var tLat = parseFloat(tempPos.geometry.coordinates[1]);
@@ -162,6 +245,209 @@ Ask.controller('AskMainController', [
           });
       }
     };
+
+
+    function isUniqueProductTypeMatch(testName) {
+      if (!testName) {
+        return false;
+      }
+      if ($scope.askCtx.productFilters.productTypeDirectMatchCollection.length === 0) {
+        return true;
+      }
+      var isUnique = true;
+      var collection = $scope.askCtx.productFilters.productTypeDirectMatchCollection;
+      if (collection.map) {
+        collection.map(function(collectionType) {
+          if (testName.toLowerCase() === collectionType.name.toLowerCase()) {
+            isUnique = false;
+          }
+        });
+      }
+      return isUnique;
+    }
+    function isUniqueProductTypeIndirectMatch(testName) {
+      if (!testName) {
+        return false;
+      }
+      if ($scope.askCtx.productFilters.productTypeIndirectMatchCollection.length === 0) {
+        return true;
+      }
+      var isUnique = true;
+      var collection = $scope.askCtx.productFilters.productTypeIndirectMatchCollection;
+      if (collection.map) {
+        collection.map(function(collectionType) {
+          if (testName.toLowerCase() === collectionType.name.toLowerCase()) {
+            isUnique = false;
+          }
+        });
+      }
+      return isUnique;
+    }
+    function isUniqueProductVariantMatch(testName) {
+      if (!testName) {
+        return false;
+      }
+      if ($scope.askCtx.productFilters.productVariantDirectMatchCollection.length === 0) {
+        return true;
+      }
+      var isUnique = true;
+      var collection = $scope.askCtx.productFilters.productVariantDirectMatchCollection;
+      if (collection.map) {
+        collection.map(function(collectionType) {
+          if (testName.toLowerCase() === collectionType.name.toLowerCase()) {
+            isUnique = false;
+          }
+        });
+      }
+      return isUnique;
+    }
+    function isUniqueProductVariantIndirectMatch(testName) {
+      if (!testName) {
+        return false;
+      }
+      if ($scope.askCtx.productFilters.productVariantIndirectMatchCollection.length === 0) {
+        return true;
+      }
+      var isUnique = true;
+      var collection = $scope.askCtx.productFilters.productVariantIndirectMatchCollection;
+      if (collection.map) {
+        collection.map(function(collectionType) {
+          if (testName.toLowerCase() === collectionType.name.toLowerCase()) {
+            isUnique = false;
+          }
+        });
+      }
+      return isUnique;
+    }
+    $scope.$watch('askCtx.currentAsk.seller.email', function(emailVal) {
+      if (emailVal) {
+
+          // or when the ask is to be saved
+          if (CommonServices.isValidEmail(emailVal)) {
+            $scope.validationClassNames.askSellerEmailInput = 'SellerInput--valid';
+
+            var currentUser = UserSessionService.getCurrentUserFromClientState();
+            if (!currentUser.smEmail) {
+              $log.debug('|   We have a valid email', emailVal);
+              // set the users email (smEmail)
+              // probably update the token as well
+              // check if userProfile matches
+              // etc
+            }
+            else {
+              if (currentUser.smEmail !== emailVal) {
+                $log.warn('| we have different email addresses');
+
+              }
+            }
+          }
+          else {
+            $scope.validationClassNames.askSellerEmailInput = 'SellerInput--nonempty';
+
+            $log.warn('| keep typing: that is not a valid email', emailVal);
+          }
+
+
+        // if the email address is valid
+        // if there no preset value for current user
+      }
+    }, true);
+    $scope.$watch('askCtx.currentAsk.variant', function(newVal, oldVal) {
+      resetProductVariantUIFilters();
+      if (!newVal || newVal.length < 1) {
+        resetProductTypeUIFilters();
+        return;
+      }
+      if ($scope.productCtx.currentProductVariants && ($scope.productCtx.currentProductVariants.length > 0)) {
+        var collection = $scope.productCtx.currentProductVariants;
+
+        var isMatched = false;
+        collection.map(function(type) {
+          var collectionName = type.name.toLowerCase();
+          var comparisonName = newVal.toLowerCase();
+          if (collectionName.indexOf(comparisonName) === 0) {
+            $log.debug('direct variety match', comparisonName);
+            isMatched = true;
+            if (isUniqueProductVariantMatch(collectionName)) {
+
+              $timeout(function() {
+                $scope.askCtx.productFilters.productVariantDirectMatchCollection.push(type);
+              }, 50);
+            }
+          }
+          if (collectionName.indexOf(comparisonName) > 0) {
+            $log.debug('indeirect variety match', comparisonName);
+            isMatched = true;
+            if (isUniqueProductVariantIndirectMatch(collectionName)) {
+
+              $timeout(function() {
+                $scope.askCtx.productFilters.productVariantIndirectMatchCollection.push(type);
+              }, 50);
+            }
+          }
+        });
+        //if (!isMatched) {
+        //
+        //  resetProductTypeUIFilters();
+        //
+        //}
+
+      }
+      /*
+      *
+      *       $scope.askCtx.productFilters = {
+       productVariantDirectMatchCollection: [],
+       productVariantIndirectMatchCollection: []
+       };
+      * */
+    }, true);
+    $scope.$watch('askCtx.currentAsk.productType', function(newVal, oldVal) {
+      $log.debug('|  Updated Product Type Name Search Value', newVal);
+      resetProductTypeUIFilters();
+      if (!newVal || newVal.length < 1) {
+        resetProductTypeUIFilters();
+        return;
+      }
+      if ($scope.productCtx.currentProductTypes && ($scope.productCtx.currentProductTypes.length > 0)) {
+        var collection = $scope.productCtx.currentProductTypes;
+
+        var isMatched = false;
+        collection.map(function(type) {
+          var collectionName = type.name.toLowerCase();
+          var comparisonName = newVal.toLowerCase();
+          if (collectionName.indexOf(comparisonName) === 0) {
+            $log.debug('direct match', comparisonName);
+            isMatched = true;
+            if (isUniqueProductTypeMatch(collectionName)) {
+
+              $timeout(function() {
+                $scope.askCtx.productFilters.productTypeDirectMatchCollection.push(type);
+              }, 50);
+            }
+          }
+          if (collectionName.indexOf(comparisonName) > 0) {
+            $log.debug('indeirect match', comparisonName);
+            isMatched = true;
+            if (isUniqueProductTypeIndirectMatch(collectionName)) {
+
+              $timeout(function() {
+                $scope.askCtx.productFilters.productTypeIndirectMatchCollection.push(type);
+              }, 50);
+            }
+          }
+        });
+        //if (!isMatched) {
+        //
+        //  resetProductTypeUIFilters();
+        //
+        //}
+
+      }
+
+    }, true);
+
+
+
     initializeCurrentAsk();
   }
 

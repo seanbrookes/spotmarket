@@ -1,22 +1,41 @@
 <div>
-  Product Type Edinting happens here
-  <br />
-  show me all of the product types
+  Product Type Editing happens here
   <div>
-    <ul>
-      <li ng-repeat="productType in productTypeCtx.currentProductTypes">
-        <button ng-click="editProductType(productType)">{{productType.name}}</button>
-        <button ng-click="deleteProductType(productType)">(X)</button>
-      </li>
-    </ul>
+    <p>show me all of the product types</p>
+    <div>
+      <ul>
+        <li ng-repeat="productType in productTypeCtx.currentProductTypes">
+          <button ng-click="editProductType(productType)">{{productType.name}}</button>
+          <button ng-click="deleteProductType(productType)">(X)</button>
+        </li>
+      </ul>
+    </div>
+    <br />
+    <p>I want to add a new one</p>
+    <label>Product Type Name</label>
+    <input type="text" ng-model="productTypeCtx.currentProductType.name" placeholder="product type name"/>
+    <button ng-click="saveCurrentProductType()">save</button>
   </div>
-  <br />
-  I want to add a new one
-  <label>Product Type Name</label>
-  <input type="text" ng-model="productTypeCtx.currentProductType.name" placeholder="product type name"/>
-  <button ng-click="saveCurrentProductType()">save</button>
-  <br />
-  I want to change one
-  <br />
-  I want to delete one
+  <div class="Layout">
+
+    <div>
+      <p>show me all of the product varieties</p>
+      <ul>
+        <li ng-repeat="variant in productTypeCtx.currentProductType.variants">
+          <button ng-click="editProductVariant(variant)">{{variant.name}}</button>
+          <button ng-click="deleteProductVariant(variant)">(X)</button>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <p>I want to add a new variant</p>
+      <label>Product Variant Name</label>
+      <input type="text" ng-model="productTypeCtx.currentProductVariant.name" placeholder="product variant name"/>
+      <button ng-click="saveCurrentProductVariant()">save</button>
+
+    </div>
+  </div>
+
+
 </div>

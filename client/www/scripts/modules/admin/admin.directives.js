@@ -9,6 +9,29 @@ Admin.directive('smAdminMain', [
     }
   }
 ]);
+Admin.directive('smAdminAskManager', [
+  function() {
+    return {
+      restrict:'E',
+      templateUrl: './scripts/modules/admin/templates/admin.ask.manager.html',
+      controller: [
+        '$scope',
+        '$log',
+        'AskServices',
+        'AdminServices',
+        function($scope, $log, AskServices, AdminServices) {
+
+          $scope.askAdminCtx = {pendingAsks:[]};
+          $scope.askAdminCtx.pendingAsks = AskServices.getPendingAsks()
+            .then(function(pendingAsks) {
+              $scope.askAdminCtx.pendingAsks = pendingAsks;
+            })
+
+
+      }]
+    }
+  }
+]);
 Admin.directive('smAdminProductType', [
   function() {
     return {
@@ -17,17 +40,31 @@ Admin.directive('smAdminProductType', [
       controller: [
         '$scope',
         '$log',
+        '$timeout',
         'AdminServices',
         'ProductServices',
-        function($scope, $log, AdminServices, ProductServices) {
+        'CommonServices',
+        function($scope, $log, $timeout, AdminServices, ProductServices, CommonServices) {
           $scope.productTypeCtx = {
             currentProductType : {
+              name: ''
+            },
+            currentProductVariant : {
               name: ''
             },
             currentProductTypes: []
           };
           function resetCurrentProductType() {
-            $scope.productTypeCtx.currentProductType = {name:''};
+            $scope.productTypeCtx = {
+              currentProductType : {
+                name: ''
+              },
+              currentProductVariant : {
+                name: ''
+              },
+              currentProductTypes: []
+            };
+
           }
           function loadCurrentProductTypes() {
             $scope.productTypeCtx.currentProductTypes = ProductServices.getProductTypes()
@@ -38,11 +75,24 @@ Admin.directive('smAdminProductType', [
           $scope.editProductType = function(productType) {
             if (productType.name) {
               $scope.productTypeCtx.currentProductType = productType;
+              $scope.productTypeCtx.currentProductVariant = {parent:productType.name};
             }
 
           };
           $scope.deleteProductType = function(id) {
             if (confirm('delete product type?')) {
+              // what about the implication of existing and historical asks and their product type name references
+              $log.debug('this functionality needs more consideration before implementation');
+            }
+          };
+          $scope.editProductVariant = function(productVariant) {
+            if (productVariant.name) {
+              $scope.productTypeCtx.currentProductVariant = productVariant;
+            }
+
+          };
+          $scope.deleteProductVariant = function(Variant) {
+            if (confirm('delete product variant?')) {
               // what about the implication of existing and historical asks and their product type name references
               $log.debug('this functionality needs more consideration before implementation');
             }
@@ -54,6 +104,62 @@ Admin.directive('smAdminProductType', [
                 .then(function(saveProductTypeResponse) {
                   resetCurrentProductType();
                   loadCurrentProductTypes();
+                });
+            }
+          };
+
+          $scope.saveCurrentProductVariant = function() {
+            if ($scope.productTypeCtx.currentProductVariant.name) {
+
+              // check to see if this is an edit or new variant
+              if ($scope.productTypeCtx.currentProductVariant.id) {
+                // edit existing
+                $scope.productTypeCtx.currentProductType.variants.map(function(variant) {
+                  if (variant.id === $scope.productTypeCtx.currentProductVariant.id) {
+                    variant = $scope.productTypeCtx.currentProductVariant;
+                  }
+                });
+              }
+              else {
+                // new variant
+                // make sure it isn't a dupe
+                var isUnique = true;
+                if ($scope.productTypeCtx.currentProductType.variants && $scope.productTypeCtx.currentProductType.variants.length > 0) {
+                  $scope.productTypeCtx.currentProductType.variants.map(function(variant) {
+                    if (variant.name.toLowerCase() === $scope.productTypeCtx.currentProductVariant.name.toLowerCase()) {
+                      isUnique = false;
+                    }
+                  });
+                }
+                if (isUnique) {
+                  $scope.productTypeCtx.currentProductVariant.id = CommonServices.generateGuid();
+                  if (!$scope.productTypeCtx.currentProductType.variants) {
+                    $scope.productTypeCtx.currentProductType.variants = [];
+                  }
+                  $scope.productTypeCtx.currentProductType.variants.push($scope.productTypeCtx.currentProductVariant);
+                }
+              }
+
+              // loop over the existing variants collection for this product type
+
+              // check if value already exists
+              // if so
+              // new product variant
+              if (!$scope.productTypeCtx.currentProductVariant.id) {
+
+              }
+
+
+
+              ProductServices.saveProductType($scope.productTypeCtx.currentProductType)
+                .then(function(saveProductTypeResponse) {
+                  //resetCurrentProductVariant();
+                  $timeout(function() {
+                    $scope.productTypeCtx.currentProductVariant = {parent:$scope.productTypeCtx.currentProductType.name};
+
+                  }, 50);
+
+
                 });
             }
           };

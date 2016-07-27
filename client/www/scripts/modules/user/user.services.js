@@ -149,7 +149,8 @@ User.service('UserSessionService', [
   '$cookies',
   '$log',
   '$timeout',
-  function(UserProfile, $cookies, $log, $timeout) {
+  '$http',
+  function(UserProfile, $cookies, $log, $timeout, $http) {
 
     var svc = this;
     var userName = '';
@@ -173,6 +174,40 @@ User.service('UserSessionService', [
     };
     svc.putValueByKey = function(key, value) {
       $cookies.put(key, value);
+    };
+    function capitalizeFirstLetter(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+    svc.generateNewUserTag = function() {
+      $log.debug('|  Generate new user tag');
+
+      var arrayOfWordsOne = [];
+      var arrayOfWordsTwo = [];
+      return $http.get("./scripts/modules/user/1syllableadjectives.txt")
+        .then(function(response) {
+          $log.debug('|  Here are the damn words', response.data);
+          arrayOfWordsOne = response.data.split(/\r\n|\r|\n/g);
+          $log.debug('| word count:', arrayOfWordsOne.length);
+
+          return $http.get("./scripts/modules/user/common-english-words-3letters-plus.txt")
+            .then(function(response) {
+              $log.debug('|  Here are the damn second words', response.data);
+              arrayOfWordsTwo = response.data.split(',');
+              $log.debug('| word count 2:', arrayOfWordsTwo.length);
+              var randno1 = Math.floor ( Math.random() * arrayOfWordsOne.length );
+              var randno2 = Math.floor ( Math.random() * arrayOfWordsTwo.length );
+              var randno3 = Math.floor ( Math.random() * 99 );
+              return capitalizeFirstLetter(arrayOfWordsOne[randno1]) + capitalizeFirstLetter(arrayOfWordsTwo[randno2]) + randno3;
+            });
+
+        });
+      // get random list of nouns
+      // get random list of adjectives
+      // get random number
+
+      //return $timeout(function() {
+      //  return 'LikeBison09';
+      //})
     };
 
     // User Name
@@ -329,6 +364,7 @@ User.service('UserSessionService', [
       user.smUserTag = svc.getValueByKey('smUserTag');
       user.smSessionId = svc.getValueByKey('smSessionId');
       user.smUserId = svc.getValueByKey('smUserId');
+      user.smUserPreferences = svc.getValueByKey('smUserPreferences');
       user.smToken = svc.getValueByKey('smToken');
       user.smEmail = svc.getValueByKey('smEmail');
       user.smUserName = svc.getValueByKey('smUserName');

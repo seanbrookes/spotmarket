@@ -593,6 +593,13 @@ Market.directive('smMarketMain', [
           $scope.activateAskForm = false;
 
           $scope.postAnAsk = function() {
+            var currentUser = UserSessionService.getCurrentUserFromClientState();
+            if (!currentUser.smEmail) {
+              alert('| WARNING  we do not have your email address but you will need it before you can submit this ask');
+
+
+            }
+
             $log.debug('POST AN ASK');
 
               $scope.activateAskForm = true;

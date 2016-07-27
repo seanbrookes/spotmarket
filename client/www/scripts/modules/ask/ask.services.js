@@ -84,6 +84,16 @@ Ask.service('AskServices', [
           return response || [];
         });
     };
+    svc.getPendingAsks = function(filter) {
+      if (!filter) {
+        filter = {};
+      }
+      return PendingAsk.find(filter)
+        .$promise
+        .then(function(response) {
+          return response || [];
+        });
+    };
 
     return svc;
   }
