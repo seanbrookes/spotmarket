@@ -28,7 +28,7 @@ User.service('UserServices', [
             responseUser.lastPosition = position;
             svc.saveUser(responseUser)
               .then(function(responseUpdatedUser) {
-                UserSessionService.putValueByKey('smCurrentPosition', JSON.stringify(position));
+                UserSessionService.setValueByKey('smCurrentPosition', JSON.stringify(position));
                 return responseUpdatedUser;
               })
               .catch(function(error) {
@@ -130,7 +130,7 @@ User.service('UserServices', [
         .then(function(currentUserResponse) {
           if (currentUserResponse.token) {
 
-            UserSessionService.putValueByKey('smToken', currentUserResponse.token);
+            UserSessionService.setValueByKey('smToken', currentUserResponse.token);
 
             return UserSessionService.getCurrentUserFromClientState();
           }
@@ -172,35 +172,57 @@ User.service('UserSessionService', [
       }
       return null;
     };
-    svc.putValueByKey = function(key, value) {
+    svc.setValueByKey = function(key, value) {
       $cookies.put(key, value);
     };
     function capitalizeFirstLetter(string) {
       return string.charAt(0).toUpperCase() + string.slice(1);
     }
-    svc.generateNewUserTag = function() {
+    var arrayOfWordsOne = [];
+    var arrayOfWordsTwo = [];
+    svc.generateNewUserTag = function(options) {
       $log.debug('|  Generate new user tag');
+      var returnVal;
 
-      var arrayOfWordsOne = [];
-      var arrayOfWordsTwo = [];
-      return $http.get("./scripts/modules/user/1syllableadjectives.txt")
-        .then(function(response) {
-          $log.debug('|  Here are the damn words', response.data);
-          arrayOfWordsOne = response.data.split(/\r\n|\r|\n/g);
-          $log.debug('| word count:', arrayOfWordsOne.length);
 
-          return $http.get("./scripts/modules/user/common-english-words-3letters-plus.txt")
-            .then(function(response) {
-              $log.debug('|  Here are the damn second words', response.data);
-              arrayOfWordsTwo = response.data.split(',');
-              $log.debug('| word count 2:', arrayOfWordsTwo.length);
-              var randno1 = Math.floor ( Math.random() * arrayOfWordsOne.length );
-              var randno2 = Math.floor ( Math.random() * arrayOfWordsTwo.length );
-              var randno3 = Math.floor ( Math.random() * 99 );
-              return capitalizeFirstLetter(arrayOfWordsOne[randno1]) + capitalizeFirstLetter(arrayOfWordsTwo[randno2]) + randno3;
-            });
+      if ((arrayOfWordsOne.length === 0) || (arrayOfWordsTwo.length === 0)) {
+        return $http.get("./scripts/modules/user/1syllableadjectives.txt")
+          .then(function(response) {
+            $log.debug('|  Here are the damn words', response.data);
+            arrayOfWordsOne = response.data.split(/\r\n|\r|\n/g);
+            $log.debug('| word count:', arrayOfWordsOne.length);
 
-        });
+            return $http.get("./scripts/modules/user/common-english-words-3letters-plus.txt")
+              .then(function(response) {
+                $log.debug('|  Here are the damn second words', response.data);
+                arrayOfWordsTwo = response.data.split(',');
+                $log.debug('| word count 2:', arrayOfWordsTwo.length);
+                var randno1 = Math.floor ( Math.random() * arrayOfWordsOne.length );
+                var randno2 = Math.floor ( Math.random() * arrayOfWordsTwo.length );
+                var randno3 = Math.floor ( Math.random() * 99 );
+                var returnVal = capitalizeFirstLetter(arrayOfWordsOne[randno1]) + capitalizeFirstLetter(arrayOfWordsTwo[randno2]);
+                if (options && !options.aphaOnly) {
+                  returnVal = returnVal + randno3;
+                }
+                return  returnVal;
+              });
+
+          });
+      }
+      else {
+        return $timeout(function() {
+          var randno1 = Math.floor ( Math.random() * arrayOfWordsOne.length );
+          var randno2 = Math.floor ( Math.random() * arrayOfWordsTwo.length );
+          var randno3 = Math.floor ( Math.random() * 99 );
+          var returnVal = capitalizeFirstLetter(arrayOfWordsOne[randno1]) + capitalizeFirstLetter(arrayOfWordsTwo[randno2]);
+          if (options && !options.aphaOnly) {
+            returnVal = returnVal + randno3;
+          }
+          return  returnVal;
+
+        }, 25);
+      }
+
       // get random list of nouns
       // get random list of adjectives
       // get random number
@@ -358,6 +380,38 @@ User.service('UserSessionService', [
             return null;
           });
       }
+    };
+    svc.getUserHandleSuggestionHistory = function() {
+      var retVal = [];
+
+      var rawString = window.localStorage.getItem('smUserHandleHistory');
+      if (rawString) {
+        var rawArray = JSON.parse(rawString);
+        if (rawArray && rawArray.length > 0) {
+          retVal = rawArray.reverse();
+        }
+      }
+
+      return retVal;
+    };
+    svc.addUserHandleSuggestionToHistory = function(handleSuggestion) {
+      if (handleSuggestion) {
+        var rawArray = [];
+        var rawString = window.localStorage.getItem('smUserHandleHistory');
+        if (!rawString) {
+          window.localStorage.setItem('smUserHandleHistory', JSON.stringify([handleSuggestion]));
+        }
+        else {
+          var rawArray = JSON.parse(rawString);
+          if (rawArray.length > 50) {
+            rawArray.shift();
+          }
+          rawArray.push(handleSuggestion);
+          window.localStorage.setItem('smUserHandleHistory', JSON.stringify(rawArray));
+        }
+      }
+
+      return handleSuggestion;
     };
     svc.getCurrentUserFromClientState = function() {
       var user = {};

@@ -31,6 +31,12 @@ ul {
   padding: 5rem;
   font-size: 120%;
 }
+.LinkButton {
+  border: none;
+  background: transparent;
+  color: blue;
+  text-decoration: underline;
+}
 .CommandButton {
   border: none;
   background: transparent;
@@ -64,6 +70,14 @@ ul {
   min-width: 26rem;
 }
 .StandardForm__FieldContainer ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.AskForm__FieldContainer label {
+  width: 12rem;
+}
+.AskForm__FieldContainer ul {
   list-style: none;
   margin: 0;
   padding: 0;

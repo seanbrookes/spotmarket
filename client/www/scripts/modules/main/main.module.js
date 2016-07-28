@@ -211,7 +211,7 @@ Main.run([
           if (initialUser && initialUser.smToken) {
             smGlobalValues.currentUser = initialUser;
             if (smGlobalValues.currentUser.smToken) {
-              UserSessionService.putValueByKey('smToken',smGlobalValues.currentUser.smToken);
+              UserSessionService.setValueByKey('smToken',smGlobalValues.currentUser.smToken);
             }
           }
         });
@@ -222,7 +222,7 @@ Main.run([
         .then(function(currentUserResponse) {
           smGlobalValues.currentUser = currentUserResponse;
           if (smGlobalValues.token) {
-            UserSessionService.putValueByKey('smToken',smGlobalValues.token);
+            UserSessionService.setValueByKey('smToken',smGlobalValues.token);
           }
         });
     }

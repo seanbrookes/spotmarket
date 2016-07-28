@@ -10,6 +10,7 @@ Ask.controller('AskMainController', [
   function($scope, $log, $http, $timeout, ProductServices, UserSessionService, AskServices, CommonServices) {
 
     $scope.askCtx = {
+      seller: {},
       productFilters: {
         productTypeDirectMatchCollection: [],
         productTypeIndirectMatchCollection: [],
@@ -17,6 +18,48 @@ Ask.controller('AskMainController', [
         productVariantIndirectMatchCollection: []
       }
     };
+    $scope.askCtx.seller.handleSuggestionHistory = [];
+    $scope.askCtx.seller.handleSuggestionHistoryIndex = 0;
+
+    $scope.askCtx.seller.handleSearchDefaultHandleAlphaOnly = false;
+    $scope.askCtx.refreshSuggestedHandle = function() {
+      var options = {aphaOnly:$scope.askCtx.seller.handleSearchDefaultHandleAlphaOnly};
+      $scope.askCtx.currentAsk.seller.handle = UserSessionService.generateNewUserTag(options)
+        .then(function(response) {
+          $scope.askCtx.currentAsk.seller.handle = response;
+          UserSessionService.addUserHandleSuggestionToHistory($scope.askCtx.currentAsk.seller.handle);
+          $scope.askCtx.seller.handleSuggestionHistoryIndex = 0;
+        });
+    };
+    $scope.askCtx.goBackOneHandleSuggestion = function() {
+      var currentHistory = $scope.askCtx.seller.handleSuggestionHistory = UserSessionService.getUserHandleSuggestionHistory();
+      var currentIndex = $scope.askCtx.seller.handleSuggestionHistoryIndex;
+
+      var historyLength = currentHistory.length;
+
+      if (historyLength > 0) {
+        if (currentIndex !== (historyLength - 1)) {
+          currentIndex = $scope.askCtx.seller.handleSuggestionHistoryIndex = (currentIndex + 1);
+          $scope.askCtx.currentAsk.seller.handle = currentHistory[currentIndex];
+        }
+
+      }
+    };
+    $scope.askCtx.goForwardOneHandleSuggestion = function() {
+      var currentHistory = $scope.askCtx.seller.handleSuggestionHistory = UserSessionService.getUserHandleSuggestionHistory();
+      var currentIndex = $scope.askCtx.seller.handleSuggestionHistoryIndex;
+
+      var historyLength = currentHistory.length;
+
+      if (historyLength > 0) {
+        if (currentIndex !== 0) {
+          currentIndex = $scope.askCtx.seller.handleSuggestionHistoryIndex = (currentIndex - 1);
+          $scope.askCtx.currentAsk.seller.handle = currentHistory[currentIndex];
+        }
+
+      }
+    };
+
     $scope.validationClassNames = {askSellerEmailInput: 'SellerInput--invalid'};
     $scope.lotCtx = {currentLot:{
       measure:'kg',

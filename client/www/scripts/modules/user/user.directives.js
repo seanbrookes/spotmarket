@@ -220,7 +220,7 @@ User.directive('smUserLogin', [
                 .then(function(response) {
                   if (response.authToken) {
                     // save the token
-                    UserSessionService.putValueByKey('smAuthToken', response.authToken);
+                    UserSessionService.setValueByKey('smAuthToken', response.authToken);
                     // clear the login
                     resetLoginCtx();
                     // redirect if necessary

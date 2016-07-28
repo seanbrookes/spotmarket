@@ -13,15 +13,22 @@
       </dl>
     </div>
     <form class="StandardForm">
-      <div class="StandardForm__FieldContainer">
-        <label>email (will not be disclosed or made public without your consent)</label>
+      <div class="AskForm__FieldContainer">
+        <label>email</label>
         <input type="text" placeholder="email" ng-class="validationClassNames.askSellerEmailInput" ng-model="askCtx.currentAsk.seller.email" />
+        <button class="LinkButton" title="This is the default way we will communicate with you (you can change that). It will not be disclosed or made public without your consent">why?</button>
       </div>
-      <div class="StandardForm__FieldContainer">
+      <div class="AskForm__FieldContainer">
         <label>seller handle</label>
         <input type="text" placeholder="seller handle" ng-model="askCtx.currentAsk.seller.handle" />
+        <button title="go back" ng-click="askCtx.goBackOneHandleSuggestion()"><</button>
+        <button title="go back" ng-click="askCtx.goForwardOneHandleSuggestion()">&gt;</button>
+
+        <button title="show me a new one" ng-click="askCtx.refreshSuggestedHandle()">S</button>
+        <label class="AskForm__CheckboxLabel"><input type="checkbox" ng-change="toggleHandleAlphaOnly()" ng-model="askCtx.seller.handleSearchDefaultHandleAlphaOnly">no numbers</label>
+        <button class="LinkButton" title="This as your public nickname.  We have made a suggestion for you but you can change it.  It has to be unique.  We are not in the business of name police and we encourage people to be creative but we reserve the right to prevent certain combinations if people complain.">what is this?</button>
       </div>
-      <div  class="StandardForm__FieldContainer">
+      <div  class="AskForm__FieldContainer">
         <label>I am selling:</label>
         <button uib-popover="{{dynamicPopover.content}}" popover-title="{{dynamicPopover.title}}">
           <span class="glyphicon glyphicon-question-sign"></span>
@@ -93,7 +100,7 @@
 
 
         <div>
-          <div ng-show="askCtx.currentAsk.productType" class="StandardForm__FieldContainer Layout">
+          <div ng-show="askCtx.currentAsk.productType" class="AskForm__FieldContainer Layout">
             <div class="StandardDropDownComponent Layout DropDownMenuParent">
               <input placeholder="variety" type="text" ng-model="askCtx.currentAsk.variant" />
 

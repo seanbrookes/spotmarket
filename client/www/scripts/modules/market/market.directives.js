@@ -433,7 +433,7 @@ Market.directive('smMarketGeoView', [
               updateMapCenter(position.geometry.coordinates[1], position.geometry.coordinates[0]);
               $scope.geoCtx.position = position;
               $scope.geoCtx.positionChoiceList = [];
-              UserSessionService.putValueByKey('smCurrentPosition', JSON.stringify($scope.geoCtx.position));
+              UserSessionService.setValueByKey('smCurrentPosition', JSON.stringify($scope.geoCtx.position));
               UserServices.updateCurrentUserPosition(position);
               return;
             }
@@ -583,7 +583,7 @@ Market.directive('smMarketMain', [
             $log.debug('|');
             $log.debug('|');
 
-            UserSessionService.putValueByKey('smSocketClientId', socketClientId);
+            UserSessionService.setValueByKey('smSocketClientId', socketClientId);
 
             //$log.debug('|   currentUser.smUserId', smGlobalValues.currentUser.smSocketClientId);
 
