@@ -18,6 +18,15 @@ Ask.controller('AskMainController', [
         productVariantIndirectMatchCollection: []
       }
     };
+    $scope.askCtx.isProductModeButtonClassActive = function(productMode) {
+      if (!$scope.askCtx.productMode) {
+        return false;
+      }
+      if (productMode === $scope.askCtx.productMode) {
+        return true;
+      }
+      return false;
+    };
     $scope.askCtx.seller.handleSuggestionHistory = [];
     $scope.askCtx.seller.handleSuggestionHistoryIndex = 0;
 
@@ -112,17 +121,14 @@ Ask.controller('AskMainController', [
       if (user.smAuthToken) {
         $scope.askCtx.currentAsk.seller.smAuthToken = user.smAuthToken;
       }
-      if (user.smUserTag) {
-        $scope.askCtx.currentAsk.seller.handle = user.smUserTag;
+      if (user.smHandle) {
+        $scope.askCtx.currentAsk.seller.handle = user.smHandle;
       }
       else {
         $scope.askCtx.currentAsk.seller.handle = UserSessionService.generateNewUserTag()
           .then(function(response) {
             $scope.askCtx.currentAsk.seller.handle = response;
           });
-      }
-      if (user.smHandle) {
-        $scope.askCtx.currentAsk.seller.smHandle = user.smHandle;
       }
 
       // check if user has user preferences for lot price option
@@ -138,6 +144,9 @@ Ask.controller('AskMainController', [
     };
     $scope.addLotPriceToAsk = function() {
       if ($scope.lotCtx.currentLot && $scope.lotCtx.currentLot.price &&  $scope.lotCtx.currentLot.size &&  $scope.lotCtx.currentLot.measure) {
+        if ($scope.askCtx.productMode) {
+          $scope.lotCtx.currentLot.productMode = $scope.askCtx.productMode;
+        }
         $scope.askCtx.currentAsk.lotPrices.push($scope.lotCtx.currentLot);
         resetCurrentLot();
       }
@@ -180,8 +189,19 @@ Ask.controller('AskMainController', [
         productVariantIndirectMatchCollection: []
       };
     }
+    $scope.askCtx.setCurrentProductMode = function(productMode) {
+     // $timeout(function() {
+        $scope.askCtx.productMode = productMode;
+        $scope.productCtx.isShowProductTypeMenu = false;
+        $scope.productCtx.isShowProductTypeMenu = false;
+
+    //  }, 75);
+    };
     $scope.askCtx.setCurrentProductType = function(productType) {
       $scope.askCtx.currentAsk.productType = productType.name;
+      if (productType.name === 'Beer Hops') {
+        $scope.askCtx.setCurrentProductMode('Hop Leaf');
+      }
       $scope.productCtx.currentProductVariants = productType.variants;
       $timeout(function() {
         resetProductTypeUIFilters();
@@ -257,18 +277,24 @@ Ask.controller('AskMainController', [
     };
 
     $scope.saveAsk = function() {
-      var userEmail = UserSessionService.getValueByKey('smEmail');
-      if (!userEmail) {
-        alert('| STOP!!!  we need your email before you can proceed');
-        return;
+      if ($scope.askCtx.currentAsk.seller.email) {
+        alert('| STOP!!! HAVEyour email - you can proceed');
+
+      }
+      // if local client state email isn't set then set it now
+      if (!UserSessionService.getValueByKey('smEmail')) {
+        UserSessionService.setValueByKey('smEmail', $scope.askCtx.currentAsk.seller.email);
+      }
+      if ($scope.askCtx.currentAsk.seller.handle) {
+        if (!UserSessionService.getValueByKey('smHandle')) {
+          UserSessionService.setValueByKey('smHandle', $scope.askCtx.currentAsk.seller.handle);
+        }
       }
       if ($scope.askCtx.currentAsk.productType) {
         var tempCurrentUser = UserSessionService.getCurrentUserFromClientState();
-        if (!tempCurrentUser.smAuthToken) {
-          $log.warn('you need to log in to post an ask');
-          return;
+        if (tempCurrentUser.smAuthToken) {
+          $scope.askCtx.currentAsk.seller.smAuthToken = tempCurrentUser.smAuthToken;
         }
-        $scope.askCtx.currentAsk.smToken = tempCurrentUser.smToken;
 
         var tempPos = JSON.parse(tempCurrentUser.smCurrentPosition);
         var tLon = parseFloat(tempPos.geometry.coordinates[0]);

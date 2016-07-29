@@ -1,6 +1,7 @@
 <div>
   <div>
-    <button ng-click="postAnAsk()">I have something to sell</button>
+    <button class="LinkButton" ng-show="currentUser.smHandle">{{currentUser.smHandle}}</button>
+    <button ng-click="startAnAsk()">I have something to sell</button>
     <sm-ask ng-show="activateAskForm"></sm-ask>
   </div>
   <div>

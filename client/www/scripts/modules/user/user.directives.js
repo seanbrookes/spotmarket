@@ -47,7 +47,7 @@ User.directive('smUserContactInput', [
 
           smSocket.emit('fetchUserTag');
 
-          smSocket.on('smUserTag', function(data) {
+          smSocket.on('smHandle', function(data) {
             //$log.debug('|');
             //$log.debug('|');
             //$log.debug('|  userTag', data);

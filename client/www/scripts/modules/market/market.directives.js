@@ -56,10 +56,10 @@ Market.directive('smMarketAskView', [
             lats = [];
             lngs = [];
 
-            var currentUser = UserSessionService.getCurrentUserFromClientState();
+            $scope.currentUser = UserSessionService.getCurrentUserFromClientState();
 
 
-            var currentPosition = JSON.parse(currentUser.smCurrentPosition);
+            var currentPosition = JSON.parse($scope.currentUser.smCurrentPosition);
 
             var filter = {
 
@@ -202,36 +202,36 @@ Market.directive('smMarketAskView', [
                   //  bounds: $scope.resetBounds,
                   //  markers: $scope.markers
                   //});
-                  $scope.hasResults = true;
-                  $timeout(function() {
-                    angular.extend($scope, {
-                      bounds: $scope.bounds,
-                      markers: $scope.markers,
-                      center: $scope.center,
-                      circle: $scope.circle
-                    });
-
-                  }, 400);
-                  $scope.toggleMapLoad = !$scope.toggleMapLoad;
+                  //$scope.hasResults = true;
+                  //$timeout(function() {
+                  //  angular.extend($scope, {
+                  //    bounds: $scope.bounds,
+                  //    markers: $scope.markers,
+                  //    center: $scope.center,
+                  //    circle: $scope.circle
+                  //  });
+                  //
+                  //}, 400);
+                  //$scope.toggleMapLoad = !$scope.toggleMapLoad;
                 }
                 else {
-                  northEast = [currentPosition.geometry.coordinates[1], currentPosition.geometry.coordinates[0]];
-                  southWest = [currentPosition.geometry.coordinates[1], currentPosition.geometry.coordinates[0]];
-
-                  $scope.bounds = mainUserMarketMap.getBounds();
-
-                  $scope.hasResults = false;
-//                      $scope.center.zoom = 8;
-
-
-                  //$timeout(function() {
-
-                  angular.extend($scope, {
-                    bounds: $scope.bounds,
-                    center: $scope.center,
-                    circle: $scope.circle
-                  });
-                  $scope.toggleMapLoad = !$scope.toggleMapLoad;
+//                  northEast = [currentPosition.geometry.coordinates[1], currentPosition.geometry.coordinates[0]];
+//                  southWest = [currentPosition.geometry.coordinates[1], currentPosition.geometry.coordinates[0]];
+//
+//                  $scope.bounds = mainUserMarketMap.getBounds();
+//
+//                  $scope.hasResults = false;
+////                      $scope.center.zoom = 8;
+//
+//
+//                  //$timeout(function() {
+//
+//                  angular.extend($scope, {
+//                    bounds: $scope.bounds,
+//                    center: $scope.center,
+//                    circle: $scope.circle
+//                  });
+//                  $scope.toggleMapLoad = !$scope.toggleMapLoad;
                   //}, 400);
                 }
                 //$scope.bounds = bounds;
@@ -592,17 +592,12 @@ Market.directive('smMarketMain', [
 
           $scope.activateAskForm = false;
 
-          $scope.postAnAsk = function() {
-            var currentUser = UserSessionService.getCurrentUserFromClientState();
-            if (!currentUser.smEmail) {
-              alert('| WARNING  we do not have your email address but you will need it before you can submit this ask');
+          $scope.startAnAsk = function() {
+            $scope.currentUser = UserSessionService.getCurrentUserFromClientState();
 
+            $log.debug('START AN ASK');
 
-            }
-
-            $log.debug('POST AN ASK');
-
-              $scope.activateAskForm = true;
+            $scope.activateAskForm = true;
             /*
             * In order to post an ask a user must register
             * should follow the process that craigslist does

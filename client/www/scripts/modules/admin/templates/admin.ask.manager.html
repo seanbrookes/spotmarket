@@ -5,7 +5,7 @@
     <li ng-repeat="ask in askAdminCtx.pendingAsks">
       <div class="PendingAskItemContainer">
         <div class="Layout">
-          <span>please review:</span><span>{{ask.headline}}</span>
+          <span>Headline:</span><span>{{ask.headline}}</span>
         </div>
         <div class="Layout">
           <span>Product Type</span><span>{{ask.productType}}</span>
@@ -14,10 +14,13 @@
           <span>Product Variant</span><span>{{ask.variant}}</span>
         </div>
         <div class="Layout">
-          <span>submission date</span><span>{{ask.createdDate}}</span>
+          <span>Submission Date</span><span>{{ask.createdDate}}</span>
         </div>
         <div class="Layout">
-          <span>seller</span><span>{{ask.variant}}</span>
+          <span>Seller</span><button class="LinkButton">{{ask.seller.handle}}</button>
+        </div>
+        <div class="Layout">
+          <span>Email</span><button class="LinkButton">{{ask.seller.email}}</button>
         </div>
       </div>
     </li>

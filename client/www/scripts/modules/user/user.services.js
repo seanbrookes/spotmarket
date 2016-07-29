@@ -22,7 +22,7 @@ User.service('UserServices', [
     };
     svc.updateCurrentUserPosition = function(position) {
       if (position && position.geometry) {
-        var userId = UserSessionService.getValueByKey('smUserTag');
+        var userId = UserSessionService.getValueByKey('smHandle');
         UserSessionService.getUserProfileById(userId)
           .then(function(responseUser) {
             responseUser.lastPosition = position;
@@ -260,7 +260,7 @@ User.service('UserSessionService', [
     };
     svc.setUserTag = function(userTag) {
       if (svc.isCookiesEnabled()) {
-        $cookies.put('smUserTag', userTag);
+        $cookies.put('smHandle', userTag);
         return true;
       }
       return false;
@@ -282,8 +282,8 @@ User.service('UserSessionService', [
     };
     svc.getCurrentUserTag = function() {
       var userTag;
-      if (svc.isCookiesEnabled() && $cookies.get('smUserTag')) {
-        userTag = $cookies.get('smUserTag');
+      if (svc.isCookiesEnabled() && $cookies.get('smHandle')) {
+        userTag = $cookies.get('smHandle');
       }
       return userTag;
     };
@@ -415,7 +415,7 @@ User.service('UserSessionService', [
     };
     svc.getCurrentUserFromClientState = function() {
       var user = {};
-      user.smUserTag = svc.getValueByKey('smUserTag');
+      user.smHandle = svc.getValueByKey('smHandle');
       user.smSessionId = svc.getValueByKey('smSessionId');
       user.smUserId = svc.getValueByKey('smUserId');
       user.smUserPreferences = svc.getValueByKey('smUserPreferences');

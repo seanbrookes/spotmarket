@@ -48,7 +48,7 @@ Main.constant('smGlobalConstants', {
 });
 /*
 
- - smUserTag ( semi persistent user id (initial socket client id))
+ - smHandle ( semi persistent user id (initial socket client id))
  - smSessionId ( session id )
  - smUserId ( unique user id associated with a ‘registration’ event / when we create a user account)
  - smEmail ( user primary email )
@@ -230,9 +230,9 @@ Main.run([
 
     /*
     *
-    * this is where we need to ensure we have a valid smUserTag
+    * this is where we need to ensure we have a valid smHandle
     * - check the cookie for user tracking information
-    * - smUserTag
+    * - smHandle
     * - smEmail
     * - smUserName
     * - smUserId

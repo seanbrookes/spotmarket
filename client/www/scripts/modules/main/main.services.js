@@ -28,7 +28,7 @@ Main.factory('smRequestInterceptor', [
 
     return {
       'request': function (config) {
-        var ut = $cookies.get('smUserTag');
+        var ut = $cookies.get('smHandle');
         var at = $cookies.get('smAccessToken');
 
 
