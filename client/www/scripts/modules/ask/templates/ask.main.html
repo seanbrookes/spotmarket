@@ -1,6 +1,6 @@
 <div ng-controller="AskMainController" class="ModuleContainer">
   <div class="MainCenteredContainer Layout">
-    <div>
+    <div> <!-- price display section -->
       <dl>
         <dt ng-show="askCtx.currentAsk.productType">what</dt>
         <dd ng-show="askCtx.currentAsk.productType">{{askCtx.currentAsk.productType}} - {{askCtx.currentAsk.variant}}</dd>
@@ -18,7 +18,7 @@
       <sm-lot-form ng-show="isShowAddLotPrice" currentAsk="askCtx.currentAsk"></sm-lot-form>
 
     </div>
-    <div>
+    <div><!-- ask form -->
       <form class="StandardForm">
         <div ng-hide="askCtx.currentAsk.seller.email" class="AskForm__FieldContainer">
           <label>email</label>
@@ -40,61 +40,25 @@
           <button uib-popover="{{dynamicPopover.content}}" popover-title="{{dynamicPopover.title}}">
             <span class="glyphicon glyphicon-question-sign"></span>
           </button>
-          <div class="Layout DropDownMenuParent">
-            <input type="text" class="AskHeadlineInput" ng-model="askCtx.currentAsk.productType"/>
-            <button ng-click="productCtx.toggleProductTypeMenu()"><span class="glyphicon glyphicon-circle-arrow-down"></span></button>
-            <div class="StandardDropDownMenuContainer" ng-show="productCtx.isShowProductTypeMenu">
-              <ul class="UDTADropDownList">
-                <li class="UDTADropDownListItem" ng-repeat="productType in productCtx.currentProductTypes | orderBy:'name' ">
-                  <button class="UDTADropDownListButton" ng-click="askCtx.setCurrentProductType(productType)">{{productType.name}}</button>
-                </li>
-              </ul>
-            </div>
-            <div class="DropDownMenuContainer">
-              <ul class="UDTADropDownList">
-                <li class="UDTADropDownListItem" ng-repeat="productType in askCtx.productFilters.productTypeDirectMatchCollection">
-                  <button class="UDTADropDownListButton" ng-click="askCtx.setCurrentProductType(productType)">{{productType.name}}</button>
-                </li>
-              </ul>
-              <ul class="UDTADropDownList">
-                <li class="UDTADropDownListItem" ng-repeat="productType in askCtx.productFilters.productTypeIndirectMatchCollection">
-                  <button class="UDTADropDownListButton" ng-click="askCtx.setCurrentProductType(productType)">{{productType.name}}</button>
-                </li>
-              </ul>
-            </div>
+
+
+
+          <div>
+            <sm-ui-auto-suggest label="Product Type" value="askCtx.currentAsk.productType" possible-values="productCtx.currentProductTypes"></sm-ui-auto-suggest>
           </div>
+          <div  ng-show="askCtx.currentAsk.productType">
+            <sm-ui-auto-suggest label="Variant" value="askCtx.currentAsk.variant" possible-values="productCtx.currentProductVariants"></sm-ui-auto-suggest>
+
+          </div>
+
+
+
+
+
        </div>
 
         <div>
-          <div>
-            <div ng-show="askCtx.currentAsk.productType" class="AskForm__FieldContainer Layout">
-              <div class="StandardDropDownComponent Layout DropDownMenuParent">
-                <input placeholder="variety" type="text" ng-model="askCtx.currentAsk.variant" />
 
-                <div class="DropDownMenuContainer">
-                  <ul class="UDTADropDownList">
-                    <li class="UDTADropDownListItem" ng-repeat="productVariant in askCtx.productFilters.productVariantDirectMatchCollection">
-                      <button class="UDTADropDownListButton" ng-click="askCtx.setCurrentProductVariant(productVariant)">{{productVariant.name}}</button>
-                    </li>
-                  </ul>
-                  <ul class="UDTADropDownList">
-                    <li class="UDTADropDownListItem" ng-repeat="productVariant in askCtx.productFilters.productVariantIndirectMatchCollection">
-                      <button class="UDTADropDownListButton" ng-click="askCtx.setCurrentProductVariant(productVariant)">{{productVariant.name}}</button>
-                    </li>
-                  </ul>
-
-                </div>
-                <button ng-click="productCtx.toggleProductSubTypeMenu()"><span class="glyphicon glyphicon-circle-arrow-down"></span></button>
-                <div class="StandardDropDownMenuContainer" ng-show="productCtx.isShowProductSubTypeMenu">
-                  <ul class="UDTADropDownList">
-                    <li class="UDTADropDownListItem" ng-repeat="productSubType in productCtx.currentProductSubTypes">
-                      <button class="UDTADropDownListButton" ng-click="askCtx.setCurrentProductSubType(productSubType)">{{productSubType.name}}</button>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
         <div>
           <label ng-show="!askCtx.currentAsk.productType">What are you selling?</label>
@@ -132,15 +96,49 @@
             <textarea ng-model="askCtx.currentAsk.details"></textarea>
           </div>
         </div>
-        <div class="Layout" >
-          <button ng-click="askCtx.clearCurrentAsk()">cancel</button>
-          <button ng-click="saveAsk()">save</button>
-        </div>
+
 
 
       </form>
     </div>
 
   </div>
-
+  <div class="Layout" >
+    <button ng-click="askCtx.clearCurrentAsk()">cancel</button>
+    <button ng-click="saveAsk()">save</button>
+  </div>
 </div>
+
+
+
+
+
+<!--
+
+          <div class="Layout DropDownMenuParent">
+            <input type="text" class="AskHeadlineInput" ng-model="askCtx.currentAsk.productType"/>
+            <button ng-click="productCtx.toggleProductTypeMenu()"><span class="glyphicon glyphicon-circle-arrow-down"></span></button>
+            <div class="StandardDropDownMenuContainer" ng-show="productCtx.isShowProductTypeMenu">
+              <ul class="UDTADropDownList">
+                <li class="UDTADropDownListItem" ng-repeat="productType in productCtx.currentProductTypes | orderBy:'name' ">
+                  <button class="UDTADropDownListButton" ng-click="askCtx.setCurrentProductType(productType)">{{productType.name}}</button>
+                </li>
+              </ul>
+            </div>
+            <div class="DropDownMenuContainer">
+              <ul class="UDTADropDownList">
+                <li class="UDTADropDownListItem" ng-repeat="productType in askCtx.productFilters.productTypeDirectMatchCollection">
+                  <button class="UDTADropDownListButton" ng-click="askCtx.setCurrentProductType(productType)">{{productType.name}}</button>
+                </li>
+              </ul>
+              <ul class="UDTADropDownList">
+                <li class="UDTADropDownListItem" ng-repeat="productType in askCtx.productFilters.productTypeIndirectMatchCollection">
+                  <button class="UDTADropDownListButton" ng-click="askCtx.setCurrentProductType(productType)">{{productType.name}}</button>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+
+
+-->

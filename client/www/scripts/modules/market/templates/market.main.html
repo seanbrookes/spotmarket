@@ -1,14 +1,17 @@
-<div>
-  <div>
-    <button class="LinkButton" ng-show="currentUser.smHandle">{{currentUser.smHandle}}</button>
-    <button ng-click="startAnAsk()">I have something to sell</button>
-    <sm-ask ng-show="activateAskForm"></sm-ask>
+<div ng-controller="MarketMainController">
+  <button class="LinkButton" ng-show="currentUser.smHandle">{{currentUser.smHandle}}</button>
+  <div class="Layout">
+    <button class="MarketViewButton" ng-class="{'MarketViewButton--active': marketCtx.isActiveView('MarketView')}" ng-click="marketCtx.activateView($event)" data-name="MarketView">What's for sale</button>
+    <button class="MarketViewButton" ng-class="{'MarketViewButton--active': marketCtx.isActiveView('AskView')}" ng-click="marketCtx.activateView($event)" data-name="AskView">I have something to sell</button>
+    <button class="MarketViewButton" ng-class="{'MarketViewButton--active': marketCtx.isActiveView('GeoView')}" ng-click="marketCtx.activateView($event)" data-name="GeoView">Where am I</button>
   </div>
-  <div>
-    <sm-market-ask-view></sm-market-ask-view>
+  <div class="MarketViewContainer" ng-class="{'MarketViewContainer--active': marketCtx.isActiveView('AskView')}">
+    <sm-ask></sm-ask>
+  </div>
+  <div class="MarketViewContainer" ng-class="{'MarketViewContainer--active': marketCtx.isActiveView('GeoView')}">
     <sm-market-geo-view></sm-market-geo-view>
   </div>
-  <div>
-
+  <div class="MarketViewContainer" ng-class="{'MarketViewContainer--active': marketCtx.isActiveView('MarketView')}">
+    <sm-market-ask-view></sm-market-ask-view>
   </div>
 </div>

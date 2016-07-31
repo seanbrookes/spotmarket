@@ -357,6 +357,23 @@ ul {
 .LotPricingContainer .LotSizeInput {
   width: 5rem;
 }
+.MarketViewContainer {
+  display: none;
+}
+.MarketViewContainer--active {
+  display: block;
+}
+.MarketViewButton {
+  border: 1px solid #dddddd;
+  border-radius: .6rem;
+  background: #e1e1e1;
+  color: #444444;
+}
+.MarketViewButton--active {
+  background: white;
+  color: #000063;
+  border-bottom: none;
+}
 .UserMarketMap--Main {
   height: 40rem;
   width: 40rem;

@@ -19,13 +19,101 @@ Admin.directive('smAdminAskManager', [
         '$log',
         'AskServices',
         'AdminServices',
-        function($scope, $log, AskServices, AdminServices) {
+        'orderByFilter',
+        function($scope, $log, AskServices, AdminServices, orderBy) {
 
           $scope.askAdminCtx = {pendingAsks:[]};
-          $scope.askAdminCtx.pendingAsks = AskServices.getPendingAsks()
-            .then(function(pendingAsks) {
-              $scope.askAdminCtx.pendingAsks = pendingAsks;
-            })
+          $scope.askAdminCtx.currentSortFilter = {
+            propertyName: 'createdDate',
+            displayName: 'Oldest First',
+            reverse: false
+          };
+          $scope.askAdminCtx.setSortFilter = function(filter) {
+            if (filter.propertyName) {
+              $scope.askAdminCtx.currentSortFilter = filter;
+            }
+          };
+          $scope.askAdminCtx.sortByFilters = [
+            {
+              propertyName: 'productType',
+              displayName: 'Product Type asc',
+              reverse: true
+            },
+            {
+              propertyName: 'productType',
+              displayName: 'Product Type desc',
+              reverse: false
+            },
+            {
+              propertyName: 'createdDate',
+              displayName: 'Oldest First',
+              reverse: false
+            },
+            {
+              propertyName: 'createdDate',
+              displayName: 'Newest First',
+              reverse: true
+            }
+
+          ];
+          function loadPendingAsks() {
+            $scope.askAdminCtx.pendingAsks = AskServices.getPendingAsks()
+              .then(function(pendingAsks) {
+                var localCollection = pendingAsks;
+                if (localCollection && localCollection.map) {
+                  localCollection.map(function(ask) {
+                    ask.displayTimeSince = moment(ask.createdDate);
+                  })
+                  localCollection = orderBy(localCollection, $scope.askAdminCtx.currentSortFilter.propertyName, $scope.askAdminCtx.currentSortFilter.reverse);
+                  $scope.askAdminCtx.pendingAsks = localCollection;
+                }
+              });
+          }
+          loadPendingAsks();
+          $scope.$watch('askAdminCtx.currentSortFilter', function(newVal, oldVal) {
+            var localCollection = $scope.askAdminCtx.pendingAsks;
+            if (localCollection && localCollection.map) {
+              localCollection.map(function(ask) {
+                ask.displayTimeSince = moment(ask.createdDate);
+              });
+              localCollection = orderBy(localCollection, $scope.askAdminCtx.currentSortFilter.propertyName, $scope.askAdminCtx.currentSortFilter.reverse);
+              $scope.askAdminCtx.pendingAsks = localCollection;
+            }
+
+          }, true);
+          //$scope.askAdminCtx.pendingAsks = AskServices.getPendingAsks()
+          //  .then(function(pendingAsks) {
+          //    var localCollection = pendingAsks;
+          //    if (localCollection && localCollection.map) {
+          //      localCollection.map(function(ask) {
+          //        ask.displayTimeSince = moment(ask.createdDate);
+          //      })
+          //    }
+          //    localCollection = orderBy(localCollection, $scope.askAdminCtx.currentSortFilter.propertyName, $scope.askAdminCtx.currentSortFilter.reverse);
+          //    $scope.askAdminCtx.pendingAsks = localCollection;
+          //  });
+
+          $scope.askAdminCtx.approveAsk = function(ask) {
+            // post ask to ask object
+            var refId = ask.id;
+            delete ask.id;
+            AskServices.saveAsk(ask)
+              .then(function(response) {
+                AskServices.deletePendingAsk(refId)
+                  .then(function(response) {
+                    loadPendingAsks();
+                  })
+                  .catch(function(error) {
+                    $log.warn('bad delete pending ask', error);
+                  });
+
+              })
+              .catch(function(error) {
+                $log.warn('| bad create ask')
+              });
+
+            // delete pendingAsk
+          };
 
 
       }]

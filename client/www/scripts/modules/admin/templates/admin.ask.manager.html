@@ -1,6 +1,13 @@
 <div>
   <p>Ask Manager</p>
   <p>Ask Approval Queue:</p>
+  <div>
+    <ul>
+      <li ng-repeat="filter in askAdminCtx.sortByFilters">
+        <button ng-click="askAdminCtx.setSortFilter(filter)">{{filter.displayName}}</button>
+      </li>
+    </ul>
+  </div>
   <ul>
     <li ng-repeat="ask in askAdminCtx.pendingAsks">
       <div class="PendingAskItemContainer">
@@ -15,12 +22,16 @@
         </div>
         <div class="Layout">
           <span>Submission Date</span><span>{{ask.createdDate}}</span>
+          <div am-time-ago="ask.createdDate"></div>
         </div>
         <div class="Layout">
           <span>Seller</span><button class="LinkButton">{{ask.seller.handle}}</button>
         </div>
         <div class="Layout">
           <span>Email</span><button class="LinkButton">{{ask.seller.email}}</button>
+        </div>
+        <div class="Layout FlexEnd">
+          <button ng-click="askAdminCtx.approveAsk(ask)">Approve</button>
         </div>
       </div>
     </li>

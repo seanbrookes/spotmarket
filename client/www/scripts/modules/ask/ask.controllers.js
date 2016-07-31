@@ -212,7 +212,6 @@ Ask.controller('AskMainController', [
         $scope.askCtx.currentAsk.headline += ' variety: ' +  $scope.askCtx.currentAsk.variant
       }
       $scope.productCtx.isShowProductTypeMenu = false;
-      $scope.productCtx.isShowProductTypeMenu = false;
     };
     $scope.askCtx.setCurrentProductVariant = function(productVariantObj) {
       $scope.askCtx.currentAsk.variant = productVariantObj.name;
@@ -316,78 +315,7 @@ Ask.controller('AskMainController', [
     };
 
 
-    function isUniqueProductTypeMatch(testName) {
-      if (!testName) {
-        return false;
-      }
-      if ($scope.askCtx.productFilters.productTypeDirectMatchCollection.length === 0) {
-        return true;
-      }
-      var isUnique = true;
-      var collection = $scope.askCtx.productFilters.productTypeDirectMatchCollection;
-      if (collection.map) {
-        collection.map(function(collectionType) {
-          if (testName.toLowerCase() === collectionType.name.toLowerCase()) {
-            isUnique = false;
-          }
-        });
-      }
-      return isUnique;
-    }
-    function isUniqueProductTypeIndirectMatch(testName) {
-      if (!testName) {
-        return false;
-      }
-      if ($scope.askCtx.productFilters.productTypeIndirectMatchCollection.length === 0) {
-        return true;
-      }
-      var isUnique = true;
-      var collection = $scope.askCtx.productFilters.productTypeIndirectMatchCollection;
-      if (collection.map) {
-        collection.map(function(collectionType) {
-          if (testName.toLowerCase() === collectionType.name.toLowerCase()) {
-            isUnique = false;
-          }
-        });
-      }
-      return isUnique;
-    }
-    function isUniqueProductVariantMatch(testName) {
-      if (!testName) {
-        return false;
-      }
-      if ($scope.askCtx.productFilters.productVariantDirectMatchCollection.length === 0) {
-        return true;
-      }
-      var isUnique = true;
-      var collection = $scope.askCtx.productFilters.productVariantDirectMatchCollection;
-      if (collection.map) {
-        collection.map(function(collectionType) {
-          if (testName.toLowerCase() === collectionType.name.toLowerCase()) {
-            isUnique = false;
-          }
-        });
-      }
-      return isUnique;
-    }
-    function isUniqueProductVariantIndirectMatch(testName) {
-      if (!testName) {
-        return false;
-      }
-      if ($scope.askCtx.productFilters.productVariantIndirectMatchCollection.length === 0) {
-        return true;
-      }
-      var isUnique = true;
-      var collection = $scope.askCtx.productFilters.productVariantIndirectMatchCollection;
-      if (collection.map) {
-        collection.map(function(collectionType) {
-          if (testName.toLowerCase() === collectionType.name.toLowerCase()) {
-            isUnique = false;
-          }
-        });
-      }
-      return isUnique;
-    }
+
     $scope.$watch('askCtx.currentAsk.seller.email', function(emailVal) {
       if (emailVal) {
 
@@ -427,41 +355,41 @@ Ask.controller('AskMainController', [
         resetProductTypeUIFilters();
         return;
       }
-      if ($scope.productCtx.currentProductVariants && ($scope.productCtx.currentProductVariants.length > 0)) {
-        var collection = $scope.productCtx.currentProductVariants;
-
-        var isMatched = false;
-        collection.map(function(type) {
-          var collectionName = type.name.toLowerCase();
-          var comparisonName = newVal.toLowerCase();
-          if (collectionName.indexOf(comparisonName) === 0) {
-            $log.debug('direct variety match', comparisonName);
-            isMatched = true;
-            if (isUniqueProductVariantMatch(collectionName)) {
-
-              $timeout(function() {
-                $scope.askCtx.productFilters.productVariantDirectMatchCollection.push(type);
-              }, 50);
-            }
-          }
-          if (collectionName.indexOf(comparisonName) > 0) {
-            $log.debug('indeirect variety match', comparisonName);
-            isMatched = true;
-            if (isUniqueProductVariantIndirectMatch(collectionName)) {
-
-              $timeout(function() {
-                $scope.askCtx.productFilters.productVariantIndirectMatchCollection.push(type);
-              }, 50);
-            }
-          }
-        });
-        //if (!isMatched) {
-        //
-        //  resetProductTypeUIFilters();
-        //
-        //}
-
-      }
+      //if ($scope.productCtx.currentProductVariants && ($scope.productCtx.currentProductVariants.length > 0)) {
+      //  var collection = $scope.productCtx.currentProductVariants;
+      //
+      //  var isMatched = false;
+      //  collection.map(function(type) {
+      //    var collectionName = type.name.toLowerCase();
+      //    var comparisonName = newVal.toLowerCase();
+      //    if (collectionName.indexOf(comparisonName) === 0) {
+      //      $log.debug('direct variety match', comparisonName);
+      //      isMatched = true;
+      //      if (isUniqueProductVariantMatch(collectionName)) {
+      //
+      //        $timeout(function() {
+      //          $scope.askCtx.productFilters.productVariantDirectMatchCollection.push(type);
+      //        }, 50);
+      //      }
+      //    }
+      //    if (collectionName.indexOf(comparisonName) > 0) {
+      //      $log.debug('indeirect variety match', comparisonName);
+      //      isMatched = true;
+      //      if (isUniqueProductVariantIndirectMatch(collectionName)) {
+      //
+      //        $timeout(function() {
+      //          $scope.askCtx.productFilters.productVariantIndirectMatchCollection.push(type);
+      //        }, 50);
+      //      }
+      //    }
+      //  });
+      //  //if (!isMatched) {
+      //  //
+      //  //  resetProductTypeUIFilters();
+      //  //
+      //  //}
+      //
+      //}
       /*
       *
       *       $scope.askCtx.productFilters = {
@@ -471,49 +399,64 @@ Ask.controller('AskMainController', [
       * */
     }, true);
     $scope.$watch('askCtx.currentAsk.productType', function(newVal, oldVal) {
-      $log.debug('|  Updated Product Type Name Search Value', newVal);
-      resetProductTypeUIFilters();
-      if (!newVal || newVal.length < 1) {
-        resetProductTypeUIFilters();
-        return;
-      }
-      if ($scope.productCtx.currentProductTypes && ($scope.productCtx.currentProductTypes.length > 0)) {
-        var collection = $scope.productCtx.currentProductTypes;
+      if (newVal && newVal.length > 0) {
+        // check for variants
+        $log.debug('/|  here we need to check for variants');
+        $scope.productCtx.currentProductTypes.map(function(productType) {
+          if (productType.name === newVal) {
+            if (productType.variants) {
+              $scope.productCtx.currentProductVariants = productType.variants;
 
-        var isMatched = false;
-        collection.map(function(type) {
-          var collectionName = type.name.toLowerCase();
-          var comparisonName = newVal.toLowerCase();
-          if (collectionName.indexOf(comparisonName) === 0) {
-            $log.debug('direct match', comparisonName);
-            isMatched = true;
-            if (isUniqueProductTypeMatch(collectionName)) {
-
-              $timeout(function() {
-                $scope.askCtx.productFilters.productTypeDirectMatchCollection.push(type);
-              }, 50);
-            }
-          }
-          if (collectionName.indexOf(comparisonName) > 0) {
-            $log.debug('indeirect match', comparisonName);
-            isMatched = true;
-            if (isUniqueProductTypeIndirectMatch(collectionName)) {
-
-              $timeout(function() {
-                $scope.askCtx.productFilters.productTypeIndirectMatchCollection.push(type);
-              }, 50);
             }
           }
         });
-        //if (!isMatched) {
-        //
-        //  resetProductTypeUIFilters();
-        //
-        //}
-
       }
-
     }, true);
+
+    //$scope.$watch('askCtx.currentAsk.productType', function(newVal, oldVal) {
+    //  $log.debug('|  Updated Product Type Name Search Value', newVal);
+    //  resetProductTypeUIFilters();
+    //  if (!newVal || newVal.length < 1) {
+    //    resetProductTypeUIFilters();
+    //    return;
+    //  }
+    //  if ($scope.productCtx.currentProductTypes && ($scope.productCtx.currentProductTypes.length > 0)) {
+    //    var collection = $scope.productCtx.currentProductTypes;
+    //
+    //    var isMatched = false;
+    //    collection.map(function(type) {
+    //      var collectionName = type.name.toLowerCase();
+    //      var comparisonName = newVal.toLowerCase();
+    //      if (collectionName.indexOf(comparisonName) === 0) {
+    //        $log.debug('direct match', comparisonName);
+    //        isMatched = true;
+    //        if (isUniqueProductTypeMatch(collectionName)) {
+    //
+    //          $timeout(function() {
+    //            $scope.askCtx.productFilters.productTypeDirectMatchCollection.push(type);
+    //          }, 50);
+    //        }
+    //      }
+    //      if (collectionName.indexOf(comparisonName) > 0) {
+    //        $log.debug('indeirect match', comparisonName);
+    //        isMatched = true;
+    //        if (isUniqueProductTypeIndirectMatch(collectionName)) {
+    //
+    //          $timeout(function() {
+    //            $scope.askCtx.productFilters.productTypeIndirectMatchCollection.push(type);
+    //          }, 50);
+    //        }
+    //      }
+    //    });
+    //    //if (!isMatched) {
+    //    //
+    //    //  resetProductTypeUIFilters();
+    //    //
+    //    //}
+    //
+    //  }
+    //
+    //}, true);
 
 
 
