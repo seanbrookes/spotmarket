@@ -21,8 +21,13 @@
           <span>Product Variant</span><span>{{ask.variant}}</span>
         </div>
         <div class="Layout">
-          <span>Submission Date</span><span>{{ask.createdDate}}</span>
-          <div am-time-ago="ask.createdDate"></div>
+          <span>City/Town</span><span>{{ask.address.city}}</span>
+        </div>
+        <div class="Layout">
+          <span>State</span><span>{{ask.address.state}}</span>
+        </div>
+        <div class="Layout">
+          <span>Submission Date</span><span am-time-ago="ask.createdDate"></span>
         </div>
         <div class="Layout">
           <span>Seller</span><button class="LinkButton">{{ask.seller.handle}}</button>
@@ -31,6 +36,7 @@
           <span>Email</span><button class="LinkButton">{{ask.seller.email}}</button>
         </div>
         <div class="Layout FlexEnd">
+          <button class="LinkButton" ng-click="askAdminCtx.deletePendingAsk(ask)">Delete</button>
           <button ng-click="askAdminCtx.approveAsk(ask)">Approve</button>
         </div>
       </div>

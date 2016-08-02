@@ -1,11 +1,12 @@
 Market.controller('MarketMainController', [
   '$scope',
   '$log',
-  function($scope, $log) {
+  'MARKET_CONST',
+  function($scope, $log, MARKET_CONST) {
     $log.debug('Market Controller');
 
     $scope.marketCtx = {
-      activeView: 'MarketView'
+      activeView: MARKET_CONST.ASK_VIEW
     };
     function isValidView(event) {
       var retVar = false;
@@ -28,7 +29,7 @@ Market.controller('MarketMainController', [
       }
     };
     $scope.marketCtx.isActiveView = function(viewName) {
-      return viewName == $scope.marketCtx.activeView;
+      return viewName === $scope.marketCtx.activeView;
     }
 
   }

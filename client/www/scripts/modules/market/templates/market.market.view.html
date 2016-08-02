@@ -1,0 +1,43 @@
+<div>
+  <div ng-show="!currentUser.smCurrentPosition">
+    <p>you haven't specified a region you are interested in.  You can do that <button class="LinkButton">here</button></p>
+
+
+    <p>or you can <button class="LinkButton">see everything</button></p>
+  </div>
+  <div ng-show="currentUser.smCurrentPosition">
+    <h2>What is for sale within</h2>
+    <input type="text" ng-model="marketRangeKms" />kms?
+    <br />
+    <button ng-click="updateMarketRange()">update range</button>
+    <input type="range" min="0" max="10000" ng-model="marketRangeKms" ng-change="sliderUpdateMarketRange()"/>
+    <h3>The following is for sale</h3>
+    <div class="Layout">
+      <div>
+        <ul>
+          <li ng-repeat="ask in marketAsks">
+            <div class="Layout">
+              <span class="NameLabel">What</span>
+              <span>{{ask.productType}} - {{ask.variant}}</span>
+            </div>
+            <div class="Layout">
+              <span class="NameLabel">Seller</span>
+              <span><button class="LinkButton">{{ask.seller.handle}}</button></span>
+            </div>
+            <div class="Layout">
+              <span class="NameLabel">Where</span>
+              <span>{{ask.address.city}}:{{ask.address.state}}</span>
+            </div>
+          </li>
+        </ul>
+
+      </div>
+      <div id="MarketMap">
+        <div id="UserMarketMap" class="UserMarketMap--Main"></div>
+        <!--<leaflet id="UserMarketMain" layers="layers" markers="markers" center="center" bounds="bounds" height="500px" width="500px"></leaflet>-->
+        <!--<leaflet ng-show="!hasResults" id="UserMarketCentered" markers="markers" center="center" height="500px" width="500px"></leaflet>-->
+      </div>
+
+    </div>
+  </div>
+</div>

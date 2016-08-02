@@ -1,0 +1,69 @@
+<div class="GeoSection">
+  <!--
+
+    LOCATION HISTORY
+
+   -->
+  <div class="GeoSection__Container">
+    <label ng-show="geoCtx.position">Your current position is {{geoCtx.position.address.city}}, {{geoCtx.position.address.state}}</label>
+    <button>clear my current position</button>
+    <div>
+      location history goes here
+      <ul>
+        <li ng-repeat="location in geoCtx.locationHistory">
+          <button class="LinkButton">
+            {{location.location.address.city}}, {{location.location.address.state}}
+          </button>
+          <span am-time-ago="location.displayTimeSince"></span>
+          <button class="LinkButton" ng-click="geoCtx.deleteLocationHistory(location)">(X)</button>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+  <!--
+
+    GEO LOOKUP
+
+   -->
+  <div class="GeoSection__Container">
+    <p>
+      <button ng-hide="geoCtx.isLookingUpCurrentLocation" ng-click="getMyPosition()">Use GPS </button>
+      <span>(requires your permission)</span>
+
+    <div ng-show="geoCtx.isLookingUpCurrentLocation">Ascertaining current location..</div>
+    </p>
+  </div>
+
+
+
+  <!--
+
+    DESCRIBE LOCATION FOR LOOKUP
+
+   -->
+  <div class="GeoSection__Container">
+    <p>if not how about describing your location: maybe a city or state, country?</p>
+    <textarea ng-model="geoCtx.lookupAddress"></textarea>
+    <button ng-click="lookupTargetAddress()">look it up</button>
+    <div ng-show="geoCtx.positionChoiceList">
+      <ul>
+        <li ng-repeat="position in geoCtx.positionChoiceList">
+          <button ng-click="selectThisPosition(position)">{{position.display_name}}</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+
+  <!--
+
+  CHOOSE YOUR POSITION FROM A MAP
+
+  -->
+  <div class="GeoSection__Container">
+    <p>if not how about pointing to it on a map?</p>
+    <div id="FindMeMap" class="FindMeMap--Main"></div>
+  </div>
+
+</div>

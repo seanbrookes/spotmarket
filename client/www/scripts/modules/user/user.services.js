@@ -62,6 +62,7 @@ User.service('UserServices', [
 
       }
     };
+
     svc.saveUser = function(user) {
       if (!user.createdDate) {
         user.createdDate = (new Date).getTime();
@@ -150,7 +151,8 @@ User.service('UserSessionService', [
   '$log',
   '$timeout',
   '$http',
-  function(UserProfile, $cookies, $log, $timeout, $http) {
+  'UserLocation',
+  function(UserProfile, $cookies, $log, $timeout, $http, UserLocation) {
 
     var svc = this;
     var userName = '';
@@ -231,7 +233,44 @@ User.service('UserSessionService', [
       //  return 'LikeBison09';
       //})
     };
+    svc.getLocationHistory = function(filter) {
+      if (!filter) {
+        filter = {};
+      }
+      return UserLocation.find(filter)
+        .$promise
+        .then(function(responseLocations) {
+          $log.debug('got location history', responseLocations);
+          return responseLocations;
+        })
+        .catch(function(error) {
+          $log.warn('bad find location history');
+        });
+    };
+    svc.deleteLocationHistoryById = function(id) {
+      return UserLocation.deleteById({id:id})
+        .$promise
+        .then(function(response) {
+          return response;
+        })
+        .catch(function(error) {
+          $log.warn('bad delete location history', error);
+        });
+    };
+    svc.getCurrentUserLocationHistory = function() {
 
+      // get current user id
+      return svc.getCurrentUserByToken()
+        .then(function(currentUser) {
+          var locationHistoryFilter = {
+            userId:currentUser.id
+          };
+          return svc.getLocationHistory(locationHistoryFilter)
+            .then(function(locationHistoryResponse) {
+              return locationHistoryResponse;
+            });
+        });
+    };
     // User Name
     svc.setUserName = function(username) {
       if (username) {

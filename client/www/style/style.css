@@ -316,6 +316,15 @@ ul {
   flex-direction: row;
   justify-content: center;
 }
+.GeoSection {
+  padding: 1rem;
+}
+.GeoSection .GeoSection__Container {
+  border: 1px solid #dddddd;
+  border-radius: .7rem;
+  padding: .7rem;
+  margin-top: .5rem;
+}
 .SellerInput--invalid {
   border: 1px solid red;
 }
@@ -377,6 +386,10 @@ ul {
 .UserMarketMap--Main {
   height: 40rem;
   width: 40rem;
+}
+.FindMeMap--Main {
+  height: 30rem;
+  width: 70rem;
 }
 .PendingAskItemContainer {
   padding: .3rem;

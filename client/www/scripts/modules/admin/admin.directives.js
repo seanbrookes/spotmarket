@@ -63,7 +63,7 @@ Admin.directive('smAdminAskManager', [
                 if (localCollection && localCollection.map) {
                   localCollection.map(function(ask) {
                     ask.displayTimeSince = moment(ask.createdDate);
-                  })
+                  });
                   localCollection = orderBy(localCollection, $scope.askAdminCtx.currentSortFilter.propertyName, $scope.askAdminCtx.currentSortFilter.reverse);
                   $scope.askAdminCtx.pendingAsks = localCollection;
                 }
@@ -112,11 +112,27 @@ Admin.directive('smAdminAskManager', [
                 $log.warn('| bad create ask')
               });
 
-            // delete pendingAsk
+
           };
+          $scope.askAdminCtx.deletePendingAsk = function(ask) {
+            if (ask.id) {
+              if (confirm('delete this pending ask?')) {
+                // TODO track this
+                AskServices.deletePendingAsk(ask.id)
+                  .then(function(response) {
+                    loadPendingAsks();
+                  })
+                  .catch(function(error) {
+                    $log.warn('bad delete pending ask', error);
+                  });
+              }
+            }
+
+          };
+        }
 
 
-      }]
+      ]
     }
   }
 ]);

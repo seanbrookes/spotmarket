@@ -5,13 +5,13 @@
     <button class="MarketViewButton" ng-class="{'MarketViewButton--active': marketCtx.isActiveView('AskView')}" ng-click="marketCtx.activateView($event)" data-name="AskView">I have something to sell</button>
     <button class="MarketViewButton" ng-class="{'MarketViewButton--active': marketCtx.isActiveView('GeoView')}" ng-click="marketCtx.activateView($event)" data-name="GeoView">Where am I</button>
   </div>
+  <div class="MarketViewContainer" ng-class="{'MarketViewContainer--active': marketCtx.isActiveView('MarketView')}">
+    <sm-market-market-view active-view="marketCtx.activeView"></sm-market-market-view>
+  </div>
   <div class="MarketViewContainer" ng-class="{'MarketViewContainer--active': marketCtx.isActiveView('AskView')}">
-    <sm-ask></sm-ask>
+    <sm-ask-market-view active-view="marketCtx.activeView"></sm-ask-market-view>
   </div>
   <div class="MarketViewContainer" ng-class="{'MarketViewContainer--active': marketCtx.isActiveView('GeoView')}">
-    <sm-market-geo-view></sm-market-geo-view>
-  </div>
-  <div class="MarketViewContainer" ng-class="{'MarketViewContainer--active': marketCtx.isActiveView('MarketView')}">
-    <sm-market-ask-view></sm-market-ask-view>
+    <sm-geo-market-view active-view="marketCtx.activeView"></sm-geo-market-view>
   </div>
 </div>
