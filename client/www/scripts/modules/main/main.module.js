@@ -19,6 +19,7 @@ var Main = angular.module('Main', [
   'angularMoment',
   'leaflet-directive',
   'lbServices',
+  'ngFileUpload',
   'UI',
   'ngCookies',
   'Acme',

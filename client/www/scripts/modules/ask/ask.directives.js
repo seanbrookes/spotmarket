@@ -24,8 +24,9 @@ Ask.directive('smAskMarketView', [
         'ProductServices',
         'AskServices',
         'GeoServices',
+        'Upload',
         'MARKET_CONST',
-        function($scope, $http, $timeout, ProductServices, AskServices, GeoServices, MARKET_CONST) {
+        function($scope, $http, $timeout, ProductServices, AskServices, GeoServices, Upload, MARKET_CONST) {
 
           $scope.askCtx = {
             viewName: MARKET_CONST.ASK_VIEW,
@@ -46,6 +47,26 @@ Ask.directive('smAskMarketView', [
             variant: '',
             headline: '',
             lotPrices: []
+          };
+
+          $scope.uploadPic = function(file) {
+            var currentUser = UserSessionService.getCurrentUserFromClientState();
+            file.upload = Upload.upload({
+              url: 'http://localhost:4546/upload',
+              data: { file: file, smToken: currentUser.smToken }
+            });
+
+            file.upload.then(function (response) {
+              $timeout(function () {
+                file.result = response.data;
+              });
+            }, function (response) {
+              if (response.status > 0)
+                $scope.errorMsg = response.status + ': ' + response.data;
+            }, function (evt) {
+              // Math.min is to fix IE which reports 200% sometimes
+              file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+            });
           };
 
           $scope.init = function(user) {
@@ -118,11 +139,28 @@ Ask.directive('smAskMarketView', [
             title: 'Lot size metric'
           };
 
+          /*
+          *
+          * LOT CTX
+          *
+          * */
          $scope.lotCtx = {
            currentLot:{
             measure:'kg',
             size:1
           }};
+          $scope.lotCtx.measureOptions = [
+            {value: 'bale'},
+            {value: 'gram'},
+            {value: 'kg'},
+            {value: 'lb'},
+            {value: 'ml'},
+            {value: 'litre'},
+            {value: 'oz (us)'},
+            {value: 'oz (imp)'},
+            {value: 'ton'},
+            {value: 'other'}
+          ];
 
 
           function resetCurrentLot() {
@@ -159,6 +197,20 @@ Ask.directive('smAskMarketView', [
               return true;
             }
             return false;
+          };
+          /*
+          *
+          *
+          * IMAGE UPLOAD
+          *
+          *
+          * */
+          $scope.askCtx.startImageUpload = function() {
+            $log.debug('start the image upload flow for current ask');
+            // open modal
+          };
+          $scope.askCtx.imgUploadDataChanged = function() {
+            $log.debug('image upload data changed');
           };
 
           /*
@@ -385,6 +437,7 @@ Ask.directive('smAskMarketView', [
         }
       ],
       link: function(scope, el, attrs) {
+
         scope.$watch('askCtx.currentAsk.seller.email', function(emailVal) {
           if (emailVal) {
 

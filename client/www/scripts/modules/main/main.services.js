@@ -28,20 +28,13 @@ Main.factory('smRequestInterceptor', [
 
     return {
       'request': function (config) {
-        var ut = $cookies.get('smHandle');
-        var at = $cookies.get('smAccessToken');
+        var ut = $cookies.get('smToken');
+        var at = $cookies.get('smAuthToken');
 
-
-
-         //$log.debug('HTTP request intercepted', config);
-
-        //if (at) {
-        //  if (isLocal(config.url, $location.host())) {
-        //    config.headers.authorization = at;
-        //  } else {
-        //    delete config.headers.authorization;
-        //  }
-        //}
+        config.headers['sm-token'] = ut;
+        if (at) {
+          config.headers['sm-auth-token'] = at;
+        }
 
         return config;
       },
