@@ -52,8 +52,8 @@ Ask.directive('smAskMarketView', [
           $scope.uploadPic = function(file) {
             var currentUser = UserSessionService.getCurrentUserFromClientState();
             file.upload = Upload.upload({
-              url: 'http://localhost:4546/upload',
-              data: { file: file, smToken: currentUser.smToken }
+              url: 'http://localhost:4546/askupload',
+              data: { file: file, smToken: currentUser.smToken, askId: 'booga-booga-googa' }
             });
 
             file.upload.then(function (response) {
