@@ -41,7 +41,7 @@ Market.directive('smMarketMarketView', [
 
           $scope.currentUser = UserSessionService.getCurrentUserFromClientState();
           if (!$scope.currentUser.smCurrentPosition) {
-            alert('message from MarketView: There is no current position!!!');
+           // alert('message from MarketView: There is no current position!!!');
             //return;
           }
 

@@ -85,7 +85,7 @@ Ask.directive('smAskMarketView', [
               user = UserSessionService.getCurrentUserFromClientState();
             }
             if (!user.smCurrentPosition) {
-              alert('Message from AskController we do not have a default location');
+              //alert('Message from AskController we do not have a default location');
             }
 
             if (user.smEmail) {
@@ -379,7 +379,7 @@ Ask.directive('smAskMarketView', [
           };
           $scope.saveAsk = function() {
             if ($scope.askCtx.currentAsk.seller.email) {
-              alert('| STOP!!! HAVEyour email - you can proceed');
+              //alert('| STOP!!! HAVEyour email - you can proceed');
 
             }
             // if local client state email isn't set then set it now
