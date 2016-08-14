@@ -169,31 +169,23 @@ ul {
 .Title__TagImage {
   height: 3.6rem;
 }
-.PageHeader {
-  padding-bottom: 9px;
-  justify-content: flex-start;
-}
 .PageHeader .Branding {
-  width: 7rem;
   margin-left: 2rem;
   padding: .5rem;
   border-radius: 6rem;
-  display: flex;
-  justify-content: center;
-  align-content: center;
 }
 .PageHeader .Branding .logo {
   height: 3.2rem;
+  padding: .5rem;
 }
 .PageHeader .Title h1 {
   text-transform: uppercase;
   color: #162071;
   margin: 0;
-  font-size: 180%;
+  font-size: 170%;
   font-family: Tahoma, "Trebuchet MS", Verdana, sans-serif;
 }
 .PageHeader .Title .Title__SubTitle {
-  margin-left: 26rem;
   color: #555555;
   font-size: 120%;
   font-family: "Lantinghei SC", "Comic Sans MS", sans-serif;
@@ -248,6 +240,9 @@ ul {
 .BodyHeadline {
   font-size: 270%;
   font-weight: 400;
+}
+.WelcomeMarket {
+  background-color: rgba(220, 220, 220, 0.6);
 }
 .HopBines {
   background-image: url('images/hop-bines.jpg');
@@ -325,6 +320,9 @@ ul {
   padding: .7rem;
   margin-top: .5rem;
 }
+#FindMapRefreshButton {
+  float: right;
+}
 .SellerInput--invalid {
   border: 1px solid red;
 }
@@ -366,6 +364,15 @@ ul {
 .LotPricingContainer .LotSizeInput {
   width: 5rem;
 }
+.AskWizardContainer__Item {
+  height: 12rem;
+  width: 10rem;
+  padding: 1rem;
+  margin: 0 3rem 0 3rem;
+}
+.AskWizardContainer__WhatItem {
+  background-image: url("images/question-mark.jpg");
+}
 .MarketViewContainer {
   display: none;
 }
@@ -382,6 +389,11 @@ ul {
   background: white;
   color: #000063;
   border-bottom: none;
+}
+.MarketAskList .MarketAskList__Card {
+  margin: .4rem 0 .2rem 0;
+  border: 1px solid #eeeeee;
+  border-radius: .4rem;
 }
 .UserMarketMap--Main {
   height: 40rem;

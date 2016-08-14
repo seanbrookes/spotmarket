@@ -5,13 +5,14 @@
 
    -->
   <div class="GeoSection__Container">
-    <label ng-show="geoCtx.position">Your current position is {{geoCtx.position.address.city}}, {{geoCtx.position.address.state}}</label>
+    <sm-geo-current-location-display></sm-geo-current-location-display>
+    <label ng-show="geoCtx.position">Your current position is {{geoCtx.currentLocationString}}</label>
     <button>clear my current position</button>
     <div>
       location history goes here
       <ul>
         <li ng-repeat="location in geoCtx.locationHistory">
-          <button class="LinkButton">
+          <button class="LinkButton" ng-click="geoCtx.setCurrentUserPosition(location)">
             {{location.location.address.city}}, {{location.location.address.state}}
           </button>
           <span am-time-ago="location.displayTimeSince"></span>
@@ -62,6 +63,7 @@
 
   -->
   <div class="GeoSection__Container">
+    <button id="FindMapRefreshButton" ng-click="geoCtx.refreshFindMeMap()">@</button>
     <p>if not how about pointing to it on a map?</p>
     <div id="FindMeMap" class="FindMeMap--Main"></div>
   </div>

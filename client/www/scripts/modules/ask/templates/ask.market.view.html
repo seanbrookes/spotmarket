@@ -1,4 +1,18 @@
 <div class="ModuleContainer">
+  <div class="AskWizardContainer Center Layout">
+    <div class="AskWizardContainer__Item AskWizardContainer__WhatItem">
+      What are you selling?
+
+    </div>
+    <div class="AskWizardContainer__Item AskWizardContainer__WhereItem">
+      Where are you selling it from?
+
+    </div>
+    <div class="AskWizardContainer__Item AskWizardContainer__PriceItem">
+      How much are you asking for it?
+
+    </div>
+  </div>
   <div class="MainCenteredContainer Layout">
     <div> <!-- price display section -->
       <dl>
@@ -134,7 +148,7 @@
   </div>
   <div class="Layout" >
     <button ng-click="askCtx.clearCurrentAsk()">cancel</button>
-    <button ng-click="saveAsk()">save</button>
+    <button ng-disabled="!askCtx.isCurrentAskValid()" ng-click="saveAsk()">save</button>
   </div>
 </div>
 

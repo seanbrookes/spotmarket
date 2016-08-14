@@ -30,6 +30,7 @@ Geo.directive('smGeoMarketView', [
           $scope.geoCtx = {
             viewName: MARKET_CONST.GEO_VIEW,
             position:{},
+            currentLocationString: '',
             positionChoiceList: [],
             isLookingUpCurrentLocation: false
           };
@@ -108,12 +109,20 @@ Geo.directive('smGeoMarketView', [
               }
             }
           };
+          $scope.geoCtx.refreshFindMeMap = function() {
+            $scope.geoCtx.init();
+          };
+          $scope.geoCtx.setCurrentUserPosition = function(location) {
+            $log.debug('| Set my position', location.location);
+            UserServices.updateCurrentUserPosition(location.location);
+            $scope.geoCtx.init();
+          };
 
 
           $scope.getMyPosition = function() {
             var geoX = {};
             $scope.geoCtx.isLookingUpCurrentLocation = true;
-            GeoServices.getCurrentPosition()
+            GeoServices.getCurrentGPSPosition()
               .then(function(location) {
                 $log.debug('my current location', location);
                 // reverse lookup to get the name
@@ -131,7 +140,7 @@ Geo.directive('smGeoMarketView', [
                         },
                         "address": assignAddressCity(reverseLookupResponse.address)
                       };
-                      $log.debug('getCurrentPosition', geoX);
+                      $log.debug('getCurrentGPSPosition', geoX);
                       updateMapCenter(geoX.geometry.coordinates[1], geoX.geometry.coordinates[0]);
                       $scope.geoCtx.position = geoX;
                       UserServices.updateCurrentUserPosition(geoX);
@@ -181,7 +190,7 @@ Geo.directive('smGeoMarketView', [
                     },
                     "address": assignAddressCity(reverseLookupResponse.address)
                   };
-                  $log.debug('getCurrentPosition', geoX);
+                  $log.debug('getCurrentGPSPosition', geoX);
                   updateMapCenter(geoX.geometry.coordinates[1], geoX.geometry.coordinates[0]);
                   $scope.geoCtx.position = geoX;
                   UserServices.updateCurrentUserPosition(geoX);
@@ -235,18 +244,32 @@ Geo.directive('smGeoMarketView', [
 
             }
           };
-          $scope.init = function() {
+          $scope.geoCtx.init = function() {
             // check for current postion
+            $timeout(function() {
             var tempCurrentUser = UserSessionService.getCurrentUserFromClientState();
+            var findMeMapCenter = {
+
+            };
             if (tempCurrentUser.smCurrentPosition) {
               tempCurrentUser.smCurrentPosition = JSON.parse(tempCurrentUser.smCurrentPosition);
               $scope.geoCtx.position = tempCurrentUser.smCurrentPosition;
-
-              loadLocationHistory();
               updateMapCenter(tempCurrentUser.smCurrentPosition.geometry.coordinates[1], tempCurrentUser.smCurrentPosition.geometry.coordinates[0]);
 
+
+                $scope.geoCtx.currentLocationString = $scope.geoCtx.position.address.city + ', ' + $scope.geoCtx.position.address.state;
+
+
+
             }
-          }();
+            else {
+              // use defaut coordinates
+            }
+
+            loadLocationHistory();
+            }, 200);
+          };
+          $scope.geoCtx.init();
 
 
         }
@@ -277,5 +300,28 @@ Geo.directive('smGeoMarketView', [
 
       }
     }
+  }
+]);
+Geo.directive('smGeoCurrentLocationDisplay', [
+  function() {
+    return {
+      restrict: 'E',
+      controller: [
+        '$scope',
+        '$log',
+        function($scope, $log) {
+          $log.debug('smGeoCurrentLocationDisplay controller');
+        }
+      ],
+      link: function(scope, el, attrs) {
+        scope.$watch('geoCtx.currentLocationString', function(newVal, oldVal) {
+          if (newVal && (newVal !== oldVal)) {
+            ReactDOM.render(React.createElement(CurrentLocationDisplay, {store:scope.geoCtx}), el[0]);
+          }
+        }, true);
+      }
+
+    }
+
   }
 ]);

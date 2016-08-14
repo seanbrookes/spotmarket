@@ -26,8 +26,9 @@ Market.directive('smMarketMarketView', [
         'leafletData',
         'GeoServices',
         'GEO_CONST',
+        'AskServices',
         '$timeout',
-        function($scope, Ask, UserMarket, UserSessionService, leafletBoundsHelpers, leafletData, GeoServices, GEO_CONST, $timeout) {
+        function($scope, Ask, UserMarket, UserSessionService, leafletBoundsHelpers, leafletData, GeoServices, GEO_CONST, AskServices, $timeout) {
           /*
            *
            * In this view we render a collection of asks from within a
@@ -77,6 +78,16 @@ Market.directive('smMarketMarketView', [
               zoom: 7
             }
           };
+
+
+          $scope.userMarketCtx.allAsks = [];
+          (function loadAllAsks() {
+            $scope.userMarketCtx.allAsks = AskServices.getAsks()
+              .then(function(response) {
+                $scope.userMarketCtx.allAsks = response;
+              });
+
+          }());
 
           var timeoutVal = 1000;
           function resetTimer(cb) {
@@ -442,7 +453,27 @@ Market.directive('smMarketMarketView', [
     }
   }
 ]);
+Market.directive('smMarketAskCard', [
+  '$log',
+  'MARKET_CONST',
+  function($log, MARKET_CONST){
+    return {
+      restrict: 'E',
+      scope: {
+        ask: '='
+      },
+      templateUrl: './scripts/modules/market/templates/market.ask.card.html',
+      controller: [
+        '$scope',
+        function($scope) {
 
+          console.log($scope.ask);
+        }
+      ]
+
+    }
+  }
+]);
 /*
  *
  *
@@ -462,75 +493,104 @@ Market.directive('smMarketMain', [
       controller: [
         '$scope',
         '$log',
-        'smSocket',
-        'UserSessionService',
-        function($scope, $log, smSocket, UserSessionService) {
+        'MARKET_CONST',
+        function($scope, $log, MARKET_CONST) {
+          $log.debug('Market Controller');
+
+          $scope.marketCtx = {
+            activeView: MARKET_CONST.GEO_VIEW
+          };
+          function isValidView(event) {
+            var retVar = false;
+            if (event && event.currentTarget) {
+              if (event.currentTarget.attributes && event.currentTarget.attributes['data-name']) {
+                if (event.currentTarget.attributes['data-name'].value) {
+                  retVar = true;
+                }
+              }
+            }
 
 
-          // we need a user
-          // user needs a location
-          /*
-          *
-          * - could be country based on ip
-          * - type ahead city / state
-          * - html5 geolocation
-          * - type in an address
-          * - click on a map
-          *
-          * */
-
-
-
-
-          // make sure we have a user (token)
-          // open a socket
-          // need a geo element on user
-          // get latest market updates
-          /*
-           *
-           * Socket Initialization
-           *
-           * */
-          smSocket.on('smRealTimeConnection', function(socketClientId) {
-            $log.debug('|');
-            $log.debug('|');
-            $log.debug('| smRealTimeConnection socketClientId', socketClientId);
-            $log.debug('|');
-            $log.debug('|');
-
-            UserSessionService.setValueByKey('smSocketClientId', socketClientId);
-
-            //$log.debug('|   currentUser.smUserId', smGlobalValues.currentUser.smSocketClientId);
-
-          });
-
-
-          $scope.activateAskForm = false;
-
-          $scope.startAnAsk = function() {
-            $scope.currentUser = UserSessionService.getCurrentUserFromClientState();
-
-            $log.debug('START AN ASK');
-
-            $scope.activateAskForm = true;
-            /*
-            * In order to post an ask a user must register
-            * should follow the process that craigslist does
-            * - simple wizard
-            * - post up what you have for sale
-            * - email address and password (if not logged in)
-            * - on submit check email address
-            * - send post to email
-            * - request for password (login if has account)
-            * - updload images and or video
-            * - preview to confirm
-            * - make sure we have geo relevant info
-            * - post to market
-            *
-            *
-            * */
+            return retVar;
           }
+          $scope.marketCtx.activateView = function(event) {
+            if (isValidView(event)) {
+              var viewName = event.currentTarget.attributes['data-name'].value;
+              $log.debug('show me the view', viewName);
+              $scope.marketCtx.activeView = viewName;
+            }
+          };
+          $scope.marketCtx.isActiveView = function(viewName) {
+            return viewName === $scope.marketCtx.activeView;
+          }
+
         }
+
+
+      ],
+      link: function(scope, el, attrs) {
+        //scope.$watch('marketCtx.activeView', function(newVal, oldVal) {
+        //  if (newVal && (newVal === scope.viewName)) {
+        //    $log.debug('| active view changed to', scope.marketCtx.activeView);
+        //  }
+        //
+        //}, true);
+      }
+    }
+  }
+]);/*
+ *
+ *
+ *
+ * MARKET WELCOM
+ *
+ *
+ *
+ * */
+Market.directive('smMarketWelcome', [
+  '$log',
+  'MARKET_CONST',
+  function($log, MARKET_CONST) {
+    return {
+      restrict:'E',
+      templateUrl: './scripts/modules/market/templates/market.welcome.html',
+      controller: [
+        '$scope',
+        '$log',
+        'MARKET_CONST',
+        function($scope, $log, MARKET_CONST) {
+          $log.debug('Welcome Market Controller');
+
+          $scope.marketCtx = {
+            activeView: MARKET_CONST.MARKET_VIEW
+          };
+          function isValidView(event) {
+            var retVar = false;
+            if (event && event.currentTarget) {
+              if (event.currentTarget.attributes && event.currentTarget.attributes['data-name']) {
+                if (event.currentTarget.attributes['data-name'].value) {
+                  retVar = true;
+                }
+              }
+            }
+
+
+            return retVar;
+          }
+          $scope.marketCtx.activateView = function(event) {
+            if (isValidView(event)) {
+              var viewName = event.currentTarget.attributes['data-name'].value;
+              $log.debug('show me the view', viewName);
+              $scope.marketCtx.activeView = viewName;
+            }
+          };
+          $scope.marketCtx.isActiveView = function(viewName) {
+            return viewName === $scope.marketCtx.activeView;
+          }
+
+        }
+
+
       ],
       link: function(scope, el, attrs) {
         //scope.$watch('marketCtx.activeView', function(newVal, oldVal) {

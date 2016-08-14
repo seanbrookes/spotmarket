@@ -1,0 +1,18 @@
+<div class="MarketAskList__Card">
+  <div class="Layout">
+    <span class="NameLabel">What</span>
+    <span>{{ask.productType}} - {{ask.variant}}</span>
+  </div>
+  <div class="Layout">
+    <span class="NameLabel">Seller</span>
+    <span><button class="LinkButton">{{ask.seller.handle}}</button></span>
+  </div>
+  <div class="Layout">
+    <span class="NameLabel">Where</span>
+    <span>{{ask.address.city}}:{{ask.address.state}}</span>
+  </div>
+  <div class="Layout">
+    <span class="NameLabel">When</span>
+    <span am-time-ago="ask.lastUpdate"></span>
+  </div>
+</div>

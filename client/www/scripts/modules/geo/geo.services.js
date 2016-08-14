@@ -4,7 +4,8 @@ Geo.service('GeoServices', [
   '$q',
   '$window',
   'GEO_CONST',
-  function($http, $log, $q, $window, GEO_CONST) {
+  'UserSessionService',
+  function($http, $log, $q, $window, GEO_CONST, UserSessionService) {
     var svc = this;
 
 
@@ -64,7 +65,7 @@ Geo.service('GeoServices', [
           });
       }
     };
-    svc.getCurrentPosition = function() {
+    svc.getCurrentGPSPosition = function() {
       var deferred = $q.defer();
 
       if (!$window.navigator.geolocation) {
@@ -83,6 +84,10 @@ Geo.service('GeoServices', [
       }
 
       return deferred.promise;
+    };
+    svc.setCurrentPosition = function(position) {
+      return UserSessionService.setValueByKey('smCurrentPosition', position);
+
     };
 
 

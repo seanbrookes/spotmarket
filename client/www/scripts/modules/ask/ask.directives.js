@@ -255,6 +255,32 @@ Ask.directive('smAskMarketView', [
 
             }
           };
+          // end handle generation methods
+
+
+          $scope.askCtx.isCurrentAskValid = function() {
+            var isValid = true;
+            if (!$scope.askCtx.currentAsk.position) {
+              isValid = false;
+            }
+            if (!$scope.askCtx.currentAsk.seller  || !$scope.askCtx.currentAsk.seller.email) {
+              isValid = false;
+            }
+            if (!$scope.askCtx.currentAsk.lotPrices  || ($scope.askCtx.currentAsk.lotPrices.length < 1)) {
+              isValid = false;
+            }
+            if (!$scope.askCtx.currentAsk.productType) {
+              isValid = false;
+            }
+            return isValid;
+          };
+
+
+
+
+
+
+
           $scope.askCtx.setCurrentProductMode = function(productMode) {
             // $timeout(function() {
             $scope.askCtx.productMode = productMode;
@@ -396,6 +422,7 @@ Ask.directive('smAskMarketView', [
               if (tempCurrentUser.smAuthToken) {
                 $scope.askCtx.currentAsk.seller.smAuthToken = tempCurrentUser.smAuthToken;
               }
+
 
               var tempPos = JSON.parse(tempCurrentUser.smCurrentPosition);
               var tLon = parseFloat(tempPos.geometry.coordinates[0]);

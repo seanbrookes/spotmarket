@@ -40,4 +40,13 @@
 
     </div>
   </div>
+  <div>
+    most recent for sale
+    <ul class="MarketAskList MarketAskList--all">
+      <li ng-repeat="ask in userMarketCtx.allAsks" >
+        <sm-market-ask-card ask="ask"></sm-market-ask-card>
+
+      </li>
+    </ul>
+  </div>
 </div>

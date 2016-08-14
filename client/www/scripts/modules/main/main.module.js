@@ -128,7 +128,7 @@ Main.config([
       })
       .state('market', {
         url: '/market',
-        templateUrl: './scripts/modules/market/templates/market.main.html'
+        templateUrl: './scripts/modules/market/templates/market.home.html'
       })
       .state('user', {
         url: '/user',
