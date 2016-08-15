@@ -498,7 +498,7 @@ Market.directive('smMarketMain', [
           $log.debug('Market Controller');
 
           $scope.marketCtx = {
-            activeView: MARKET_CONST.GEO_VIEW
+            activeView: MARKET_CONST.MARKET_VIEW
           };
           function isValidView(event) {
             var retVar = false;
@@ -542,7 +542,7 @@ Market.directive('smMarketMain', [
  *
  *
  *
- * MARKET WELCOM
+ * MARKET WELCOME
  *
  *
  *

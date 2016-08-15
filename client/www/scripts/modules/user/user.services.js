@@ -177,6 +177,9 @@ User.service('UserSessionService', [
     svc.setValueByKey = function(key, value) {
       $cookies.put(key, value);
     };
+    svc.deleteValueByKey = function(key) {
+      $cookies.remove(key);
+    };
     function capitalizeFirstLetter(string) {
       return string.charAt(0).toUpperCase() + string.slice(1);
     }

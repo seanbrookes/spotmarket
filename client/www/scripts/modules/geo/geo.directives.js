@@ -32,13 +32,29 @@ Geo.directive('smGeoMarketView', [
             position:{},
             currentLocationString: '',
             positionChoiceList: [],
-            isLookingUpCurrentLocation: false
+            isLookingUpCurrentLocation: false,
+            isShowLocationHistory: false
           };
           $scope.findMeMap;
 
           $scope.mapCenter = {
             lat:49.1501186,
             lng:-122.2577094
+          };
+          $scope.geoCtx.defaultCurrentPosition = {
+            address: {
+              city: "Vancouver",
+              country: "Canada",
+              county: "Greater Vancouver Regional District",
+              state: "British Columbia"
+            },
+            geometry: {
+              coordinates: [
+                -123.1139382,
+                49.2608944
+              ],
+              type: "Point"
+            }
           };
 
           function loadLocationHistory() {
@@ -89,6 +105,11 @@ Geo.directive('smGeoMarketView', [
             }
             return address;
 
+          }
+          function updateUserCurrentPosition() {
+            UserSessionService.setValueByKey('smCurrentPosition', JSON.stringify($scope.geoCtx.position));
+            UserServices.updateCurrentUserPosition($scope.geoCtx.position);
+            $scope.geoCtx.init();
           }
 
 
@@ -143,7 +164,7 @@ Geo.directive('smGeoMarketView', [
                       $log.debug('getCurrentGPSPosition', geoX);
                       updateMapCenter(geoX.geometry.coordinates[1], geoX.geometry.coordinates[0]);
                       $scope.geoCtx.position = geoX;
-                      UserServices.updateCurrentUserPosition(geoX);
+                      updateUserCurrentPosition();
                     });
                 }
 
@@ -167,8 +188,7 @@ Geo.directive('smGeoMarketView', [
               GeoServices.reverseLookup(position.geometry.coordinates[1], position.geometry.coordinates[0])
                 .then(function(reverseLookupResponse) {
                   $scope.geoCtx.position.address = assignAddressCity(reverseLookupResponse.address);
-                  UserSessionService.setValueByKey('smCurrentPosition', JSON.stringify($scope.geoCtx.position));
-                  UserServices.updateCurrentUserPosition($scope.geoCtx.position);
+                  updateUserCurrentPosition();
                   return;
 
                 });
@@ -193,7 +213,7 @@ Geo.directive('smGeoMarketView', [
                   $log.debug('getCurrentGPSPosition', geoX);
                   updateMapCenter(geoX.geometry.coordinates[1], geoX.geometry.coordinates[0]);
                   $scope.geoCtx.position = geoX;
-                  UserServices.updateCurrentUserPosition(geoX);
+                  updateUserCurrentPosition();
                   $scope.geoCtx.positionChoiceList = [];
                   $scope.geoCtx.lookupAddress = '';
                 });
@@ -217,7 +237,7 @@ Geo.directive('smGeoMarketView', [
                 $log.debug('leafletDirectiveMap.click', geoX);
                 updateMapCenter(geoX.geometry.coordinates[1], geoX.geometry.coordinates[0]);
                 $scope.geoCtx.position = geoX;
-                UserServices.updateCurrentUserPosition(geoX);
+                updateUserCurrentPosition();
               });
           };
           $scope.lookupTargetAddress = function() {
@@ -244,55 +264,78 @@ Geo.directive('smGeoMarketView', [
 
             }
           };
+          $scope.geoCtx.isGeoLocationHistoryVisible = function() {
+            return $scope.geoCtx.isShowLocationHistory;
+          };
+          $scope.geoCtx.toggleLocationHistory = function() {
+            $scope.geoCtx.isShowLocationHistory = !$scope.geoCtx.isShowLocationHistory;
+          };
+          $scope.geoCtx.clearCurrentPosition = function() {
+            if (confirm('delete current position?')) {
+              UserSessionService.deleteValueByKey('smCurrentPosition');
+              $scope.geoCtx.init();
+            }
+          };
           $scope.geoCtx.init = function() {
             // check for current postion
+            $scope.geoCtx.isShowLocationHistory = false;
             $timeout(function() {
-            var tempCurrentUser = UserSessionService.getCurrentUserFromClientState();
-            var findMeMapCenter = {
+              var tempCurrentUser = UserSessionService.getCurrentUserFromClientState();
+              var findMeMapCenter = {
 
-            };
-            if (tempCurrentUser.smCurrentPosition) {
-              tempCurrentUser.smCurrentPosition = JSON.parse(tempCurrentUser.smCurrentPosition);
-              $scope.geoCtx.position = tempCurrentUser.smCurrentPosition;
-              updateMapCenter(tempCurrentUser.smCurrentPosition.geometry.coordinates[1], tempCurrentUser.smCurrentPosition.geometry.coordinates[0]);
-
-
-                $scope.geoCtx.currentLocationString = $scope.geoCtx.position.address.city + ', ' + $scope.geoCtx.position.address.state;
-
-
-
-            }
-            else {
-              // use defaut coordinates
-            }
-
-            loadLocationHistory();
+              };
+              if (tempCurrentUser.smCurrentPosition) {
+                tempCurrentUser.smCurrentPosition = JSON.parse(tempCurrentUser.smCurrentPosition);
+                $scope.geoCtx.position = tempCurrentUser.smCurrentPosition;
+              }
+              else {
+                alert('You have no defined current position so we are assigning one to you. You can change it  here');
+                // use default coordinates
+                $scope.geoCtx.position = $scope.geoCtx.defaultCurrentPosition;
+                updateUserCurrentPosition();
+              }
+              updateMapCenter($scope.geoCtx.position.geometry.coordinates[1], $scope.geoCtx.position.geometry.coordinates[0]);
+              $scope.geoCtx.currentLocationString = $scope.geoCtx.position.address.city + ', ' + $scope.geoCtx.position.address.state;
+              $scope.geoCtx.refreshMap();
+              loadLocationHistory();
             }, 200);
           };
           $scope.geoCtx.init();
+          $scope.geoCtx.refreshMap = function() {
 
+            $scope.findMeMap.setView([$scope.geoCtx.position.geometry.coordinates[1], $scope.geoCtx.position.geometry.coordinates[0]], 8);
+          };
 
         }
       ],
       link: function(scope, el, attrs) {
-        scope.findMeMap = L.map('FindMeMap');
-        scope.findMeMap.on('click', scope.mapClick);
 
-        function refreshMap() {
-          scope.findMeMap.setView([scope.geoCtx.mapCenter.lat, scope.geoCtx.mapCenter.lng], 8);
+        function initMap() {
+          scope.findMeMap = L.map('FindMeMap');
+          scope.findMeMap.on('click', scope.mapClick);
+          L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          }).addTo(scope.findMeMap);
+
+
         }
-        scope.$watch('geoCtx.mapCenter', function(newVal, oldVal) {
-          if (newVal && newVal.lat) {
-            refreshMap();
+        initMap();
+
+        scope.$watch('$scope.geoCtx.position', function(newVal, oldVal) {
+          if (newVal && newVal.geometry) {
+            scope.geoCtx.refreshMap();
           }
         }, true);
 
-        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-          attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(scope.findMeMap);
+
 
         scope.$watch('activeView', function(newVal, oldVal) {
           if (newVal && (newVal === scope.geoCtx.viewName)) {
+            if (scope.findMeMap) {
+              scope.findMeMap.remove();
+            }
+            initMap();
+            scope.geoCtx.init();
             $log.debug('| active view changed to', scope.geoCtx.viewName);
           }
 

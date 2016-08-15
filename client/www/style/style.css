@@ -136,6 +136,9 @@ ul {
   left: .5rem;
   color: #ffffff;
 }
+.dropdown {
+  z-index: 4000;
+}
 .Layout {
   display: flex;
   flex-direction: row;
@@ -322,6 +325,23 @@ ul {
 }
 #FindMapRefreshButton {
   float: right;
+}
+.CurrentLocationContainer .LocationHistoryContainer {
+  position: relative;
+}
+.CurrentLocationContainer .LocationHistoryContainer .LocationHistoryList {
+  position: absolute;
+  top: 1.7rem;
+  left: .5rem;
+  background: #ffffff;
+  width: 30rem;
+  margin: 0;
+}
+.CurrentLocationContainer .LocationHistoryContainer .LocationHistoryList .LocationHistoryList__Item {
+  border: 1px solid #eeeeee;
+  border-radius: .3rem;
+  margin: .12rem 0 .12rem 0;
+  padding: .12rem;
 }
 .SellerInput--invalid {
   border: 1px solid red;

@@ -5,22 +5,28 @@
 
    -->
   <div class="GeoSection__Container">
-    <sm-geo-current-location-display></sm-geo-current-location-display>
-    <label ng-show="geoCtx.position">Your current position is {{geoCtx.currentLocationString}}</label>
-    <button>clear my current position</button>
-    <div>
-      location history goes here
-      <ul>
-        <li ng-repeat="location in geoCtx.locationHistory">
-          <button class="LinkButton" ng-click="geoCtx.setCurrentUserPosition(location)">
-            {{location.location.address.city}}, {{location.location.address.state}}
-          </button>
-          <span am-time-ago="location.displayTimeSince"></span>
-          <button class="LinkButton" ng-click="geoCtx.deleteLocationHistory(location)">(X)</button>
-        </li>
-      </ul>
+    <div class="CurrentLocationContainer">
+      <sm-geo-current-location-display></sm-geo-current-location-display>
+      <div class="Layout">
+        <button ng-click="geoCtx.clearCurrentPosition()">clear my current position</button>
+        <div class="LocationHistoryContainer">
+          <button ng-click="geoCtx.toggleLocationHistory()">location history</button>
+          <div class="dropdown" ng-show="geoCtx.isGeoLocationHistoryVisible()">
+            <ul class="LocationHistoryList">
+              <li class="LocationHistoryList__Item Layout" ng-repeat="location in geoCtx.locationHistory">
+                <div>
+                  <button class="LinkButton" ng-click="geoCtx.setCurrentUserPosition(location)">
+                    {{location.location.address.city}}, {{location.location.address.state}}
+                  </button>
+                  <p am-time-ago="location.displayTimeSince"></p>
+                </div>
+                <button class="LinkButton" ng-click="geoCtx.deleteLocationHistory(location)">(X)</button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
-
   </div>
   <!--
 
