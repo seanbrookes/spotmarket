@@ -50,16 +50,29 @@
 
    -->
   <div class="GeoSection__Container">
-    <p>if not how about describing your location: maybe a city or state, country?</p>
-    <textarea ng-model="geoCtx.lookupAddress"></textarea>
-    <button ng-click="lookupTargetAddress()">look it up</button>
-    <div ng-show="geoCtx.positionChoiceList">
-      <ul>
-        <li ng-repeat="position in geoCtx.positionChoiceList">
-          <button ng-click="selectThisPosition(position)">{{position.display_name}}</button>
-        </li>
-      </ul>
+    <!--<div class="Layout">-->
+
+      <!--<form action="" method="post" name="form_citydetails" id="form_citydetails" enctype="multipart/form-data" onsubmit="return false;">-->
+        <!--<p>-->
+          <!--<b>Please enter</b> your city here to see it work.-->
+        <!--</p>-->
+        <!--<input ng-model="geoCtx.lookupCity" class="ff_elem" type="text" name="ff_nm_from[]" value="" id="f_elem_city"/>-->
+      <!--</form>-->
+      <!--<div>-->
+        <p>if not how about describing your location: maybe a city or state, country?</p>
+        <textarea ng-model="geoCtx.lookupAddress"></textarea>
+        <button ng-click="lookupTargetAddress()">look it up</button>
+        <div ng-show="geoCtx.positionChoiceList">
+          <ul>
+            <li ng-repeat="position in geoCtx.positionChoiceList">
+              <button ng-click="selectThisPosition(position)">{{position.display_name}}</button>
+            </li>
+          </ul>
+        </div>
+      <!--</div>-->
     </div>
+
+
   </div>
 
 

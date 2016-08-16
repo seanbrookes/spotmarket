@@ -13,7 +13,8 @@ Geo.directive('smGeoMarketView', [
   '$timeout',
   'UserSessionService',
   'orderByFilter',
-  function($log, MARKET_CONST, $timeout, UserSessionService, orderBy) {
+  '$http',
+  function($log, MARKET_CONST, $timeout, UserSessionService, orderBy, $http) {
     return {
       restrict: 'E',
       templateUrl: './scripts/modules/geo/templates/geo.market.view.html',
@@ -33,7 +34,9 @@ Geo.directive('smGeoMarketView', [
             currentLocationString: '',
             positionChoiceList: [],
             isLookingUpCurrentLocation: false,
-            isShowLocationHistory: false
+            isShowLocationHistory: false,
+            lookupAddress: '',
+            lookupCity: ''
           };
           $scope.findMeMap;
 
@@ -328,6 +331,44 @@ Geo.directive('smGeoMarketView', [
         }, true);
 
 
+        scope.$watch('geoCtx.lookupCity', function(newVal, oldVal) {
+          if (newVal && (newVal !== oldVal)) {
+            $timeout(function() {
+              var url = "http://gd.geobytes.com/AutoCompleteCity?callback=?&q=" + newVal;
+
+              $http.jsonp(url)
+                .success(function(data){
+                  console.log(data.found);
+                });
+            }, 500);
+
+          }
+        });
+
+        //$("#f_elem_city").autocomplete({
+        //  source: function (request, response) {
+        //    $.getJSON(
+        //      "http://gd.geobytes.com/AutoCompleteCity?callback=?&q="+request.term,
+        //      function (data) {
+        //        response(data);
+        //      }
+        //    );
+        //  },
+        //  minLength: 3,
+        //  select: function (event, ui) {
+        //    var selectedObj = ui.item;
+        //    jQuery("#f_elem_city").val(selectedObj.value);
+        //    getcitydetails(selectedObj.value);
+        //    return false;
+        //  },
+        //  open: function () {
+        //    jQuery(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+        //  },
+        //  close: function () {
+        //    jQuery(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+        //  }
+        //});
+        //jQuery("#f_elem_city").autocomplete("option", "delay", 100);
 
         scope.$watch('activeView', function(newVal, oldVal) {
           if (newVal && (newVal === scope.geoCtx.viewName)) {

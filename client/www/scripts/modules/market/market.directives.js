@@ -41,67 +41,51 @@ Market.directive('smMarketMarketView', [
            * */
 
           $scope.currentUser = UserSessionService.getCurrentUserFromClientState();
-          if (!$scope.currentUser.smCurrentPosition) {
-           // alert('message from MarketView: There is no current position!!!');
-            //return;
-          }
-
-          $log.debug('Market Ask View');
-          $scope.marketRange = 2200;
-          $scope.marketRangeKms = 160;
-          $scope.layers;
-          $scope.userMarketMap;
-          $scope.toggleMapLoad = false;
-          $scope.markersCollection = [];
-          $scope.isPendingInput = false;
-
-
-
-          var bBox;
-
-          var lats = [];
-          var lngs = [];
-          $scope.mapCenter = {
-            lat:49.1501186,
-              lng:-122.2577094
-          };
-          $scope.bounds = [];
-          $scope.resetBounds = [];
-          $scope.markers = {};
-          $scope.center = {};
-
           $scope.userMarketCtx = {
             viewName: MARKET_CONST.MARKET_VIEW,
-            mapCenter: {},
             currentMap: {
               center: {},
               zoom: 7
             }
           };
 
-
+          $scope.marketRange = 2200;
+          $scope.marketRangeKms = 160;
+          $scope.layers;
+          $scope.userMarketMap;
+          $scope.toggleMapLoad = false;
+          $scope.markersCollection = [];
           $scope.userMarketCtx.allAsks = [];
-          (function loadAllAsks() {
+
+          $scope.bounds = [];
+          $scope.resetBounds = [];
+          $scope.markers = {};
+          $scope.center = {};
+          $scope.userMarketMap;
+
+
+
+
+
+
+          if (!$scope.currentUser.smCurrentPosition) {
+            // alert('message from MarketView: There is no current position!!!');
+            //return;
+          }
+
+
+          function loadAllAsks() {
             $scope.userMarketCtx.allAsks = AskServices.getAsks()
               .then(function(response) {
                 $scope.userMarketCtx.allAsks = response;
               });
 
-          }());
-
-          var timeoutVal = 1000;
-          function resetTimer(cb) {
-            for (var i = 0;i < 10000;i++) {
-              if (i === (1000 - 1)) {
-                $scope.isPendingInput = false;
-                cb();
-              }
-            }
           }
-          $scope.sliderUpdateMarketRange = function() {
+          loadAllAsks();
 
-          };
-          $scope.updateMarketRange = function() {
+
+
+          $scope.initMapData = function() {
             lats = [];
             lngs = [];
 
@@ -146,7 +130,7 @@ Market.directive('smMarketMarketView', [
             *
             *
             * */
-          //  if (!isPendingInput) {
+
               UserMarket.createUserMarket({filter:filter})
                 .$promise
                 .then(function(response) {
@@ -231,13 +215,6 @@ Market.directive('smMarketMarketView', [
                   };
                   $scope.hasResults = false;
 
-                  //$scope.layers.overlays = {
-                  //  circleLayer:  L.circle([$scope.center.lat, $scope.center.lng], 500, {
-                  //    color: 'red',
-                  //    fillColor: '#f03',
-                  //    fillOpacity: 0.2
-                  //  })
-                  //};
 
                   /*
                    *
@@ -254,23 +231,16 @@ Market.directive('smMarketMarketView', [
                       markers: $scope.markers
                     });
                     $scope.hasResults = true;
-                    $timeout(function() {
-                      //angular.extend($scope, {
-                      //  bounds: $scope.bounds,
-                      //  markers: $scope.markers,
-                      //  center: $scope.center,
-                      //  circle: $scope.circle
-                      //});
 
-                    }, 400);
-                    $scope.userMarketCtx = {
-                      currentMap: {
-                        center: {
-                          lat: currentPosition.geometry.coordinates[1],
+                    if (!$scope.userMarketCtx.currentMap) {
+                      $scope.userMarketCtx.currentMap = {};
+                    }
+                    $scope.userMarketCtx.currentMap = {
+                      center: {
+                        lat: currentPosition.geometry.coordinates[1],
                           lng: currentPosition.geometry.coordinates[0]
-                        },
-                        bounds: $scope.bounds
-                      }
+                      },
+                      bounds: $scope.bounds
                     };
 
                     $scope.toggleMapLoad = !$scope.toggleMapLoad;
@@ -278,114 +248,69 @@ Market.directive('smMarketMarketView', [
                   else {
                     northEast = [currentPosition.geometry.coordinates[1], currentPosition.geometry.coordinates[0]];
                     southWest = [currentPosition.geometry.coordinates[1], currentPosition.geometry.coordinates[0]];
-
-                    //$scope.bounds = mainUserMarketMap.getBounds();
-
                     $scope.hasResults = false;
-//                      $scope.center.zoom = 8;
-
 
                     $timeout(function() {
 
-                      //angular.extend($scope, {
-                      //  bounds: $scope.bounds,
-                      //  center: $scope.center,
-                      //  circle: $scope.circle
-                      //});
-                      $scope.userMarketCtx = {
-                        currentMap: {
-                          center: {
-                            lat: currentPosition.geometry.coordinates[1],
+                      if (!$scope.userMarketCtx.currentMap) {
+                        $scope.userMarketCtx.currentMap = {};
+                      }
+                      $scope.userMarketCtx.currentMap = {
+                        center: {
+                          lat: currentPosition.geometry.coordinates[1],
                             lng: currentPosition.geometry.coordinates[0]
-                          },
-                          bounds: $scope.bounds
-                        }
+                        },
+                        bounds: $scope.bounds
                       };
+
                       $scope.toggleMapLoad = !$scope.toggleMapLoad;
                     }, 400);
                   }
-                  //$scope.bounds = bounds;
-                  //$scope.center = center;
-
-
-                  returnCollection.map(function(ask) {
-
-                  });
-
-
                   $scope.marketAsks = returnCollection;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                  /*
-                   *
-                   * Instantiate the map
-                   *
-                   * */
-                  //leafletData.getMap('UserMarketMain')
-                  //  .then(function(mainUserMarketMap) {
-                  //    $log.info(mainUserMarketMap);
-                  //
-                  //
-                  //
-                  //
-                  //
-                  //
-                  //
-                  //
-                  //  })
-                  //  .catch(function(error) {
-                  //    $log.warn('bad get main user market map', error);
-                  //  });
-
-
 
                 })
                 .catch(function(error) {
                   $log.warn('bad get asks', error);
                 });
-
-          //  }
-
           };
 
 
-          if ($scope.currentUser.smCurrentPosition) {
-            $scope.updateMarketRange();
-          }
 
+          $scope.userMarketCtx.init = function() {
+            // get current user
+            $scope.currentUser = UserSessionService.getCurrentUserFromClientState();
 
+            // get localized asks
+            if ($scope.currentUser.smCurrentPosition) {
+              $scope.initMapData();
+            }
+            // get all asks
+            loadAllAsks();
+            // render map with asks on it
+            // respond to range updates
+
+          };
+
+          $scope.userMarketCtx.init();
 
         }
       ],
       link: function(scope, el, attrs) {
         scope.userMarketMap = L.map('UserMarketMap');
+        function initMap() {
+          if (!scope.userMarketMap) {
+            scope.userMarketMap = L.map('UserMarketMap');
+
+          }
+
+          L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          }).addTo(scope.userMarketMap);
+
+
+        }
+        initMap();
+
         var rangeCircle;
         function renderUserMarketMap() {
           if (rangeCircle !== undefined) {
@@ -431,6 +356,7 @@ Market.directive('smMarketMarketView', [
         scope.$watch('toggleMapLoad', function(newVal, oldVal) {
           if (scope.userMarketCtx && scope.userMarketCtx.currentMap.center) {
             if (scope.userMarketCtx.currentMap.center.lat && scope.userMarketCtx.currentMap.center.lng) {
+              initMap();
               renderUserMarketMap();
             }
           }
@@ -440,7 +366,12 @@ Market.directive('smMarketMarketView', [
           if (newVal && (newVal === scope.userMarketCtx.viewName)) {
             $log.debug('| active view changed to', scope.userMarketCtx.viewName);
             if (scope.currentUser.smCurrentPosition) {
-              scope.updateMarketRange();
+
+              if (scope.userMarketMap) {
+                //scope.userMarketMap.remove();
+              }
+              scope.userMarketCtx.init();
+              scope.toggleMapLoad = !scope.toggleMapLoad;
             }
           }
         }, true);
