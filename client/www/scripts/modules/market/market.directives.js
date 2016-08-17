@@ -458,6 +458,9 @@ Market.directive('smMarketMain', [
               $scope.marketCtx.activeView = viewName;
             }
           };
+          $scope.marketCtx.setActiveView = function(viewConst) {
+            $scope.marketCtx.activeView = MARKET_CONST[viewConst];
+          };
           $scope.marketCtx.isActiveView = function(viewName) {
             return viewName === $scope.marketCtx.activeView;
           }
@@ -476,7 +479,26 @@ Market.directive('smMarketMain', [
       }
     }
   }
-]);/*
+]);
+Market.directive('smMarketNavigator', [
+  '$log',
+  'MARKET_CONST',
+  function($log, MARKET_CONST) {
+    return {
+      restrict:'E',
+      template: '<button class="CommandButton" ng-click="marketCtx.activateView">change</button>',
+      controller: [
+        '$scope',
+        '$log',
+        function($scope, $log) {
+
+        }
+      ]
+
+    }
+  }]
+);
+/*
  *
  *
  *

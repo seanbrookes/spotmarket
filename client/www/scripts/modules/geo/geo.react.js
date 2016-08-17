@@ -4,7 +4,7 @@ var CurrentLocationDisplay = React.createClass(
     render:function() {
       var component = this;
       var store = component.props.store;
-      return (React.createElement("label", null, "Your current position is ", store));
+      return (React.createElement("span", {className: "CurrentLocationDisplay__label"}, store));
     }
   }
 );
