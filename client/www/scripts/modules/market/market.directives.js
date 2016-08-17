@@ -9,8 +9,9 @@
 * */
 Market.directive('smMarketMarketView', [
   '$log',
+  '$timeout',
   'MARKET_CONST',
-  function($log, MARKET_CONST) {
+  function($log, $timeout, MARKET_CONST) {
     return {
       restrict:'E',
       templateUrl: './scripts/modules/market/templates/market.market.view.html',
@@ -302,11 +303,12 @@ Market.directive('smMarketMarketView', [
             scope.userMarketMap = L.map('UserMarketMap');
 
           }
+         // if (!scope.userMarketMap.tileLayer) {
 
-          L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          }).addTo(scope.userMarketMap);
-
+            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+              attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(scope.userMarketMap);
+         // }
 
         }
         initMap();
@@ -335,10 +337,13 @@ Market.directive('smMarketMarketView', [
           else {
             scope.userMarketMap.setView([scope.userMarketCtx.currentMap.center.lat, scope.userMarketCtx.currentMap.center.lng], scope.userMarketCtx.currentMap.zoom);
           }
+          //if (!scope.userMarketMap.tileLayer) {
+            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+              attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(scope.userMarketMap);
+          //}
 //          scope.userMarketMap.setView([scope.userMarketCtx.currentMap.center.lat, scope.userMarketCtx.currentMap.center.lng], scope.userMarketCtx.currentMap.zoom);
-          L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          }).addTo(scope.userMarketMap);
+
 
 
 
@@ -356,8 +361,10 @@ Market.directive('smMarketMarketView', [
         scope.$watch('toggleMapLoad', function(newVal, oldVal) {
           if (scope.userMarketCtx && scope.userMarketCtx.currentMap.center) {
             if (scope.userMarketCtx.currentMap.center.lat && scope.userMarketCtx.currentMap.center.lng) {
-              initMap();
-              renderUserMarketMap();
+              //initMap();
+              $timeout(function() {
+                renderUserMarketMap();
+              }, 4000);
             }
           }
         }, true);

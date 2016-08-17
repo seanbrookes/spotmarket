@@ -292,7 +292,7 @@ Geo.directive('smGeoMarketView', [
                 $scope.geoCtx.position = tempCurrentUser.smCurrentPosition;
               }
               else {
-                alert('You have no defined current position so we are assigning one to you. You can change it  here');
+                //alert('You have no defined current position so we are assigning one to you. You can change it  here');
                 // use default coordinates
                 $scope.geoCtx.position = $scope.geoCtx.defaultCurrentPosition;
                 updateUserCurrentPosition();
@@ -390,18 +390,31 @@ Geo.directive('smGeoCurrentLocationDisplay', [
   function() {
     return {
       restrict: 'E',
+      scope: {},
       controller: [
         '$scope',
         '$log',
-        function($scope, $log) {
+        'UserSessionService',
+        function($scope, $log, UserSessionService) {
           $log.debug('smGeoCurrentLocationDisplay controller');
+
+          var tempCurrentUser = UserSessionService.getCurrentUserFromClientState();
+          $scope.currentLocationString = '';
+
+          if (tempCurrentUser.smCurrentPosition) {
+            tempCurrentUser.smCurrentPosition = JSON.parse(tempCurrentUser.smCurrentPosition);
+            var position = tempCurrentUser.smCurrentPosition;
+            $scope.currentLocationString = position.address.city + ', ' + position.address.state;
+
+          }
+
         }
       ],
       link: function(scope, el, attrs) {
-        scope.$watch('geoCtx.currentLocationString', function(newVal, oldVal) {
-          if (newVal && (newVal !== oldVal)) {
-            ReactDOM.render(React.createElement(CurrentLocationDisplay, {store:scope.geoCtx}), el[0]);
-          }
+        scope.$watch('currentLocationString', function(newVal, oldVal) {
+
+            ReactDOM.render(React.createElement(CurrentLocationDisplay, {store:newVal}), el[0]);
+
         }, true);
       }
 
