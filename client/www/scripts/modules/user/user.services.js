@@ -152,7 +152,8 @@ User.service('UserSessionService', [
   '$timeout',
   '$http',
   'UserLocation',
-  function(UserProfile, $cookies, $log, $timeout, $http, UserLocation) {
+  'smGlobalValues',
+  function(UserProfile, $cookies, $log, $timeout, $http, UserLocation, smGlobalValues) {
 
     var svc = this;
     var userName = '';
@@ -160,6 +161,11 @@ User.service('UserSessionService', [
     var appSessionId = '';
     var userId = '';
     var authToken = '';
+
+
+    function synchUserProfileData() {
+      //
+    }
 
     svc.isCookiesEnabled = function() {
       $cookies.put('smTestCookiesEnabled', 'true');
@@ -176,6 +182,12 @@ User.service('UserSessionService', [
     };
     svc.setValueByKey = function(key, value) {
       $cookies.put(key, value);
+      smGlobalValues.currentUser[key] = value;
+      // synch user
+      // - db
+      // get user from
+      // - local storage
+      // - global user
     };
     svc.deleteValueByKey = function(key) {
       $cookies.remove(key);
@@ -274,61 +286,8 @@ User.service('UserSessionService', [
             });
         });
     };
-    // User Name
-    svc.setUserName = function(username) {
-      if (username) {
-        userName = username;
-        $cookies.put('smUserName', username);
-      }
-    };
-    svc.getUserName = function() {
-      userName = $cookies.get('smUserName');
-      return userName;
-    };
-    svc.clearUserName = function() {
-      userName = '';
-      $cookies.remove('smUserName');
-    };
-    // User Id
-    svc.setUserId = function(userid) {
-      if (userid) {
-        userId = userid;
-        $cookies.put('smUserId', userid);
-      }
-    };
-    svc.getUserId = function() {
-      userId = $cookies.get('smUserId');
-      return userId;
-    };
-    svc.setUserTag = function(userTag) {
-      if (svc.isCookiesEnabled()) {
-        $cookies.put('smHandle', userTag);
-        return true;
-      }
-      return false;
 
-    };
-    svc.setToken = function(token) {
-      if (svc.isCookiesEnabled()) {
-        $cookies.put('smToken', token);
-        return true;
-      }
-      return false;
-    };
-    svc.setAuthToken = function(authToken) {
-      if (svc.isCookiesEnabled()) {
-        $cookies.put('smAuthToken', authToken);
-        return true;
-      }
-      return false;
-    };
-    svc.getCurrentUserTag = function() {
-      var userTag;
-      if (svc.isCookiesEnabled() && $cookies.get('smHandle')) {
-        userTag = $cookies.get('smHandle');
-      }
-      return userTag;
-    };
+
 
     svc.getCurrentToken = function() {
       var token;
@@ -344,55 +303,8 @@ User.service('UserSessionService', [
       }
       return authToken;
     };
-    svc.clearUserId = function() {
-      userId = '';
-      $cookies.remove('smUserId');
-    };
-    // App Session Id
-    svc.setUserSessionId = function(appsessionid) {
-      if (appsessionid) {
-        appSessionId = appsessionid;
-        $cookies.put('smAppSessionId', appSessionId);
-      }
-    };
-    svc.getUserSessionId = function() {
-      appSessionId = $cookies.get('smTraceId');
-      return appSessionId;
-    };
-    svc.clearAppSessionId = function() {
-      appSessionId = '';
-      $cookies.remove('smTraceId');
-    };
-    //  Email
-    svc.setUserEmail = function(email) {
-      if (email) {
-        email = email;
-        $cookies.put('smEmail', email);
-      }
-    };
-    svc.getUserEmail = function() {
-      email = $cookies.get('smEmail');
-      return email;
-    };
-    svc.clearUserEmail = function() {
-      email = '';
-      $cookies.remove('smEmail');
-    };
-    //  AuthToken
-    svc.setAuthToken = function(token) {
-      if (token) {
-        authToken = token;
-        $cookies.put('smAuthToken', authToken);
-      }
-    };
-    svc.getAuthToken = function() {
-      authToken = $cookies.get('smAuthToken');
-      return authToken;
-    };
-    svc.clearAuthToken = function() {
-      authToken = '';
-      $cookies.remove('smAuthToken');
-    };
+
+
     svc.isCurrentUserLoggedIn = function() {
       if (!$cookies.get('smAuthToken')) {
         return false;
@@ -404,7 +316,7 @@ User.service('UserSessionService', [
         // track the problem / issue
         return false;
       }
-      if (currentTimeStamp < smTTL) {
+      if (currentTimeStamp < ttl) {
         return true;
       }
       return false;
@@ -423,6 +335,7 @@ User.service('UserSessionService', [
           });
       }
     };
+
     svc.getUserHandleSuggestionHistory = function() {
       var retVal = [];
 
@@ -433,7 +346,6 @@ User.service('UserSessionService', [
           retVal = rawArray.reverse();
         }
       }
-
       return retVal;
     };
     svc.addUserHandleSuggestionToHistory = function(handleSuggestion) {

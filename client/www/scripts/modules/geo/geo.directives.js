@@ -395,8 +395,11 @@ Geo.directive('smGeoCurrentLocationDisplay', [
         '$scope',
         '$log',
         'UserSessionService',
-        function($scope, $log, UserSessionService) {
+        'smGlobalValues',
+        function($scope, $log, UserSessionService, smGlobalValues) {
           $log.debug('smGeoCurrentLocationDisplay controller');
+
+          $scope.curUser  = smGlobalValues.currentUser;
 
           var tempCurrentUser = UserSessionService.getCurrentUserFromClientState();
           $scope.currentLocationString = '';
@@ -413,9 +416,17 @@ Geo.directive('smGeoCurrentLocationDisplay', [
       link: function(scope, el, attrs) {
         scope.$watch('currentLocationString', function(newVal, oldVal) {
 
-            ReactDOM.render(React.createElement(CurrentLocationDisplay, {store:newVal}), el[0]);
+          ReactDOM.render(React.createElement(CurrentLocationDisplay, {store:scope.currentLocationString}), el[0]);
 
         }, true);
+        scope.$watch('curUser', function(newVal, oldVal) {
+          var position = JSON.parse(newVal.smCurrentPosition);
+          scope.currentLocationString = position.address.city + ', ' + position.address.state;
+
+          ReactDOM.render(React.createElement(CurrentLocationDisplay, {store:scope.currentLocationString}), el[0]);
+
+        }, true);
+
       }
 
     }

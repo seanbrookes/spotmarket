@@ -327,6 +327,7 @@ Admin.directive('smAdminTracksRecent', [
                 trackItem.language = trackItem.headers['accept-language'];
                 trackItem.userName = trackItem.meta.currentUserName || '';
                 trackItem.referer = trackItem.headers.referer;
+                trackItem.chrono = moment(trackItem.timestamp).format('YYYY MM DD');
               })
             }
             data = $filter('orderBy')(data, 'timestamp', true);

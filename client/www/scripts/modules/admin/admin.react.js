@@ -80,7 +80,7 @@ var RecentTracks = React.createClass({displayName: "RecentTracks",
               )
             ), 
             React.createElement("td", null, 
-              track.timestamp
+              track.chrono
             )
           ));
       });
