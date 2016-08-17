@@ -429,7 +429,7 @@ Market.directive('smMarketMain', [
           $log.debug('Market Controller');
 
           $scope.marketCtx = {
-            activeView: MARKET_CONST.MARKET_VIEW
+            activeView: MARKET_CONST.ASK_VIEW
           };
           function isValidView(event) {
             var retVar = false;

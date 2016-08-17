@@ -2,34 +2,23 @@
   <div class="AskWizardContainer Center Layout">
     <div class="AskWizardContainer__Item AskWizardContainer__WhatItem">
       What are you selling?
+      <sm-ask-what-view></sm-ask-what-view>
 
     </div>
     <div class="AskWizardContainer__Item AskWizardContainer__WhereItem">
       Where are you selling it from?
+      <sm-ask-where-view></sm-ask-where-view>
 
     </div>
     <div class="AskWizardContainer__Item AskWizardContainer__PriceItem">
       How much are you asking for it?
-
+      <sm-ask-price-view></sm-ask-price-view>
     </div>
   </div>
   <div class="MainCenteredContainer Layout">
     <div> <!-- price display section -->
-      <dl>
-        <dt ng-show="askCtx.currentAsk.productType">what</dt>
-        <dd ng-show="askCtx.currentAsk.productType">{{askCtx.currentAsk.productType}} - {{askCtx.currentAsk.variant}}</dd>
-        <dt ng-show="askCtx.currentAsk.lotPrices.length > 0">prices</dt>
-        <dd ng-show="askCtx.currentAsk.lotPrices.length > 0">
-          <ul>
-            <li ng-repeat="price in askCtx.currentAsk.lotPrices">${{price.price}} per {{price.size}}{{price.measure}}</li>
-          </ul>
-        </dd>
-      </dl>
-      <div >
-        <!--<button ng-show="!isShowAddLotPrice" ng-click="togglePriceLotForm()">toggle price form</button>-->
-      </div>
-      <span>{{askCtx.productMode}}</span>
-      <sm-lot-form  currentAsk="askCtx.currentAsk"></sm-lot-form>
+
+
 
     </div>
     <div><!-- ask form -->
@@ -49,96 +38,96 @@
           <label class="AskForm__CheckboxLabel"><input type="checkbox" ng-change="toggleHandleAlphaOnly()" ng-model="askCtx.seller.handleSearchDefaultHandleAlphaOnly">no numbers</label>
           <button class="LinkButton" title="This as your public nickname.  We have made a suggestion for you but you can change it.  It has to be unique.  We are not in the business of name police and we encourage people to be creative but we reserve the right to prevent certain combinations if people complain.">what is this?</button>
         </div>
-        <div  class="AskForm__FieldContainer">
-          <label>I am selling:</label>
-          <button uib-popover="{{dynamicPopover.content}}" popover-title="{{dynamicPopover.title}}">
-            <span class="glyphicon glyphicon-question-sign"></span>
-          </button>
+        <!--<div  class="AskForm__FieldContainer">-->
+          <!--<label>I am selling:</label>-->
+          <!--<button uib-popover="{{dynamicPopover.content}}" popover-title="{{dynamicPopover.title}}">-->
+            <!--<span class="glyphicon glyphicon-question-sign"></span>-->
+          <!--</button>-->
 
 
 
-          <div>
-            <sm-ui-auto-suggest label="Product Type" value="askCtx.currentAsk.productType" possible-values="productCtx.currentProductTypes"></sm-ui-auto-suggest>
-          </div>
-          <div  ng-show="askCtx.currentAsk.productType">
-            <sm-ui-auto-suggest label="Variant" value="askCtx.currentAsk.variant" possible-values="productCtx.currentProductVariants"></sm-ui-auto-suggest>
+          <!--<div>-->
+            <!--<sm-ui-auto-suggest label="Product Type" value="askCtx.currentAsk.productType" possible-values="productCtx.currentProductTypes"></sm-ui-auto-suggest>-->
+          <!--</div>-->
+          <!--<div  ng-show="askCtx.currentAsk.productType">-->
+            <!--<sm-ui-auto-suggest label="Variant" value="askCtx.currentAsk.variant" possible-values="productCtx.currentProductVariants"></sm-ui-auto-suggest>-->
 
-          </div>
-
-
+          <!--</div>-->
 
 
 
-        </div>
 
 
-        <div>
-          <label ng-show="!askCtx.currentAsk.productType">What are you selling?</label>
-          <div class="Layout">
-            <button ng-class="{'ProductModeButton--active': askCtx.isProductModeButtonClassActive('Hop Leaf'), 'ProductModeButton': !askCtx.isProductModeButtonClassActive('Hop Leaf')}" class="ImageChoiceButton" ng-click="askCtx.setCurrentProductMode('Hop Leaf')">
-              <img src="./images/hop-leaf.jpg" />
-              <span class="ImageChoiceButton__Text">Hop Leaf</span>
-            </button>
-            <button ng-class="{'ProductModeButton--active': askCtx.isProductModeButtonClassActive('Hop Pellets'), 'ProductModeButton': !askCtx.isProductModeButtonClassActive('Hop Pellets')}" class="ImageChoiceButton" ng-click="askCtx.setCurrentProductMode('Hop Pellets')">
-              <img src="./images/hop-pellets.jpg" />
-              <span class="ImageChoiceButton__Text">Hop Pellets</span>
-            </button>
-            <button ng-class="{'ProductModeButton--active': askCtx.isProductModeButtonClassActive('Hop Extract'), 'ProductModeButton': !askCtx.isProductModeButtonClassActive('Hop Extract')}" class="ImageChoiceButton" ng-click="askCtx.setCurrentProductMode('Hop Extract')">
-              <img src="./images/hop-extract.jpg" />
-              <span class="ImageChoiceButton__Text">Hop Extract</span>
-            </button>
-            <button ng-class="{'ProductModeButton--active': askCtx.isProductModeButtonClassActive('Hop Hash'), 'ProductModeButton': !askCtx.isProductModeButtonClassActive('Hop Hash')}" class="ImageChoiceButton" ng-click="askCtx.setCurrentProductMode('Hop Hash')">
-              <img src="./images/hop-hash.jpg" />
-              <span class="ImageChoiceButton__Text">Hop Hash</span>
-            </button>
-          </div>
-        </div>
+        <!--</div>-->
 
-        <div>
-          <label>
-            Description
-          </label>
-          <textarea ng-model="askCtx.currentAsk.description"></textarea>
 
-        </div>
-        <div>
+        <!--<div>-->
+          <!--<label ng-show="!askCtx.currentAsk.productType">What are you selling?</label>-->
+          <!--<div class="Layout">-->
+            <!--<button ng-class="{'ProductModeButton&#45;&#45;active': askCtx.isProductModeButtonClassActive('Hop Leaf'), 'ProductModeButton': !askCtx.isProductModeButtonClassActive('Hop Leaf')}" class="ImageChoiceButton" ng-click="askCtx.setCurrentProductMode('Hop Leaf')">-->
+              <!--<img src="./images/hop-leaf.jpg" />-->
+              <!--<span class="ImageChoiceButton__Text">Hop Leaf</span>-->
+            <!--</button>-->
+            <!--<button ng-class="{'ProductModeButton&#45;&#45;active': askCtx.isProductModeButtonClassActive('Hop Pellets'), 'ProductModeButton': !askCtx.isProductModeButtonClassActive('Hop Pellets')}" class="ImageChoiceButton" ng-click="askCtx.setCurrentProductMode('Hop Pellets')">-->
+              <!--<img src="./images/hop-pellets.jpg" />-->
+              <!--<span class="ImageChoiceButton__Text">Hop Pellets</span>-->
+            <!--</button>-->
+            <!--<button ng-class="{'ProductModeButton&#45;&#45;active': askCtx.isProductModeButtonClassActive('Hop Extract'), 'ProductModeButton': !askCtx.isProductModeButtonClassActive('Hop Extract')}" class="ImageChoiceButton" ng-click="askCtx.setCurrentProductMode('Hop Extract')">-->
+              <!--<img src="./images/hop-extract.jpg" />-->
+              <!--<span class="ImageChoiceButton__Text">Hop Extract</span>-->
+            <!--</button>-->
+            <!--<button ng-class="{'ProductModeButton&#45;&#45;active': askCtx.isProductModeButtonClassActive('Hop Hash'), 'ProductModeButton': !askCtx.isProductModeButtonClassActive('Hop Hash')}" class="ImageChoiceButton" ng-click="askCtx.setCurrentProductMode('Hop Hash')">-->
+              <!--<img src="./images/hop-hash.jpg" />-->
+              <!--<span class="ImageChoiceButton__Text">Hop Hash</span>-->
+            <!--</button>-->
+          <!--</div>-->
+        <!--</div>-->
 
-          <label>Images</label>
+        <!--<div>-->
+          <!--<label>-->
+            <!--Description-->
+          <!--</label>-->
+          <!--<textarea ng-model="askCtx.currentAsk.description"></textarea>-->
 
-          <input type="file" ngf-select ng-model="picFile" name="file" multiple
-                 accept="image/*" ngf-max-size="2MB" required>
+        <!--</div>-->
+        <!--<div>-->
 
-          <button ng-click="uploadPic(picFile)">Submit</button>
-          <br><br>
-          Files:
-          <ul>
-            <li ng-repeat="f in files" >{{f.name}} {{f.$errorParam}}
-              <span class="progress" ng-show="f.progress >= 0">
-                <div style="width:{{f.progress}}%"
-                     ng-bind="f.progress + '%'"></div>
-              </span>
-            </li>
-            <li ng-repeat="f in errFiles" >{{f.name}} {{f.$error}} {{f.$errorParam}}
-            </li>
-          </ul>
-          {{errorMsg}}
+          <!--<label>Images</label>-->
 
-        </div>
+          <!--<input type="file" ngf-select ng-model="picFile" name="file" multiple-->
+                 <!--accept="image/*" ngf-max-size="2MB" required>-->
 
-        <div ng-show="isShowFullDetails">
-          <div class="">
-            <label>Total quantity:</label>
-            <input type="text" ng-model="askCtx.currentAsk.totalQuantity"/>
-          </div>
-          <ul>
-            <li><label><input type="checkbox" />certified organic</label></li>
-            <li><label><input type="checkbox" />organically grown</label></li>
-          </ul>
-          <div class="">
-            <label>Details</label>
-            <textarea ng-model="askCtx.currentAsk.details"></textarea>
-          </div>
-        </div>
+          <!--<button ng-click="uploadPic(picFile)">Submit</button>-->
+          <!--<br><br>-->
+          <!--Files:-->
+          <!--<ul>-->
+            <!--<li ng-repeat="f in files" >{{f.name}} {{f.$errorParam}}-->
+              <!--<span class="progress" ng-show="f.progress >= 0">-->
+                <!--<div style="width:{{f.progress}}%"-->
+                     <!--ng-bind="f.progress + '%'"></div>-->
+              <!--</span>-->
+            <!--</li>-->
+            <!--<li ng-repeat="f in errFiles" >{{f.name}} {{f.$error}} {{f.$errorParam}}-->
+            <!--</li>-->
+          <!--</ul>-->
+          <!--{{errorMsg}}-->
+
+        <!--</div>-->
+
+        <!--<div ng-show="isShowFullDetails">-->
+          <!--<div class="">-->
+            <!--<label>Total quantity:</label>-->
+            <!--<input type="text" ng-model="askCtx.currentAsk.totalQuantity"/>-->
+          <!--</div>-->
+          <!--<ul>-->
+            <!--<li><label><input type="checkbox" />certified organic</label></li>-->
+            <!--<li><label><input type="checkbox" />organically grown</label></li>-->
+          <!--</ul>-->
+          <!--<div class="">-->
+            <!--<label>Details</label>-->
+            <!--<textarea ng-model="askCtx.currentAsk.details"></textarea>-->
+          <!--</div>-->
+        <!--</div>-->
 
 
 

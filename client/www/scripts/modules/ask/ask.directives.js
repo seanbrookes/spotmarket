@@ -6,6 +6,87 @@ Ask.directive('smAsk', [
     }
   }
 ]);
+Ask.directive('smAskWhatView', [
+  '$log',
+  function($log) {
+    return {
+      restrict: 'E',
+      templateUrl: './scripts/modules/ask/templates/ask.what.view.html',
+      controller: [
+        '$scope',
+        function($scope) {
+          $log.debug('smAskWhatView directive controller');
+
+        }
+      ]
+
+    }
+  }
+
+]);
+Ask.directive('smAskWhoView', [
+  '$log',
+  function($log) {
+    return {
+      restrict: 'E',
+      templateUrl: './scripts/modules/ask/templates/ask.who.view.html',
+      controller: [
+        '$scope',
+        function($scope) {
+          $log.debug('smAskWhoView directive controller');
+        }
+      ]
+    }
+  }
+]);
+Ask.directive('smAskWhereView', [
+  '$log',
+  function($log) {
+    return {
+      restrict: 'E',
+      templateUrl: './scripts/modules/ask/templates/ask.where.view.html',
+      controller: [
+        '$scope',
+        function($scope) {
+          $log.debug('smAskWhereView directive controller');
+        }
+      ]
+    }
+  }
+]);
+Ask.directive('smAskShippingView', [
+  '$log',
+  function($log) {
+    return {
+      restrict: 'E',
+      templateUrl: './scripts/modules/ask/templates/ask.shipping.view.html',
+      controller: [
+        '$scope',
+        function($scope) {
+          $log.debug('smAskShippingView directive controller');
+        }
+      ]
+    }
+  }
+]);
+Ask.directive('smAskPriceView', [
+  '$log',
+  function($log) {
+    return {
+      restrict: 'E',
+      templateUrl: './scripts/modules/ask/templates/ask.price.view.html',
+      controller: [
+        '$scope',
+        function($scope) {
+          $log.debug('smAskPriceView directive controller');
+
+        }
+      ]
+
+    }
+  }
+
+]);
 Ask.directive('smAskMarketView', [
   '$log',
   'CommonServices',
