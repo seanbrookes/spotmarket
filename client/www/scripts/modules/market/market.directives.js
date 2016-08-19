@@ -486,11 +486,18 @@ Market.directive('smMarketNavigator', [
   function($log, MARKET_CONST) {
     return {
       restrict:'E',
-      template: '<button class="CommandButton" ng-click="marketCtx.activateView">change</button>',
+      template: '<button class="CommandButton" ng-click="activateView()">change</button>',
+      scope: {
+        target: '@'
+      },
       controller: [
         '$scope',
         '$log',
         function($scope, $log) {
+          $scope.activateView = function() {
+            $log.debug('acivate view', $scope.target);
+            $scope.marketCtx.setActiveView($scope.target)
+          }
 
         }
       ]

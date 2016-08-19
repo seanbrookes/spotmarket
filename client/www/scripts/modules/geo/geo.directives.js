@@ -304,9 +304,19 @@ Geo.directive('smGeoMarketView', [
             }, 200);
           };
           $scope.geoCtx.init();
+          $scope.geoCtx.currentPositionMarker = {};
           $scope.geoCtx.refreshMap = function() {
 
             $scope.findMeMap.setView([$scope.geoCtx.position.geometry.coordinates[1], $scope.geoCtx.position.geometry.coordinates[0]], 8);
+
+
+            if ($scope.geoCtx.currentPositionMarker !== undefined) {
+              $scope.findMeMap.removeLayer($scope.geoCtx.currentPositionMarker);
+            }
+
+            $scope.geoCtx.currentPositionMarker = L.marker([$scope.geoCtx.position.geometry.coordinates[1], $scope.geoCtx.position.geometry.coordinates[0]]).addTo($scope.findMeMap);
+
+
           };
 
         }
@@ -320,6 +330,17 @@ Geo.directive('smGeoMarketView', [
             attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           }).addTo(scope.findMeMap);
 
+          if(scope.geoCtx.position.geometry) {
+
+
+
+
+            if (scope.geoCtx.currentPositionMarker !== undefined) {
+              scope.findMeMap.removeLayer(scope.geoCtx.currentPositionMarker);
+            }
+
+            scope.geoCtx.currentPositionMarker = L.marker([scope.geoCtx.position.geometry.coordinates[1], scope.geoCtx.position.geometry.coordinates[0]]).addTo(scope.findMeMap);
+          }
 
         }
         initMap();
@@ -344,31 +365,6 @@ Geo.directive('smGeoMarketView', [
 
           }
         });
-
-        //$("#f_elem_city").autocomplete({
-        //  source: function (request, response) {
-        //    $.getJSON(
-        //      "http://gd.geobytes.com/AutoCompleteCity?callback=?&q="+request.term,
-        //      function (data) {
-        //        response(data);
-        //      }
-        //    );
-        //  },
-        //  minLength: 3,
-        //  select: function (event, ui) {
-        //    var selectedObj = ui.item;
-        //    jQuery("#f_elem_city").val(selectedObj.value);
-        //    getcitydetails(selectedObj.value);
-        //    return false;
-        //  },
-        //  open: function () {
-        //    jQuery(this).removeClass("ui-corner-all").addClass("ui-corner-top");
-        //  },
-        //  close: function () {
-        //    jQuery(this).removeClass("ui-corner-top").addClass("ui-corner-all");
-        //  }
-        //});
-        //jQuery("#f_elem_city").autocomplete("option", "delay", 100);
 
         scope.$watch('activeView', function(newVal, oldVal) {
           if (newVal && (newVal === scope.geoCtx.viewName)) {

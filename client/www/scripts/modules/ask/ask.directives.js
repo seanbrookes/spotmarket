@@ -1,11 +1,4 @@
-Ask.directive('smAsk', [
-  function() {
-    return {
-      restrict:'E',
-      templateUrl: './scripts/modules/ask/templates/ask.main.html'
-    }
-  }
-]);
+
 Ask.directive('smAskWhatView', [
   '$log',
   function($log) {
@@ -17,6 +10,7 @@ Ask.directive('smAskWhatView', [
         function($scope) {
           $log.debug('smAskWhatView directive controller');
 
+          $scope.isShowMoreForm = false;
         }
       ]
 
