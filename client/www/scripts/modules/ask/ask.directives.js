@@ -694,7 +694,7 @@ Ask.directive('smAskMarketView', [
     }
   }
 ]);
-Ask.directive('smLotForm', [
+Ask.directive('smAskLotForm', [
   function() {
     return {
       restrict: 'E',

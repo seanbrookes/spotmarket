@@ -1,93 +1,59 @@
-<div>
-  <label>I am selling:</label>
-  <div>
-    <sm-ui-auto-suggest value="askCtx.currentAsk.productType" possible-values="productCtx.currentProductTypes"></sm-ui-auto-suggest>
-</div>
-  <div  ng-show="askCtx.currentAsk.productType">
-    <sm-ui-auto-suggest label="Variant" value="askCtx.currentAsk.variant" possible-values="productCtx.currentProductVariants"></sm-ui-auto-suggest>
+<div class="AskForm__Container">
 
-  </div>
+    <sm-ui-auto-suggest label="I am selling" value="askCtx.currentAsk.productType" possible-values="productCtx.currentProductTypes"></sm-ui-auto-suggest>
+    <sm-ui-auto-suggest ng-show="askCtx.currentAsk.productType" label="Variant" value="askCtx.currentAsk.variant" possible-values="productCtx.currentProductVariants"></sm-ui-auto-suggest>
 
 
-
-
-
-  <div ng-show="isShowMoreForm">
-
-    <label ng-show="!askCtx.currentAsk.productType">What are you selling?</label>
-    <div class="Layout">
+    <div class="Layout" ng-show="askCtx.currentAsk.productType">
       <button ng-class="{'ProductModeButton--active': askCtx.isProductModeButtonClassActive('Hop Leaf'), 'ProductModeButton': !askCtx.isProductModeButtonClassActive('Hop Leaf')}" class="ImageChoiceButton" ng-click="askCtx.setCurrentProductMode('Hop Leaf')">
-        <img src="./images/hop-leaf.jpg" />
-        <span class="ImageChoiceButton__Text">Hop Leaf</span>
+        <div class="Center Column">
+          <img src="./images/hop-leaf.jpg" />
+          <p class="ImageChoiceButton__Text">Hop Leaf</p>
+        </div>
       </button>
       <button ng-class="{'ProductModeButton--active': askCtx.isProductModeButtonClassActive('Hop Pellets'), 'ProductModeButton': !askCtx.isProductModeButtonClassActive('Hop Pellets')}" class="ImageChoiceButton" ng-click="askCtx.setCurrentProductMode('Hop Pellets')">
-        <img src="./images/hop-pellets.jpg" />
-        <span class="ImageChoiceButton__Text">Hop Pellets</span>
+        <div class="Center Column">
+          <img src="./images/hop-pellets.jpg" />
+          <p class="ImageChoiceButton__Text">Hop Pellets</p>
+        </div>
       </button>
       <button ng-class="{'ProductModeButton--active': askCtx.isProductModeButtonClassActive('Hop Extract'), 'ProductModeButton': !askCtx.isProductModeButtonClassActive('Hop Extract')}" class="ImageChoiceButton" ng-click="askCtx.setCurrentProductMode('Hop Extract')">
-        <img src="./images/hop-extract.jpg" />
-        <span class="ImageChoiceButton__Text">Hop Extract</span>
+        <div class="Center Column">
+          <img src="./images/hop-extract.jpg" />
+          <p class="ImageChoiceButton__Text">Hop Extract</p>
+        </div>
       </button>
       <button ng-class="{'ProductModeButton--active': askCtx.isProductModeButtonClassActive('Hop Hash'), 'ProductModeButton': !askCtx.isProductModeButtonClassActive('Hop Hash')}" class="ImageChoiceButton" ng-click="askCtx.setCurrentProductMode('Hop Hash')">
-        <img src="./images/hop-hash.jpg" />
-        <span class="ImageChoiceButton__Text">Hop Hash</span>
+        <div class="Center Column">
+          <img src="./images/hop-hash.jpg" />
+          <p class="ImageChoiceButton__Text">Hop Hash</p>
+        </div>
       </button>
     </div>
-
-
-
-
-
-
-
-
-
-
-
     <div>
-
-      <label>Images</label>
-
+      <label class="AskForm__Label">
+        Description
+      </label>
+      <textarea class="AskForm__DescriptionText" ng-model="askCtx.currentAsk.description"></textarea>
+    </div>
+    <div>
+      <label class="AskForm__Label">Images</label>
       <input type="file" ngf-select ng-model="picFile" name="file" multiple
              accept="image/*" ngf-max-size="2MB" required>
-
       <button ng-click="uploadPic(picFile)">Submit</button>
       <br><br>
       Files:
       <ul>
         <li ng-repeat="f in files" >{{f.name}} {{f.$errorParam}}
-              <span class="progress" ng-show="f.progress >= 0">
-                <div style="width:{{f.progress}}%"
-                     ng-bind="f.progress + '%'"></div>
-              </span>
+          <span class="progress" ng-show="f.progress >= 0">
+            <div style="width:{{f.progress}}%"
+                 ng-bind="f.progress + '%'"></div>
+          </span>
         </li>
         <li ng-repeat="f in errFiles" >{{f.name}} {{f.$error}} {{f.$errorParam}}
         </li>
       </ul>
       {{errorMsg}}
-
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-  </div>
-
-
-  <div>
-    <label>
-      Description
-    </label>
-    <textarea ng-model="askCtx.currentAsk.description"></textarea>
-
-  </div>
 
 </div>

@@ -101,41 +101,6 @@ ul {
 .UDTADropDownListButton:hover {
   text-decoration: underline;
 }
-.ImageChoiceButton {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  position: relative;
-  display: block;
-  border-radius: 1.5rem;
-  border: 1px solid #ffffff;
-  overflow: hidden;
-}
-.ImageChoiceButton:hover {
-  border-top: 1px solid #999999;
-  border-left: 1px solid #999999;
-  -webkit-box-shadow: 4px 6px 5px 0px #858585;
-  -moz-box-shadow: 4px 6px 5px 0px #858585;
-  box-shadow: 4px 6px 5px 0px #858585;
-}
-.ImageChoiceButton:active {
-  border-top: 1px solid #444444;
-  border-left: 1px solid #444444;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
-}
-.ImageChoiceButton img {
-  margin: 0;
-  padding: 0;
-}
-.ImageChoiceButton .ImageChoiceButton__Text {
-  position: absolute;
-  top: 1rem;
-  left: .5rem;
-  color: #ffffff;
-}
 .dropdown {
   z-index: 4000;
 }
@@ -143,9 +108,12 @@ ul {
   display: flex;
   flex-direction: row;
 }
+.Column {
+  display: flex;
+  flex-direction: column;
+}
 .Center {
   justify-content: center;
-  align-content: center;
 }
 .FlexEnd {
   justify-content: flex-end;
@@ -361,6 +329,48 @@ ul {
 }
 .ProductModeButton--active img {
   width: 100%;
+}
+.AskForm__Label {
+  display: block;
+}
+.AskForm__DescriptionText {
+  width: 17rem;
+}
+.AskForm__Container input[type="text"] {
+  width: 15rem;
+}
+.AskForm__Container .AutoSuggest__Label {
+  display: block;
+}
+.ImageChoiceButton {
+  display: block;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border-radius: 1.5rem;
+  border: 1px solid #dddddd;
+  overflow: hidden;
+}
+.ImageChoiceButton:hover {
+  border-top: 1px solid #999999;
+  border-left: 1px solid #999999;
+  -webkit-box-shadow: 4px 6px 5px 0px #858585;
+  -moz-box-shadow: 4px 6px 5px 0px #858585;
+  box-shadow: 4px 6px 5px 0px #858585;
+}
+.ImageChoiceButton:active {
+  border-top: 1px solid #444444;
+  border-left: 1px solid #444444;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+.ImageChoiceButton img {
+  margin: 0;
+  padding: 0;
+}
+.ImageChoiceButton .ImageChoiceButton__Text {
+  color: #444444;
 }
 .DropDownMenuParent {
   position: relative;
