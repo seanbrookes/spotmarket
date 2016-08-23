@@ -53,7 +53,7 @@ Market.directive('smMarketMarketView', [
           $scope.marketRange = 2200;
           $scope.marketRangeKms = 160;
           $scope.layers;
-          $scope.userMarketMap;
+          $scope.userMarketMap = {};
           $scope.toggleMapLoad = false;
           $scope.markersCollection = [];
           $scope.userMarketCtx.allAsks = [];
@@ -62,19 +62,11 @@ Market.directive('smMarketMarketView', [
           $scope.resetBounds = [];
           $scope.markers = {};
           $scope.center = {};
-          $scope.userMarketMap;
-
-
-
-
-
 
           if (!$scope.currentUser.smCurrentPosition) {
             // alert('message from MarketView: There is no current position!!!');
             //return;
           }
-
-
           function loadAllAsks() {
             $scope.userMarketCtx.allAsks = AskServices.getAsks()
               .then(function(response) {
@@ -83,9 +75,6 @@ Market.directive('smMarketMarketView', [
 
           }
           loadAllAsks();
-
-
-
           $scope.initMapData = function() {
             lats = [];
             lngs = [];
@@ -239,7 +228,7 @@ Market.directive('smMarketMarketView', [
                     $scope.userMarketCtx.currentMap = {
                       center: {
                         lat: currentPosition.geometry.coordinates[1],
-                          lng: currentPosition.geometry.coordinates[0]
+                        lng: currentPosition.geometry.coordinates[0]
                       },
                       bounds: $scope.bounds
                     };
@@ -274,9 +263,6 @@ Market.directive('smMarketMarketView', [
                   $log.warn('bad get asks', error);
                 });
           };
-
-
-
           $scope.userMarketCtx.init = function() {
             // get current user
             $scope.currentUser = UserSessionService.getCurrentUserFromClientState();
@@ -291,9 +277,10 @@ Market.directive('smMarketMarketView', [
             // respond to range updates
 
           };
+          if ($scope.activeView === $scope.userMarketCtx.viewName) {
 
-          $scope.userMarketCtx.init();
-
+            $scope.userMarketCtx.init();
+          }
         }
       ],
       link: function(scope, el, attrs) {
@@ -305,13 +292,13 @@ Market.directive('smMarketMarketView', [
           }
          // if (!scope.userMarketMap.tileLayer) {
 
-            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-              attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(scope.userMarketMap);
+          L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          }).addTo(scope.userMarketMap);
          // }
 
         }
-        initMap();
+
 
         var rangeCircle;
         function renderUserMarketMap() {
@@ -359,16 +346,19 @@ Market.directive('smMarketMarketView', [
           $log.debug('marketRangeKms', newVal);
         }, true);
         scope.$watch('toggleMapLoad', function(newVal, oldVal) {
-          if (scope.userMarketCtx && scope.userMarketCtx.currentMap.center) {
-            if (scope.userMarketCtx.currentMap.center.lat && scope.userMarketCtx.currentMap.center.lng) {
-              //initMap();
-              $timeout(function() {
-                renderUserMarketMap();
-              }, 4000);
+          if (scope.activeView === scope.userMarketCtx.viewName) {
+            if (scope.userMarketCtx && scope.userMarketCtx.currentMap.center) {
+              if (scope.userMarketCtx.currentMap.center.lat && scope.userMarketCtx.currentMap.center.lng) {
+                //initMap();
+                // scope.userMarketCtx.init();
+                $timeout(function() {
+                  renderUserMarketMap();
+                }, 1000);
+              }
             }
           }
-        }, true);
 
+        }, true);
         scope.$watch('activeView', function(newVal, oldVal) {
           if (newVal && (newVal === scope.userMarketCtx.viewName)) {
             $log.debug('| active view changed to', scope.userMarketCtx.viewName);
@@ -377,6 +367,7 @@ Market.directive('smMarketMarketView', [
               if (scope.userMarketMap) {
                 //scope.userMarketMap.remove();
               }
+              initMap();
               scope.userMarketCtx.init();
               scope.toggleMapLoad = !scope.toggleMapLoad;
             }

@@ -1,0 +1,30 @@
+<div>
+  <sm-ui-auto-suggest placeholder="eg Cascade" ng-show="askCtx.currentAsk.productType" label="Variant" value="askCtx.currentAsk.variant" possible-values="productCtx.currentProductVariants"></sm-ui-auto-suggest>
+
+  <div class="Layout" ng-show="askCtx.currentAsk.productType">
+    <button ng-class="{'ProductModeButton--active': askCtx.isProductModeButtonClassActive('Hop Leaf'), 'ProductModeButton': !askCtx.isProductModeButtonClassActive('Hop Leaf')}" class="ImageChoiceButton" ng-click="askCtx.setCurrentProductMode('Hop Leaf')">
+      <div class="Center Column">
+        <img src="./images/hop-leaf.jpg" />
+        <p class="ImageChoiceButton__Text">Hop Leaf</p>
+      </div>
+    </button>
+    <button ng-class="{'ProductModeButton--active': askCtx.isProductModeButtonClassActive('Hop Pellets'), 'ProductModeButton': !askCtx.isProductModeButtonClassActive('Hop Pellets')}" class="ImageChoiceButton" ng-click="askCtx.setCurrentProductMode('Hop Pellets')">
+      <div class="Center Column">
+        <img src="./images/hop-pellets.jpg" />
+        <p class="ImageChoiceButton__Text">Hop Pellets</p>
+      </div>
+    </button>
+    <button ng-class="{'ProductModeButton--active': askCtx.isProductModeButtonClassActive('Hop Extract'), 'ProductModeButton': !askCtx.isProductModeButtonClassActive('Hop Extract')}" class="ImageChoiceButton" ng-click="askCtx.setCurrentProductMode('Hop Extract')">
+      <div class="Center Column">
+        <img src="./images/hop-extract.jpg" />
+        <p class="ImageChoiceButton__Text">Hop Extract</p>
+      </div>
+    </button>
+    <button ng-class="{'ProductModeButton--active': askCtx.isProductModeButtonClassActive('Hop Hash'), 'ProductModeButton': !askCtx.isProductModeButtonClassActive('Hop Hash')}" class="ImageChoiceButton" ng-click="askCtx.setCurrentProductMode('Hop Hash')">
+      <div class="Center Column">
+        <img src="./images/hop-hash.jpg" />
+        <p class="ImageChoiceButton__Text">Hop Hash</p>
+      </div>
+    </button>
+  </div>
+</div>

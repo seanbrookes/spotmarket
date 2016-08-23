@@ -1,24 +1,24 @@
 <div class="AutoSuggestContainer">
   <label class="AutoSuggest__Label">{{label}}</label>
-  <input type="text" class="AutoSuggest__Input" ng-model="componentValue" />
+  <input type="text" placeholder={{placeholder}} class="AutoSuggest__Input" ng-model="componentValue" />
   <button ng-click="toggleComponentMenuDisplay()"><span class="glyphicon glyphicon-circle-arrow-down"></span></button>
   <div class="AutoSuggest__Menu" ng-show="isMenuVisible">
     <div class="AutoSuggest__MenuListContainer" ng-show="isMatchMenuVisible">
-      <ul >
-        <li key="name" ng-repeat="item in ctx.itemFilters.itemDirectMatchCollection | orderBy:'name' ">
-          <button ng-click="setComponentValue(item.value)">{{item.name}}</button>
+      <ul class="AutoSuggest__MenuList AutoSuggest__MenuList--direct">
+        <li class="AutoSuggest__MenuItem" key="name" ng-repeat="item in ctx.itemFilters.itemDirectMatchCollection | orderBy:'name' ">
+          <button class="AutoSuggest__MenuItemButton" ng-click="setComponentValue(item.value)">{{item.name}}</button>
         </li>
       </ul>
-      <ul >
-        <li key="name" ng-repeat="item in ctx.itemFilters.itemIndirectMatchCollection | orderBy:'name' ">
-          <button ng-click="setComponentValue(item.value)">{{item.name}}</button>
+      <ul class="AutoSuggest__MenuList AutoSuggest__MenuList--indirect" >
+        <li class="AutoSuggest__MenuItem" key="name" ng-repeat="item in ctx.itemFilters.itemIndirectMatchCollection | orderBy:'name' ">
+          <button class="AutoSuggest__MenuItemButton" ng-click="setComponentValue(item.value)">{{item.name}}</button>
         </li>
       </ul>
     </div>
     <div class="AutoSuggest__MenuListContainer">
-      <ul>
-        <li key="id" ng-repeat="item in ctx.possibleValuesList | orderBy:'name'">
-          <button ng-click="setComponentValue(item.value)">{{item.name}}</button>
+      <ul class="AutoSuggest__MenuList AutoSuggest__MenuList--possible">
+        <li class="AutoSuggest__MenuItem" key="id" ng-repeat="item in ctx.possibleValuesList | orderBy:'name'">
+          <button class="AutoSuggest__MenuItemButton" ng-click="setComponentValue(item.value)">{{item.name}}</button>
         </li>
       </ul>
     </div>

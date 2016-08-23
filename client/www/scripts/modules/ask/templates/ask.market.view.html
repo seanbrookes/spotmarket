@@ -1,5 +1,6 @@
 <div class="ModuleContainer">
-  From: <sm-ask-where-view></sm-ask-where-view>
+  <span class="AskFormLabel">Your current location: </span>
+  <sm-ask-where-view></sm-ask-where-view>
   <div class="AskWizardContainer Center Layout">
     <div class="AskWizardContainer__Item AskWizardContainer__WhatItem">
       <sm-ask-what-view></sm-ask-what-view>
@@ -17,12 +18,12 @@
     </div>
     <div><!-- ask form -->
       <form class="StandardForm">
-        <div ng-hide="askCtx.currentAsk.seller.email" class="AskForm__FieldContainer">
+        <div class="AskForm__FieldContainer">
           <label>email</label>
           <input type="text" placeholder="email" ng-class="validationClassNames.askSellerEmailInput" ng-model="askCtx.currentAsk.seller.email" />
           <button class="LinkButton" title="This is the default way we will communicate with you (you can change that). It will not be disclosed or made public without your consent">why?</button>
         </div>
-        <div ng-hide="askCtx.currentAsk.seller.handle" class="AskForm__FieldContainer">
+        <div class="AskForm__FieldContainer">
           <label>seller handle</label>
           <input type="text" placeholder="seller handle" ng-model="askCtx.currentAsk.seller.handle" />
           <button title="go back" ng-click="askCtx.goBackOneHandleSuggestion()"><</button>

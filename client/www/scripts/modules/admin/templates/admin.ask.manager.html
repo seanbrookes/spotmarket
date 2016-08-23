@@ -21,10 +21,10 @@
           <span>Product Variant</span><span>{{ask.variant}}</span>
         </div>
         <div class="Layout">
-          <span>City/Town</span><span>{{ask.address.city}}</span>
+          <span>City/Town</span><span>{{ask.address.city}} {{ask.address.county}}</span>
         </div>
         <div class="Layout">
-          <span>State</span><span>{{ask.address.state}}</span>
+          <span>State</span><span>{{ask.address.state}}, {{ask.address.country}}</span>
         </div>
         <div class="Layout">
           <span>Submission Date</span><span am-time-ago="ask.createdDate"></span>

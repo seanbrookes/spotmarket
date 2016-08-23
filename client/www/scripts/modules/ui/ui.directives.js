@@ -62,7 +62,8 @@ UI.directive('smUiAutoSuggest', [
       ],
       link:function(scope, el, attrs) {
 
-          scope.label = attrs.label;
+        scope.label = attrs.label;
+        scope.placeholder = attrs.placeholder;
         function isUniqueProductTypeMatch(testName) {
           if (!testName) {
             return false;

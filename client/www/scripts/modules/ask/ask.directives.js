@@ -162,6 +162,9 @@ Ask.directive('smAskMarketView', [
             if (!user.smCurrentPosition) {
               //alert('Message from AskController we do not have a default location');
             }
+            else {
+              $scope.askCtx.currentAsk.position = user.smCurrentPosition;
+            }
 
             if (user.smEmail) {
               $scope.askCtx.currentAsk.seller.email = user.smEmail;
@@ -691,6 +694,19 @@ Ask.directive('smAskMarketView', [
         //}, true);
 
       }
+    }
+  }
+]);
+Ask.directive('smAskBeerhopsView', [
+  function() {
+    return {
+      restrict: 'E',
+      templateUrl: './scripts/modules/ask/templates/ask.beerhops.view.html',
+      link: [
+        function(scope, el, attrs) {
+
+        }
+      ]
     }
   }
 ]);
