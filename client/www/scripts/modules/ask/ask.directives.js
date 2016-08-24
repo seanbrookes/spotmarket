@@ -73,9 +73,13 @@ Ask.directive('smAskPriceView', [
         '$scope',
         function($scope) {
           $log.debug('smAskPriceView directive controller');
-
         }
-      ]
+      ],
+      link: function(scope, el, attrs) {
+        scope.$watch('askCtx.productMode', function(newVal, oldVal) {
+          $log.debug('|  Product Mode Changed from within the ask.price directive');
+        }, true);
+      }
 
     }
   }
@@ -85,7 +89,8 @@ Ask.directive('smAskMarketView', [
   '$log',
   'CommonServices',
   'UserSessionService',
-  function($log, CommonServices, UserSessionService) {
+  'orderByFilter',
+  function($log, CommonServices, UserSessionService, orderBy) {
     return {
       restrict:'E',
       scope: {
@@ -361,6 +366,8 @@ Ask.directive('smAskMarketView', [
 
           $scope.askCtx.setCurrentProductMode = function(productMode) {
             // $timeout(function() {
+            // create new price lot collection if product mode is new
+
             $scope.askCtx.productMode = productMode;
             $scope.productCtx.isShowProductTypeMenu = false;
             $scope.productCtx.isShowProductTypeMenu = false;
@@ -478,6 +485,7 @@ Ask.directive('smAskMarketView', [
                 $scope.lotCtx.currentLot.productMode = $scope.askCtx.productMode;
               }
               $scope.askCtx.currentAsk.lotPrices.push($scope.lotCtx.currentLot);
+              $scope.askCtx.currentAsk.lotPrices = orderBy($scope.askCtx.currentAsk.lotPrices, 'productMode', true);
               resetCurrentLot();
             }
           };
