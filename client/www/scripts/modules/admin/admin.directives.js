@@ -350,7 +350,7 @@ Admin.directive('smAdminTracksRecent', [
 
         scope.$watch('currentTracks', function(newVal, oldVal) {
           $timeout(function() {
-            ReactDOM.render(React.createElement(RecentTracks, {scope:scope}), el[0]);
+            ReactDOM.render(React.createElement(sm.RecentTracks, {scope:scope}), el[0]);
 
           }, 400);
         });

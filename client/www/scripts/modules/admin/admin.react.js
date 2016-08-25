@@ -1,4 +1,4 @@
-var RecentTracks = React.createClass({displayName: "RecentTracks",
+sm.RecentTracks = React.createClass({displayName: "RecentTracks",
   getInitialState: function() {
     return {
       titleSearchValue:''

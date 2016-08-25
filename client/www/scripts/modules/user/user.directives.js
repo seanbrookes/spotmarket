@@ -12,7 +12,7 @@ User.directive('smTrackedCommand', [
       },
       link: function(scope, el, attrs) {
 
-        ReactDOM.render(React.createElement(TrackedCommand, {scope:scope}), el[0]);
+        ReactDOM.render(React.createElement(sm.TrackedCommand, {scope:scope}), el[0]);
 
         scope.$watch('disabled', function(newVal, oldVal) {
           if (newVal) {
@@ -22,7 +22,7 @@ User.directive('smTrackedCommand', [
                 scope.disabled = 'disabled';
               }
             }
-            ReactDOM.render(React.createElement(TrackedCommand, {scope:scope}), el[0]);
+            ReactDOM.render(React.createElement(sm.TrackedCommand, {scope:scope}), el[0]);
           }
         }, true);
       }
@@ -77,7 +77,7 @@ User.directive('smUserContactInput', [
             $scope.contactCtx.isShowValidation = false;
             $scope.contactCtx.isShowCallToAction = false;
             $scope.contactCtx.isShowThankYou = false;
-            var currentUserEmail = UserSessionService.getUserEmail();
+            var currentUserEmail = UserSessionService.getValueByKey('smEmail');
             if (currentUserEmail) { //  user has already submitted their email
 
               $scope.contactCtx.isShowGreeting = false;

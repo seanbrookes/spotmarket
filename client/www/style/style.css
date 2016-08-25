@@ -1,7 +1,7 @@
 body {
   font-size: 16px;
   width: 100%;
-  background-color: #0d3349;
+  background-color: #ffffff;
   margin: 0;
   font-family: 'helvetica neue', helvetica, arial, sans-serif;
   display: flex;
@@ -178,7 +178,6 @@ ul {
 }
 .PageHeader .Branding .logo {
   height: 3.2rem;
-  padding: .5rem;
 }
 .PageHeader .Title h1 {
   text-transform: uppercase;
@@ -242,9 +241,6 @@ ul {
 .BodyHeadline {
   font-size: 270%;
   font-weight: 400;
-}
-.WelcomeMarket {
-  background-color: rgba(220, 220, 220, 0.6);
 }
 .HopBines {
   background-image: url('images/hop-bines.jpg');

@@ -1,4 +1,4 @@
-var CurrentLocationDisplay = React.createClass(
+sm.CurrentLocationDisplay = React.createClass(
   {
     displayName: "CurrentLocationDisplay",
     render:function() {

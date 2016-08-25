@@ -8,6 +8,7 @@ window.isLocal = function(){
 
   return isLocal;
 };
+window.sm = {};
 
 var Main = angular.module('Main', [
   'ui.router',

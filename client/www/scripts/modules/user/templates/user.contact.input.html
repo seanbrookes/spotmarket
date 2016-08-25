@@ -15,5 +15,8 @@
     </sm-tracked-command>
   </form>
   <a ng-show="contactCtx.isShowCallToAction" href="{{contactCtx.visitMarketUrl}}" class="ContactInput__CallToAction" ng-click="linkRequest(contactCtx.visitMarketUrl)">go to the market</a>
+  <br />
+  <div ng-show="contactCtx.isShowCallToAction">OR</div>
+  <br />
   <a ng-show="contactCtx.isShowCallToAction" href="{{contactCtx.visitBlogUrl}}" class="ContactInput__CallToAction" ng-click="linkRequest(contactCtx.visitBlogUrl)">visit our blog</a>
 </div>

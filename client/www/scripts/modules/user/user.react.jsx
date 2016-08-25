@@ -1,4 +1,4 @@
-var TrackedCommand = React.createClass({
+sm.TrackedCommand = React.createClass({
 
   handleClick: function() {
     var component = this;

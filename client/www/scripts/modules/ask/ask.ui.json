@@ -1,0 +1,22 @@
+{
+  "beerHopProductVariant": {
+    "label": "Variant",
+    "modelName": "variant",
+    "canUserDefine": true,
+    "vocabulary": [
+      ""
+    ],
+    "component": "uiAutoSuggest",
+    "isRequired": true
+  },
+  "beerHopProductMode": {
+    "label": "Mode",
+    "modelName": "productMode",
+    "canUserDefine": false,
+    "vocabulary": [
+      ""
+    ],
+    "component": "uiRadioButtons",
+    "isRequired": true
+  }
+}

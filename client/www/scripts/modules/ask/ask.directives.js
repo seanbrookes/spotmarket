@@ -18,16 +18,16 @@ Ask.directive('smAskWhatView', [
   }
 
 ]);
-Ask.directive('smAskWhoView', [
+Ask.directive('smAskSellerView', [
   '$log',
   function($log) {
     return {
       restrict: 'E',
-      templateUrl: './scripts/modules/ask/templates/ask.who.view.html',
+      templateUrl: './scripts/modules/ask/templates/ask.seller.view.html',
       controller: [
         '$scope',
         function($scope) {
-          $log.debug('smAskWhoView directive controller');
+          $log.debug('smAskSellerView directive controller');
         }
       ]
     }
