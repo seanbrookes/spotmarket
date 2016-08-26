@@ -99,6 +99,12 @@ Admin.directive('smAdminAskManager', [
             delete ask.id;
             AskServices.saveAsk(ask)
               .then(function(response) {
+                // loop over the lopPrices
+                // create lotPrice entry
+                // need to know when they are all created
+                // then delete pending ask
+                // need to notify in case of failure
+                // and recover (may be more complex than necessary)
                 AskServices.deletePendingAsk(refId)
                   .then(function(response) {
                     loadPendingAsks();

@@ -1,3 +1,21 @@
+UI.directive('smUiCurrencyToggle', [
+  '$log',
+  function($log) {
+    return {
+      restrict: 'E',
+      templateUrl: './scripts/modules/ui/templates/ui.currency.toggle.html',
+      controller: [
+        '$scope',
+        function($scope) {
+
+        }
+      ],
+      link: function(scope, el, attrs) {
+
+      }
+    }
+  }
+]);
 UI.directive('smUiAutoSuggest', [
   '$log',
   '$timeout',

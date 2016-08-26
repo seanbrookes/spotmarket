@@ -18,6 +18,25 @@ Ask.directive('smAskWhatView', [
   }
 
 ]);
+Ask.directive('smAskWhatDetailView', [
+  '$log',
+  function($log) {
+    return {
+      restrict: 'E',
+      templateUrl: './scripts/modules/ask/templates/ask.what.detail.view.html',
+      controller: [
+        '$scope',
+        function($scope) {
+          $log.debug('smAskWhatView directive controller');
+
+          $scope.isShowMoreForm = false;
+        }
+      ]
+
+    }
+  }
+
+]);
 Ask.directive('smAskSellerView', [
   '$log',
   function($log) {
@@ -127,6 +146,27 @@ Ask.directive('smAskMarketView', [
             variant: '',
             headline: '',
             lotPrices: []
+          };
+          $scope.askCtx.productModes = {
+            beerHops: [
+              {
+                name: 'Extract',
+                id: 'beer_hop_extract'
+              },
+              {
+                name: 'Leaf',
+                id: 'beer_hop_leaf'
+              },
+              {
+                name: 'Mash',
+                id: 'beer_hop_mash'
+              },
+              {
+                name: 'Pellet',
+                id: 'beer_hop_pellet'
+
+              }
+            ]
           };
 
           $scope.uploadPic = function(file) {
@@ -718,15 +758,13 @@ Ask.directive('smAskBeerhopsView', [
     }
   }
 ]);
-Ask.directive('smAskLotForm', [
+Ask.directive('smAskPriceLot', [
   function() {
     return {
       restrict: 'E',
-      templateUrl: './scripts/modules/ask/templates/ask.lot.form.html',
+      templateUrl: './scripts/modules/ask/templates/ask.price.lot.html',
       link: [
-        function(scope, el, attrs) {
-
-        }
+        function(scope, el, attrs) {}
       ]
     }
   }

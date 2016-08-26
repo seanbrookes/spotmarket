@@ -1,8 +1,8 @@
 <div class="AskForm__Container">
 
-    <sm-ui-auto-suggest label="I am selling" placeholder="eg Beer Hops" value="askCtx.currentAsk.productType" possible-values="productCtx.currentProductTypes"></sm-ui-auto-suggest>
 
-    <sm-ask-beerhops-view></sm-ask-beerhops-view>
+    <sm-ask-what-detail-view  ng-show="askCtx.currentAsk.productType"></sm-ask-what-detail-view>
+
     <div>
       <label class="AskForm__Label">
         Description

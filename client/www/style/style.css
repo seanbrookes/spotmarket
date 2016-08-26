@@ -104,6 +104,10 @@ ul {
 .AutoSuggestContainer {
   position: relative;
 }
+.AutoSuggestContainer .AutoSuggest__ToggleButton {
+  border: 0;
+  background-color: rgba(200, 200, 200, 0.4);
+}
 .AutoSuggestContainer .AutoSuggest__Menu {
   position: absolute;
   top: 5.2rem;
@@ -128,6 +132,75 @@ ul {
   background: #eeeeee;
   color: blue;
   text-decoration: underline;
+}
+.onoffswitch {
+  position: relative;
+  width: 90px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+.onoffswitch-checkbox {
+  display: none;
+}
+.onoffswitch-label {
+  display: block;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid #999999;
+  border-radius: 20px;
+}
+.onoffswitch-inner {
+  display: block;
+  width: 200%;
+  margin-left: -100%;
+  transition: margin 0.3s ease-in 0s;
+}
+.onoffswitch-inner:before,
+.onoffswitch-inner:after {
+  display: block;
+  float: left;
+  width: 50%;
+  height: 30px;
+  padding: 0;
+  line-height: 30px;
+  font-size: 14px;
+  color: white;
+  font-family: Trebuchet, Arial, sans-serif;
+  font-weight: bold;
+  box-sizing: border-box;
+}
+.onoffswitch-inner:before {
+  content: "CDN";
+  padding-left: 10px;
+  background-color: #FA1423;
+  color: #FFFFFF;
+}
+.onoffswitch-inner:after {
+  content: "USD";
+  padding-right: 10px;
+  background-color: #223FE3;
+  color: #FFFFFF;
+  text-align: right;
+}
+.onoffswitch-switch {
+  display: block;
+  width: 18px;
+  margin: 6px;
+  background: #FFFFFF;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 56px;
+  border: 2px solid #999999;
+  border-radius: 20px;
+  transition: all 0.3s ease-in 0s;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+  margin-left: 0;
+}
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+  right: 0px;
 }
 .dropdown {
   z-index: 4000;
@@ -338,6 +411,9 @@ ul {
   margin: .12rem 0 .12rem 0;
   padding: .12rem;
 }
+.AskMainWhatContainer {
+  padding: 1.8rem 7rem 1.2rem .2rem;
+}
 .SellerInput--invalid {
   border: 1px solid red;
 }
@@ -411,6 +487,12 @@ ul {
 .AskFormLabel {
   font-size: 80%;
   color: #444444;
+}
+.AskVariantDefault__Label {
+  display: block;
+}
+.AskVariantDefault__Input {
+  width: 25rem;
 }
 .LotPricingContainer .CloseButton {
   float: right;
