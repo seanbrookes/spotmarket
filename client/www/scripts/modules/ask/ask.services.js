@@ -1,7 +1,8 @@
 Ask.service('AskServices', [
   'Ask',
   'PendingAsk',
-  function(Ask, PendingAsk) {
+  'LotPrice',
+  function(Ask, PendingAsk, LotPrice) {
     var svc = this;
 
     svc.saveAsk = function(ask) {
@@ -48,11 +49,31 @@ Ask.service('AskServices', [
     };
     svc.deletePendingAsk = function(askId) {
       if (askId) {
-        return PendingAsk.deleteById({id:askId})
-          .$promise
+        var filter = {
+          where:{
+            id:askId
+          }
+        };
+        return svc.getPendingAsks(filter)
           .then(function(response) {
-            return response;
-          })
+            if (response) {
+              var target = response[0];
+              target.status = 'deleted';
+              svc.savePendingAsk(target)
+                .then(function(response) {
+                  return;
+                });
+            }
+          });
+        // get ask by id
+        // set status to deleted
+        // update the db
+
+        //return PendingAsk.deleteById({id:askId})
+        //  .$promise
+        //  .then(function(response) {
+        //    return response;
+        //  })
       }
     };
     svc.getPendingAsks = function(filter) {
@@ -93,6 +114,32 @@ Ask.service('AskServices', [
         .then(function(response) {
           return response || [];
         });
+    };
+    svc.saveLotPrice = function(lotPriceArg) {
+      if (lotPriceArg && lotPriceArg.id) {
+        // update
+        return LotPrice.upsert(lotPriceArg)
+          .$promise
+          .then(function(response) {
+            return response;
+          })
+          .catch(function(error) {
+            $log.warn('bad update lot price', error);
+            return;
+          });
+      }
+      else {
+        // create
+        return LotPrice.create(lotPriceArg)
+          .$promise
+          .then(function(response) {
+            return response;
+          })
+          .catch(function(error) {
+            $log.warn('bad create lot price', error);
+            return;
+          });
+      }
     };
 
     return svc;

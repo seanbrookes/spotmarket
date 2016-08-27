@@ -135,7 +135,7 @@ ul {
 }
 .onoffswitch {
   position: relative;
-  width: 90px;
+  width: 70px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -171,7 +171,7 @@ ul {
   box-sizing: border-box;
 }
 .onoffswitch-inner:before {
-  content: "CDN";
+  content: "CAD";
   padding-left: 10px;
   background-color: #FA1423;
   color: #FFFFFF;
@@ -494,14 +494,20 @@ ul {
 .AskVariantDefault__Input {
   width: 25rem;
 }
+.LotPricingContainer .LotPricing_Label {
+  width: 9rem;
+}
 .LotPricingContainer .CloseButton {
   float: right;
 }
 .LotPricingContainer .LotPriceInput {
-  width: 8rem;
+  width: 7rem;
 }
 .LotPricingContainer .LotSizeInput {
-  width: 5rem;
+  width: 7rem;
+}
+.LotPricingContainer .LotPricingRow {
+  margin: .4rem 0 .3rem 0;
 }
 .AskWizardContainer {
   background: #fdfdfd;

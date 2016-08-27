@@ -107,6 +107,10 @@ Main.config([
         url: '/',
         templateUrl: './scripts/modules/home/templates/home.main.html'
       })
+      .state('login', {
+        url: '/login',
+        templateUrl: './scripts/modules/user/templates/user.login.html'
+      })
       .state('register', {
         url: '/register',
         templateUrl: './scripts/modules/user/templates/user.registration.main.html'

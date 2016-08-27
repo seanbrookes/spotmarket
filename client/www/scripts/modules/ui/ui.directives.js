@@ -3,14 +3,26 @@ UI.directive('smUiCurrencyToggle', [
   function($log) {
     return {
       restrict: 'E',
+      scope: {
+        priceSrc: '='
+      },
       templateUrl: './scripts/modules/ui/templates/ui.currency.toggle.html',
       controller: [
         '$scope',
         function($scope) {
-
+          $scope.isChecked = true;
+          if ($scope.priceSrc.currency && ($scope.priceSrc.currency !== 'CAD')) {
+            $scope.isChecked = false;
+          }
         }
       ],
       link: function(scope, el, attrs) {
+        scope.$watch('isChecked', function(newVal, oldVal) {
+          console.log('|   Currency Changed');
+          if (newVal === true) {
+            scope.priceSrc.currency = 'CAD';
+          }
+        }, true);
 
       }
     }

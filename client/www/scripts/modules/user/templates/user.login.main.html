@@ -1,0 +1,17 @@
+<div>
+  <h2>login up</h2>
+  <form class="UserLogin__Form">
+    <div class="UserLogin__FormField">
+      <label class="UserLogin__Label UserLogin__Label--Required">Email</label>
+      <input type="text" ng-model="loginCtx.email" />
+    </div>
+    <div class="UserLogin__FormField">
+      <label class="UserLogin__Label UserLogin__Label--Required">Password</label>
+      <input type="password" ng-model="loginCtx.password" />
+    </div>
+    <div class="UserLogin__ButtonContainer Layout FlexEnd">
+      <button ng-click="submitLoginRequest()">login</button>
+
+    </div>
+  </form>
+</div>

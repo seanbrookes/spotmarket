@@ -20,7 +20,8 @@ Admin.directive('smAdminAskManager', [
         'AskServices',
         'AdminServices',
         'orderByFilter',
-        function($scope, $log, AskServices, AdminServices, orderBy) {
+        '$timeout',
+        function($scope, $log, AskServices, AdminServices, orderBy, $timeout) {
 
           $scope.askAdminCtx = {pendingAsks:[]};
           $scope.askAdminCtx.currentSortFilter = {
@@ -98,13 +99,45 @@ Admin.directive('smAdminAskManager', [
             var refId = ask.id;
             delete ask.id;
             AskServices.saveAsk(ask)
-              .then(function(response) {
+              .then(function(responseAsk) {
                 // loop over the lopPrices
+                if (responseAsk.lotPrices && responseAsk.lotPrices.map) {
+                  responseAsk.lotPrices.map(function(lotPrice) {
+                    // lot price elements
+                    console.log(lotPrice);
+                    /*
+                    *
+                    * seller
+                    * position
+                    * product type
+                    * variant
+                    * mode
+                    * ask.id
+                    *
+                    * */
+                    lotPrice.seller = responseAsk.seller;
+                    lotPrice.position = responseAsk.position;
+                    lotPrice.productType = responseAsk.productType;
+                    lotPrice.variant = responseAsk.variant;
+                    lotPrice.mode = responseAsk.mode;
+                    lotPrice.askId = responseAsk.id;
+
+                    $timeout(function() {
+                      AskServices.saveLotPrice(lotPrice)
+                        .then(function(response) {
+                          //
+                        })
+                        .catch(function(error) {
+                          $log.warn('bad create lotPrice ', error);
+                        })
+                    }, 25);
+
+                  });
+                }
                 // create lotPrice entry
-                // need to know when they are all created
+                // taking a little risk here in losing pending
                 // then delete pending ask
-                // need to notify in case of failure
-                // and recover (may be more complex than necessary)
+
                 AskServices.deletePendingAsk(refId)
                   .then(function(response) {
                     loadPendingAsks();
