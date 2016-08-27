@@ -1,10 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
+<div>
+  <div ng-if="askCtx.currentAsk.productType === 'Beer Hops'">
 
-</body>
-</html>
+
+    <!-- if ProductType === 'Beer Hops' -->
+
+
+    <sm-ui-auto-suggest placeholder="eg Cascade" label="Variant" value="askCtx.currentAsk.variant" possible-values="productCtx.currentProductVariants"></sm-ui-auto-suggest>
+
+    <div ng-show="askCtx.currentAsk.productType">
+      <sm-ui-auto-suggest label="Mode" placeholder="eg: pellet, whole, extract" value="askCtx.productMode" possible-values="askCtx.productModes.beerHops"></sm-ui-auto-suggest>
+
+      <!--<button ng-class="{'ProductModeButton&#45;&#45;active': askCtx.isProductModeButtonClassActive('Hop Leaf'), 'ProductModeButton': !askCtx.isProductModeButtonClassActive('Hop Leaf')}" class="ImageChoiceButton" ng-click="askCtx.setCurrentProductMode('Hop Leaf')">-->
+        <!--<div class="Center Column">-->
+          <!--<img src="./images/hop-leaf.jpg" />-->
+          <!--<p class="ImageChoiceButton__Text">Hop Leaf</p>-->
+        <!--</div>-->
+      <!--</button>-->
+      <!--<button ng-class="{'ProductModeButton&#45;&#45;active': askCtx.isProductModeButtonClassActive('Hop Pellets'), 'ProductModeButton': !askCtx.isProductModeButtonClassActive('Hop Pellets')}" class="ImageChoiceButton" ng-click="askCtx.setCurrentProductMode('Hop Pellets')">-->
+        <!--<div class="Center Column">-->
+          <!--<img src="./images/hop-pellets.jpg" />-->
+          <!--<p class="ImageChoiceButton__Text">Hop Pellets</p>-->
+        <!--</div>-->
+      <!--</button>-->
+      <!--<button ng-class="{'ProductModeButton&#45;&#45;active': askCtx.isProductModeButtonClassActive('Hop Extract'), 'ProductModeButton': !askCtx.isProductModeButtonClassActive('Hop Extract')}" class="ImageChoiceButton" ng-click="askCtx.setCurrentProductMode('Hop Extract')">-->
+        <!--<div class="Center Column">-->
+          <!--<img src="./images/hop-extract.jpg" />-->
+          <!--<p class="ImageChoiceButton__Text">Hop Extract</p>-->
+        <!--</div>-->
+      <!--</button>-->
+      <!--<button ng-class="{'ProductModeButton&#45;&#45;active': askCtx.isProductModeButtonClassActive('Hop Hash'), 'ProductModeButton': !askCtx.isProductModeButtonClassActive('Hop Hash')}" class="ImageChoiceButton" ng-click="askCtx.setCurrentProductMode('Hop Hash')">-->
+        <!--<div class="Center Column">-->
+          <!--<img src="./images/hop-hash.jpg" />-->
+          <!--<p class="ImageChoiceButton__Text">Hop Hash</p>-->
+        <!--</div>-->
+      <!--</button>-->
+    </div>
+  </div>
+  <div ng-if="askCtx.currentAsk.productType !== 'Beer Hops'">
+    <div>
+      <label class="AskVariantDefault__Label">Variant</label>
+      <input class="AskVariantDefault__Input" ng-model="askCtx.currentAsk.variant" />
+    </div>
+    <div>
+      <label class="AskVariantDefault__Label">Mode</label>
+      <!--<button class="LinkButton" title="What format is the product being sold in? eg: pellet, whole, extract, etc">what is this?</button>-->
+      <input placeholder="eg: pellet, whole, extract" class="AskVariantDefault__Input" ng-model="askCtx.productMode" />
+    </div>
+  </div>
+
+</div>

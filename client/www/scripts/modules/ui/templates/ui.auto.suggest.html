@@ -1,7 +1,7 @@
 <div class="AutoSuggestContainer">
   <label class="AutoSuggest__Label">{{label}}</label>
   <input type="text" placeholder={{placeholder}} class="AutoSuggest__Input" ng-model="componentValue" />
-  <button ng-click="toggleComponentMenuDisplay()"><span class="glyphicon glyphicon-circle-arrow-down"></span></button>
+  <button class="AutoSuggest__ToggleButton" ng-click="toggleComponentMenuDisplay()"><span class="glyphicon glyphicon-circle-arrow-down"></span></button>
   <div class="AutoSuggest__Menu" ng-show="isMenuVisible">
     <div class="AutoSuggest__MenuListContainer" ng-show="isMatchMenuVisible">
       <ul class="AutoSuggest__MenuList AutoSuggest__MenuList--direct">

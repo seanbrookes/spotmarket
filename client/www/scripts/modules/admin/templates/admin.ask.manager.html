@@ -12,6 +12,9 @@
     <li ng-repeat="ask in askAdminCtx.pendingAsks">
       <div class="PendingAskItemContainer">
         <div class="Layout">
+          <span>Status:</span><span>{{ask.status}}</span>
+        </div>
+        <div class="Layout">
           <span>Headline:</span><span>{{ask.headline}}</span>
         </div>
         <div class="Layout">
@@ -35,9 +38,15 @@
         <div class="Layout">
           <span>Email</span><button class="LinkButton">{{ask.seller.email}}</button>
         </div>
+        <div>
+          <p>pricing</p>
+          <ul>
+            <li ng-repeat="lotPrice in ask.lotPrices">{{lotPrice.productMode}}: ${{lotPrice.price}} {{lotPrice.currency}} per {{lotPrice.size}}{{lotPrice.measure}} lot</li>
+          </ul>
+        </div>
         <div class="Layout FlexEnd">
           <button class="LinkButton" ng-click="askAdminCtx.deletePendingAsk(ask)">Delete</button>
-          <button ng-click="askAdminCtx.approveAsk(ask)">Approve</button>
+          <button ng-disabled="ask.status === 'deleted'" ng-click="askAdminCtx.approveAsk(ask)">Approve</button>
         </div>
       </div>
     </li>

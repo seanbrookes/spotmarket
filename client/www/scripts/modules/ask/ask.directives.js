@@ -1,13 +1,31 @@
-
 Ask.directive('smAskWhatView', [
   '$log',
-  function($log) {
+  function ($log) {
     return {
       restrict: 'E',
       templateUrl: './scripts/modules/ask/templates/ask.what.view.html',
       controller: [
         '$scope',
-        function($scope) {
+        function ($scope) {
+          $log.debug('smAskWhatView directive controller');
+
+          $scope.isShowMoreForm = false;
+        }
+      ]
+
+    }
+  }
+
+]);
+Ask.directive('smAskWhatDetailView', [
+  '$log',
+  function ($log) {
+    return {
+      restrict: 'E',
+      templateUrl: './scripts/modules/ask/templates/ask.what.detail.view.html',
+      controller: [
+        '$scope',
+        function ($scope) {
           $log.debug('smAskWhatView directive controller');
 
           $scope.isShowMoreForm = false;
@@ -20,13 +38,13 @@ Ask.directive('smAskWhatView', [
 ]);
 Ask.directive('smAskSellerView', [
   '$log',
-  function($log) {
+  function ($log) {
     return {
       restrict: 'E',
       templateUrl: './scripts/modules/ask/templates/ask.seller.view.html',
       controller: [
         '$scope',
-        function($scope) {
+        function ($scope) {
           $log.debug('smAskSellerView directive controller');
         }
       ]
@@ -35,13 +53,13 @@ Ask.directive('smAskSellerView', [
 ]);
 Ask.directive('smAskWhereView', [
   '$log',
-  function($log) {
+  function ($log) {
     return {
       restrict: 'E',
       templateUrl: './scripts/modules/ask/templates/ask.where.view.html',
       controller: [
         '$scope',
-        function($scope) {
+        function ($scope) {
           $log.debug('smAskWhereView directive controller');
         }
       ]
@@ -50,13 +68,13 @@ Ask.directive('smAskWhereView', [
 ]);
 Ask.directive('smAskShippingView', [
   '$log',
-  function($log) {
+  function ($log) {
     return {
       restrict: 'E',
       templateUrl: './scripts/modules/ask/templates/ask.shipping.view.html',
       controller: [
         '$scope',
-        function($scope) {
+        function ($scope) {
           $log.debug('smAskShippingView directive controller');
         }
       ]
@@ -65,34 +83,32 @@ Ask.directive('smAskShippingView', [
 ]);
 Ask.directive('smAskPriceView', [
   '$log',
-  function($log) {
+  function ($log) {
     return {
       restrict: 'E',
       templateUrl: './scripts/modules/ask/templates/ask.price.view.html',
       controller: [
         '$scope',
-        function($scope) {
+        function ($scope) {
           $log.debug('smAskPriceView directive controller');
         }
       ],
-      link: function(scope, el, attrs) {
-        scope.$watch('askCtx.productMode', function(newVal, oldVal) {
+      link: function (scope, el, attrs) {
+        scope.$watch('askCtx.productMode', function (newVal, oldVal) {
           $log.debug('|  Product Mode Changed from within the ask.price directive');
         }, true);
       }
-
     }
   }
-
 ]);
 Ask.directive('smAskMarketView', [
   '$log',
   'CommonServices',
   'UserSessionService',
   'orderByFilter',
-  function($log, CommonServices, UserSessionService, orderBy) {
+  function ($log, CommonServices, UserSessionService, orderBy) {
     return {
-      restrict:'E',
+      restrict: 'E',
       scope: {
         activeView: '='
       },
@@ -106,7 +122,7 @@ Ask.directive('smAskMarketView', [
         'GeoServices',
         'Upload',
         'MARKET_CONST',
-        function($scope, $http, $timeout, ProductServices, AskServices, GeoServices, Upload, MARKET_CONST) {
+        function ($scope, $http, $timeout, ProductServices, AskServices, GeoServices, Upload, MARKET_CONST) {
 
           $scope.askCtx = {
             viewName: MARKET_CONST.ASK_VIEW,
@@ -128,12 +144,33 @@ Ask.directive('smAskMarketView', [
             headline: '',
             lotPrices: []
           };
+          $scope.askCtx.productModes = {
+            beerHops: [
+              {
+                name: 'Extract',
+                id: 'beer_hop_extract'
+              },
+              {
+                name: 'Leaf',
+                id: 'beer_hop_leaf'
+              },
+              {
+                name: 'Mash',
+                id: 'beer_hop_mash'
+              },
+              {
+                name: 'Pellet',
+                id: 'beer_hop_pellet'
 
-          $scope.uploadPic = function(file) {
+              }
+            ]
+          };
+
+          $scope.uploadPic = function (file) {
             var currentUser = UserSessionService.getCurrentUserFromClientState();
             file.upload = Upload.upload({
               url: 'http://localhost:4546/askupload',
-              data: { file: file, smToken: currentUser.smToken, askId: 'booga-booga-googa' }
+              data: {file: file, smToken: currentUser.smToken, askId: 'booga-booga-googa'}
             });
 
             file.upload.then(function (response) {
@@ -149,8 +186,14 @@ Ask.directive('smAskMarketView', [
             });
           };
 
-          $scope.init = function(user) {
-
+          $scope.init = function (user) {
+            $scope.askCtx.currentAsk = {
+              seller: {},
+              productType: '',  // ask converts to a string for name property shortand
+              variant: '',
+              headline: '',
+              lotPrices: []
+            };
             $scope.askCtx.productFilters = {
               productTypeDirectMatchCollection: [],
               productTypeIndirectMatchCollection: [],
@@ -185,7 +228,7 @@ Ask.directive('smAskMarketView', [
             }
             else {
               $scope.askCtx.currentAsk.seller.handle = UserSessionService.generateNewUserTag()
-                .then(function(response) {
+                .then(function (response) {
                   $scope.askCtx.currentAsk.seller.handle = response;
                 });
             }
@@ -197,9 +240,6 @@ Ask.directive('smAskMarketView', [
           }; // end init
 
 
-
-
-
           $scope.isShowOtherLotMeasureInput = false;
           $scope.isShowAddLotPrice = false;
 
@@ -208,7 +248,7 @@ Ask.directive('smAskMarketView', [
           };
           $scope.isShowFullDetails = false;
           $scope.helpCtx = {
-            content :{
+            content: {
               askHeadline: 'Headlines are your way of quickly describing what you are selling',
               lotMeasurePopover: 'Lot measure is the metric used to set your base price.'
             }
@@ -223,15 +263,17 @@ Ask.directive('smAskMarketView', [
           };
 
           /*
-          *
-          * LOT CTX
-          *
-          * */
-         $scope.lotCtx = {
-           currentLot:{
-            measure:'kg',
-            size:1
-          }};
+           *
+           * LOT CTX
+           *
+           * */
+          $scope.lotCtx = {
+            currentLot: {
+              measure: 'kg',
+              size: 1,
+              currency: 'CAD'
+            }
+          };
           $scope.lotCtx.measureOptions = [
             {value: 'bale'},
             {value: 'gram'},
@@ -248,31 +290,31 @@ Ask.directive('smAskMarketView', [
 
           function resetCurrentLot() {
             $scope.lotCtx.currentLot = {
-              measure:'kg',
-              size:1
+              measure: 'kg',
+              size: 1
             };
           }
+
           function loadProductTypes() {
             ProductServices.getProductTypes()
-              .then(function(response) {
+              .then(function (response) {
                 $scope.productCtx.currentProductTypes = response;
               });
           };
           function loadProductSubTypes() {
             ProductServices.getProductSubTypes()
-              .then(function(response) {
+              .then(function (response) {
                 $scope.productCtx.currentProductVariants = response;
               });
           };
 
 
-
           /*
-          *
-          * PRODUCT MODE
-          *
-          * */
-          $scope.askCtx.isProductModeButtonClassActive = function(productMode) {
+           *
+           * PRODUCT MODE
+           *
+           * */
+          $scope.askCtx.isProductModeButtonClassActive = function (productMode) {
             if (!$scope.askCtx.productMode) {
               return false;
             }
@@ -282,35 +324,35 @@ Ask.directive('smAskMarketView', [
             return false;
           };
           /*
-          *
-          *
-          * IMAGE UPLOAD
-          *
-          *
-          * */
-          $scope.askCtx.startImageUpload = function() {
+           *
+           *
+           * IMAGE UPLOAD
+           *
+           *
+           * */
+          $scope.askCtx.startImageUpload = function () {
             $log.debug('start the image upload flow for current ask');
             // open modal
           };
-          $scope.askCtx.imgUploadDataChanged = function() {
+          $scope.askCtx.imgUploadDataChanged = function () {
             $log.debug('image upload data changed');
           };
 
           /*
-          *
-          * HANDLE GENERATOR METHODS
-          *
-          * */
-          $scope.askCtx.refreshSuggestedHandle = function() {
-            var options = {aphaOnly:$scope.askCtx.seller.handleSearchDefaultHandleAlphaOnly};
+           *
+           * HANDLE GENERATOR METHODS
+           *
+           * */
+          $scope.askCtx.refreshSuggestedHandle = function () {
+            var options = {aphaOnly: $scope.askCtx.seller.handleSearchDefaultHandleAlphaOnly};
             $scope.askCtx.currentAsk.seller.handle = UserSessionService.generateNewUserTag(options)
-              .then(function(response) {
+              .then(function (response) {
                 $scope.askCtx.currentAsk.seller.handle = response;
                 UserSessionService.addUserHandleSuggestionToHistory($scope.askCtx.currentAsk.seller.handle);
                 $scope.askCtx.seller.handleSuggestionHistoryIndex = 0;
               });
           };
-          $scope.askCtx.goBackOneHandleSuggestion = function() {
+          $scope.askCtx.goBackOneHandleSuggestion = function () {
             var currentHistory = $scope.askCtx.seller.handleSuggestionHistory = UserSessionService.getUserHandleSuggestionHistory();
             var currentIndex = $scope.askCtx.seller.handleSuggestionHistoryIndex;
 
@@ -324,7 +366,7 @@ Ask.directive('smAskMarketView', [
 
             }
           };
-          $scope.askCtx.goForwardOneHandleSuggestion = function() {
+          $scope.askCtx.goForwardOneHandleSuggestion = function () {
             var currentHistory = $scope.askCtx.seller.handleSuggestionHistory = UserSessionService.getUserHandleSuggestionHistory();
             var currentIndex = $scope.askCtx.seller.handleSuggestionHistoryIndex;
 
@@ -341,15 +383,15 @@ Ask.directive('smAskMarketView', [
           // end handle generation methods
 
 
-          $scope.askCtx.isCurrentAskValid = function() {
+          $scope.askCtx.isCurrentAskValid = function () {
             var isValid = true;
             if (!$scope.askCtx.currentAsk.position) {
               isValid = false;
             }
-            if (!$scope.askCtx.currentAsk.seller  || !$scope.askCtx.currentAsk.seller.email) {
+            if (!$scope.askCtx.currentAsk.seller || !$scope.askCtx.currentAsk.seller.email) {
               isValid = false;
             }
-            if (!$scope.askCtx.currentAsk.lotPrices  || ($scope.askCtx.currentAsk.lotPrices.length < 1)) {
+            if (!$scope.askCtx.currentAsk.lotPrices || ($scope.askCtx.currentAsk.lotPrices.length < 1)) {
               isValid = false;
             }
             if (!$scope.askCtx.currentAsk.productType) {
@@ -359,12 +401,7 @@ Ask.directive('smAskMarketView', [
           };
 
 
-
-
-
-
-
-          $scope.askCtx.setCurrentProductMode = function(productMode) {
+          $scope.askCtx.setCurrentProductMode = function (productMode) {
             // $timeout(function() {
             // create new price lot collection if product mode is new
 
@@ -374,52 +411,52 @@ Ask.directive('smAskMarketView', [
 
             //  }, 75);
           };
-          $scope.askCtx.setCurrentProductType = function(productType) {
+          $scope.askCtx.setCurrentProductType = function (productType) {
             $scope.askCtx.currentAsk.productType = productType.name;
             if (productType.name === 'Beer Hops') {
               $scope.askCtx.setCurrentProductMode('Hop Leaf');
             }
             $scope.productCtx.currentProductVariants = productType.variants;
-            $timeout(function() {
+            $timeout(function () {
               $scope.resetProductTypeUIFilters();
 
             }, 10);
             $scope.askCtx.currentAsk.headline = 'I am selling: ' + $scope.askCtx.currentAsk.productType;
             if ($scope.askCtx.currentAsk.variant) {
-              $scope.askCtx.currentAsk.headline += ' variety: ' +  $scope.askCtx.currentAsk.variant
+              $scope.askCtx.currentAsk.headline += ' variety: ' + $scope.askCtx.currentAsk.variant
             }
             $scope.productCtx.isShowProductTypeMenu = false;
           };
-          $scope.askCtx.setCurrentProductVariant = function(productVariantObj) {
+          $scope.askCtx.setCurrentProductVariant = function (productVariantObj) {
             $scope.askCtx.currentAsk.variant = productVariantObj.name;
             $scope.askCtx.currentAsk.headline = $scope.askCtx.currentAsk.productType;
             if ($scope.askCtx.currentAsk.variant) {
-              $scope.askCtx.currentAsk.headline += ' variety: ' +  $scope.askCtx.currentAsk.variant
+              $scope.askCtx.currentAsk.headline += ' variety: ' + $scope.askCtx.currentAsk.variant
             }
             $scope.resetProductVariantUIFilters();
             //$scope.isShowAddLotPrice = !$scope.isShowAddLotPrice;
             resetCurrentLot();
             $scope.isShowAddLotPrice = true;
           };
-          $scope.askCtx.clearCurrentProductType = function() {
+          $scope.askCtx.clearCurrentProductType = function () {
             $scope.currentAsk.productType = '';
           };
-          $scope.askCtx.onOtherLotMeasureChoice = function() {
+          $scope.askCtx.onOtherLotMeasureChoice = function () {
             $scope.isShowOtherLotMeasureInput = true;
             $scope.lotCtx.currentLot.measure = '';
           };
-          $scope.askCtx.onLotMeasureChoice = function() {
+          $scope.askCtx.onLotMeasureChoice = function () {
             $scope.isShowOtherLotMeasureInput = false;
             // save as personal preference
             $scope.lotCtx.currentLot.otherMeasure = '';
           };
-          $scope.askCtx.isFormValid = function() {
+          $scope.askCtx.isFormValid = function () {
             if ($scope.askCtx.currentAsk.productType && $scope.askCtx.currentAsk.variant && ($scope.askCtx.currentAsk.lotPrices.length > 0)) {
               return true;
             }
             return false;
           };
-          $scope.askCtx.clearCurrentAsk = function() {
+          $scope.askCtx.clearCurrentAsk = function () {
             initializeCurrentAsk();
           };
 
@@ -432,33 +469,33 @@ Ask.directive('smAskMarketView', [
             currentProductVariants: [],
             currentProductTypes: []
           };
-          $scope.productCtx.toggleProductTypeMenu = function() {
+          $scope.productCtx.toggleProductTypeMenu = function () {
             $scope.productCtx.isShowProductTypeMenu = !$scope.productCtx.isShowProductTypeMenu;
           };
-          $scope.productCtx.toggleProductSubTypeMenu = function() {
+          $scope.productCtx.toggleProductSubTypeMenu = function () {
             $scope.productCtx.isShowProductSubTypeMenu = !$scope.productCtx.isShowProductSubTypeMenu;
           };
 
 
-          $scope.addProductType = function() {
+          $scope.addProductType = function () {
             if ($scope.productCtx.currentProductType) {
-              ProductServices.saveProductType({name:$scope.productCtx.currentProductType})
-                .then(function(response) {
+              ProductServices.saveProductType({name: $scope.productCtx.currentProductType})
+                .then(function (response) {
                   $scope.productCtx.currentProductType = '';
                   loadProductTypes();
                 });
             }
           };
-          $scope.addProductSubType = function() {
+          $scope.addProductSubType = function () {
             if ($scope.productCtx.currentProductVariant) {
-              ProductServices.saveProductSubType({name:$scope.productCtx.currentProductVariant})
-                .then(function(response) {
+              ProductServices.saveProductSubType({name: $scope.productCtx.currentProductVariant})
+                .then(function (response) {
                   $scope.productCtx.currentProductVariant = '';
                   loadProductSubTypes();
                 });
             }
           };
-          $scope.resetProductTypeUIFilters = function() {
+          $scope.resetProductTypeUIFilters = function () {
 
             $scope.askCtx.productFilters = {
               productTypeDirectMatchCollection: [],
@@ -469,18 +506,18 @@ Ask.directive('smAskMarketView', [
 
 
           };
-          $scope.resetProductVariantUIFilters = function() {
+          $scope.resetProductVariantUIFilters = function () {
             $scope.askCtx.productFilters = {
               productVariantDirectMatchCollection: [],
               productVariantIndirectMatchCollection: []
             };
           };
-          $scope.togglePriceLotForm = function() {
+          $scope.togglePriceLotForm = function () {
             $scope.isShowAddLotPrice = !$scope.isShowAddLotPrice;
             resetCurrentLot();
           };
-          $scope.addLotPriceToAsk = function() {
-            if ($scope.lotCtx.currentLot && $scope.lotCtx.currentLot.price &&  $scope.lotCtx.currentLot.size &&  $scope.lotCtx.currentLot.measure) {
+          $scope.addLotPriceToAsk = function () {
+            if ($scope.lotCtx.currentLot && $scope.lotCtx.currentLot.price && $scope.lotCtx.currentLot.size && $scope.lotCtx.currentLot.measure) {
               if ($scope.askCtx.productMode) {
                 $scope.lotCtx.currentLot.productMode = $scope.askCtx.productMode;
               }
@@ -489,7 +526,7 @@ Ask.directive('smAskMarketView', [
               resetCurrentLot();
             }
           };
-          $scope.saveAsk = function() {
+          $scope.saveAsk = function () {
             if ($scope.askCtx.currentAsk.seller.email) {
               //alert('| STOP!!! HAVEyour email - you can proceed');
 
@@ -525,10 +562,10 @@ Ask.directive('smAskMarketView', [
 
 
               GeoServices.reverseLookup(tLat, tLon)
-                .then(function(location) {
+                .then(function (location) {
                   $scope.askCtx.currentAsk.address = location.address;
                   AskServices.savePendingAsk($scope.askCtx.currentAsk)
-                    .then(function(response) {
+                    .then(function (response) {
                       $log.debug('Ask Saved');
                       $scope.init();
 
@@ -537,11 +574,8 @@ Ask.directive('smAskMarketView', [
                 });
 
 
-
             }
           };
-
-
 
 
           loadProductTypes();
@@ -549,9 +583,9 @@ Ask.directive('smAskMarketView', [
           $scope.init();
         }
       ],
-      link: function(scope, el, attrs) {
+      link: function (scope, el, attrs) {
 
-        scope.$watch('askCtx.currentAsk.seller.email', function(emailVal) {
+        scope.$watch('askCtx.currentAsk.seller.email', function (emailVal) {
           if (emailVal) {
 
             // or when the ask is to be saved
@@ -584,7 +618,7 @@ Ask.directive('smAskMarketView', [
             // if there no preset value for current user
           }
         }, true);
-        scope.$watch('askCtx.currentAsk.variant', function(newVal, oldVal) {
+        scope.$watch('askCtx.currentAsk.variant', function (newVal, oldVal) {
           scope.resetProductVariantUIFilters();
           if (!newVal || newVal.length < 1) {
             scope.resetProductTypeUIFilters();
@@ -633,11 +667,11 @@ Ask.directive('smAskMarketView', [
            };
            * */
         }, true);
-        scope.$watch('askCtx.currentAsk.productType', function(newVal, oldVal) {
+        scope.$watch('askCtx.currentAsk.productType', function (newVal, oldVal) {
           if (newVal && newVal.length > 0) {
             // check for variants
             $log.debug('/|  here we need to check for variants');
-            scope.productCtx.currentProductTypes.map(function(productType) {
+            scope.productCtx.currentProductTypes.map(function (productType) {
               if (productType.name === newVal) {
                 if (productType.variants) {
                   scope.productCtx.currentProductVariants = productType.variants;
@@ -647,7 +681,7 @@ Ask.directive('smAskMarketView', [
             });
           }
         }, true);
-        scope.$watch('activeView', function(newVal, oldVal) {
+        scope.$watch('activeView', function (newVal, oldVal) {
           if (newVal && (newVal === scope.askCtx.viewName)) {
             $log.debug('| active view changed to', scope.askCtx.viewName);
             //scope.init();
@@ -706,26 +740,25 @@ Ask.directive('smAskMarketView', [
   }
 ]);
 Ask.directive('smAskBeerhopsView', [
-  function() {
+  function () {
     return {
       restrict: 'E',
       templateUrl: './scripts/modules/ask/templates/ask.beerhops.view.html',
       link: [
-        function(scope, el, attrs) {
+        function (scope, el, attrs) {
 
         }
       ]
     }
   }
 ]);
-Ask.directive('smAskLotForm', [
-  function() {
+Ask.directive('smAskPriceLot', [
+  function () {
     return {
       restrict: 'E',
-      templateUrl: './scripts/modules/ask/templates/ask.lot.form.html',
+      templateUrl: './scripts/modules/ask/templates/ask.price.lot.html',
       link: [
-        function(scope, el, attrs) {
-
+        function (scope, el, attrs) {
         }
       ]
     }

@@ -1,0 +1,18 @@
+<div class="LotPricingContainer">
+
+  <div class="LotPricingRow Layout">
+    <label class="LotPricing_Label">Lot price: $</label>
+    <input placeholder="0" type="number" class="LotPriceInput" ng-model="lotCtx.currentLot.price" />
+    <sm-ui-currency-toggle price-src="lotCtx.currentLot"></sm-ui-currency-toggle>
+  </div>
+  <div class="LotPricingRow Layout">
+    <label class="LotPricing_Label">Lot size:</label>
+    <input placeholder="lot size" class="LotSizeInput" type="number" ng-model="lotCtx.currentLot.size" />
+    <select ng-model="lotCtx.currentLot.measure" ng-options="option.value as option.value for option in lotCtx.measureOptions"></select>
+  </div>
+
+
+  <div class="Layout FlexEnd">
+    <button ng-click="addLotPriceToAsk()" >Add price</button>
+  </div>
+</div>
