@@ -12,8 +12,11 @@
   <nav class="GlobalNav">
     <ul>
       <li>
-        <sm-user-login></sm-user-login>
-
+        <!--<sm-user-login></sm-user-login>-->
+        <sm-tracked-command class-name="CommandButton"
+                            action="login, navRequest"
+                            label="Login">
+        </sm-tracked-command>
       </li>
       <li>
         <sm-tracked-command class-name="CommandButton"

@@ -1,10 +1,18 @@
 <div class="ModuleContainer">
+  <button ng-click='toggleModal()'>Open Modal Dialog</button>
+  <sm-modal-dialog show='modalShown' width='750px' height='60%'>
+    <sm-ask-seller-view></sm-ask-seller-view>
+  </sm-modal-dialog>
   <div class="Center Layout">
     <div class="AskMainWhatContainer">
       <sm-ui-auto-suggest label="I am selling" placeholder="eg Beer Hops" value="askCtx.currentAsk.productType" possible-values="productCtx.currentProductTypes"></sm-ui-auto-suggest>
 
     </div>
     <div>
+      <span class="AskFormLabel">Seller:</span>
+      <a href="#">{{askCtx.currentAsk.seller.handle}}</a>
+      <br />
+      <!--<sm-ask-seller-view></sm-ask-seller-view>-->
       <span class="AskFormLabel">Your current location: </span>
       <sm-ask-where-view></sm-ask-where-view>
     </div>
@@ -18,10 +26,10 @@
       <sm-ask-price-view></sm-ask-price-view>
     </div>
   </div>
-  <sm-ask-seller-view></sm-ask-seller-view>
+
   <div class="Layout FlexEnd" >
     <button ng-click="askCtx.clearCurrentAsk()">cancel</button>
-    <button ng-disabled="!askCtx.isCurrentAskValid()" ng-click="saveAsk()">save</button>
+    <button class="Button--primary" ng-disabled="!askCtx.isCurrentAskValid()" ng-click="saveAsk()">save</button>
   </div>
 </div>
 

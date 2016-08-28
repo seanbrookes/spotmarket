@@ -1,6 +1,9 @@
 <div>
   <p>Ask Manager</p>
-  <p>Ask Approval Queue:</p>
+  <div class="Layout Spread">
+    <p>Ask Approval Queue:</p><label><input type="checkbox" ng-model="askAdminCtx.isShowDeletedPendingAsks" />Show deleted pending asks</label>
+  </div>
+
   <div>
     <ul>
       <li ng-repeat="filter in askAdminCtx.sortByFilters">

@@ -10,7 +10,8 @@ Admin.directive('smAdminMain', [
   }
 ]);
 Admin.directive('smAdminAskManager', [
-  function() {
+  '$log',
+  function($log) {
     return {
       restrict:'E',
       templateUrl: './scripts/modules/admin/templates/admin.ask.manager.html',
@@ -21,9 +22,11 @@ Admin.directive('smAdminAskManager', [
         'AdminServices',
         'orderByFilter',
         '$timeout',
-        function($scope, $log, AskServices, AdminServices, orderBy, $timeout) {
+        '$filter',
+        function($scope, $log, AskServices, AdminServices, orderBy, $timeout, $filter) {
 
           $scope.askAdminCtx = {pendingAsks:[]};
+          $scope.askAdminCtx.isShowDeletedPendingAsks = false;
           $scope.askAdminCtx.currentSortFilter = {
             propertyName: 'createdDate',
             displayName: 'Oldest First',
@@ -57,11 +60,14 @@ Admin.directive('smAdminAskManager', [
             }
 
           ];
-          function loadPendingAsks() {
+          $scope.loadPendingAsks = function() {
             $scope.askAdminCtx.pendingAsks = AskServices.getPendingAsks()
               .then(function(pendingAsks) {
                 var localCollection = pendingAsks;
                 if (localCollection && localCollection.map) {
+                  if (!$scope.askAdminCtx.isShowDeletedPendingAsks) {
+                    localCollection = $filter('filter')(localCollection, {status: '!deleted'}, true);
+                  }
                   localCollection.map(function(ask) {
                     ask.displayTimeSince = moment(ask.createdDate);
                   });
@@ -70,7 +76,7 @@ Admin.directive('smAdminAskManager', [
                 }
               });
           }
-          loadPendingAsks();
+          $scope.loadPendingAsks();
           $scope.$watch('askAdminCtx.currentSortFilter', function(newVal, oldVal) {
             var localCollection = $scope.askAdminCtx.pendingAsks;
             if (localCollection && localCollection.map) {
@@ -140,7 +146,7 @@ Admin.directive('smAdminAskManager', [
 
                 AskServices.deletePendingAsk(refId)
                   .then(function(response) {
-                    loadPendingAsks();
+                    $scope.loadPendingAsks();
                   })
                   .catch(function(error) {
                     $log.warn('bad delete pending ask', error);
@@ -159,7 +165,7 @@ Admin.directive('smAdminAskManager', [
                 // TODO track this
                 AskServices.deletePendingAsk(ask.id)
                   .then(function(response) {
-                    loadPendingAsks();
+                    $scope.loadPendingAsks();
                   })
                   .catch(function(error) {
                     $log.warn('bad delete pending ask', error);
@@ -168,10 +174,17 @@ Admin.directive('smAdminAskManager', [
             }
 
           };
+
         }
 
 
-      ]
+      ],
+      link: function(scope, el, attrs) {
+        scope.$watch('askAdminCtx.isShowDeletedPendingAsks', function(newVal, oldVal) {
+          $log.debug('toggle show deleted pending asks');
+          scope.loadPendingAsks();
+        }, true);
+      }
     }
   }
 ]);

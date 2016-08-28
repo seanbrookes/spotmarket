@@ -123,7 +123,10 @@ Ask.directive('smAskMarketView', [
         'Upload',
         'MARKET_CONST',
         function ($scope, $http, $timeout, ProductServices, AskServices, GeoServices, Upload, MARKET_CONST) {
-
+          $scope.modalShown = false;
+          $scope.toggleModal = function() {
+            $scope.modalShown = !$scope.modalShown;
+          };
           $scope.askCtx = {
             viewName: MARKET_CONST.ASK_VIEW,
             seller: {},
