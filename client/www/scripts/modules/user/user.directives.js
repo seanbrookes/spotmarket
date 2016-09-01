@@ -1,3 +1,47 @@
+User.directive('smUserHeaderRegister', [
+  function() {
+    return {
+      restrict: 'E',
+      template: '<a ng-show="!headerRegisterCtx.isUserAuth" href="/#/register">Register</a>',
+      controller: [
+        '$scope',
+        'UserSessionService',
+        function($scope, UserSessionService) {
+          $scope.headerRegisterCtx = {};
+          $scope.headerRegisterCtx.isUserAuth = UserSessionService.getCurrentAuthToken();
+        }
+      ]
+    }
+  }
+]);
+User.directive('smUserHeaderLogout', [
+  function() {
+    return {
+      restrict: 'E',
+      templateUrl: './scripts/modules/user/templates/user.header.logout.html',
+      controller: [
+        '$scope',
+        'UserSessionService',
+        '$log',
+        function($scope, UserSessionService, $log) {
+          $scope.headerLogoutCtx = {};
+          $scope.headerLogoutCtx.isUserAuth = false;
+          if (UserSessionService.getCurrentAuthToken()) {
+            $scope.headerLogoutCtx.isUserAuth = true;
+          }
+
+          $scope.headerLogoutCtx.logout = function() {
+            UserSessionService.logout()
+              .then(function(response) {
+                $log.debug('HEADER LOGGED OUT');
+                window.location.reload();
+              });
+          };
+        }
+      ]
+    }
+  }
+]);
 User.directive('smTrackedCommand', [
   '$log',
   '$timeout',
@@ -31,7 +75,8 @@ User.directive('smTrackedCommand', [
 ]);
 User.directive('smUserContactInput', [
   '$timeout',
-  function($timeout) {
+  'CommonServices',
+  function($timeout, CommonServices) {
     return {
       restrict:'E',
       templateUrl: './scripts/modules/user/templates/user.contact.input.html',
@@ -41,9 +86,7 @@ User.directive('smUserContactInput', [
         'UserServices',
         'UserSessionService',
         'smSocket',
-        'CommonServices',
-
-        function($scope, $log, UserServices, UserSessionService, smSocket, CommonServices ) {
+        function($scope, $log, UserServices, UserSessionService, smSocket ) {
 
           smSocket.emit('fetchUserTag');
 
@@ -64,13 +107,6 @@ User.directive('smUserContactInput', [
             isShowCallToAction: false,
             isShowContactForm: true,
             isSubmitButtonDisabled: true
-          };
-
-          $scope.isSubmitDisabled = function() {
-            if ($scope.contactCtx.email) {
-              $scope.contactCtx.isSubmitButtonDisabled = false;
-            }
-            return $scope.contactCtx.isSubmitButtonDisabled || false;
           };
 
           function init() {
@@ -101,15 +137,29 @@ User.directive('smUserContactInput', [
               if (UserServices.isValidEmail(emailToSubmit)) {
 
                 smSocket.emit('sendEmail', emailToSubmit);
+                var currentUser = UserSessionService.getCurrentUserByToken()
+                  .then(function(currentUser) {
+                    // check if currentUser has existing email
+                    if (currentUser && currentUser.email && (currentUser.email !== emailToSubmit)) {
+                      // if so create alias with existing email
+                      //  CREATE ALIAS HERE
 
-                UserServices.saveUser({email:emailToSubmit})
-                  .then(function(response) {
-                    $scope.contactCtx.isShowGreeting = false;
-                    $scope.contactCtx.isShowContactForm = false;
-                    $scope.contactCtx.isShowThankYou = true;
-                    $scope.contactCtx.isShowCallToAction = true;
+                      UserServices.saveEmailAlias(currentUser);
+                    }
+                    currentUser.email = emailToSubmit;
+                    UserSessionService.setValueByKey('smEmail', emailToSubmit);
+                    // reset email to new value
+                    UserServices.saveUser(currentUser)
+                      .then(function(response) {
+                        $scope.contactCtx.isShowGreeting = false;
+                        $scope.contactCtx.isShowContactForm = false;
+                        $scope.contactCtx.isShowThankYou = true;
+                        $scope.contactCtx.isShowCallToAction = true;
 
+                      });
                   });
+
+
 
               }
               else {
@@ -125,24 +175,11 @@ User.directive('smUserContactInput', [
       ],
       link : function(scope, el, attrs) {
         scope.$watch('contactCtx.email', function(emailString, o) {
-          $timeout(function() {
-            if (!emailString) {
-              scope.$apply(function() {
-                scope.contactCtx.isSubmitButtonDisabled = true;
-
-              });
-            }
-            else {
-              scope.$apply(function() {
-                scope.contactCtx.isSubmitButtonDisabled = false;
-
-              });
-
-            }
-
-          }, 50);
-
-
+          if (emailString) {
+            $timeout(function() {
+              scope.contactCtx.isSubmitButtonDisabled = !CommonServices.isValidEmail(emailString);
+            }, 50);
+          }
         }, true);
       }
     }
@@ -158,8 +195,9 @@ User.directive('smUserRegistration', [
         '$scope',
         '$log',
         'UserServices',
+        'UserSessionService',
         'smGlobalValues',
-        function($scope, $log, UserServices, smGlobalValues) {
+        function($scope, $log, UserServices, UserSessionService, smGlobalValues) {
           if (!$scope.registrationCtx) {
             $scope.registrationCtx = {};
           }
@@ -188,7 +226,15 @@ User.directive('smUserRegistration', [
             }
 
           };
-          $scope.$parent.trackViewInit('smUserRegistration');
+          $scope.registrationCtx.init = function() {
+            var currUser = UserSessionService.getCurrentUserFromClientState();
+            if (currUser.smEmail) {
+              $scope.registrationCtx.email = currUser.smEmail;
+            }
+           // $scope.$parent.trackViewInit('smUserRegistration');
+
+          };
+          $scope.registrationCtx.init();
         }
       ]
     }
@@ -206,13 +252,20 @@ User.directive('smUserLogin', [
         function($scope, $log, UserSessionService) {
 
           $scope.loginCtx = {
-            isLoginActive:false
+            isLoginActive:false,
+            isUserAuth:false
           };
-          function resetLoginCtx() {
-            $scope.loginCtx = {
-              isLoginActive:false
-            };
-          }
+
+          $scope.loginCtx.init = function() {
+            if (UserSessionService.getCurrentAuthToken()) {
+              // user is authenticated
+              $scope.loginCtx.isUserAuth = true;
+            }
+            $scope.loginCtx.isLoginActive = false;
+            $scope.loginCtx.email = '';
+            $scope.loginCtx.password = '';
+
+          };
           $scope.submitLoginRequest =  function() {
             $log.debug('submit login');
             if ($scope.loginCtx.email && $scope.loginCtx.password ) {
@@ -222,10 +275,11 @@ User.directive('smUserLogin', [
                     // save the token
                     UserSessionService.setValueByKey('smAuthToken', response.authToken);
                     // clear the login
-                    resetLoginCtx();
+                    //$scope.loginCtx.init();
+                    window.document.location.href = '/';
                     // redirect if necessary
                   }
-                })
+                });
             }
 
           };
@@ -233,7 +287,7 @@ User.directive('smUserLogin', [
             $scope.loginCtx.isLoginActive = true;
           };
 
-
+          $scope.loginCtx.init();
         }
       ]
     }

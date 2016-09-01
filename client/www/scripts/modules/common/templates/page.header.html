@@ -13,16 +13,18 @@
     <ul>
       <li>
         <!--<sm-user-login></sm-user-login>-->
-        <sm-tracked-command class-name="CommandButton"
-                            action="login, navRequest"
-                            label="Login">
-        </sm-tracked-command>
+        <!--<sm-tracked-command class-name="CommandButton"-->
+                            <!--action="login, navRequest"-->
+                            <!--label="Login">-->
+        <!--</sm-tracked-command>-->
+
+        <!--<button ng-show="!headerCtx.isUserAuth" class="CommandButton" ng-click="headerCtx.logout()">Logout</button>-->
+
+        <sm-user-header-logout></sm-user-header-logout>
+
       </li>
       <li>
-        <sm-tracked-command class-name="CommandButton"
-                            action="register, navRequest"
-                            label="Register">
-        </sm-tracked-command>
+        <sm-user-header-register></sm-user-header-register>
       </li>
     </ul>
   </nav>

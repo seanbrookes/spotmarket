@@ -283,8 +283,8 @@ Common.directive('smHopFarmReport', [
 ]);
 
 Common.directive('smPageHeader', [
-  '$state',
-  function($state) {
+  'UserSessionService',
+  function(UserSessionService) {
     return {
       templateUrl: './scripts/modules/common/templates/page.header.html',
       controller: ['$scope', '$log', 'Track', function($scope, $log, Track) {
@@ -292,6 +292,22 @@ Common.directive('smPageHeader', [
         //  $state.go(target);
         //
         //};
+        $scope.headerCtx = {};
+
+        $scope.headerCtx.isUserAuth = function() {
+          if (UserSessionService.getCurrentAuthToken()) {
+            return true;
+          }
+          return false;
+        };
+
+        $scope.headerCtx.logout = function() {
+          UserSessionService.logout()
+            .then(function(response) {
+              $log.debug('HEADEER LOGGED OUT');
+              window.location.reload();
+            });
+        };
       }]
 
     }

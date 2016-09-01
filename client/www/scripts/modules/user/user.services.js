@@ -3,8 +3,9 @@ User.service('UserServices', [
   'smGlobalValues',
   'UserSessionService',
   'UserLocation',
+  'AliasEmail',
   '$log',
-  function(UserProfile, smGlobalValues, UserSessionService, UserLocation, $log) {
+  function(UserProfile, smGlobalValues, UserSessionService, UserLocation, AliasEmail, $log) {
     var svc = this;
 
 
@@ -61,6 +62,22 @@ User.service('UserServices', [
           });
 
       }
+    };
+    svc.saveEmailAlias = function(user) {
+      var emailAliasDoc = {
+        email:user.email,
+        profileId:user.id,
+        createdDate: new Date().getTime(),
+        lastUpdate: new Date().getTime()
+      };
+      AliasEmail.upsert(emailAliasDoc)
+        .$promise
+        .then(function(response) {
+          // all good
+        })
+        .catch(function(error) {
+          $log.debug('bad update email alias', error);
+        });
     };
 
     svc.saveUser = function(user) {
@@ -126,7 +143,7 @@ User.service('UserServices', [
         });
     };
     svc.createInitialUserProfile = function() {
-      return UserProfile.create({})
+      return UserProfile.create({createdDate:new Date().getTime(), lastUpdate:new Date().getTime()})
         .$promise
         .then(function(currentUserResponse) {
           if (currentUserResponse.token) {
@@ -286,9 +303,6 @@ User.service('UserSessionService', [
             });
         });
     };
-
-
-
     svc.getCurrentToken = function() {
       var token;
       if (svc.isCookiesEnabled() && $cookies.get('smToken')) {
@@ -303,8 +317,6 @@ User.service('UserSessionService', [
       }
       return authToken;
     };
-
-
     svc.isCurrentUserLoggedIn = function() {
       if (!$cookies.get('smAuthToken')) {
         return false;
@@ -335,7 +347,11 @@ User.service('UserSessionService', [
           });
       }
     };
-
+    svc.logout = function() {
+      return $timeout(function() {
+        return svc.deleteValueByKey('smAuthToken');
+      }, 25);
+    };
     svc.getUserHandleSuggestionHistory = function() {
       var retVal = [];
 
@@ -405,7 +421,7 @@ User.service('UserSessionService', [
     svc.getCurrentUserByToken = function() {
       var currentToken = svc.getCurrentToken();
       if (currentToken) {
-        return UserProfile.findByToken({token: svc.getCurrentToken()})
+        return UserProfile.findByToken({token: currentToken})
           .$promise
           .then(function(response) {
             if (response.user && response.user.length && response.user.length > 0) {
