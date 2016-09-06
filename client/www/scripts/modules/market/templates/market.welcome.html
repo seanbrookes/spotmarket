@@ -1,6 +1,7 @@
 <div class="MarketView WelcomeMarket">
   <button class="LinkButton" ng-show="currentUser.smHandle">{{currentUser.smHandle}}</button>
   <div class="Layout">
+    <button class="MarketViewButton" ng-class="{'MarketViewButton--active': marketCtx.isActiveView('WelcomView')}" ng-click="marketCtx.activateView($event)" data-name="WelcomeView">Welcome</button>
     <button class="MarketViewButton" ng-class="{'MarketViewButton--active': marketCtx.isActiveView('MarketView')}" ng-click="marketCtx.activateView($event)" data-name="MarketView">What's for sale</button>
     <button class="MarketViewButton" ng-class="{'MarketViewButton--active': marketCtx.isActiveView('AskView')}" ng-click="marketCtx.activateView($event)" data-name="AskView">I have something to sell</button>
     <button class="MarketViewButton" ng-class="{'MarketViewButton--active': marketCtx.isActiveView('GeoView')}" ng-click="marketCtx.activateView($event)" data-name="GeoView">Where am I</button>

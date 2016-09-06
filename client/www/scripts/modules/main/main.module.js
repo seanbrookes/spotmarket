@@ -34,7 +34,6 @@ var Main = angular.module('Main', [
   'Product',
   'Ask',
   'Common',
-  'ui.bootstrap',
   'ui.utils'
 ]);
 

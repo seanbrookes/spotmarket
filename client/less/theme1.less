@@ -15,7 +15,6 @@
   .Branding {
 
     margin-left:2rem;
-    padding:.5rem;
     border-radius: 6rem;
 
 
@@ -23,12 +22,13 @@
       height: 4rem;
     }
     .Title__Tag {
+      font-family: Georgia, serif;
       padding:0;
       margin:0;
       font-size:300%;
     }
     .Title__Tag--spot {
-      color: #00a935;
+      color: #007b29;
     }
     .Title__Tag--market {
       color: #000000;
@@ -49,8 +49,9 @@
 
     .Title__SubTitle {
       color:@color-page-subtitle;
-      font-size:120%;
-      font-family: "Lantinghei SC", "Comic Sans MS", sans-serif;
+      font-size:125%;
+      letter-spacing: .2rem;
+      font-family: "Lucida Console", Monaco, monospace;
       font-style:italic;
 
     }
@@ -59,9 +60,16 @@
   .GlobalNav {
     ul {
       list-style: none;
+      margin-top:.2rem;
+      margin-right:1rem;
 
       li {
         display:inline-block;
+        button, a {
+          color:#007b29;
+
+        }
+        margin-right:1rem;
       }
     }
   }
@@ -71,17 +79,74 @@
 .HomeHeroContainer {
 
   background-image: url("images/home-hero.jpg");
-  height:500px;
+  padding-top:3.6rem;
+  height:24rem;
+  font-family: 'Vollkorn', serif;
+  font-style: italic;
+  color:#ffffff;
+
+  .HomeHero__Contact {
+    margin-top:8.4rem;
+    width:100%;
+    background-color:rgba(100, 100, 150, .45);
+  }
 
   .HomeHeroContainer__MainBlob {
-    font-family: 'Vollkorn', serif;
-    font-style: italic;
-    color:#ffffff;
-    font-size:260%;
+
+    font-size:180%;
     max-width:50rem;
     line-height: 1.45;
+    margin-top:.4rem;
+    margin-bottom:.4rem;
+  }
+  .HomeHeroContainer__MainBlobQuote {
+
+    font-size:230%;
+    max-width:50rem;
+    line-height: 1.45;
+    margin-top:.5rem;
+    margin-bottom:.4rem;
   }
 }
+
+.HomeSecondary__Container {
+  padding:1rem;
+}
+.HomeSecondary__SubContainer {
+  border:1px solid #eeeeee;
+  border-radius: 1rem;
+  padding:1.3rem 2rem 1.3rem 2rem;
+  max-width: 25rem;
+}
+.HomeSecondary__Heading {
+  font-family:"Palatino Linotype", "Book Antiqua", Palatino, serif;
+  padding:0;
+  margin:0;
+  font-size:210%;
+  color: #007b29;
+}
+.HomeSecondary__Blurb {
+  color: #999999;
+  font-style: italic;
+  font-size:110%;
+}
+.HomeSecondary__FeatureList {
+  color:#999999;
+  font-size:125%;
+  padding:0;
+  margin:0;
+}
+.HomeSecondary__FeatureListItem {
+  color:#ffffff;
+  background-color:#424244;
+  padding:.4rem 1rem .4rem 1rem;
+  font-family:"Lucida Sans Unicode", "Lucida Grande", sans-serif;
+  font-weight: 300;
+  height:2.6rem;
+  font-size:90%;
+  margin:.2rem 0 .2rem 0;
+}
+//
 
 .MainContentContainer {
 
@@ -91,17 +156,13 @@
 
 }
 .ContactInput {
-  margin-top:4rem;
-  max-width:70rem;
-  padding:6rem;
-  border:1px solid #eeeeee;
-  border-radius: 2rem;
-  background-color:rgba(100, 100, 150, .5);
+
 }
 .ContactInput__Input {
-  padding:1rem;
+  line-height: 2rem;
+  height:2rem;
   border:1px solid #111111;
-  border-radius:1rem;
+  border-radius:.5rem;
   width:26rem;
 }
 .ContactInput__Label {
