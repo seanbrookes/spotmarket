@@ -7,7 +7,9 @@ Geo.service('GeoServices', [
   'UserSessionService',
   function($http, $log, $q, $window, GEO_CONST, UserSessionService) {
     var svc = this;
-
+    function deg2rad(deg) {
+      return deg * (Math.PI / 180)
+    }
 
     svc.geoLookup = function(lookupString) {
 
@@ -51,6 +53,22 @@ Geo.service('GeoServices', [
 
       }
     };
+    svc.getDistanceFromLatLonInKm = function(pos1, pos2) {
+      var R = 6371; // Radius of the earth in kilometers
+      var dLat = deg2rad(pos2.lat - pos1.lat); // deg2rad below
+      var dLon = deg2rad(pos2.lng - pos1.lng);
+      var a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(deg2rad(pos1.lat)) * Math.cos(deg2rad(pos2.lat)) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      var d = R * c; // Distance in KM
+      return d.toFixed(1);
+    };
+
+
+
+
     svc.reverseLookup = function(lat, lon) {
       if (lat && lon) {
         var reversLookupUrl = 'http://osm1.unwiredlabs.com/locationiq/v1/reverse.php?format=json&key=2e1e7a44cd9fd0617833&lat=' + lat + '&lon=' + lon + '&zoom=16';

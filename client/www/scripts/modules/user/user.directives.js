@@ -1,3 +1,100 @@
+
+User.directive('smUserProfileView', [
+  function() {
+    return {
+      restrict: 'E',
+      templateUrl: './scripts/modules/user/templates/user.profile.view.html',
+      controller: [
+        '$scope',
+        'Upload',
+        'UserSessionService',
+        'UserServices',
+        '$log',
+        function($scope, Upload, UserSessionService, UserServices, $log) {
+          $scope.profileCtx = {avatarSrc:'', croppedImage:''};
+          $scope.profileAvatar = {
+            userId:'',
+            avatarImg: ''
+          };
+
+
+          $scope.myImage='';
+          $scope.profileCtx.myCroppedImage = '';
+          $scope.profileCtx.currentProfile = {
+            avatarImage: ''
+          };
+
+
+          $scope.profileCtx.saveProfileImage = function() {
+            $log.debug('|  Save the Profile Image ', $scope.profileCtx.myCroppedImage );
+            var profileAvatarUpdate = {
+              userId: $scope.profileCtx.currentProfile.userId
+            };
+            if ($scope.profileCtx.currentProfile.avatarId) {
+              profileAvatarUpdate.id = $scope.profileCtx.currentProfile.avatarId;
+            }
+            profileAvatarUpdate.avatarImage = $scope.profileCtx.myCroppedImage;
+            UserServices.saveProfileAvatar(profileAvatarUpdate)
+              .then(function(response) {
+                document.location.reload();
+              })
+              .catch(function(error) {
+                $log.warn('bad save profile avatar ', error);
+              });
+
+
+          };
+
+          var handleFileSelect = function(evt) {
+            var file = evt.currentTarget.files[0];
+            var reader = new FileReader();
+            reader.onload = function (evt) {
+              $scope.$apply(function($scope){
+                $scope.profileCtx.avatarSrc = evt.target.result;
+              });
+            };
+            reader.readAsDataURL(file);
+          };
+
+
+          angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);
+
+
+          $scope.profileCtx.init = function() {
+            // check if current user has a profile avatar
+            UserSessionService.getCurrentUserByToken()
+              .then(function(response) {
+                if (response.id) {
+                  UserServices.getProfileAvatar(response.id)
+                    .then(function(response) {
+                      if (response && response.avatarImage) {
+                        $log.debug('got the user avatar', response);
+                        $scope.profileCtx.currentProfile.avatarImage = response.avatarImage;
+                        $scope.profileCtx.currentProfile.userId = response.userId;
+                        $scope.profileCtx.currentProfile.avatarId = response.id;
+
+                      }
+                      return $scope.profileCtx.currentProfile;
+                    });
+
+                }
+              });
+
+
+
+          };
+          $scope.profileCtx.init();
+        }
+
+      ],
+      link: function(scope, el, attrs) {
+
+
+
+      }
+    }
+  }
+]);
 User.directive('smUserHeaderRegister', [
   function() {
     return {

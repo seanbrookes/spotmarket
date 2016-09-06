@@ -1,0 +1,21 @@
+<div>
+  <div class="ProfileAvatarSrcPreviewContainer Layout">
+    <div class="cropArea">
+      <img-crop image="profileCtx.avatarSrc" result-image="profileCtx.myCroppedImage"></img-crop>
+    </div>
+    <div>
+      <img ng-src="{{profileCtx.currentProfile.avatarImage}}" />
+    </div>
+  </div>
+  <div>Cropped Image:</div>
+  <div class="Layout">
+    <img ng-src="{{profileCtx.myCroppedImage}}" />
+    <button type="submit" ng-click="profileCtx.saveProfileImage()">submit</button>
+  </div>
+  <hr />
+  Upload Image
+  <input type="file" ngf-select="" ng-model="profileCtx.avatarSrc" name="file" ngf-max-size="2MB" ngf-accept="'image/*'">
+
+
+
+</div>

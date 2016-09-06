@@ -243,6 +243,72 @@ ul {
   font-weight: bold;
   font-family: 'arial', 'sans-serif';
 }
+.ProfileAvatarSrcPreviewContainer {
+  position: relative;
+}
+.cropArea {
+  background: #E4E4E4;
+  overflow: hidden;
+  width: 500px;
+  height: 350px;
+}
+/* line 1, ../../source/scss/ng-img-crop.scss */
+img-crop {
+  width: 100%;
+  display: block;
+}
+/* line 3, ../../source/scss/ng-img-crop.scss */
+img-crop.fixed-height {
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+/* line 7, ../../source/scss/ng-img-crop.scss */
+img-crop.fixed-height canvas {
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+/* line 14, ../../source/scss/ng-img-crop.scss */
+img-crop.full-width {
+  text-align: center;
+}
+/* line 16, ../../source/scss/ng-img-crop.scss */
+img-crop.full-width canvas {
+  display: inline;
+}
+/* line 22, ../../source/scss/ng-img-crop.scss */
+img-crop canvas {
+  outline: none;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  /* mobile webkit */
+}
+/* line 28, ../../source/scss/ng-img-crop.scss */
+img-crop .loading {
+  width: 100%;
+  font-size: 16px;
+  font-weight: bold;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  display: -webkit-flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-justify-content: center;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.75);
+}
+/* line 29, ../../source/scss/ng-img-crop.scss */
+img-crop .loading .fixed-height {
+  height: 100%;
+  position: absolute;
+}
 .dropdown {
   z-index: 4000;
 }
@@ -256,6 +322,9 @@ ul {
 }
 .Center {
   justify-content: center;
+}
+.AlignCenter {
+  align-items: center;
 }
 .FlexEnd {
   justify-content: flex-end;
@@ -282,9 +351,6 @@ ul {
 [data-id="AppContainer"] {
   background-color: #ffffff;
 }
-.InnerAppContainer {
-  padding: 0 3rem 0 3rem;
-}
 .Title__TagImage {
   height: 3.6rem;
 }
@@ -294,7 +360,18 @@ ul {
   border-radius: 6rem;
 }
 .PageHeader .Branding .logo {
-  height: 3.2rem;
+  height: 4rem;
+}
+.PageHeader .Branding .Title__Tag {
+  padding: 0;
+  margin: 0;
+  font-size: 300%;
+}
+.PageHeader .Branding .Title__Tag--spot {
+  color: #00a935;
+}
+.PageHeader .Branding .Title__Tag--market {
+  color: #000000;
 }
 .PageHeader .Title h1 {
   text-transform: uppercase;
@@ -315,8 +392,17 @@ ul {
 .PageHeader .GlobalNav ul li {
   display: inline-block;
 }
-.MainContentContainer {
-  padding: 1.5rem;
+.HomeHeroContainer {
+  background-image: url("images/home-hero.jpg");
+  height: 500px;
+}
+.HomeHeroContainer .HomeHeroContainer__MainBlob {
+  font-family: 'Vollkorn', serif;
+  font-style: italic;
+  color: #ffffff;
+  font-size: 260%;
+  max-width: 50rem;
+  line-height: 1.45;
 }
 .ContactInput {
   margin-top: 4rem;
@@ -585,11 +671,6 @@ ul {
   color: #000063;
   border-bottom: none;
 }
-.MarketAskList .MarketAskList__Card {
-  margin: .4rem 0 .2rem 0;
-  border: 1px solid #eeeeee;
-  border-radius: .4rem;
-}
 .UserMarketMap--Main {
   height: 40rem;
   width: 40rem;
@@ -597,6 +678,30 @@ ul {
 .FindMeMap--Main {
   height: 30rem;
   width: 70rem;
+}
+.MarketAskList .MarketAskList__Card {
+  min-width: 40rem;
+  margin: .4rem .7rem .2rem 0;
+  border: 1px solid #eeeeee;
+  padding: .5rem;
+  border-radius: .4rem;
+}
+.MarketAskList .MarketAskList__Card .MarketAskCard__Title {
+  font-size: 108%;
+  font-weight: 500;
+  color: #666666;
+}
+.MarketAskList .MarketAskList__Card .MarketAskCard__Distance {
+  font-size: 84%;
+  color: #999999;
+}
+.MarketAskList .MarketAskList__Card .MarketAskCard__Time {
+  font-size: 84%;
+  color: #999999;
+}
+.MarketAskList .MarketAskList__Card .MarketAskCard__SellerLabel {
+  font-size: 84%;
+  color: #999999;
 }
 .PendingAskItemContainer {
   padding: .3rem;

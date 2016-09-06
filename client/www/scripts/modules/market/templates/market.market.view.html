@@ -13,20 +13,9 @@
     <h3>The following is for sale</h3>
     <div class="Layout">
       <div>
-        <ul>
+        <ul class="MarketAskList MarketAskList--local">
           <li ng-repeat="ask in marketAsks">
-            <div class="Layout">
-              <span class="NameLabel">What</span>
-              <span>{{ask.productType}} - {{ask.variant}}</span>
-            </div>
-            <div class="Layout">
-              <span class="NameLabel">Seller</span>
-              <span><button class="LinkButton">{{ask.seller.handle}}</button></span>
-            </div>
-            <div class="Layout">
-              <span class="NameLabel">Where</span>
-              <span>{{ask.address.city}}:{{ask.address.state}}</span>
-            </div>
+            <sm-market-ask-card ask="ask"></sm-market-ask-card>
           </li>
         </ul>
 

@@ -85,6 +85,10 @@ Market.directive('smMarketMarketView', [
 
             var currentPosition = JSON.parse($scope.currentUser.smCurrentPosition);
 
+            var distanceSrcPoint = {
+              lng:currentPosition.geometry.coordinates[0],
+              lat:currentPosition.geometry.coordinates[1]
+            };
 
             var filter = {
 
@@ -137,8 +141,14 @@ Market.directive('smMarketMarketView', [
                   returnCollection.map(function(mapItem) {
                     mapItem.position.lat = mapItem.position.coordinates[1];
                     mapItem.position.lng = mapItem.position.coordinates[0];
+                    var compPoint = {
+                      lat: mapItem.position.coordinates[1],
+                      lng: mapItem.position.coordinates[0]
+                    };
                     lats.push(mapItem.position.lat);
                     lngs.push(mapItem.position.lng);
+
+                    mapItem.distance = GeoServices.getDistanceFromLatLonInKm(distanceSrcPoint, compPoint)
 
                     collectionCoords.push([mapItem.position.lat, mapItem.position.lng]);
                     mapViewCoordsCollection.push([L.latLng(mapItem.position.lat, mapItem.position.lng)]);

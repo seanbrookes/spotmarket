@@ -19,6 +19,7 @@ var Main = angular.module('Main', [
   'angularSpinner',
   'angularMoment',
   'leaflet-directive',
+  'ngImgCrop',
   'lbServices',
   'ngFileUpload',
   'UI',
@@ -138,6 +139,10 @@ Main.config([
       .state('user', {
         url: '/user',
         templateUrl: './scripts/modules/user/templates/user.main.html'
+      })
+      .state('profile', {
+        url: '/profile',
+        templateUrl: './scripts/modules/user/templates/user.profile.main.html'
       })
       .state('ask', {
         url: '/ask',
