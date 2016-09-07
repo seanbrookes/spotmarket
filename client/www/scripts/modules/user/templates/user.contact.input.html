@@ -5,16 +5,17 @@
     <span ng-show="contactCtx.isShowValidation" class="ContactInput__ValidationMessage">Oops that does not seem to be a valid email. Please try again</span>
     <input type="text"
            class="ContactInput__Input"
-           placeholder="email"
+           placeholder="email address"
            ng-model="contactCtx.email" />
-    <button class-name="ContactInput__Button Button--primary"
+    <button class="ContactInput__Button Button--primary"
                         ng-disabled="contactCtx.isSubmitButtonDisabled"
                         ng-click="submitContactEmail()">Learn more</button>
     </button>
   </form>
-  <a ng-show="contactCtx.isShowCallToAction" href="{{contactCtx.visitMarketUrl}}" class="ContactInput__CallToAction" ng-click="linkRequest(contactCtx.visitMarketUrl)">go to the market</a>
-  <br />
-  <div ng-show="contactCtx.isShowCallToAction">OR</div>
-  <br />
-  <a ng-show="contactCtx.isShowCallToAction" href="{{contactCtx.visitBlogUrl}}" class="ContactInput__CallToAction" ng-click="linkRequest(contactCtx.visitBlogUrl)">visit our blog</a>
+  <!--<p ng-show="contactCtx.isShowCallToAction">Thanks, we'll be in touch</p>-->
+  <!--<a ng-show="contactCtx.isShowCallToAction" href="{{contactCtx.visitMarketUrl}}" class="ContactInput__CallToAction" ng-click="linkRequest(contactCtx.visitMarketUrl)">go to the market</a>-->
+  <!--<br />-->
+  <!--<div ng-show="contactCtx.isShowCallToAction">OR</div>-->
+  <!--<br />-->
+  <!--<a ng-show="contactCtx.isShowCallToAction" href="{{contactCtx.visitBlogUrl}}" class="ContactInput__CallToAction" ng-click="linkRequest(contactCtx.visitBlogUrl)">visit our blog</a>-->
 </div>

@@ -130,11 +130,12 @@
   font-style: italic;
   font-size:110%;
 }
-.HomeSecondary__FeatureList {
-  color:#999999;
-  font-size:125%;
+ul.HomeSecondary__FeatureList {
+  font-size:115%;
   padding:0;
   margin:0;
+  list-style-type: circle;
+  list-style-position: inside;
 }
 .HomeSecondary__FeatureListItem {
   color:#ffffff;
@@ -156,6 +157,7 @@
 
 }
 .ContactInput {
+  max-width:35rem;
 
 }
 .ContactInput__Input {
@@ -164,6 +166,8 @@
   border:1px solid #111111;
   border-radius:.5rem;
   width:26rem;
+  padding-left:1rem;
+  font-size:100%;
 }
 .ContactInput__Label {
   font-size:106%;
@@ -173,7 +177,8 @@
 
 }
 .ContactInput__Button {
-  padding:.8rem;
+  padding:.4rem;
+  font-size:110%;
   border-radius: 1rem;
 }
 .ContactInput__CallToAction {
@@ -190,6 +195,7 @@
 .Button--primary {
   background-color: @bg-color-button-primary;
   color: @color-button-primary;
+  cursor:pointer;
 }
 
 .BodyHeadline {

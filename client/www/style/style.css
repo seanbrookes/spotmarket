@@ -460,11 +460,12 @@ img-crop .loading .fixed-height {
   font-style: italic;
   font-size: 110%;
 }
-.HomeSecondary__FeatureList {
-  color: #999999;
-  font-size: 125%;
+ul.HomeSecondary__FeatureList {
+  font-size: 115%;
   padding: 0;
   margin: 0;
+  list-style-type: circle;
+  list-style-position: inside;
 }
 .HomeSecondary__FeatureListItem {
   color: #ffffff;
@@ -476,12 +477,17 @@ img-crop .loading .fixed-height {
   font-size: 90%;
   margin: .2rem 0 .2rem 0;
 }
+.ContactInput {
+  max-width: 35rem;
+}
 .ContactInput__Input {
   line-height: 2rem;
   height: 2rem;
   border: 1px solid #111111;
   border-radius: .5rem;
   width: 26rem;
+  padding-left: 1rem;
+  font-size: 100%;
 }
 .ContactInput__Label {
   font-size: 106%;
@@ -490,7 +496,8 @@ img-crop .loading .fixed-height {
   display: block;
 }
 .ContactInput__Button {
-  padding: .8rem;
+  padding: .4rem;
+  font-size: 110%;
   border-radius: 1rem;
 }
 .ContactInput__CallToAction {
@@ -503,8 +510,9 @@ img-crop .loading .fixed-height {
   color: #444444;
 }
 .Button--primary {
-  background-color: #162071;
+  background-color: #007b29;
   color: #ffffff;
+  cursor: pointer;
 }
 .BodyHeadline {
   font-size: 270%;
