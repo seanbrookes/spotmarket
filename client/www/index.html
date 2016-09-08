@@ -20,17 +20,33 @@
     </div>
     <footer class="AppFooter">
       <nav class="AppFooter__Nav">
-        <ul>
-          <li class="AppFooter__NavItem">
-            <a href="" class="AppFooter__NavLink">Terms of Service</a>
-          </li>
-          <li class="AppFooter__NavItem">
-            <a href="">Contact</a>
-          </li>
-          <li class="AppFooter__NavItem">
-            <a href="https://twitter.com/thespotmarket">Twitter</a>
-          </li>
-        </ul>
+        <div class="Layout Spread">
+          <div>
+            <script>window.twttr = (function(d, s, id) {
+              var js, fjs = d.getElementsByTagName(s)[0],
+                t = window.twttr || {};
+              if (d.getElementById(id)) return t;
+              js = d.createElement(s);
+              js.id = id;
+              js.src = "https://platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js, fjs);
+
+              t._e = [];
+              t.ready = function(f) {
+                t._e.push(f);
+              };
+
+              return t;
+            }(document, "script", "twitter-wjs"));</script>
+            <label class="ContactInput__Label--twitter"></label>
+            <a href="https://twitter.com/thespotmarket" class="twitter-follow-button" data-show-count="false">Follow @thespotmarket</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+          </div>
+          <div>
+            <a class="AppFooter__NavLink" href="mailto:contact@spotmarket.ca">Contact</a>
+          </div>
+
+        </div>
+        <p style="text-align:center;color:#989898;font-size:12px;">Copyright © 2016 spotmarket.</p>
       </nav>
     </footer>
     <script src="./scripts/vendor/jquery-2.1.4.min.js"></script>

@@ -47,13 +47,11 @@ ul {
 .AppFooter {
   background: #111111;
   color: #ffffff;
-  height: 10rem;
+  height: 6rem;
 }
-.AppFooter .AppFooter__Nav ul {
-  list-style: none;
-}
-.AppFooter .AppFooter__Nav .AppFooter__NavItem {
-  display: inline-block;
+.AppFooter .AppFooter__Nav {
+  margin-top: 1rem;
+  padding: 0 2rem 0 2rem;
 }
 .AppFooter .AppFooter__Nav .AppFooter__NavLink {
   color: #ffffff;
@@ -398,6 +396,9 @@ img-crop .loading .fixed-height {
   letter-spacing: .2rem;
   font-family: "Lucida Console", Monaco, monospace;
   font-style: italic;
+}
+.PageHeader .GlobalNav {
+  visibility: hidden;
 }
 .PageHeader .GlobalNav ul {
   list-style: none;
