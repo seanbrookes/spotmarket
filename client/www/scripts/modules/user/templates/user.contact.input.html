@@ -1,17 +1,39 @@
 <div class="ContactInput">
-  <label ng-show="contactCtx.isShowGreeting" class="ContactInput__Label">If you would like to stay up to date on our progress leave your email address and we'll keep you posted.</label>
-  <label ng-show="contactCtx.isShowThankYou" class="ContactInput__Label">Thank you, we'll be in touch</label>
-  <form ng-show="contactCtx.isShowContactForm">
-    <span ng-show="contactCtx.isShowValidation" class="ContactInput__ValidationMessage">Oops that does not seem to be a valid email. Please try again</span>
-    <input type="text"
-           class="ContactInput__Input"
-           placeholder="email address"
-           ng-model="contactCtx.email" />
-    <button class="ContactInput__Button Button--primary"
-                        ng-disabled="contactCtx.isSubmitButtonDisabled"
-                        ng-click="submitContactEmail()">Learn more</button>
-    </button>
-  </form>
+  <div>
+    <label ng-show="contactCtx.isShowGreeting" class="ContactInput__Label">For early access or to learn more drop us your email and we'll set you up</label>
+    <label ng-show="contactCtx.isShowThankYou" class="ContactInput__Label">Thank you, we'll be in touch</label>
+    <form ng-show="contactCtx.isShowContactForm">
+      <span ng-show="contactCtx.isShowValidation" class="ContactInput__ValidationMessage">Oops that does not seem to be a valid email. Please try again</span>
+      <input type="text"
+             class="ContactInput__Input"
+             placeholder="email address"
+             ng-model="contactCtx.email" />
+      <button class="ContactInput__Button Button--primary"
+              ng-disabled="contactCtx.isSubmitButtonDisabled"
+              ng-click="submitContactEmail()">Learn more</button>
+      </button>
+    </form>
+  </div>
+  <div class="Column FlexEnd">
+    <script>window.twttr = (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0],
+        t = window.twttr || {};
+      if (d.getElementById(id)) return t;
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "https://platform.twitter.com/widgets.js";
+      fjs.parentNode.insertBefore(js, fjs);
+
+      t._e = [];
+      t.ready = function(f) {
+        t._e.push(f);
+      };
+
+      return t;
+    }(document, "script", "twitter-wjs"));</script>
+    <label class="ContactInput__Label--twitter">follow us on twitter</label>
+    <a href="https://twitter.com/thespotmarket" class="twitter-follow-button" data-show-count="false">Follow @thespotmarket</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+  </div>
   <!--<p ng-show="contactCtx.isShowCallToAction">Thanks, we'll be in touch</p>-->
   <!--<a ng-show="contactCtx.isShowCallToAction" href="{{contactCtx.visitMarketUrl}}" class="ContactInput__CallToAction" ng-click="linkRequest(contactCtx.visitMarketUrl)">go to the market</a>-->
   <!--<br />-->
