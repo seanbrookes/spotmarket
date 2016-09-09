@@ -391,11 +391,10 @@ img-crop .loading .fixed-height {
   font-family: Tahoma, "Trebuchet MS", Verdana, sans-serif;
 }
 .PageHeader .Title .Title__SubTitle {
-  color: #555555;
+  color: #777777;
   font-size: 125%;
-  letter-spacing: .2rem;
+  letter-spacing: .1rem;
   font-family: "Lucida Console", Monaco, monospace;
-  font-style: italic;
 }
 .PageHeader .GlobalNav {
   visibility: hidden;
@@ -415,10 +414,8 @@ img-crop .loading .fixed-height {
 }
 .HomeHeroContainer {
   background-image: url("images/home-hero.jpg");
-  padding-top: 2.6rem;
+  padding-top: 2.1rem;
   height: 24rem;
-  font-family: 'Vollkorn', serif;
-  font-style: italic;
   color: #ffffff;
 }
 .HomeHeroContainer .HomeHero__Contact {
@@ -429,9 +426,10 @@ img-crop .loading .fixed-height {
 .HomeHeroContainer .HomeHeroContainer__MainBlob {
   font-size: 180%;
   max-width: 50rem;
-  line-height: 1.45;
-  margin-top: .4rem;
+  line-height: 1.15;
+  margin-top: .2rem;
   margin-bottom: .4rem;
+  letter-spacing: .1rem;
 }
 .HomeHeroContainer .HomeHeroContainer__MainBlobQuote {
   font-size: 230%;
@@ -450,7 +448,6 @@ img-crop .loading .fixed-height {
   max-width: 25rem;
 }
 .HomeSecondary__Heading {
-  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
   padding: 0;
   margin: 0;
   font-size: 210%;
@@ -458,7 +455,6 @@ img-crop .loading .fixed-height {
 }
 .HomeSecondary__Blurb {
   color: #999999;
-  font-style: italic;
   font-size: 110%;
 }
 ul.HomeSecondary__FeatureList {
