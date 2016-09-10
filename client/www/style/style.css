@@ -544,6 +544,10 @@ small size views
   .HomeSecondary__SubContainer {
     width: 100%;
   }
+  .ContactInput__Input {
+    border-radius: .3rem;
+    width: 90%;
+  }
 }
 .TrackTable tr:nth-child(odd) {
   background-color: #eeeeee;
