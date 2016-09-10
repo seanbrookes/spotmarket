@@ -6,101 +6,11 @@ body {
   width: 100%;
   background-color: #ffffff;
   margin: 0;
+  padding: 0;
   font-family: 'helvetica neue', helvetica, arial, sans-serif;
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
 }
 ul {
   list-style: none;
-}
-[data-id="AppContainer"] {
-  margin: 0;
-  padding: 0;
-  flex: 1;
-}
-.MainContainer {
-  width: 100%;
-}
-.ExplainerBulletContainer {
-  min-height: 40rem;
-  width: 100%;
-  margin: 0;
-  padding: 2rem;
-}
-.ExplainerBulletContainer--alt {
-  background-color: #0d3349;
-  color: #ffffff;
-  padding: 5rem;
-  font-size: 120%;
-}
-.LinkButton {
-  border: none;
-  background: transparent;
-  color: blue;
-  text-decoration: underline;
-}
-.CommandButton {
-  border: none;
-  background: transparent;
-}
-.AppFooter {
-  background: #111111;
-  color: #ffffff;
-  height: 6rem;
-}
-.AppFooter .AppFooter__Nav {
-  margin-top: 1rem;
-  padding: 0 2rem 0 2rem;
-}
-.AppFooter .AppFooter__Nav .AppFooter__NavLink {
-  color: #ffffff;
-}
-.StandardDropDownComponent {
-  position: relative;
-}
-.StandardDropDownMenuContainer {
-  position: absolute;
-  top: 2rem;
-  left: 1rem;
-}
-.StandardForm {
-  max-width: 50rem;
-}
-.StandardForm__FieldContainer label {
-  min-width: 26rem;
-}
-.StandardForm__FieldContainer ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.AskForm__FieldContainer label {
-  width: 12rem;
-}
-.AskForm__FieldContainer ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.AskHeadlineInput {
-  display: block;
-  width: 48rem;
-}
-.UDTADropDownList {
-  background-color: #ffffff;
-  border: 1px solid #eeeeee;
-}
-.UDTADropDownListButton {
-  border: 0;
-  display: inline-block;
-  width: 100%;
-  background: transparent;
-  color: darkblue;
-  text-align: left;
-}
-.UDTADropDownListButton:hover {
-  text-decoration: underline;
 }
 .AutoSuggestContainer {
   position: relative;
@@ -244,6 +154,40 @@ ul {
   font-weight: bold;
   font-family: 'arial', 'sans-serif';
 }
+.StandardDropDownComponent {
+  position: relative;
+}
+.StandardDropDownMenuContainer {
+  position: absolute;
+  top: 2rem;
+  left: 1rem;
+}
+.StandardForm {
+  max-width: 50rem;
+}
+.StandardForm__FieldContainer label {
+  min-width: 26rem;
+}
+.StandardForm__FieldContainer ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.UDTADropDownList {
+  background-color: #ffffff;
+  border: 1px solid #eeeeee;
+}
+.UDTADropDownListButton {
+  border: 0;
+  display: inline-block;
+  width: 100%;
+  background: transparent;
+  color: darkblue;
+  text-align: left;
+}
+.UDTADropDownListButton:hover {
+  text-decoration: underline;
+}
 .ProfileAvatarSrcPreviewContainer {
   position: relative;
 }
@@ -360,9 +304,8 @@ img-crop .loading .fixed-height {
 }
 [data-id="AppContainer"] {
   background-color: #ffffff;
-}
-.Title__TagImage {
-  height: 3.6rem;
+  margin: 0;
+  padding: 0;
 }
 .PageHeader .Branding {
   margin-left: 2rem;
@@ -394,10 +337,9 @@ img-crop .loading .fixed-height {
   color: #777777;
   font-size: 125%;
   letter-spacing: .1rem;
-  font-family: "Lucida Console", Monaco, monospace;
 }
 .PageHeader .GlobalNav {
-  visibility: hidden;
+  display: none;
 }
 .PageHeader .GlobalNav ul {
   list-style: none;
@@ -440,6 +382,7 @@ img-crop .loading .fixed-height {
 }
 .HomeSecondary__Container {
   padding: 1rem;
+  width: 100%;
 }
 .HomeSecondary__SubContainer {
   border: 1px solid #eeeeee;
@@ -498,15 +441,25 @@ ul.HomeSecondary__FeatureList {
   margin: .5rem;
 }
 .ContactInput__Button {
-  padding: .4rem;
+  padding: .6rem;
   font-size: 110%;
-  border-radius: 1rem;
+  border-radius: .3rem;
 }
 .ContactInput__CallToAction {
   color: #ffffff;
 }
 .ContactInput__CallToAction:hover {
   color: #33acfe;
+}
+.LinkButton {
+  border: none;
+  background: transparent;
+  color: blue;
+  text-decoration: underline;
+}
+.CommandButton {
+  border: none;
+  background: transparent;
 }
 .Button {
   color: #444444;
@@ -520,32 +473,77 @@ ul.HomeSecondary__FeatureList {
   font-size: 270%;
   font-weight: 400;
 }
-.HopBines {
-  background-image: url('images/hop-bines.jpg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  color: #ffffff;
-  text-shadow: 4px 4px 2px #000000;
-}
-.FishMarket {
-  background-image: url('images/fish-market.jpg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  color: #ffffff;
-  text-shadow: 4px 4px 2px #000000;
-  font-size: 125%;
-}
-.Pointer {
-  background-image: url('images/pointer-block.jpg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  color: #ffffff;
-}
 .BlogPostPage {
   background: #ffffff;
+}
+.AppFooter {
+  background: #111111;
+  color: #ffffff;
+  height: 6rem;
+}
+.AppFooter .AppFooter__Nav {
+  margin-top: 1rem;
+  padding: 0 2rem 0 2rem;
+}
+.AppFooter .AppFooter__Nav .AppFooter__NavLink {
+  color: #ffffff;
+}
+.AppFooter .AppFooter__Nav .AppFooter__NavLink--Copyright {
+  font-weight: normal;
+  color: #989898;
+  text-decoration: none;
+  cursor: pointer;
+}
+/*
+
+smaller than full size
+
+*/
+@media (max-width: 1280px) {
+  .Title {
+    display: none;
+  }
+  .Title__Tag {
+    font-size: 130%;
+  }
+}
+/*
+
+small size views
+
+*/
+@media (max-width: 740px) {
+  .PageHeader .Branding {
+    margin-left: .5rem;
+  }
+  .PageHeader .Branding .logo {
+    height: 2.5rem;
+  }
+  .PageHeader .Branding .Title__Tag {
+    font-size: 150%;
+    margin-left: .5rem;
+  }
+  .HomeSecondary__Container {
+    padding: .1rem;
+  }
+  .HomeHeroContainer {
+    background-image: url("images/home-hero-sm.png");
+  }
+  .HomeHeroContainer__MainBlob {
+    font-size: 120%;
+    line-height: .5;
+    margin-top: .1rem;
+    margin-bottom: .2rem;
+  }
+  .HomeHeroContainer__MainBlobQuote {
+    font-size: 150%;
+    line-height: 1;
+    margin-top: .3rem;
+    margin-bottom: .2rem;
+  }
+  .HomeSecondary__SubContainer {
+    width: 100%;
+  }
 }
 .TrackTable tr:nth-child(odd) {
   background-color: #eeeeee;
@@ -615,6 +613,18 @@ ul.HomeSecondary__FeatureList {
   border-radius: .3rem;
   margin: .12rem 0 .12rem 0;
   padding: .12rem;
+}
+.AskForm__FieldContainer label {
+  width: 12rem;
+}
+.AskForm__FieldContainer ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.AskHeadlineInput {
+  display: block;
+  width: 48rem;
 }
 .AskMainWhatContainer {
   padding: 1.8rem 7rem 1.2rem .2rem;

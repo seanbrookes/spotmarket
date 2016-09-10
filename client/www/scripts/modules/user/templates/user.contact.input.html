@@ -9,7 +9,6 @@
              placeholder="email address"
              ng-model="contactCtx.email" />
       <button class="ContactInput__Button Button--primary"
-              ng-disabled="contactCtx.isSubmitButtonDisabled"
               ng-click="submitContactEmail()">Learn more</button>
       </button>
     </form>
@@ -31,7 +30,7 @@
 
       return t;
     }(document, "script", "twitter-wjs"));</script>
-    <label class="ContactInput__Label--twitter">follow us on twitter</label>
+    <label class="ContactInput__Label--twitter">consider following us on twitter @thespotmarket</label>
     <a href="https://twitter.com/thespotmarket" class="twitter-follow-button" data-show-count="false">Follow @thespotmarket</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
   </div>
   <!--<p ng-show="contactCtx.isShowCallToAction">Thanks, we'll be in touch</p>-->
