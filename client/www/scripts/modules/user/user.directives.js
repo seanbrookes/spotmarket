@@ -1,4 +1,27 @@
+User.directive('smUserProfileMain', [
+  function() {
+    return {
+      restrict: 'E',
+      templateUrl: './scripts/modules/user/templates/user.profile.main.html',
+      controler: [
+        '$scope',
+        '$log',
+        '$stateParams',
+        function($scope, $log, $stateParams) {
 
+          $scope.init = function() {
+            if ($stateParams.handle) {
+              // could be id or handle
+              //
+              // populate editor
+            }
+          };
+
+        }
+      ]
+    }
+  }
+]);
 User.directive('smUserProfileView', [
   function() {
     return {

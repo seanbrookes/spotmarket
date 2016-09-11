@@ -5,8 +5,13 @@
   background-color:@bg-color-home;
   margin:0;
   padding:0;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
 }
-
+.InnerAppContainer {
+  flex: 1;
+}
 .PageHeader {
 
   .Branding {
@@ -52,7 +57,7 @@
 
   }
   .GlobalNav {
-    display:none;
+
     ul {
       list-style: none;
       margin-top:.2rem;
@@ -144,15 +149,7 @@ ul.HomeSecondary__FeatureList {
   font-size:90%;
   margin:.2rem 0 .2rem 0;
 }
-//
 
-.MainContentContainer {
-
-
-}
-.MainContentContainer--HomePage {
-
-}
 .ContactInput {
   max-width:35rem;
   margin-top:1.3rem;
@@ -178,11 +175,11 @@ ul.HomeSecondary__FeatureList {
 .ContactInput__Label--twitter {
   margin:.5rem;
 }
-.ContactInput__Button {
-  padding:.6rem;
-  font-size:110%;
-  border-radius: .3rem;
-}
+//.ContactInput__Button {
+//  padding:.6rem;
+//  font-size:110%;
+//  border-radius: .3rem;
+//}
 .ContactInput__CallToAction {
   color:#ffffff;
 
@@ -192,7 +189,15 @@ ul.HomeSecondary__FeatureList {
 }
 
 
+/*
 
+  User Reg and login
+*/
+.AuthTextInput {
+  height:1.3rem;
+  margin:.3rem auto .3rem auto;
+  width:12rem;
+}
 
 
 
@@ -218,6 +223,9 @@ ul.HomeSecondary__FeatureList {
   background-color: @bg-color-button-primary;
   color: @color-button-primary;
   cursor:pointer;
+  padding:.6rem;
+  font-size:110%;
+  border-radius: .3rem;
 }
 
 .BodyHeadline {
@@ -225,15 +233,8 @@ ul.HomeSecondary__FeatureList {
   font-weight: 400;
 }
 
-
-
-.WelcomeMarket {
-
-}
-
-
 .BlogPostPage {
-  background:#ffffff;
+  //background:#ffffff;
 }
 
 
@@ -290,6 +291,9 @@ small size views
         margin-left:.5rem;
       }
     }
+    .GlobalNav {
+      //display:none;
+    }
   }
   .HomeSecondary__Container {
     padding:.1rem;
@@ -322,6 +326,34 @@ small size views
   .ContactInput__Label--twitter {
     display:none;
   }
+
+
+
+
+
+
+  .UserRegistration {
+    width:100%;
+    padding:0;
+    border:0;
+    background:#fdfdfd;
+
+    .UserRegistration__Form {
+      width:90%;
+    }
+  }
+  .AuthTextInput {
+    height:1.3rem;
+    margin:.3rem auto .3rem auto;
+    width:100%;
+  }
+
+
+
+
+
+
+
 }
 
 

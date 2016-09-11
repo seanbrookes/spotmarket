@@ -1,6 +1,14 @@
 /*
 http://www.w3schools.com/cssref/css_websafe_fonts.asp
 */
+/* CSS */
+* {
+  margin: 0;
+}
+html,
+body {
+  height: 100%;
+}
 body {
   font-size: 16px;
   width: 100%;
@@ -290,22 +298,43 @@ img-crop .loading .fixed-height {
   background-color: #ffffff;
   min-height: 40rem;
 }
+.AuthLoginViewContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.AuthRegFormTitle {
+  font-size: 125%;
+  color: #999999;
+  display: inline-block;
+  margin: .3rem auto 1.3rem auto;
+}
 .UserRegistration {
   border: 1px solid #eeeeee;
-  min-width: 50rem;
   padding: 2rem;
   border-radius: 1rem;
 }
+.UserRegistration .UserRegistration__Form {
+  width: 22rem;
+}
 .UserRegistration .UserRegistration__Label {
-  width: 20rem;
+  width: 9rem;
+  display: inline-block;
 }
 .UserLogin__Label {
-  width: 20rem;
+  width: 9rem;
+  display: inline-block;
 }
 [data-id="AppContainer"] {
   background-color: #ffffff;
   margin: 0;
   padding: 0;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+.InnerAppContainer {
+  flex: 1;
 }
 .PageHeader .Branding {
   margin-left: 2rem;
@@ -337,9 +366,6 @@ img-crop .loading .fixed-height {
   color: #777777;
   font-size: 125%;
   letter-spacing: .1rem;
-}
-.PageHeader .GlobalNav {
-  display: none;
 }
 .PageHeader .GlobalNav ul {
   list-style: none;
@@ -440,16 +466,20 @@ ul.HomeSecondary__FeatureList {
 .ContactInput__Label--twitter {
   margin: .5rem;
 }
-.ContactInput__Button {
-  padding: .6rem;
-  font-size: 110%;
-  border-radius: .3rem;
-}
 .ContactInput__CallToAction {
   color: #ffffff;
 }
 .ContactInput__CallToAction:hover {
   color: #33acfe;
+}
+/*
+
+  User Reg and login
+*/
+.AuthTextInput {
+  height: 1.3rem;
+  margin: .3rem auto .3rem auto;
+  width: 12rem;
 }
 .LinkButton {
   border: none;
@@ -468,13 +498,13 @@ ul.HomeSecondary__FeatureList {
   background-color: #007b29;
   color: #ffffff;
   cursor: pointer;
+  padding: .6rem;
+  font-size: 110%;
+  border-radius: .3rem;
 }
 .BodyHeadline {
   font-size: 270%;
   font-weight: 400;
-}
-.BlogPostPage {
-  background: #ffffff;
 }
 .AppFooter {
   background: #111111;
@@ -550,6 +580,20 @@ small size views
   }
   .ContactInput__Label--twitter {
     display: none;
+  }
+  .UserRegistration {
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: #fdfdfd;
+  }
+  .UserRegistration .UserRegistration__Form {
+    width: 90%;
+  }
+  .AuthTextInput {
+    height: 1.3rem;
+    margin: .3rem auto .3rem auto;
+    width: 100%;
   }
 }
 .TrackTable tr:nth-child(odd) {

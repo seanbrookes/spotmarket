@@ -140,8 +140,12 @@ Main.config([
         templateUrl: './scripts/modules/user/templates/user.main.html'
       })
       .state('profile', {
-        url: '/profile',
+        url: '/profile/:handle',
         templateUrl: './scripts/modules/user/templates/user.profile.main.html'
+      })
+      .state('profile_all', {
+        url:'/profile',
+        templateUrl:'./scripts/modules/user/templates/user.profile.main.html'
       })
       .state('ask', {
         url: '/ask',

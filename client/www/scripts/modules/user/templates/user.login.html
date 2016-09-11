@@ -1,22 +1,19 @@
 <div class="UserRegistration">
-
-  <div>
-    <h2>Login</h2>
-    <form class="UserLogin__Form">
-      <div class="UserLogin__FormField">
-        <label class="UserLogin__Label UserLogin__Label--Required">Email</label>
-        <input type="text" ng-model="loginCtx.email" />
-      </div>
-      <div class="UserLogin__FormField">
-        <label class="UserLogin__Label UserLogin__Label--Required">Password</label>
-        <input type="password" ng-model="loginCtx.password" />
-      </div>
-      <div class="UserLogin__ButtonContainer Layout FlexEnd">
-        <button class="Button--primary" ng-click="submitLoginRequest()">login</button>
-
-      </div>
-    </form>
-
+  <div class="Layout Center">
+    <h2 class="AuthRegFormTitle">spotmarket login</h2>
   </div>
+  <form class="UserLogin__Form">
+    <div class="UserLogin__FormField">
+      <label class="UserLogin__Label UserLogin__Label--Required">Email</label>
+      <input class="AuthTextInput" type="text" ng-model="loginCtx.email" />
+    </div>
+    <div class="UserLogin__FormField">
+      <label class="UserLogin__Label UserLogin__Label--Required">Password</label>
+      <input class="AuthTextInput" type="password" ng-model="loginCtx.password" />
+    </div>
+    <div class="UserLogin__ButtonContainer Layout FlexEnd">
+      <button class="Button--primary" ng-click="submitLoginRequest()">login</button>
 
+    </div>
+  </form>
 </div>

@@ -18,88 +18,45 @@
       <div class="InnerAppContainer">
         <div ui-view autoscroll="false"></div>
       </div>
-      <footer class="AppFooter">
-        <nav class="AppFooter__Nav">
-          <div class="Layout Spread">
-            <div>
-              <script>window.twttr = (function(d, s, id) {
-                var js, fjs = d.getElementsByTagName(s)[0],
-                  t = window.twttr || {};
-                if (d.getElementById(id)) return t;
-                js = d.createElement(s);
-                js.id = id;
-                js.src = "https://platform.twitter.com/widgets.js";
-                fjs.parentNode.insertBefore(js, fjs);
-
-                t._e = [];
-                t.ready = function(f) {
-                  t._e.push(f);
-                };
-
-                return t;
-              }(document, "script", "twitter-wjs"));</script>
-              <label class="ContactInput__Label--twitter"></label>
-              <a href="https://twitter.com/thespotmarket" class="twitter-follow-button" data-show-count="false">Follow @thespotmarket</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-            </div>
-            <div>
-              <a class="AppFooter__NavLink" href="mailto:contact@spotmarket.ca">Contact</a>
-            </div>
-
-          </div>
-          <p style="text-align:center;color:#989898;font-size:12px;">Copyright © 2016 <a href="//www.greengrowtech.ca" target="_new"  class="AppFooter__NavLink AppFooter__NavLink--Copyright">Green Grow Tech Ltd.</a></p>
-        </nav>
-      </footer>
     </div>
+    <footer class="AppFooter">
+      <nav class="AppFooter__Nav">
+        <div class="Layout Spread">
+          <div>
+            <script>window.twttr = (function(d, s, id) {
+              var js, fjs = d.getElementsByTagName(s)[0],
+                t = window.twttr || {};
+              if (d.getElementById(id)) return t;
+              js = d.createElement(s);
+              js.id = id;
+              js.src = "https://platform.twitter.com/widgets.js";
+              fjs.parentNode.insertBefore(js, fjs);
 
-    <script src="./scripts/vendor/jquery-2.1.4.min.js"></script>
-    <!-- angular -->
-    <script src="./scripts/vendor/angular/angular.min.js"></script>
+              t._e = [];
+              t.ready = function(f) {
+                t._e.push(f);
+              };
 
-    <!-- react -->
-    <script src="./scripts/vendor/react/react.min.js"></script>
-    <script src="./scripts/vendor/react/react-dom.min.js"></script>
+              return t;
+            }(document, "script", "twitter-wjs"));</script>
+            <label class="ContactInput__Label--twitter"></label>
+            <a href="https://twitter.com/thespotmarket" class="twitter-follow-button" data-show-count="false">Follow @thespotmarket</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+          </div>
+          <div>
+            <a class="AppFooter__NavLink" href="mailto:contact@spotmarket.ca">Contact</a>
+          </div>
+
+        </div>
+        <p style="text-align:center;color:#989898;font-size:12px;">Copyright © 2016 <a href="//www.greengrowtech.ca" target="_new"  class="AppFooter__NavLink AppFooter__NavLink--Copyright">Green Grow Tech Ltd.</a></p>
+      </nav>
+    </footer>
 
 
-    <script src="./scripts/vendor/lodash.min.js"></script>
 
-    <!-- spin -->
-    <script src="./scripts/vendor/spin.js"></script>
+    <script src="./dist/vendor.js"></script>
 
-    <!-- d3 -->
-    <script src="./scripts/vendor/d3.min.js"></script>
-    <script src="./scripts/vendor/d3.layout.cloud.js"></script>
-    <!--<script src="./scripts/vendor/bootstrap.min.js"></script>-->
-    <script src="./scripts/vendor/leaflet.js"></script>
 
-    <!-- moment -->
-    <!--<script src="./scripts/vendor/moment.min.js"></script>-->
-    <script src="./scripts/vendor/moment.min.js"></script>
 
-    <script src="./scripts/vendor/angular/angular-moment.min.js"></script>
-    <!-- lb api services
-
-      LoopBack Angular SDK goes here
-    -->
-    <script src="./scripts/modules/common/spotmarket.api.js"></script>
-
-    <!-- angular plugins and directives -->
-    <script src="./scripts/vendor/socket.io.js"></script>
-    <!--<script src="https://cdn.socket.io/socket.io-1.3.5.js"></script>-->
-
-    <!-- angular plugins and directives -->
-    <script src="./scripts/vendor/angular/ui-utils.js"></script>
-    <script src="./scripts/vendor/angular/angular-cookies.min.js"></script>
-    <script src="./scripts/vendor/angular/ng-img-crop.js"></script>
-    <script src="./scripts/vendor/angular/angular-animate.min.js"></script>
-    <script src="./scripts/vendor/angular/angular-ui-router.js"></script>
-    <script src="./scripts/vendor/angular/angular-growl.min.js"></script>
-    <script src="./scripts/vendor/angular/angular-leaflet-directive.js"></script>
-    <script src="./scripts/vendor/angular/angular-touch.min.js"></script>
-    <script src="./scripts/vendor/angular/angular-spinner.js"></script>
-    <script src="./scripts/vendor/angular/angular-sanitize.min.js"></script>
-    <!--<script src="./scripts/vendor/angular/ui-bootstrap-tpls-1.2.4.js"></script>-->
-    <script src="./scripts/vendor/angular/angular-resource.min.js"></script>
-    <script src="./scripts/vendor/angular/ng-file-upload-all.min.js"></script>
 
     <!-- main -->
     <script src="./scripts/modules/main/main.module.js"></script>

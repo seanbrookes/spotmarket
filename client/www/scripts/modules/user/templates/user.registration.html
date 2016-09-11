@@ -1,21 +1,23 @@
 <div class="UserRegistration">
   <div ng-hide="registrationCtx.registrationComplete" >
-    <h2>Register</h2>
+    <div class="Layout Center">
+      <h2 class="AuthRegFormTitle">spotmarket registration</h2>
+    </div>
     <form class="UserRegistration__Form">
       <div class="UserRegistration__FormField">
         <label class="UserRegistration__Label UserRegistration__Label--Required">Email</label>
-        <input type="text" ng-model="registrationCtx.email" />
+        <input class="AuthTextInput" type="text" ng-model="registrationCtx.email" />
       </div>
       <div class="UserRegistration__FormField">
         <label class="UserRegistration__Label UserRegistration__Label--Required">Password</label>
-        <input type="password" ng-model="registrationCtx.password" />
+        <input class="AuthTextInput" type="password" ng-model="registrationCtx.password" />
       </div>
       <div class="UserRegistration__FormField">
         <label class="UserRegistration__Label UserRegistration__Label--Required">Confirm Password</label>
-        <input type="password" ng-model="registrationCtx.confirmPassword" />
+        <input class="AuthTextInput" type="password" ng-model="registrationCtx.confirmPassword" />
       </div>
       <div class="UserRegistration__ButtonContainer Layout FlexEnd">
-        <button ng-click="registrationCtx.submitRegistration()">Register</button>
+        <button class="Button--primary" ng-click="registrationCtx.submitRegistration()">Register</button>
         <!--<sm-tracked-command action="registrationCtx.submitRegistration"-->
                             <!--class-name="Button&#45;&#45;primary"-->
                             <!--label="">-->
