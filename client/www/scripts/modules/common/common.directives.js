@@ -282,6 +282,94 @@ Common.directive('smHopFarmReport', [
   }
 ]);
 
+Common.directive('smCommonGlobalNav', [
+  function() {
+    return {
+      restrict: 'E',
+      templateUrl: './scripts/modules/common/templates/common.global.nav.html',
+      controller: [
+        '$scope',
+        '$state',
+        'UserSessionService',
+        function($scope, $state, UserSessionService) {
+          $scope.globalNavCtx = {};
+         // $scope.globalNavCtx.isUserAuth = UserSessionService.getCurrentAuthToken();
+
+          $scope.globalNavCtx.urlNavRequest = function(stateRequest) {
+            $scope.globalNavCtx.isShowGlobalNavMenu = false;
+            $state.go(stateRequest);
+          };
+
+          $scope.globalNavCtx.isShowGlobalNavMenu = false;
+
+          $scope.globalNavCtx.isUserAuth = function() {
+            if (UserSessionService.getCurrentAuthToken()) {
+              return true;
+            }
+            return false;
+          };
+
+          $scope.globalNavCtx.toggleGlobalNavMenu = function() {
+            $scope.globalNavCtx.isShowGlobalNavMenu = !$scope.globalNavCtx.isShowGlobalNavMenu;
+          };
+
+          $scope.globalNavCtx.logout = function() {
+            UserSessionService.logout()
+              .then(function(response) {
+                window.location.reload();
+              });
+          };
+
+
+        }
+      ]
+    }
+  }
+]);
+Common.directive('smUserHeaderRegister', [
+  function() {
+    return {
+      restrict: 'E',
+      template: '<button ng-show="!headerRegisterCtx.isUserAuth" ng-click="">Register</button>',
+      controller: [
+        '$scope',
+        'UserSessionService',
+        function($scope, UserSessionService) {
+          $scope.headerRegisterCtx = {};
+          $scope.headerRegisterCtx.isUserAuth = UserSessionService.getCurrentAuthToken();
+        }
+      ]
+    }
+  }
+]);
+Common.directive('smUserHeaderLogout', [
+  function() {
+    return {
+      restrict: 'E',
+      templateUrl: './scripts/modules/user/templates/user.header.logout.html',
+      controller: [
+        '$scope',
+        'UserSessionService',
+        '$log',
+        function($scope, UserSessionService, $log) {
+          $scope.headerLogoutCtx = {};
+          $scope.headerLogoutCtx.isUserAuth = false;
+          if (UserSessionService.getCurrentAuthToken()) {
+            $scope.headerLogoutCtx.isUserAuth = true;
+          }
+
+          $scope.headerLogoutCtx.logout = function() {
+            UserSessionService.logout()
+              .then(function(response) {
+                $log.debug('HEADER LOGGED OUT');
+                window.location.reload();
+              });
+          };
+        }
+      ]
+    }
+  }
+]);
 Common.directive('smPageHeader', [
   'UserSessionService',
   function(UserSessionService) {
@@ -292,13 +380,17 @@ Common.directive('smPageHeader', [
         //  $state.go(target);
         //
         //};
-        $scope.headerCtx = {};
+        $scope.headerCtx = {isShowGlobalNavMenu:false};
 
         $scope.headerCtx.isUserAuth = function() {
           if (UserSessionService.getCurrentAuthToken()) {
             return true;
           }
           return false;
+        };
+
+        $scope.headerCtx.toggleGlobalNavMenu = function() {
+          $scope.headerCtx.isShowGlobalNavMenu = !$scope.headerCtx.isShowGlobalNavMenu;
         };
 
         $scope.headerCtx.logout = function() {

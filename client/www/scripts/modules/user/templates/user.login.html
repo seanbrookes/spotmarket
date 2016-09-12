@@ -11,9 +11,20 @@
       <label class="UserLogin__Label UserLogin__Label--Required">Password</label>
       <input class="AuthTextInput" type="password" ng-model="loginCtx.password" />
     </div>
-    <div class="UserLogin__ButtonContainer Layout FlexEnd">
+    <div class="UserLogin__ButtonContainer Layout Spread CenterItems">
+      <label class="UserLogin__RememberMeLabel"><input class="UserLogin__RememberMeInput" type="checkbox" ng-model="loginCtx.rememberMe" />Remember me</label>
       <button class="Button--primary" ng-click="submitLoginRequest()">login</button>
 
+    </div>
+    <div class="LoginFooter">
+      <div class="LoginFooter__Item Layout CenterItems">
+        <span>Forgot your password?</span>
+        <button class="LinkButton" ng-click="loginCtx.urlNavRequest('forgotpassword')">Recover it</button>
+      </div>
+      <div class="LoginFooter__Item Layout CenterItems">
+        <span>Need to create an account?</span>
+        <button class="LinkButton" ng-click="loginCtx.urlNavRequest('register')">Sign up</button>
+      </div>
     </div>
   </form>
 </div>

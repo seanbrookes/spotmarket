@@ -215,6 +215,19 @@ User.service('UserServices', [
           })
       }
     };
+    svc.findUserByEmail = function(email) {
+      if (email && svc.isValidEmail(email)) {
+        return UserProfile.find({filter:{where:{authEmail:email}}})
+          .$promise
+          .then(function(response) {
+            return response;
+          })
+          .catch(function(error) {
+            $log.warn('bad find user by email', error);
+            return error;
+          })
+      }
+    };
     svc.getUsers = function(filter) {
       if (!filter) {
         filter = {};

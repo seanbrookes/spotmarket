@@ -115,6 +115,14 @@ Main.config([
         url: '/register',
         templateUrl: './scripts/modules/user/templates/user.registration.main.html'
       })
+      .state('termsconditions', {
+        url: '/termsconditions',
+        templateUrl: 'temrmsconditions.html'
+      })
+      .state('forgotpassword', {
+        url: '/forgotpassword',
+        templateUrl: './scripts/modules/user/templates/user.forgot.password.main.html'
+      })
       .state('product', {
         url: '/product',
         templateUrl: './scripts/modules/product/templates/product.main.html'

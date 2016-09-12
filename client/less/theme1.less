@@ -57,27 +57,54 @@
 
   }
   .GlobalNav {
+    position:relative;
 
-    ul {
+    .NavMenuButton {
+      font-size:220%;
+      border:0;
+      background:transparent;
+      color:@bg-color-button-primary;
+      cursor:pointer;
+    }
+
+    .GlobalNav__List {
+      position:absolute;
+      top:1.6rem;
+      right:.5rem;
       list-style: none;
-      margin-top:.2rem;
-      margin-right:1rem;
+      padding:0;
+      margin:0;
+      border:1px solid #dddddd;
+      background:#eeeeee;
 
-      li {
-        display:inline-block;
-        button, a {
-          color:#007b29;
 
-        }
-        margin-right:1rem;
-      }
+
     }
   }
 
 
 }
 
+.GlobalNav__ListItem {
+  display:block;
+  margin:.2rem 0 .2rem 0;
+  width:100%;
+  border-bottom:1px solid #bbbbbb;
+  border-top:1px solid #bbbbbb;
+  background:#ffffff;
 
+  .CommandButton {
+    width:100%;
+    margin:0;
+    padding:1rem;
+    color:#007b29;
+    cursor:pointer;
+    display:block;
+    font-size:110%;
+
+  }
+  margin-right:1rem;
+}
 
 
 .HomeHeroContainer {
@@ -197,6 +224,7 @@ ul.HomeSecondary__FeatureList {
   height:1.3rem;
   margin:.3rem auto .3rem auto;
   width:12rem;
+  font-size:120%;
 }
 
 
@@ -207,10 +235,13 @@ ul.HomeSecondary__FeatureList {
   background:transparent;
   color: blue;
   text-decoration: underline;
+  cursor:pointer
 }
 .CommandButton{
   border:none;
   background:transparent;
+  cursor:pointer;
+
 }
 
 
@@ -328,27 +359,27 @@ small size views
   }
 
 
-
-
-
-
   .UserRegistration {
     width:100%;
     padding:0;
     border:0;
     background:#fdfdfd;
 
-    .UserRegistration__Form {
-      width:90%;
-    }
+  }
+  .UserRegistration__Form {
+    padding:0 .6rem 0 .6rem;
+
   }
   .AuthTextInput {
     height:1.3rem;
     margin:.3rem auto .3rem auto;
     width:100%;
+
   }
 
-
+  .UserLogin__Form {
+    padding:0 .6rem 0 .6rem;
+  }
 
 
 

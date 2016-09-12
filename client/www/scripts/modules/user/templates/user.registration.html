@@ -16,12 +16,11 @@
         <label class="UserRegistration__Label UserRegistration__Label--Required">Confirm Password</label>
         <input class="AuthTextInput" type="password" ng-model="registrationCtx.confirmPassword" />
       </div>
-      <div class="UserRegistration__ButtonContainer Layout FlexEnd">
+      <div class="UserRegistration__ButtonContainer Layout Spread CenterItems">
+        <label class="UserRegistration__TAC">
+          <input class="UserRegistration__TACAgreeInput" type="checkbox" ng-model="registrationCtx.agreeTAC" />
+          <span>I agree to the </span><a href="/termsconditions.html" target="_blank">Terms & conditions</a></label>
         <button class="Button--primary" ng-click="registrationCtx.submitRegistration()">Register</button>
-        <!--<sm-tracked-command action="registrationCtx.submitRegistration"-->
-                            <!--class-name="Button&#45;&#45;primary"-->
-                            <!--label="">-->
-        <!--</sm-tracked-command>-->
       </div>
     </form>
 

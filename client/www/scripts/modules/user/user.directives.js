@@ -118,50 +118,7 @@ User.directive('smUserProfileView', [
     }
   }
 ]);
-User.directive('smUserHeaderRegister', [
-  function() {
-    return {
-      restrict: 'E',
-      template: '<a ng-show="!headerRegisterCtx.isUserAuth" href="/#/register">Register</a>',
-      controller: [
-        '$scope',
-        'UserSessionService',
-        function($scope, UserSessionService) {
-          $scope.headerRegisterCtx = {};
-          $scope.headerRegisterCtx.isUserAuth = UserSessionService.getCurrentAuthToken();
-        }
-      ]
-    }
-  }
-]);
-User.directive('smUserHeaderLogout', [
-  function() {
-    return {
-      restrict: 'E',
-      templateUrl: './scripts/modules/user/templates/user.header.logout.html',
-      controller: [
-        '$scope',
-        'UserSessionService',
-        '$log',
-        function($scope, UserSessionService, $log) {
-          $scope.headerLogoutCtx = {};
-          $scope.headerLogoutCtx.isUserAuth = false;
-          if (UserSessionService.getCurrentAuthToken()) {
-            $scope.headerLogoutCtx.isUserAuth = true;
-          }
 
-          $scope.headerLogoutCtx.logout = function() {
-            UserSessionService.logout()
-              .then(function(response) {
-                $log.debug('HEADER LOGGED OUT');
-                window.location.reload();
-              });
-          };
-        }
-      ]
-    }
-  }
-]);
 User.directive('smTrackedCommand', [
   '$log',
   '$timeout',
@@ -317,33 +274,46 @@ User.directive('smUserRegistration', [
         'UserServices',
         'UserSessionService',
         'smGlobalValues',
-        function($scope, $log, UserServices, UserSessionService, smGlobalValues) {
+        '$state',
+        function($scope, $log, UserServices, UserSessionService, smGlobalValues, $state) {
           if (!$scope.registrationCtx) {
             $scope.registrationCtx = {};
           }
+          $scope.registrationCtx.urlNavRequest = function(state) {
+            $state.go(state);
+          };
           $scope.registrationCtx.submitRegistration = function() {
 
-            if ($scope.registrationCtx.email && $scope.registrationCtx.password && $scope.registrationCtx.confirmPassword) {
-
-              if ($scope.registrationCtx.password === $scope.registrationCtx.confirmPassword) {
-                var tempCurrentUser = smGlobalValues.currentUser;
-                if (smGlobalValues.currentUser && smGlobalValues.currentUser.smToken) {
-                  // register existing user
-                  $scope.registrationCtx.smToken = smGlobalValues.currentUser.smToken;
-                  UserServices.registerExistingUser({user:$scope.registrationCtx})
-                    .then(function(response) {
-                      $scope.registrationCtx = {
-                        registrationComplete: true
-                      };
-                    });
-                }
-                $log.debug('CREATE ACCOUNT: ', $scope.registrationCtx.email );
-
-              }
-              else {
-                $log.warn('validation error: passwords do not match');
-              }
+            if (!$scope.registrationCtx.agreeTAC) {
+              $log.warn('you need to agree to the terms and conditions');
+              return;
             }
+            if (!UserServices.isValidEmail($scope.registrationCtx.email)) {
+              $log.warn('email address does not seem to be valid');
+              return;
+            }
+            if (!$scope.registrationCtx.password || !$scope.registrationCtx.confirmPassword) {
+              $log.warn('you need to supply a password');
+              return;
+            }
+            if ($scope.registrationCtx.password !== $scope.registrationCtx.confirmPassword) {
+              $log.warn('the passwords do not match');
+              return;
+            }
+            var tempCurrentUser = smGlobalValues.currentUser;
+            if (smGlobalValues.currentUser && smGlobalValues.currentUser.smToken) {
+              // register existing user
+              $scope.registrationCtx.smToken = smGlobalValues.currentUser.smToken;
+              UserServices.registerExistingUser({user:$scope.registrationCtx})
+                .then(function(response) {
+                  $log.debug('CREATE ACCOUNT: ', $scope.registrationCtx.email );
+
+                  $scope.registrationCtx = {
+                    registrationComplete: true
+                  };
+                });
+            }
+
 
           };
           $scope.registrationCtx.init = function() {
@@ -360,6 +330,56 @@ User.directive('smUserRegistration', [
     }
   }
 ]);
+User.directive('smUserForgotPassword', [
+  function() {
+    return {
+      restrict: 'E',
+      templateUrl: './scripts/modules/user/templates/user.forgot.password.html',
+      controller: [
+        '$scope',
+        '$log',
+        'UserServices',
+        'UserSessionService',
+        'smGlobalValues',
+        function($scope, $log, UserServices, UserSessionService, smGlobalValues) {
+          if (!$scope.forgotPasswordCtx) {
+            $scope.forgotPasswordCtx = {};
+          }
+          $scope.forgotPasswordCtx.submitResetPassword = function() {
+
+            if ($scope.forgotPasswordCtx.email) {
+
+              // make sure email address is valid
+
+              // check to see if there is a userProfile with this email address
+              UserServices.findUserByEmail($scope.forgotPasswordCtx.email)
+                .then(function(response) {
+                  if (response.email) {
+                    // yay
+                    $log.debug('we found a user by that email address');
+                  }
+                  else {
+                    // no user exists
+                    $log.debug('no user by that email address');
+                  }
+                });
+
+              // if so then commence reset
+
+              // if not then warn user
+
+
+
+
+            }
+
+          };
+
+        }
+      ]
+    }
+  }
+]);
 User.directive('smUserLogin', [
   function() {
     return {
@@ -369,11 +389,13 @@ User.directive('smUserLogin', [
         '$scope',
         '$log',
         'UserSessionService',
-        function($scope, $log, UserSessionService) {
+        '$state',
+        function($scope, $log, UserSessionService, $state) {
 
           $scope.loginCtx = {
             isLoginActive:false,
-            isUserAuth:false
+            isUserAuth:false,
+            rememberMe:true
           };
 
           $scope.loginCtx.init = function() {
@@ -407,6 +429,9 @@ User.directive('smUserLogin', [
             $scope.loginCtx.isLoginActive = true;
           };
 
+          $scope.loginCtx.urlNavRequest = function(stateRequest) {
+            $state.go(stateRequest);
+          };
           $scope.loginCtx.init();
         }
       ]
