@@ -1,6 +1,6 @@
 <nav class="GlobalNav">
   <button ng-click="globalNavCtx.toggleGlobalNavMenu()" class="NavMenuButton icon-menu"></button>
-  <ul class="GlobalNav__List" ng-show="globalNavCtx.isShowGlobalNavMenu">
+  <ul class="GlobalNav__List" ng-mouseleave="globalNavCtx.activeateMenuClose()" ng-mouseenter="globalNavCtx.activeateMenu()" ng-show="globalNavCtx.isShowGlobalNavMenu">
     <li class="GlobalNav__ListItem">
       <button class="CommandButton" ng-show="globalNavCtx.isUserAuth()" ng-click="globalNavCtx.logout()">Logout</button>
       <button class="CommandButton" ng-show="!globalNavCtx.isUserAuth()" ng-click="globalNavCtx.urlNavRequest('login')">Login</button>

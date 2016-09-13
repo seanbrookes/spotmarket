@@ -1,37 +1,4 @@
-Common.directive('smCommonTest', [
-  '$http',
-  function($http) {
-    return {
-      restrict: 'E',
-      templateUrl: './scripts/modules/common/templates/common.test.html',
-      controller: [
-        '$scope',
-        'UserProfile',
-        function($scope, UserProfile) {
-          $scope.output = '';
-          UserProfile.find({},function(response, one, two) {
-              $scope.output = JSON.stringify(response);
 
-            },function(error) {
-              $scope.output = 'HEllo' + JSON.stringify(error);
-            });
-        }
-      ],
-      link: function(scope, el, attrs) {
-        //$http({
-        //    method: 'GET',
-        //    url: '//10.89.202.140:4546/api/userProfiles'
-        //  })
-        //  .then(function(response) {
-        //    scope.output = JSON.stringify(response);
-        //  })
-        //  .catch(function(error) {
-        //    scope.output = JSON.stringify(error);
-        //  });
-      }
-    }
-  }
-]);
 Common.directive('smHopFarmReport', [
   '$timeout',
   function($timeout) {
@@ -328,7 +295,7 @@ Common.directive('smCommonGlobalNav', [
         function($scope, $state, UserSessionService) {
           $scope.globalNavCtx = {};
          // $scope.globalNavCtx.isUserAuth = UserSessionService.getCurrentAuthToken();
-
+          var to = null;
           $scope.globalNavCtx.urlNavRequest = function(stateRequest) {
             $scope.globalNavCtx.isShowGlobalNavMenu = false;
             $state.go(stateRequest);
@@ -345,6 +312,9 @@ Common.directive('smCommonGlobalNav', [
 
           $scope.globalNavCtx.toggleGlobalNavMenu = function() {
             $scope.globalNavCtx.isShowGlobalNavMenu = !$scope.globalNavCtx.isShowGlobalNavMenu;
+            if ($scope.globalNavCtx.isShowGlobalNavMenu ) {
+              $scope.globalNavCtx.activeateMenuClose();
+            }
           };
 
           $scope.globalNavCtx.logout = function() {
@@ -353,10 +323,28 @@ Common.directive('smCommonGlobalNav', [
                 window.location.reload();
               });
           };
+          $scope.globalNavCtx.activeateMenuClose = function() {
+            to = setTimeout(function(){
+              $scope.$apply(function() {
+                $scope.globalNavCtx.isShowGlobalNavMenu = false;
+
+              });
+            }, 3000);
+          };
+          $scope.globalNavCtx.activeateMenu = function() {
+            if(to){
+              clearTimeout(to);
+            }
+          };
 
 
         }
-      ]
+      ],
+      link: function(scope, el, attrs) {
+
+
+
+      }
     }
   }
 ]);
@@ -503,6 +491,40 @@ Common.directive('slCommonLoadingIndicator', [
             $scope.props = '{radius:30, width:8, length: 24, color:\'#7DBD33\'}';
             break;
         }
+      }
+    }
+  }
+]);
+Common.directive('smCommonTest', [
+  '$http',
+  function($http) {
+    return {
+      restrict: 'E',
+      templateUrl: './scripts/modules/common/templates/common.test.html',
+      controller: [
+        '$scope',
+        'UserProfile',
+        function($scope, UserProfile) {
+          $scope.output = '';
+          UserProfile.find({},function(response, one, two) {
+            $scope.output = JSON.stringify(response);
+
+          },function(error) {
+            $scope.output = 'HEllo' + JSON.stringify(error);
+          });
+        }
+      ],
+      link: function(scope, el, attrs) {
+        //$http({
+        //    method: 'GET',
+        //    url: '//10.89.202.140:4546/api/userProfiles'
+        //  })
+        //  .then(function(response) {
+        //    scope.output = JSON.stringify(response);
+        //  })
+        //  .catch(function(error) {
+        //    scope.output = JSON.stringify(error);
+        //  });
       }
     }
   }
