@@ -300,31 +300,199 @@ User.directive('smUserRegistration', [
               $log.warn('the passwords do not match');
               return;
             }
-            var tempCurrentUser = smGlobalValues.currentUser;
-            if (smGlobalValues.currentUser && smGlobalValues.currentUser.smToken) {
-              // register existing user
-              $scope.registrationCtx.smToken = smGlobalValues.currentUser.smToken;
-              UserServices.registerExistingUser({user:$scope.registrationCtx})
-                .then(function(response) {
-                  $log.debug('CREATE ACCOUNT: ', $scope.registrationCtx.email );
-
-                  $scope.registrationCtx = {
-                    registrationComplete: true
-                  };
-                });
-            }
-
+            // check if user already has an account
+            UserServices.findUserByEmail($scope.registrationCtx.email)
+              .then(function(response) {
+                if (response && response.length > 0) {
+                  $log.warn('email address already linked to an account');
+                  return;
+                }
+                var tempCurrentUser = UserSessionService.getCurrentUserFromClientState();
+                if (tempCurrentUser && tempCurrentUser.smToken) {
+                  // register existing user
+                  $scope.registrationCtx.smToken = tempCurrentUser.smToken;
+                  UserServices.registerExistingUser({user:$scope.registrationCtx})
+                    .then(function(response) {
+                      $log.debug('Account created ', $scope.registrationCtx.email );
+                      $scope.registrationCtx.registrationComplete = true;
+                    });
+                }
+              });
 
           };
           $scope.registrationCtx.init = function() {
             var currUser = UserSessionService.getCurrentUserFromClientState();
+            if (currUser.smAuthToken) {
+              $state.go('home');
+            }
+            if (currUser.smHandle) {
+              $scope.registrationCtx.handle = currUser.smHandle;
+              $scope.registrationCtx.isPreExistingHandle = true;
+            }
             if (currUser.smEmail) {
               $scope.registrationCtx.email = currUser.smEmail;
             }
-           // $scope.$parent.trackViewInit('smUserRegistration');
-
           };
           $scope.registrationCtx.init();
+        }
+      ]
+    }
+  }
+]);
+
+User.directive('smUserHandle', [
+  function() {
+    return {
+      restrict: 'E',
+      scope: {
+        ctx:'='
+      },
+      templateUrl: './scripts/modules/user/templates/user.handle.html',
+      controller: [
+        '$scope',
+        'UserServices',
+        'UserSessionService',
+        function($scope, UserServices, UserSessionService) {
+          $scope.handleCtx = {};
+          $scope.handleCtx.handleSuggestionHistory = [];
+          $scope.handleCtx.handleSuggestionHistoryIndex = 0;
+          $scope.handleCtx.handleSearchDefaultHandleAlphaOnly = false;
+
+          /*
+           *
+           * HANDLE GENERATOR METHODS
+           *
+           * */
+          $scope.handleCtx.refreshSuggestedHandle = function () {
+            var options = {aphaOnly: $scope.handleCtx.handleSearchDefaultHandleAlphaOnly};
+            $scope.handleCtx.currentHandle = UserSessionService.generateNewUserTag(options)
+              .then(function (response) {
+                $scope.handleCtx.currentHandle = response;
+                UserSessionService.addUserHandleSuggestionToHistory($scope.handleCtx.currentHandle);
+                $scope.handleCtx.handleSuggestionHistoryIndex = 0;
+              });
+          };
+          $scope.handleCtx.goBackOneHandleSuggestion = function () {
+            var currentHistory = $scope.handleCtx.handleSuggestionHistory = UserSessionService.getUserHandleSuggestionHistory();
+            var currentIndex = $scope.handleCtx.handleSuggestionHistoryIndex;
+
+            var historyLength = currentHistory.length;
+
+            if (historyLength > 0) {
+              if (currentIndex !== (historyLength - 1)) {
+                currentIndex = $scope.handleCtx.handleSuggestionHistoryIndex = (currentIndex + 1);
+                $scope.handleCtx.currentHandle = currentHistory[currentIndex];
+              }
+
+            }
+          };
+          $scope.handleCtx.goForwardOneHandleSuggestion = function () {
+            var currentHistory = $scope.handleCtx.handleSuggestionHistory = UserSessionService.getUserHandleSuggestionHistory();
+            var currentIndex = $scope.handleCtx.handleSuggestionHistoryIndex;
+
+            var historyLength = currentHistory.length;
+
+            if (historyLength > 0) {
+              if (currentIndex !== 0) {
+                currentIndex = $scope.handleCtx.handleSuggestionHistoryIndex = (currentIndex - 1);
+                $scope.handleCtx.currentHandle = currentHistory[currentIndex];
+              }
+
+            }
+          };
+          $scope.handleCtx.toggleAlphaOnly = function() {
+
+          };
+
+          $scope.handleCtx.init = function(user) {
+            if (!user) {
+              user = UserSessionService.getCurrentUserFromClientState();
+            }
+            if (user.smHandle) {
+              $scope.handleCtx.currentHandle = user.smHandle;
+            }
+            else {
+              // generate default handle
+              $scope.handleCtx.refreshSuggestedHandle();
+            }
+          };
+          $scope.handleCtx.init();
+          // end handle generation methods
+        }
+      ],
+      link: function(scope, el, attrs) {
+        scope.$watch('handleCtx.currentHandle', function(newVal, oldVal) {
+          if (newVal) {
+            scope.ctx.handle = newVal;
+          }
+        }, true);
+      }
+    }
+  }
+]);
+User.directive('smUserLogin', [
+  function() {
+    return {
+      restrict: 'E',
+      templateUrl: './scripts/modules/user/templates/user.login.html',
+      controller: [
+        '$scope',
+        '$log',
+        'UserSessionService',
+        '$state',
+        function($scope, $log, UserSessionService, $state) {
+
+          $scope.loginCtx = {
+            isLoginActive:false,
+            isUserAuth:false,
+            rememberMe:true
+          };
+
+          $scope.loginCtx.init = function() {
+            if (UserSessionService.getCurrentAuthToken()) {
+              // user is authenticated
+              $scope.loginCtx.isUserAuth = true;
+              $state.go('home');
+
+            }
+            $scope.loginCtx.isLoginActive = false;
+            $scope.loginCtx.email = '';
+            $scope.loginCtx.password = '';
+
+          };
+          $scope.submitLoginRequest =  function() {
+            var targetEmail = $scope.loginCtx.email;
+            if (targetEmail && $scope.loginCtx.password ) {
+              UserSessionService.requestLoginToken($scope.loginCtx)
+                .then(function(response) {
+
+                  if (response.authToken) {
+                    // save the token
+                    UserSessionService.setValueByKey('smAuthToken', response.authToken);
+                    UserSessionService.setValueByKey('smToken', response.authToken);
+                    UserSessionService.setValueByKey('smEmail', targetEmail);
+                    if (response.handle) {
+                      UserSessionService.setValueByKey('smHandle', response.handle);
+
+                    }
+
+                    // clear the login
+                    //$scope.loginCtx.init();
+                    window.document.location.href = '/';
+                    // redirect if necessary
+                  }
+                });
+            }
+
+          };
+          $scope.activateLogin = function() {
+            $scope.loginCtx.isLoginActive = true;
+          };
+
+          $scope.loginCtx.urlNavRequest = function(stateRequest) {
+            $state.go(stateRequest);
+          };
+          $scope.loginCtx.init();
         }
       ]
     }
@@ -375,64 +543,6 @@ User.directive('smUserForgotPassword', [
 
           };
 
-        }
-      ]
-    }
-  }
-]);
-User.directive('smUserLogin', [
-  function() {
-    return {
-      restrict: 'E',
-      templateUrl: './scripts/modules/user/templates/user.login.html',
-      controller: [
-        '$scope',
-        '$log',
-        'UserSessionService',
-        '$state',
-        function($scope, $log, UserSessionService, $state) {
-
-          $scope.loginCtx = {
-            isLoginActive:false,
-            isUserAuth:false,
-            rememberMe:true
-          };
-
-          $scope.loginCtx.init = function() {
-            if (UserSessionService.getCurrentAuthToken()) {
-              // user is authenticated
-              $scope.loginCtx.isUserAuth = true;
-            }
-            $scope.loginCtx.isLoginActive = false;
-            $scope.loginCtx.email = '';
-            $scope.loginCtx.password = '';
-
-          };
-          $scope.submitLoginRequest =  function() {
-            $log.debug('submit login');
-            if ($scope.loginCtx.email && $scope.loginCtx.password ) {
-              UserSessionService.requestLoginToken($scope.loginCtx)
-                .then(function(response) {
-                  if (response.authToken) {
-                    // save the token
-                    UserSessionService.setValueByKey('smAuthToken', response.authToken);
-                    // clear the login
-                    //$scope.loginCtx.init();
-                    window.document.location.href = '/';
-                    // redirect if necessary
-                  }
-                });
-            }
-
-          };
-          $scope.activateLogin = function() {
-            $scope.loginCtx.isLoginActive = true;
-          };
-
-          $scope.loginCtx.urlNavRequest = function(stateRequest) {
-            $state.go(stateRequest);
-          };
-          $scope.loginCtx.init();
         }
       ]
     }

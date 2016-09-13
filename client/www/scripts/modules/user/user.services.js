@@ -430,8 +430,10 @@ User.service('UserSessionService', [
       return false;
     };
     svc.requestLoginToken = function(loginCtx) {
+
       if (loginCtx.email && loginCtx.password) {
         loginCtx.smToken = svc.getCurrentToken();
+
         return UserProfile.login({ctx:loginCtx})
           .$promise
           .then(function(response) {
@@ -439,7 +441,7 @@ User.service('UserSessionService', [
           })
           .catch(function(error){
             $log.warn('bad login attempt');
-            return null;
+            return error;
           });
       }
     };

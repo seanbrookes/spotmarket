@@ -1,8 +1,9 @@
 window.isLocal = function(){
   var host = window.location.hostname;
+  var port = window.location.port;
   var isLocal = false;
 
-  if ( host.indexOf('localhost') !== -1 ) {
+  if (( host.indexOf('localhost') !== -1 ) || ( port === '4545' )) {
     isLocal = true;
   }
 
@@ -45,10 +46,10 @@ Main.constant('ACTION_CONST', {
 
 Main.constant('smGlobalConstants', {
   isLocal: false,
-  productionUrlBase:'//spotmarketapi.herokuapp.com/api/',
-  localUrlBase: '//localhost:4546/api',
-  productionSocketBase:'//spotmarketapi.herokuapp.com/',
-  localSocketBase: '//localhost:4546/'
+  productionUrlBase:'http://spotmarketapi.herokuapp.com/api/',
+  localUrlBase: 'http://10.89.202.140:4546/api',
+  productionSocketBase:'http://spotmarketapi.herokuapp.com/',
+  localSocketBase: 'http://10.89.202.140:4546/'
 });
 /*
 
@@ -94,6 +95,11 @@ Main.config([
   // Change the URL where to access the LoopBack REST API server
 
 }]);
+Main.config(['$httpProvider', function($httpProvider) {
+  $httpProvider.defaults.useXDomain = true;
+  delete $httpProvider.defaults.headers.common['X-Requested-With'];
+}
+]);
 Main.config([
   '$stateProvider',
   '$urlRouterProvider',
@@ -134,6 +140,10 @@ Main.config([
       .state('admin', {
         url: '/admin',
         templateUrl: './scripts/modules/admin/templates/admin.main.html'
+      })
+      .state('testpage', {
+        url: '/testpage',
+        templateUrl: './scripts/modules/common/templates/common.test.main.html'
       })
       .state('blog', {
         url: '/blog',
@@ -245,8 +255,8 @@ Main.run([
       UserSessionService.getCurrentUserByToken(token)
         .then(function(currentUserResponse) {
           smGlobalValues.currentUser = currentUserResponse;
-          if (smGlobalValues.token) {
-            UserSessionService.setValueByKey('smToken',smGlobalValues.token);
+          if (smGlobalValues.currentUser.token) {
+            UserSessionService.setValueByKey('smToken',smGlobalValues.currentUser.token);
           }
         });
     }

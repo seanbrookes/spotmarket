@@ -1,3 +1,37 @@
+Common.directive('smCommonTest', [
+  '$http',
+  function($http) {
+    return {
+      restrict: 'E',
+      templateUrl: './scripts/modules/common/templates/common.test.html',
+      controller: [
+        '$scope',
+        'UserProfile',
+        function($scope, UserProfile) {
+          $scope.output = '';
+          UserProfile.find({},function(response, one, two) {
+              $scope.output = JSON.stringify(response);
+
+            },function(error) {
+              $scope.output = 'HEllo' + JSON.stringify(error);
+            });
+        }
+      ],
+      link: function(scope, el, attrs) {
+        //$http({
+        //    method: 'GET',
+        //    url: '//10.89.202.140:4546/api/userProfiles'
+        //  })
+        //  .then(function(response) {
+        //    scope.output = JSON.stringify(response);
+        //  })
+        //  .catch(function(error) {
+        //    scope.output = JSON.stringify(error);
+        //  });
+      }
+    }
+  }
+]);
 Common.directive('smHopFarmReport', [
   '$timeout',
   function($timeout) {

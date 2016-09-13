@@ -1815,7 +1815,8 @@ img-crop .loading .fixed-height {
   padding: 2rem;
   border-radius: 1rem;
 }
-.UserRegistration .UserRegistration__Label {
+.UserRegistration .UserRegistration__Label,
+.UserRegistration .UserHandle__Label {
   width: 9rem;
   display: inline-block;
 }

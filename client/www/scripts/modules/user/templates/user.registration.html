@@ -4,6 +4,7 @@
       <h2 class="AuthRegFormTitle">spotmarket registration</h2>
     </div>
     <form class="UserRegistration__Form">
+      <sm-user-handle ctx="registrationCtx"></sm-user-handle>
       <div class="UserRegistration__FormField">
         <label class="UserRegistration__Label UserRegistration__Label--Required">Email</label>
         <input class="AuthTextInput" type="text" ng-model="registrationCtx.email" />
@@ -20,13 +21,14 @@
         <label class="UserRegistration__TAC">
           <input class="UserRegistration__TACAgreeInput" type="checkbox" ng-model="registrationCtx.agreeTAC" />
           <span>I agree to the </span><a href="/termsconditions.html" target="_blank">Terms & conditions</a></label>
-        <button class="Button--primary" ng-click="registrationCtx.submitRegistration()">Register</button>
+        <button class="Button--primary" ng-click="registrationCtx.submitRegistration()">Next</button>
       </div>
     </form>
 
   </div>
+
   <div ng-show="registrationCtx.registrationComplete" >
-    <p>Thank you a link has been sent to your email address.  Click the link to complete the registration process</p>
+    <p>Thank you, you have successfully registered.  You will now be logged in and routed to the home page</p>
   </div>
 
 </div>

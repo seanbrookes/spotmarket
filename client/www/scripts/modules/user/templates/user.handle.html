@@ -1,0 +1,23 @@
+<div>
+  <div ng-hide="ctx.isPreExistingHandle">
+    <h3>market handle</h3>
+    <p>A handle is a name you use in the market.  </p>
+    <p>This is your public nickname. </p>
+    <p> We have made a suggestion for you but you can change it.</p>
+    <p>  It has to be unique.  </p>
+    <input type="text" placeholder="user handle" ng-model="handleCtx.currentHandle" />
+    <div>
+      <button title="go back" ng-click="handleCtx.goBackOneHandleSuggestion()"><</button>
+      <button title="go forward" ng-click="handleCtx.goForwardOneHandleSuggestion()">&gt;</button>
+      <button title="show me a new one" ng-click="handleCtx.refreshSuggestedHandle()">S</button>
+      <label class="HandleForm__CheckboxLabel"><input type="checkbox" ng-change="handleCtx.toggleHandleAlphaOnly()" ng-model="handleCtx.handleSearchDefaultHandleAlphaOnly">no numbers</label>
+      <button class="LinkButton" title="This is your public nickname.  We have made a suggestion for you but you can change it.  It has to be unique.  We are not in the business of name police and we encourage people to be creative but we reserve the right to prevent certain combinations if people complain.">what is this?</button>
+      <p>We encourage people to be creative but reserve the right to deny certain names if deemed too offensive.</p>
+    </div>
+
+  </div>
+  <div  ng-show="ctx.isPreExistingHandle">
+    <label class="UserHandle__Label">Handle</label>
+    <span>{{ctx.handle}}</span>
+  </div>
+</div>
