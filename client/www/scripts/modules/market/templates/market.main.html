@@ -1,17 +1,26 @@
 <div>
   <button class="LinkButton" ng-show="currentUser.smHandle">{{currentUser.smHandle}}</button>
-  <div class="Layout">
-    <button class="MarketViewButton" ng-class="{'MarketViewButton--active': marketCtx.isActiveView('MarketView')}" ng-click="marketCtx.activateView($event)" data-name="MarketView">What's for sale</button>
-    <button class="MarketViewButton" ng-class="{'MarketViewButton--active': marketCtx.isActiveView('AskView')}" ng-click="marketCtx.activateView($event)" data-name="AskView">I have something to sell</button>
-    <button class="MarketViewButton" ng-class="{'MarketViewButton--active': marketCtx.isActiveView('GeoView')}" ng-click="marketCtx.activateView($event)" data-name="GeoView">Where am I</button>
+
+  <!--<div class="Layout">-->
+    <!--<button class="MarketViewButton" ng-class="{'MarketViewButton&#45;&#45;active': marketCtx.isActiveView('WelcomeView')}" ng-click="marketCtx.activateView($event)" data-name="WelcomeView">Welcome</button>-->
+    <!--<button class="MarketViewButton" ng-class="{'MarketViewButton&#45;&#45;active': marketCtx.isActiveView('MarketView')}" ng-click="marketCtx.activateView($event)" data-name="MarketView">What's for sale</button>-->
+    <!--<button class="MarketViewButton" ng-class="{'MarketViewButton&#45;&#45;active': marketCtx.isActiveView('AskView')}" ng-click="marketCtx.activateView($event)" data-name="AskView">I have something to sell</button>-->
+    <!--<button class="MarketViewButton" ng-class="{'MarketViewButton&#45;&#45;active': marketCtx.isActiveView('GeoView')}" ng-click="marketCtx.activateView($event)" data-name="GeoView">Where am I</button>-->
+  <!--</div>-->
+
+  <div class="MarketViewContainer" ng-class="{'MarketViewContainer--active': mainNavCtx.isActiveView('WelcomeView')}">
+    <sm-home-content active-view="mainNavCtx.activeView"></sm-home-content>
   </div>
-  <div class="MarketViewContainer" ng-class="{'MarketViewContainer--active': marketCtx.isActiveView('MarketView')}">
-    <sm-market-market-view active-view="marketCtx.activeView"></sm-market-market-view>
+  <div class="MarketViewContainer" ng-class="{'MarketViewContainer--active': mainNavCtx.isActiveView('MarketView')}">
+    <sm-market-market-view active-view="mainNavCtx.activeView"></sm-market-market-view>
   </div>
-  <div class="MarketViewContainer" ng-class="{'MarketViewContainer--active': marketCtx.isActiveView('AskView')}">
-    <sm-ask-market-view active-view="marketCtx.activeView"></sm-ask-market-view>
+  <div class="MarketViewContainer" ng-class="{'MarketViewContainer--active': mainNavCtx.isActiveView('AskView')}">
+    <sm-ask-market-view active-view="mainNavCtx.activeView"></sm-ask-market-view>
   </div>
-  <div class="MarketViewContainer" ng-class="{'MarketViewContainer--active': marketCtx.isActiveView('GeoView')}">
-    <sm-geo-market-view active-view="marketCtx.activeView"></sm-geo-market-view>
+  <div class="MarketViewContainer" ng-class="{'MarketViewContainer--active': mainNavCtx.isActiveView('GeoView')}">
+    <sm-geo-market-view active-view="mainNavCtx.activeView"></sm-geo-market-view>
+  </div>
+  <div class="MarketViewContainer" ng-class="{'MarketViewContainer--active': mainNavCtx.isActiveView('ProfileView')}">
+    <sm-user-profile-view active-view="mainNavCtx.activeView"></sm-user-profile-view>
   </div>
 </div>

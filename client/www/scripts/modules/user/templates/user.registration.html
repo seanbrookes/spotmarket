@@ -2,25 +2,36 @@
   <div ng-hide="registrationCtx.registrationComplete" >
     <div class="Layout Center">
       <h2 class="AuthRegFormTitle">spotmarket registration</h2>
+      <button ng-show="registrationCtx.email" ng-click="registrationCtx.clearCurrentUser()" class="LinkButton">New registration</button>
     </div>
     <form class="UserRegistration__Form">
       <sm-user-handle ctx="registrationCtx"></sm-user-handle>
+      <p class="AuthReg__ValidationError">a handle is required</p>
       <div class="UserRegistration__FormField">
         <label class="UserRegistration__Label UserRegistration__Label--Required">Email</label>
-        <input class="AuthTextInput" type="text" ng-model="registrationCtx.email" />
+        <input ng-show="!registrationCtx.isExistingEmail" class="AuthTextInput" type="text" ng-model="registrationCtx.email" />
+        <div ng-show="registrationCtx.isExistingEmail">{{registrationCtx.email}}</div>
+        <p class="AuthReg__ValidationError">a valid email address is required</p>
       </div>
       <div class="UserRegistration__FormField">
         <label class="UserRegistration__Label UserRegistration__Label--Required">Password</label>
         <input class="AuthTextInput" type="password" ng-model="registrationCtx.password" />
+        <p class="AuthReg__ValidationError">a password is required</p>
       </div>
       <div class="UserRegistration__FormField">
         <label class="UserRegistration__Label UserRegistration__Label--Required">Confirm Password</label>
         <input class="AuthTextInput" type="password" ng-model="registrationCtx.confirmPassword" />
+        <p class="AuthReg__ValidationError">passwords must match</p>
       </div>
       <div class="UserRegistration__ButtonContainer Layout Spread CenterItems">
-        <label class="UserRegistration__TAC">
-          <input class="UserRegistration__TACAgreeInput" type="checkbox" ng-model="registrationCtx.agreeTAC" />
-          <span>I agree to the </span><a href="/termsconditions.html" target="_blank">Terms & conditions</a></label>
+        <div>
+          <label class="UserRegistration__TAC">
+            <input class="UserRegistration__TACAgreeInput" type="checkbox" ng-model="registrationCtx.agreeTAC" />
+            <span>I agree to the </span><a href="/termsconditions.html" target="_blank">Terms & conditions</a></label>
+          <p class="AuthReg__ValidationError">you must agree to the terms and conditions</p>
+        </div>
+
+
         <button class="Button--primary" ng-click="registrationCtx.submitRegistration()">Next</button>
       </div>
     </form>

@@ -186,7 +186,7 @@ module.factory(
          *
          *  - `id` – `{*}` - User id
          *
-         *  - `filter` – `{object=}` -
+         *  - `filter` – `{object=}` - 
          *
          * @param {function(Array.<Object>,Object)=} successCb
          *   Success callback with two arguments: `value`, `responseHeaders`.
@@ -303,7 +303,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `count` – `{number=}` -
+         *  - `count` – `{number=}` - 
          */
         "prototype$__count__accessTokens": {
           url: urlBase + "/Users/:id/accessTokens/count",
@@ -450,7 +450,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `exists` – `{boolean=}` -
+         *  - `exists` – `{boolean=}` - 
          */
         "exists": {
           url: urlBase + "/Users/:id/exists",
@@ -651,7 +651,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `count` – `{number=}` -
+         *  - `count` – `{number=}` - 
          */
         "count": {
           url: urlBase + "/Users/count",
@@ -711,7 +711,7 @@ module.factory(
          *
          * @param {Object} postData Request data.
          *
-         *  - `options` – `{object=}` -
+         *  - `options` – `{object=}` - 
          *
          * @param {function(Object,Object)=} successCb
          *   Success callback with two arguments: `value`, `responseHeaders`.
@@ -725,7 +725,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `changes` – `{ReadableStream=}` -
+         *  - `changes` – `{ReadableStream=}` - 
          */
         "createChangeStream": {
           url: urlBase + "/Users/change-stream",
@@ -766,9 +766,9 @@ module.factory(
          *
          * The response body contains properties of the AccessToken created on login.
          * Depending on the value of `include` parameter, the body may contain additional properties:
-         *
+         * 
          *   - `user` - `{User}` - Data of the currently logged in user. (`include=user`)
-         *
+         * 
          *
          */
         "login": {
@@ -841,11 +841,11 @@ module.factory(
          *
          * @param {Object=} parameters Request parameters.
          *
-         *  - `uid` – `{string}` -
+         *  - `uid` – `{string}` - 
          *
-         *  - `token` – `{string}` -
+         *  - `token` – `{string}` - 
          *
-         *  - `redirect` – `{string=}` -
+         *  - `redirect` – `{string=}` - 
          *
          * @param {function(Object,Object)=} successCb
          *   Success callback with two arguments: `value`, `responseHeaders`.
@@ -1289,7 +1289,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `exists` – `{boolean=}` -
+         *  - `exists` – `{boolean=}` - 
          */
         "exists": {
           url: urlBase + "/tickerStreams/:id/exists",
@@ -1490,7 +1490,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `count` – `{number=}` -
+         *  - `count` – `{number=}` - 
          */
         "count": {
           url: urlBase + "/tickerStreams/count",
@@ -1550,7 +1550,7 @@ module.factory(
          *
          * @param {Object} postData Request data.
          *
-         *  - `options` – `{object=}` -
+         *  - `options` – `{object=}` - 
          *
          * @param {function(Object,Object)=} successCb
          *   Success callback with two arguments: `value`, `responseHeaders`.
@@ -1564,7 +1564,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `changes` – `{ReadableStream=}` -
+         *  - `changes` – `{ReadableStream=}` - 
          */
         "createChangeStream": {
           url: urlBase + "/tickerStreams/change-stream",
@@ -1881,7 +1881,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `exists` – `{boolean=}` -
+         *  - `exists` – `{boolean=}` - 
          */
         "exists": {
           url: urlBase + "/userProfiles/:id/exists",
@@ -2082,7 +2082,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `count` – `{number=}` -
+         *  - `count` – `{number=}` - 
          */
         "count": {
           url: urlBase + "/userProfiles/count",
@@ -2142,7 +2142,7 @@ module.factory(
          *
          * @param {Object} postData Request data.
          *
-         *  - `options` – `{object=}` -
+         *  - `options` – `{object=}` - 
          *
          * @param {function(Object,Object)=} successCb
          *   Success callback with two arguments: `value`, `responseHeaders`.
@@ -2156,7 +2156,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `changes` – `{ReadableStream=}` -
+         *  - `changes` – `{ReadableStream=}` - 
          */
         "createChangeStream": {
           url: urlBase + "/userProfiles/change-stream",
@@ -2176,7 +2176,7 @@ module.factory(
          *
          * @param {Object=} parameters Request parameters.
          *
-         *  - `token` – `{string=}` -
+         *  - `token` – `{string=}` - 
          *
          * @param {function(Object,Object)=} successCb
          *   Success callback with two arguments: `value`, `responseHeaders`.
@@ -2190,10 +2190,80 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `user` – `{string=}` -
+         *  - `user` – `{string=}` - 
          */
         "findByToken": {
           url: urlBase + "/userProfiles/findbytoken",
+          method: "GET"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.UserProfile#getKnownHandles
+         * @methodOf lbServices.UserProfile
+         *
+         * @description
+         *
+         * <em>
+         * (The remote method definition does not provide any description.)
+         * </em>
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *   This method does not accept any parameters.
+         *   Supply an empty object or omit this argument altogether.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * Data properties:
+         *
+         *  - `handles` – `{*=}` - 
+         */
+        "getKnownHandles": {
+          url: urlBase + "/userProfiles/knownhandles",
+          method: "GET"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.UserProfile#getKnownEmails
+         * @methodOf lbServices.UserProfile
+         *
+         * @description
+         *
+         * <em>
+         * (The remote method definition does not provide any description.)
+         * </em>
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *   This method does not accept any parameters.
+         *   Supply an empty object or omit this argument altogether.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * Data properties:
+         *
+         *  - `emails` – `{*=}` - 
+         */
+        "getKnownEmails": {
+          url: urlBase + "/userProfiles/knownemails",
           method: "GET"
         },
 
@@ -2215,7 +2285,7 @@ module.factory(
          *
          * @param {Object} postData Request data.
          *
-         *  - `user` – `{object=}` -
+         *  - `user` – `{object=}` - 
          *
          * @param {function(Object,Object)=} successCb
          *   Success callback with two arguments: `value`, `responseHeaders`.
@@ -2229,7 +2299,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `user` – `{string=}` -
+         *  - `user` – `{string=}` - 
          */
         "registerExistingUser": {
           url: urlBase + "/userProfiles/registerexistinuser",
@@ -2254,7 +2324,7 @@ module.factory(
          *
          * @param {Object} postData Request data.
          *
-         *  - `ctx` – `{object=}` -
+         *  - `ctx` – `{object=}` - 
          *
          * @param {function(Object,Object)=} successCb
          *   Success callback with two arguments: `value`, `responseHeaders`.
@@ -2268,7 +2338,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `token` – `{string=}` -
+         *  - `token` – `{string=}` - 
          */
         "login": {
           url: urlBase + "/userProfiles/login",
@@ -2585,7 +2655,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `exists` – `{boolean=}` -
+         *  - `exists` – `{boolean=}` - 
          */
         "exists": {
           url: urlBase + "/asks/:id/exists",
@@ -2786,7 +2856,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `count` – `{number=}` -
+         *  - `count` – `{number=}` - 
          */
         "count": {
           url: urlBase + "/asks/count",
@@ -2846,7 +2916,7 @@ module.factory(
          *
          * @param {Object} postData Request data.
          *
-         *  - `options` – `{object=}` -
+         *  - `options` – `{object=}` - 
          *
          * @param {function(Object,Object)=} successCb
          *   Success callback with two arguments: `value`, `responseHeaders`.
@@ -2860,7 +2930,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `changes` – `{ReadableStream=}` -
+         *  - `changes` – `{ReadableStream=}` - 
          */
         "createChangeStream": {
           url: urlBase + "/asks/change-stream",
@@ -2885,7 +2955,7 @@ module.factory(
          *
          * @param {Object} postData Request data.
          *
-         *  - `msg` – `{string=}` -
+         *  - `msg` – `{string=}` - 
          *
          * @param {function(Object,Object)=} successCb
          *   Success callback with two arguments: `value`, `responseHeaders`.
@@ -2899,7 +2969,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `greeting` – `{string=}` -
+         *  - `greeting` – `{string=}` - 
          */
         "doIt": {
           url: urlBase + "/asks/doIt",
@@ -3216,7 +3286,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `exists` – `{boolean=}` -
+         *  - `exists` – `{boolean=}` - 
          */
         "exists": {
           url: urlBase + "/bids/:id/exists",
@@ -3417,7 +3487,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `count` – `{number=}` -
+         *  - `count` – `{number=}` - 
          */
         "count": {
           url: urlBase + "/bids/count",
@@ -3477,7 +3547,7 @@ module.factory(
          *
          * @param {Object} postData Request data.
          *
-         *  - `options` – `{object=}` -
+         *  - `options` – `{object=}` - 
          *
          * @param {function(Object,Object)=} successCb
          *   Success callback with two arguments: `value`, `responseHeaders`.
@@ -3491,7 +3561,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `changes` – `{ReadableStream=}` -
+         *  - `changes` – `{ReadableStream=}` - 
          */
         "createChangeStream": {
           url: urlBase + "/bids/change-stream",
@@ -3808,7 +3878,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `exists` – `{boolean=}` -
+         *  - `exists` – `{boolean=}` - 
          */
         "exists": {
           url: urlBase + "/channels/:id/exists",
@@ -4009,7 +4079,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `count` – `{number=}` -
+         *  - `count` – `{number=}` - 
          */
         "count": {
           url: urlBase + "/channels/count",
@@ -4069,7 +4139,7 @@ module.factory(
          *
          * @param {Object} postData Request data.
          *
-         *  - `options` – `{object=}` -
+         *  - `options` – `{object=}` - 
          *
          * @param {function(Object,Object)=} successCb
          *   Success callback with two arguments: `value`, `responseHeaders`.
@@ -4083,7 +4153,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `changes` – `{ReadableStream=}` -
+         *  - `changes` – `{ReadableStream=}` - 
          */
         "createChangeStream": {
           url: urlBase + "/channels/change-stream",
@@ -4400,7 +4470,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `exists` – `{boolean=}` -
+         *  - `exists` – `{boolean=}` - 
          */
         "exists": {
           url: urlBase + "/productTypes/:id/exists",
@@ -4601,7 +4671,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `count` – `{number=}` -
+         *  - `count` – `{number=}` - 
          */
         "count": {
           url: urlBase + "/productTypes/count",
@@ -4661,7 +4731,7 @@ module.factory(
          *
          * @param {Object} postData Request data.
          *
-         *  - `options` – `{object=}` -
+         *  - `options` – `{object=}` - 
          *
          * @param {function(Object,Object)=} successCb
          *   Success callback with two arguments: `value`, `responseHeaders`.
@@ -4675,7 +4745,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `changes` – `{ReadableStream=}` -
+         *  - `changes` – `{ReadableStream=}` - 
          */
         "createChangeStream": {
           url: urlBase + "/productTypes/change-stream",
@@ -4992,7 +5062,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `exists` – `{boolean=}` -
+         *  - `exists` – `{boolean=}` - 
          */
         "exists": {
           url: urlBase + "/productSubTypes/:id/exists",
@@ -5193,7 +5263,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `count` – `{number=}` -
+         *  - `count` – `{number=}` - 
          */
         "count": {
           url: urlBase + "/productSubTypes/count",
@@ -5253,7 +5323,7 @@ module.factory(
          *
          * @param {Object} postData Request data.
          *
-         *  - `options` – `{object=}` -
+         *  - `options` – `{object=}` - 
          *
          * @param {function(Object,Object)=} successCb
          *   Success callback with two arguments: `value`, `responseHeaders`.
@@ -5267,7 +5337,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `changes` – `{ReadableStream=}` -
+         *  - `changes` – `{ReadableStream=}` - 
          */
         "createChangeStream": {
           url: urlBase + "/productSubTypes/change-stream",
@@ -5584,7 +5654,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `exists` – `{boolean=}` -
+         *  - `exists` – `{boolean=}` - 
          */
         "exists": {
           url: urlBase + "/tracks/:id/exists",
@@ -5785,7 +5855,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `count` – `{number=}` -
+         *  - `count` – `{number=}` - 
          */
         "count": {
           url: urlBase + "/tracks/count",
@@ -5845,7 +5915,7 @@ module.factory(
          *
          * @param {Object} postData Request data.
          *
-         *  - `options` – `{object=}` -
+         *  - `options` – `{object=}` - 
          *
          * @param {function(Object,Object)=} successCb
          *   Success callback with two arguments: `value`, `responseHeaders`.
@@ -5859,7 +5929,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `changes` – `{ReadableStream=}` -
+         *  - `changes` – `{ReadableStream=}` - 
          */
         "createChangeStream": {
           url: urlBase + "/tracks/change-stream",
@@ -5884,11 +5954,11 @@ module.factory(
          *
          * @param {Object} postData Request data.
          *
-         *  - `track` – `{object=}` -
+         *  - `track` – `{object=}` - 
          *
-         *  - `req` – `{object=}` -
+         *  - `req` – `{object=}` - 
          *
-         *  - `res` – `{object=}` -
+         *  - `res` – `{object=}` - 
          *
          * @param {function(Object,Object)=} successCb
          *   Success callback with two arguments: `value`, `responseHeaders`.
@@ -5902,7 +5972,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `ack` – `{string=}` -
+         *  - `ack` – `{string=}` - 
          */
         "addTrack": {
           url: urlBase + "/tracks/addtrack",
@@ -5927,11 +5997,11 @@ module.factory(
          *
          * @param {Object} postData Request data.
          *
-         *  - `track` – `{object=}` -
+         *  - `track` – `{object=}` - 
          *
-         *  - `req` – `{object=}` -
+         *  - `req` – `{object=}` - 
          *
-         *  - `res` – `{object=}` -
+         *  - `res` – `{object=}` - 
          *
          * @param {function(Object,Object)=} successCb
          *   Success callback with two arguments: `value`, `responseHeaders`.
@@ -5945,7 +6015,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `ack` – `{string=}` -
+         *  - `ack` – `{string=}` - 
          */
         "addErrorTrack": {
           url: urlBase + "/tracks/adderrortrack",
@@ -6262,7 +6332,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `exists` – `{boolean=}` -
+         *  - `exists` – `{boolean=}` - 
          */
         "exists": {
           url: urlBase + "/userLocations/:id/exists",
@@ -6463,7 +6533,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `count` – `{number=}` -
+         *  - `count` – `{number=}` - 
          */
         "count": {
           url: urlBase + "/userLocations/count",
@@ -6523,7 +6593,7 @@ module.factory(
          *
          * @param {Object} postData Request data.
          *
-         *  - `options` – `{object=}` -
+         *  - `options` – `{object=}` - 
          *
          * @param {function(Object,Object)=} successCb
          *   Success callback with two arguments: `value`, `responseHeaders`.
@@ -6537,7 +6607,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `changes` – `{ReadableStream=}` -
+         *  - `changes` – `{ReadableStream=}` - 
          */
         "createChangeStream": {
           url: urlBase + "/userLocations/change-stream",
@@ -6854,7 +6924,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `exists` – `{boolean=}` -
+         *  - `exists` – `{boolean=}` - 
          */
         "exists": {
           url: urlBase + "/userMarkets/:id/exists",
@@ -7055,7 +7125,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `count` – `{number=}` -
+         *  - `count` – `{number=}` - 
          */
         "count": {
           url: urlBase + "/userMarkets/count",
@@ -7115,7 +7185,7 @@ module.factory(
          *
          * @param {Object} postData Request data.
          *
-         *  - `options` – `{object=}` -
+         *  - `options` – `{object=}` - 
          *
          * @param {function(Object,Object)=} successCb
          *   Success callback with two arguments: `value`, `responseHeaders`.
@@ -7129,7 +7199,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `changes` – `{ReadableStream=}` -
+         *  - `changes` – `{ReadableStream=}` - 
          */
         "createChangeStream": {
           url: urlBase + "/userMarkets/change-stream",
@@ -7154,7 +7224,7 @@ module.factory(
          *
          * @param {Object} postData Request data.
          *
-         *  - `filter` – `{object=}` -
+         *  - `filter` – `{object=}` - 
          *
          * @param {function(Object,Object)=} successCb
          *   Success callback with two arguments: `value`, `responseHeaders`.
@@ -7168,7 +7238,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `data` – `{*=}` -
+         *  - `data` – `{*=}` - 
          */
         "createUserMarket": {
           url: urlBase + "/userMarkets/createusermanket",
@@ -7485,7 +7555,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `exists` – `{boolean=}` -
+         *  - `exists` – `{boolean=}` - 
          */
         "exists": {
           url: urlBase + "/pendingAsks/:id/exists",
@@ -7686,7 +7756,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `count` – `{number=}` -
+         *  - `count` – `{number=}` - 
          */
         "count": {
           url: urlBase + "/pendingAsks/count",
@@ -7746,7 +7816,7 @@ module.factory(
          *
          * @param {Object} postData Request data.
          *
-         *  - `options` – `{object=}` -
+         *  - `options` – `{object=}` - 
          *
          * @param {function(Object,Object)=} successCb
          *   Success callback with two arguments: `value`, `responseHeaders`.
@@ -7760,7 +7830,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `changes` – `{ReadableStream=}` -
+         *  - `changes` – `{ReadableStream=}` - 
          */
         "createChangeStream": {
           url: urlBase + "/pendingAsks/change-stream",
@@ -8077,7 +8147,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `exists` – `{boolean=}` -
+         *  - `exists` – `{boolean=}` - 
          */
         "exists": {
           url: urlBase + "/lotPrices/:id/exists",
@@ -8278,7 +8348,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `count` – `{number=}` -
+         *  - `count` – `{number=}` - 
          */
         "count": {
           url: urlBase + "/lotPrices/count",
@@ -8338,7 +8408,7 @@ module.factory(
          *
          * @param {Object} postData Request data.
          *
-         *  - `options` – `{object=}` -
+         *  - `options` – `{object=}` - 
          *
          * @param {function(Object,Object)=} successCb
          *   Success callback with two arguments: `value`, `responseHeaders`.
@@ -8352,7 +8422,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `changes` – `{ReadableStream=}` -
+         *  - `changes` – `{ReadableStream=}` - 
          */
         "createChangeStream": {
           url: urlBase + "/lotPrices/change-stream",
@@ -8669,7 +8739,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `exists` – `{boolean=}` -
+         *  - `exists` – `{boolean=}` - 
          */
         "exists": {
           url: urlBase + "/aliasEmails/:id/exists",
@@ -8870,7 +8940,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `count` – `{number=}` -
+         *  - `count` – `{number=}` - 
          */
         "count": {
           url: urlBase + "/aliasEmails/count",
@@ -8930,7 +9000,7 @@ module.factory(
          *
          * @param {Object} postData Request data.
          *
-         *  - `options` – `{object=}` -
+         *  - `options` – `{object=}` - 
          *
          * @param {function(Object,Object)=} successCb
          *   Success callback with two arguments: `value`, `responseHeaders`.
@@ -8944,7 +9014,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `changes` – `{ReadableStream=}` -
+         *  - `changes` – `{ReadableStream=}` - 
          */
         "createChangeStream": {
           url: urlBase + "/aliasEmails/change-stream",
@@ -9261,7 +9331,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `exists` – `{boolean=}` -
+         *  - `exists` – `{boolean=}` - 
          */
         "exists": {
           url: urlBase + "/aliasHandles/:id/exists",
@@ -9462,7 +9532,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `count` – `{number=}` -
+         *  - `count` – `{number=}` - 
          */
         "count": {
           url: urlBase + "/aliasHandles/count",
@@ -9522,7 +9592,7 @@ module.factory(
          *
          * @param {Object} postData Request data.
          *
-         *  - `options` – `{object=}` -
+         *  - `options` – `{object=}` - 
          *
          * @param {function(Object,Object)=} successCb
          *   Success callback with two arguments: `value`, `responseHeaders`.
@@ -9536,7 +9606,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `changes` – `{ReadableStream=}` -
+         *  - `changes` – `{ReadableStream=}` - 
          */
         "createChangeStream": {
           url: urlBase + "/aliasHandles/change-stream",
@@ -9853,7 +9923,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `exists` – `{boolean=}` -
+         *  - `exists` – `{boolean=}` - 
          */
         "exists": {
           url: urlBase + "/profileAvatars/:id/exists",
@@ -10054,7 +10124,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `count` – `{number=}` -
+         *  - `count` – `{number=}` - 
          */
         "count": {
           url: urlBase + "/profileAvatars/count",
@@ -10114,7 +10184,7 @@ module.factory(
          *
          * @param {Object} postData Request data.
          *
-         *  - `options` – `{object=}` -
+         *  - `options` – `{object=}` - 
          *
          * @param {function(Object,Object)=} successCb
          *   Success callback with two arguments: `value`, `responseHeaders`.
@@ -10128,7 +10198,7 @@ module.factory(
          *
          * Data properties:
          *
-         *  - `changes` – `{ReadableStream=}` -
+         *  - `changes` – `{ReadableStream=}` - 
          */
         "createChangeStream": {
           url: urlBase + "/profileAvatars/change-stream",
@@ -10275,6 +10345,598 @@ module.factory(
     * i.e. `ProfileAvatar`.
     */
     R.modelName = "ProfileAvatar";
+
+
+    return R;
+  }]);
+
+/**
+ * @ngdoc object
+ * @name lbServices.Org
+ * @header lbServices.Org
+ * @object
+ *
+ * @description
+ *
+ * A $resource object for interacting with the `Org` model.
+ *
+ * ## Example
+ *
+ * See
+ * {@link http://docs.angularjs.org/api/ngResource.$resource#example $resource}
+ * for an example of using this object.
+ *
+ */
+module.factory(
+  "Org",
+  ['LoopBackResource', 'LoopBackAuth', '$injector', function(Resource, LoopBackAuth, $injector) {
+    var R = Resource(
+      urlBase + "/orgs/:id",
+      { 'id': '@id' },
+      {
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Org#create
+         * @methodOf lbServices.Org
+         *
+         * @description
+         *
+         * Create a new instance of the model and persist it into the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *   This method does not accept any parameters.
+         *   Supply an empty object or omit this argument altogether.
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Org` object.)
+         * </em>
+         */
+        "create": {
+          url: urlBase + "/orgs",
+          method: "POST"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Org#createMany
+         * @methodOf lbServices.Org
+         *
+         * @description
+         *
+         * Create a new instance of the model and persist it into the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *   This method does not accept any parameters.
+         *   Supply an empty object or omit this argument altogether.
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Array.<Object>,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Array.<Object>} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Org` object.)
+         * </em>
+         */
+        "createMany": {
+          isArray: true,
+          url: urlBase + "/orgs",
+          method: "POST"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Org#upsert
+         * @methodOf lbServices.Org
+         *
+         * @description
+         *
+         * Update an existing model instance or insert a new one into the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *   This method does not accept any parameters.
+         *   Supply an empty object or omit this argument altogether.
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Org` object.)
+         * </em>
+         */
+        "upsert": {
+          url: urlBase + "/orgs",
+          method: "PUT"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Org#exists
+         * @methodOf lbServices.Org
+         *
+         * @description
+         *
+         * Check whether a model instance exists in the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - Model id
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * Data properties:
+         *
+         *  - `exists` – `{boolean=}` - 
+         */
+        "exists": {
+          url: urlBase + "/orgs/:id/exists",
+          method: "GET"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Org#findById
+         * @methodOf lbServices.Org
+         *
+         * @description
+         *
+         * Find a model instance by id from the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - Model id
+         *
+         *  - `filter` – `{object=}` - Filter defining fields and include
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Org` object.)
+         * </em>
+         */
+        "findById": {
+          url: urlBase + "/orgs/:id",
+          method: "GET"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Org#find
+         * @methodOf lbServices.Org
+         *
+         * @description
+         *
+         * Find all instances of the model matched by filter from the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `filter` – `{object=}` - Filter defining fields, where, include, order, offset, and limit
+         *
+         * @param {function(Array.<Object>,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Array.<Object>} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Org` object.)
+         * </em>
+         */
+        "find": {
+          isArray: true,
+          url: urlBase + "/orgs",
+          method: "GET"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Org#findOne
+         * @methodOf lbServices.Org
+         *
+         * @description
+         *
+         * Find first instance of the model matched by filter from the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `filter` – `{object=}` - Filter defining fields, where, include, order, offset, and limit
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Org` object.)
+         * </em>
+         */
+        "findOne": {
+          url: urlBase + "/orgs/findOne",
+          method: "GET"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Org#updateAll
+         * @methodOf lbServices.Org
+         *
+         * @description
+         *
+         * Update instances of the model matched by where from the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `where` – `{object=}` - Criteria to match model instances
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * The number of instances updated
+         */
+        "updateAll": {
+          url: urlBase + "/orgs/update",
+          method: "POST"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Org#deleteById
+         * @methodOf lbServices.Org
+         *
+         * @description
+         *
+         * Delete a model instance by id from the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - Model id
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Org` object.)
+         * </em>
+         */
+        "deleteById": {
+          url: urlBase + "/orgs/:id",
+          method: "DELETE"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Org#count
+         * @methodOf lbServices.Org
+         *
+         * @description
+         *
+         * Count instances of the model matched by where from the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `where` – `{object=}` - Criteria to match model instances
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * Data properties:
+         *
+         *  - `count` – `{number=}` - 
+         */
+        "count": {
+          url: urlBase + "/orgs/count",
+          method: "GET"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Org#prototype$updateAttributes
+         * @methodOf lbServices.Org
+         *
+         * @description
+         *
+         * Update attributes for a model instance and persist it into the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - PersistedModel id
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Org` object.)
+         * </em>
+         */
+        "prototype$updateAttributes": {
+          url: urlBase + "/orgs/:id",
+          method: "PUT"
+        },
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Org#createChangeStream
+         * @methodOf lbServices.Org
+         *
+         * @description
+         *
+         * Create a change stream.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *   This method does not accept any parameters.
+         *   Supply an empty object or omit this argument altogether.
+         *
+         * @param {Object} postData Request data.
+         *
+         *  - `options` – `{object=}` - 
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * Data properties:
+         *
+         *  - `changes` – `{ReadableStream=}` - 
+         */
+        "createChangeStream": {
+          url: urlBase + "/orgs/change-stream",
+          method: "POST"
+        },
+      }
+    );
+
+
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Org#updateOrCreate
+         * @methodOf lbServices.Org
+         *
+         * @description
+         *
+         * Update an existing model instance or insert a new one into the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *   This method does not accept any parameters.
+         *   Supply an empty object or omit this argument altogether.
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Org` object.)
+         * </em>
+         */
+        R["updateOrCreate"] = R["upsert"];
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Org#update
+         * @methodOf lbServices.Org
+         *
+         * @description
+         *
+         * Update instances of the model matched by where from the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `where` – `{object=}` - Criteria to match model instances
+         *
+         * @param {Object} postData Request data.
+         *
+         * This method expects a subset of model properties as request parameters.
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * The number of instances updated
+         */
+        R["update"] = R["updateAll"];
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Org#destroyById
+         * @methodOf lbServices.Org
+         *
+         * @description
+         *
+         * Delete a model instance by id from the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - Model id
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Org` object.)
+         * </em>
+         */
+        R["destroyById"] = R["deleteById"];
+
+        /**
+         * @ngdoc method
+         * @name lbServices.Org#removeById
+         * @methodOf lbServices.Org
+         *
+         * @description
+         *
+         * Delete a model instance by id from the data source.
+         *
+         * @param {Object=} parameters Request parameters.
+         *
+         *  - `id` – `{*}` - Model id
+         *
+         * @param {function(Object,Object)=} successCb
+         *   Success callback with two arguments: `value`, `responseHeaders`.
+         *
+         * @param {function(Object)=} errorCb Error callback with one argument:
+         *   `httpResponse`.
+         *
+         * @returns {Object} An empty reference that will be
+         *   populated with the actual data once the response is returned
+         *   from the server.
+         *
+         * <em>
+         * (The remote method definition does not provide any description.
+         * This usually means the response is a `Org` object.)
+         * </em>
+         */
+        R["removeById"] = R["deleteById"];
+
+
+    /**
+    * @ngdoc property
+    * @name lbServices.Org#modelName
+    * @propertyOf lbServices.Org
+    * @description
+    * The name of the model represented by this $resource,
+    * i.e. `Org`.
+    */
+    R.modelName = "Org";
 
 
     return R;

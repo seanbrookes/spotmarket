@@ -12,18 +12,7 @@ User.service('UserServices', [
     var _profileAvatars = [];
 
 
-    svc.registerExistingUser = function(userCtx) {
-      return UserProfile.registerExistingUser(userCtx)
-        .$promise
-        .then(function(registrationResponse) {
-          $log.debug('good register existing user', registrationResponse);
-          return registrationResponse;
 
-        })
-        .catch(function(error) {
-          $log.warn('bad register existing user', error);
-        });
-    };
     svc.updateCurrentUserPosition = function(position) {
       if (position && position.geometry) {
         var userId = UserSessionService.getValueByKey('smHandle');
@@ -90,6 +79,26 @@ User.service('UserServices', [
         })
         .catch(function(error) {
           $log.warn('bad get all profile avatars', error);
+        });
+    };
+    svc.getAllEmails = function() {
+      return UserProfile.knownEmails({})
+        .$promise
+        .then(function(response) {
+          return response;
+        })
+        .catch(function(error) {
+          $log.warn('bad get all emails', error);
+        });
+    };
+    svc.getAllHandles = function() {
+      return UserProfile.knownHandles({})
+        .$promise
+        .then(function(response) {
+          return response;
+        })
+        .catch(function(error) {
+          $log.warn('bad get all hanles', error);
         });
     };
     function getDefaultAvatarImgString() {
@@ -208,11 +217,11 @@ User.service('UserServices', [
     };
     svc.deleteUser = function(userId) {
       if (userId) {
-        return UserProfile.deleteById({id:userId})
-          .$promise
-          .then(function(response) {
-            return response;
-          })
+        //return UserProfile.deleteById({id:userId})
+        //  .$promise
+        //  .then(function(response) {
+        //    return response;
+        //  });
       }
     };
     svc.findUserByEmail = function(email) {
@@ -414,21 +423,29 @@ User.service('UserSessionService', [
       return authToken;
     };
     svc.isCurrentUserLoggedIn = function() {
-      if (!$cookies.get('smAuthToken')) {
-        return false;
-      }
-      var currentTimeStamp = new Date().getTime();
-      var ttl = $cookies.get('smTTL');
-
-      if (currentTimeStamp > ttl) {
-        // track the problem / issue
-        return false;
-      }
-      if (currentTimeStamp < ttl) {
+      if ($cookies.get('smAuthToken')) {
         return true;
       }
+      //var currentTimeStamp = new Date().getTime();
+      //var ttl = $cookies.get('smTTL');
+      //
+      //if (currentTimeStamp > ttl) {
+      //  // track the problem / issue
+      //  return false;
+      //}
+      //if (currentTimeStamp < ttl) {
+      //  return true;
+      //}
       return false;
     };
+    svc.isEmailUnique = function(targetEmail) {
+
+    };
+    svc.isHandleUnique = function(targetHandle) {
+      //return UserServices.
+    };
+
+
     svc.requestLoginToken = function(loginCtx) {
 
       if (loginCtx.email && loginCtx.password) {
@@ -437,18 +454,82 @@ User.service('UserSessionService', [
         return UserProfile.login({ctx:loginCtx})
           .$promise
           .then(function(response) {
-            return response.token;
+            if (response && response.authState) {
+              var authState = response.authState;
+              if (authState.authToken) {
+                // save the token
+                svc.setValueByKey('smAuthToken', authState.authToken);
+              }
+              if (authState.token) {
+                svc.setValueByKey('smToken', authState.authToken);
+              }
+              if (authState.handle) {
+                svc.setValueByKey('smHandle', authState.handle);
+              }
+              else {
+                svc.deleteValueByKey('smHandle');
+              }
+              if (authState.email) {
+                svc.setValueByKey('smEmail', authState.email);
+              }
+              return authState;
+            }
+            return;
+
           })
           .catch(function(error){
-            $log.warn('bad login attempt');
+            $log.warn('bad login attempt', error);
             return error;
           });
       }
     };
+    svc.registerExistingUser = function(userCtx) {
+      return UserProfile.registerExistingUser(userCtx)
+        .$promise
+        .then(function(registrationResponse) {
+          $log.debug('good register existing user', registrationResponse);
+          if (registrationResponse.authToken) {
+            // save the token
+            svc.setValueByKey('smAuthToken', registrationResponse.authToken);
+          }
+          if (registrationResponse.token) {
+            svc.setValueByKey('smToken', registrationResponse.token);
+          }
+          if (registrationResponse.handle) {
+            svc.setValueByKey('smHandle', registrationResponse.handle);
+          }
+          else {
+            svc.deleteValueByKey('smHandle');
+          }
+          if (registrationResponse.email) {
+            svc.setValueByKey('smEmail', registrationResponse.email);
+          }
+
+
+          return registrationResponse;
+
+        })
+        .catch(function(error) {
+          $log.warn('bad register existing user', error);
+        });
+    };
+
+
+
     svc.logout = function() {
       return $timeout(function() {
         return svc.deleteValueByKey('smAuthToken');
       }, 25);
+    };
+    svc.clearCurrentCacheUser = function() {
+        // save the token
+      svc.deleteValueByKey('smAuthToken');
+      svc.deleteValueByKey('smToken');
+      svc.deleteValueByKey('smEmail');
+      svc.deleteValueByKey('smTraceId');
+      svc.deleteValueByKey('smHandle');
+      return;
+
     };
     svc.getUserHandleSuggestionHistory = function() {
       var retVal = [];

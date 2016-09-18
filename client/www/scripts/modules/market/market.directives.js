@@ -10,8 +10,8 @@
 Market.directive('smMarketMarketView', [
   '$log',
   '$timeout',
-  'MARKET_CONST',
-  function($log, $timeout, MARKET_CONST) {
+  'NAV_CONST',
+  function($log, $timeout, NAV_CONST) {
     return {
       restrict:'E',
       templateUrl: './scripts/modules/market/templates/market.market.view.html',
@@ -43,7 +43,7 @@ Market.directive('smMarketMarketView', [
 
           $scope.currentUser = UserSessionService.getCurrentUserFromClientState();
           $scope.userMarketCtx = {
-            viewName: MARKET_CONST.MARKET_VIEW,
+            viewName: NAV_CONST.MARKET_VIEW,
             currentMap: {
               center: {},
               zoom: 7
@@ -285,12 +285,12 @@ Market.directive('smMarketMarketView', [
             loadAllAsks();
             // render map with asks on it
             // respond to range updates
-
+            $scope.toggleMapLoad = !$scope.toggleMapLoad;
           };
-          if ($scope.activeView === $scope.userMarketCtx.viewName) {
+          //if ($scope.activeView === $scope.userMarketCtx.viewName) {
 
             $scope.userMarketCtx.init();
-          }
+          //}
         }
       ],
       link: function(scope, el, attrs) {
@@ -311,6 +311,7 @@ Market.directive('smMarketMarketView', [
 
 
         var rangeCircle;
+        var to = null;
         function renderUserMarketMap() {
           if (rangeCircle !== undefined) {
             scope.userMarketMap.removeLayer(rangeCircle);
@@ -354,9 +355,30 @@ Market.directive('smMarketMarketView', [
 
         scope.$watch('marketRangeKms', function(newVal, oldVal) {
           $log.debug('marketRangeKms', newVal);
+          if (newVal && (newVal !== oldVal)) {
+            if(to){
+              clearTimeout(to);
+            }
+            // reset timeout function
+            to = setTimeout(function(){
+              scope.$apply(function() {
+                $log.debug('|');
+                $log.debug('|');
+                $log.debug('|  I am Executing');
+                $log.debug('|');
+                $log.debug('|');
+                scope.userMarketCtx.init();
+              });
+            }, 900);
+          }
         }, true);
+
+
+
+
+
         scope.$watch('toggleMapLoad', function(newVal, oldVal) {
-          if (scope.activeView === scope.userMarketCtx.viewName) {
+        //  if (scope.activeView === scope.userMarketCtx.viewName) {
             if (scope.userMarketCtx && scope.userMarketCtx.currentMap.center) {
               if (scope.userMarketCtx.currentMap.center.lat && scope.userMarketCtx.currentMap.center.lng) {
                 //initMap();
@@ -366,7 +388,7 @@ Market.directive('smMarketMarketView', [
                 }, 1000);
               }
             }
-          }
+      //    }
 
         }, true);
         scope.$watch('activeView', function(newVal, oldVal) {
@@ -394,8 +416,8 @@ Market.directive('smMarketMarketView', [
 ]);
 Market.directive('smMarketAskCard', [
   '$log',
-  'MARKET_CONST',
-  function($log, MARKET_CONST){
+  'NAV_CONST',
+  function($log, NAV_CONST){
     return {
       restrict: 'E',
       scope: {
@@ -424,20 +446,20 @@ Market.directive('smMarketAskCard', [
  * */
 Market.directive('smMarketMain', [
   '$log',
-  'MARKET_CONST',
-  function($log, MARKET_CONST) {
+  'NAV_CONST',
+  function($log, NAV_CONST) {
     return {
       restrict:'E',
       templateUrl: './scripts/modules/market/templates/market.main.html',
       controller: [
         '$scope',
         '$log',
-        'MARKET_CONST',
-        function($scope, $log, MARKET_CONST) {
+        'NAV_CONST',
+        function($scope, $log, NAV_CONST) {
           $log.debug('Market Controller');
 
           $scope.marketCtx = {
-            activeView: MARKET_CONST.ASK_VIEW
+            activeView: NAV_CONST.ASK_VIEW
           };
           function isValidView(event) {
             var retVar = false;
@@ -455,12 +477,11 @@ Market.directive('smMarketMain', [
           $scope.marketCtx.activateView = function(event) {
             if (isValidView(event)) {
               var viewName = event.currentTarget.attributes['data-name'].value;
-              $log.debug('show me the view', viewName);
               $scope.marketCtx.activeView = viewName;
             }
           };
           $scope.marketCtx.setActiveView = function(viewConst) {
-            $scope.marketCtx.activeView = MARKET_CONST[viewConst];
+            $scope.marketCtx.activeView = NAV_CONST[viewConst];
           };
           $scope.marketCtx.isActiveView = function(viewName) {
             return viewName === $scope.marketCtx.activeView;
@@ -483,8 +504,8 @@ Market.directive('smMarketMain', [
 ]);
 Market.directive('smMarketNavigator', [
   '$log',
-  'MARKET_CONST',
-  function($log, MARKET_CONST) {
+  'NAV_CONST',
+  function($log, NAV_CONST) {
     return {
       restrict:'E',
       template: '<button class="CommandButton" ng-click="activateView()">change</button>',

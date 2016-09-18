@@ -121,14 +121,14 @@ Ask.directive('smAskMarketView', [
         'AskServices',
         'GeoServices',
         'Upload',
-        'MARKET_CONST',
-        function ($scope, $http, $timeout, ProductServices, AskServices, GeoServices, Upload, MARKET_CONST) {
+        'NAV_CONST',
+        function ($scope, $http, $timeout, ProductServices, AskServices, GeoServices, Upload, NAV_CONST) {
           $scope.modalShown = false;
           $scope.toggleModal = function() {
             $scope.modalShown = !$scope.modalShown;
           };
           $scope.askCtx = {
-            viewName: MARKET_CONST.ASK_VIEW,
+            viewName: NAV_CONST.ASK_VIEW,
             seller: {},
             productFilters: {
               productTypeDirectMatchCollection: [],
@@ -684,13 +684,15 @@ Ask.directive('smAskMarketView', [
             });
           }
         }, true);
-        scope.$watch('activeView', function (newVal, oldVal) {
-          if (newVal && (newVal === scope.askCtx.viewName)) {
-            $log.debug('| active view changed to', scope.askCtx.viewName);
-            //scope.init();
-          }
-
-        }, true);
+        //scope.$watch('activeView', function (newVal, oldVal) {
+        //  if (newVal && (newVal === scope.askCtx.viewName)) {
+        //    alert('ask');
+        //
+        //    $log.debug('| active view changed to', scope.askCtx.viewName);
+        //    //scope.init();
+        //  }
+        //
+        //}, true);
 
 
         //scope.$watch('askCtx.currentAsk.productType', function(newVal, oldVal) {

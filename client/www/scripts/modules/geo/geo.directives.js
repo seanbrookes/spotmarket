@@ -9,12 +9,12 @@
  * */
 Geo.directive('smGeoMarketView', [
   '$log',
-  'MARKET_CONST',
+  'NAV_CONST',
   '$timeout',
   'UserSessionService',
   'orderByFilter',
   '$http',
-  function($log, MARKET_CONST, $timeout, UserSessionService, orderBy, $http) {
+  function($log, NAV_CONST, $timeout, UserSessionService, orderBy, $http) {
     return {
       restrict: 'E',
       templateUrl: './scripts/modules/geo/templates/geo.market.view.html',
@@ -29,7 +29,7 @@ Geo.directive('smGeoMarketView', [
         function($scope, $log, GeoServices, UserServices) {
 
           $scope.geoCtx = {
-            viewName: MARKET_CONST.GEO_VIEW,
+            viewName: NAV_CONST.GEO_VIEW,
             position:{},
             currentLocationString: '',
             positionChoiceList: [],
@@ -366,20 +366,70 @@ Geo.directive('smGeoMarketView', [
           }
         });
 
-        scope.$watch('activeView', function(newVal, oldVal) {
-          if (newVal && (newVal === scope.geoCtx.viewName)) {
-            if (scope.findMeMap) {
-              scope.findMeMap.remove();
-            }
-            initMap();
-            scope.geoCtx.init();
-            $log.debug('| active view changed to', scope.geoCtx.viewName);
-          }
-
-        }, true);
+        //scope.$watch('activeView', function(newVal, oldVal) {
+        //  if (newVal && (newVal === scope.geoCtx.viewName)) {
+        //    alert('geo');
+        //    if (scope.findMeMap) {
+        //      scope.findMeMap.remove();
+        //    }
+        //    initMap();
+        //    scope.geoCtx.init();
+        //    $log.debug('| active view changed to', scope.geoCtx.viewName);
+        //  }
+        //
+        //}, true);
 
       }
     }
+  }
+]);
+
+Geo.directive('smGeoLocationDisplay', [
+  function() {
+    return {
+      restrict: 'E',
+      scope: {
+        address: '='
+      },
+      controller: [
+        '$scope',
+        '$log',
+        'UserSessionService',
+        'smGlobalValues',
+        function($scope, $log, UserSessionService, smGlobalValues) {
+          $log.debug('smGeoLocationDisplay controller');
+          if ($scope.address.city) {
+            $scope.locationString = $scope.address.city + ', ' + $scope.address.state;
+
+          }
+          else if ($scope.address.county) {
+            $scope.locationString = $scope.address.county + ', ' + $scope.address.state;
+
+          }
+          else if ($scope.address.village) {
+            $scope.locationString = $scope.address.village + ', ' + $scope.address.state;
+
+          }
+          else {
+            $scope.locationString = $scope.address.state;
+
+          }
+
+
+        }
+      ],
+      link: function(scope, el, attrs) {
+        scope.$watch('locationString', function(newVal, oldVal) {
+
+          ReactDOM.render(React.createElement(sm.CurrentLocationDisplay, {store:scope.locationString}), el[0]);
+
+        }, true);
+
+
+      }
+
+    }
+
   }
 ]);
 Geo.directive('smGeoCurrentLocationDisplay', [

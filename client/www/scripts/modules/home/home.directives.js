@@ -1,5 +1,5 @@
 
-Main.directive('ggtHomeContent', [
+Main.directive('smHomeContent', [
   function() {
     return {
       restrict: 'E',

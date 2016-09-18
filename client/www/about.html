@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>spotmarket - About</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="stylesheet" type="text/css" href="./style/style.css">
+</head>
+<body>
+<div  data-id="AppContainer">
+<header  class="PageHeader Layout Spread">
+  <div class="Branding Layout AlignCenter">
+    <a href="/" title="spotmarket home" ng-click="linkRequest('/')">
+      <img src="../images/logo.png" alt="logo" class="logo">
+    </a>
+    <p class="Title__Tag Layout"><span class="Title__Tag--spot">spot</span><span class="Title__Tag--market">market</span></p>
+  </div>
+  <div class="Title">
+    <p class="Title__SubTitle">farmer direct marketplace</p>
+  </div>
+  <div class="BaseMainNav Column FlexEnd">
+    <div class="Layout">
+      <a href="/" class="MainNavViewButton" ng-class="{'MainNavViewButton--active': mainNavCtx.isActiveView('WelcomeView')}" ng-click="mainNavCtx.activateView($event)" data-name="WelcomeView">Welcome</a>
+      <!--<a href="/#market" class="MainNavViewButton" data-name="MarketView">What's for sale</a>-->
+      <!--<a href="/#ask" class="MainNavViewButton" data-name="AskView">I have something to sell</a>-->
+      <!--<a href="/#geo" class="MainNavViewButton" data-name="GeoView">Where am I</a>-->
+      <!--<a href="/#profile" class="MainNavViewButton" data-name="ProfileView">Profiles</a>-->
+      <a href="/about.html" class="MainNavViewButton" data-name="AboutView">About</a>
+    </div>
+  </div>
+  <nav class="GlobalNav">
+    <div class="Layout">
+      <a  href="/#/login" class="">Login</a>
+    </div>
+  </nav>
+</header>
+<div class="InnerAppContainer">
+  <article class="main-article  first-level-container" data-region="mainArticleRegion">
+    <h1 class="article-title">About spotmarket</h1>
+    <div class="Layout FlexEnd">
+      <label class="post-publish-date">published: <span>Sept. 14, 2016</span></label>
+      <label class="post-author">author: <span>Sean Brookes</span></label>
+    </div>
+    <div class="post-body">
+
+      <p>Spotmarket is a startup based in Mission, British Columbia in the beautiful (and fertile) Fraser Valley.</p>
+
+      <p><span>Traditionally a 'spot market' is whatever price a farmer can get for their goods at any given time based on traditional relationships or technologies i.e. phone and word of mouth.</span><br></p>
+      <p><span></span></p>
+      <p>Spotmarket aims to change all that by establishing a simple, user friendly platform for brewers, restauranteurs, and grocers to be more aware of what is available locally, who has grown it and how it is grown and processed.</p>
+      <p class="Column CenterContent CenterItems Center BlogHeadlineQuote"><b>Craigslist meets eBay &nbsp;meets facebook for small-scale, regional growers.</b></p>
+      <h3>For the end customer</h3>
+      <p>There are converging movements, back to earth, buy local, climate change, software eating the world, emergence of the craft beer industry and consequent hop growing revivalist movement.</p>
+      <p>
+        All of these combined makes the case for an efficient way for people to promote produce locally as well as for people learn about and source food locally.
+      </p>
+      <h3>For the vendor (eg: brewers)</h3>
+      <p>Customers are demanding local hops in their beers.</p>
+      <p><span>People are looking to lower their carbon footprint.&nbsp;</span></p>
+      <p><span>Brewers are looking for information to make informed decisions when sourcing local hops.</span></p>
+      <div><h3><span>For growers</span></h3><p>Growers need a way to promote themselves and their hops</p><p><span>- Social media integration (facebook, twitter, and instagram feeds)</span></p>
+        <p><span>- Enhanced web presence (more potential customers)</span></p>
+        <p><span>- A community to collaborate with and learn from</span></p>
+        <h3>The plan</h3><p>There are viable market opportunities emerging around what would traditionally be called 'back to the earth' or 'buy local' movements making use of mobile / real-time / web technologies to communicate and conduct business far more efficiently and environmentally friendly than before.<br></p>
+        <p><b>Not just for Beer Hops</b></p>
+        <span>Spotmarket is targeting the Beer Hops market in British Columbia but the plan is are much bigger. &nbsp;As the business models become clearer we will expand to other craft beer / hop growing regions across Canada and the US (why not globally)&nbsp;</span></div>
+      <div><br></div>
+      <div>While the beer hop market is exciting in and of itself it is not the only crop / market opportunity. &nbsp;There are many other product types spotmarket can serve such as the herb market for restaurants, and local premium vegetable and fruit growers, etc.</div>
+      <h4>Road map</h4>
+      <span>Some ideas on the drawing board include: simple storefront and payment processing (think Shopify)</span>
+      <span> as well as shipping and transport logistics (think Uber)</span>
+      <div><h3>Business model</h3><ul><li>A work in progress (like any good startup)</li><li>Freemium based (business model is a tiered subscription / premium feature model tbd) -&nbsp;<u>Basic market participation is free</u>&nbsp;to avoid any friction (no membership sign up required up front).</li><li>Create a platform to build business models on.&nbsp;</li><li>Premium features: payment processing / enhanced store front / dynamic inventory monitoring / brewers recipe wishlist / suplier relationship history,&nbsp;<span>Value added market analytics/metrics</span>&nbsp;<span>collection and analytics will be the core of the value proposition. &nbsp;user registration, usage tracking, pricing metrics will be collected and used to provide insight and market intelligence for a subscriber based revenue stream. Real time notifications</span></li></ul><p><br></p><h3><br></h3></div>
+
+    </div>
+  </article>
+
+</div>
+
+<footer class="AppFooter">
+  <nav class="AppFooter__Nav">
+    <div class="Layout Spread">
+      <div>
+        <script>window.twttr = (function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0],
+            t = window.twttr || {};
+          if (d.getElementById(id)) return t;
+          js = d.createElement(s);
+          js.id = id;
+          js.src = "https://platform.twitter.com/widgets.js";
+          fjs.parentNode.insertBefore(js, fjs);
+
+          t._e = [];
+          t.ready = function(f) {
+            t._e.push(f);
+          };
+
+          return t;
+        }(document, "script", "twitter-wjs"));</script>
+        <label class="ContactInput__Label--twitter"></label>
+        <a href="https://twitter.com/thespotmarket" class="twitter-follow-button" data-show-count="false">Follow @thespotmarket</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+      </div>
+      <div>
+        <a class="AppFooter__NavLink" href="mailto:contact@spotmarket.ca">Contact</a>
+      </div>
+
+    </div>
+    <p style="text-align:center;color:#989898;font-size:12px;">Copyright © 2016 <a href="//www.greengrowtech.ca" target="_new"  class="AppFooter__NavLink AppFooter__NavLink--Copyright">Green Grow Tech Ltd.</a></p>
+  </nav>
+</footer>
+</div>
+<script>
+  (function(window){
+    var pathname = window.location.pathname;
+    if (pathname && (pathname.indexOf('about.html') > -1)) {
+
+      var aboutLink = document.querySelectorAll('a[data-name="AboutView"]')[0];
+
+
+      aboutLink.className += ' MainNavViewButton--active';
+      console.log('|  GOTIT');
+
+    }
+  }(window));
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-77051357-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+</body>
+</html>

@@ -42,14 +42,23 @@ Main.constant('ACTION_CONST', {
   LOGO_HOME: 'main logo home nav'
 });
 
+Main.constant('NAV_CONST', {
+  WELCOME_VIEW: 'WelcomeView',
+  ABOUT_VIEW: 'AboutView',
+  PROFILE_VIEW: 'ProfileView',
+  MARKET_VIEW: 'MarketView',
+  GEO_VIEW: 'GeoView',
+  ASK_VIEW: 'AskView',
+  BLOG_VIEW: 'BlogView'
+});
 
 
 Main.constant('smGlobalConstants', {
   isLocal: false,
   productionUrlBase:'http://spotmarketapi.herokuapp.com/api/',
-  localUrlBase: 'http://10.89.202.140:4546/api',
+  localUrlBase: 'http://localhost:4546/api',
   productionSocketBase:'http://spotmarketapi.herokuapp.com/',
-  localSocketBase: 'http://10.89.202.140:4546/'
+  localSocketBase: 'http://localhost:4546/'
 });
 /*
 
@@ -149,10 +158,6 @@ Main.config([
         url: '/blog',
         templateUrl: './scripts/modules/blog/templates/blog.main.html'
       })
-      .state('market', {
-        url: '/market',
-        templateUrl: './scripts/modules/market/templates/market.home.html'
-      })
       .state('user', {
         url: '/user',
         templateUrl: './scripts/modules/user/templates/user.main.html'
@@ -165,9 +170,17 @@ Main.config([
         url:'/profile',
         templateUrl:'./scripts/modules/user/templates/user.profile.main.html'
       })
+      .state('market', {
+        url: '/market',
+        templateUrl: './scripts/modules/market/templates/market.market.main.html'
+      })
+      .state('geo', {
+        url: '/geo',
+        templateUrl: './scripts/modules/geo/templates/geo.market.main.html'
+      })
       .state('ask', {
         url: '/ask',
-        templateUrl: './scripts/modules/ask/templates/ask.main.html'
+        templateUrl: './scripts/modules/ask/templates/ask.market.main.html'
       })
       .state('acme', {
         url: '/acme',

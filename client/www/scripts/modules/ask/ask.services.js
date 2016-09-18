@@ -54,7 +54,7 @@ Ask.service('AskServices', [
             id:askId
           }
         };
-        return svc.getPendingAsks(filter)
+        return svc.getPendingAsks({filter:filter})
           .then(function(response) {
             if (response) {
               var target = response[0];
@@ -105,16 +105,7 @@ Ask.service('AskServices', [
           return response || [];
         });
     };
-    svc.getPendingAsks = function(filter) {
-      if (!filter) {
-        filter = {};
-      }
-      return PendingAsk.find(filter)
-        .$promise
-        .then(function(response) {
-          return response || [];
-        });
-    };
+
     svc.saveLotPrice = function(lotPriceArg) {
       if (lotPriceArg && lotPriceArg.id) {
         // update

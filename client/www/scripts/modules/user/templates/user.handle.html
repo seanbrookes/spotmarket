@@ -7,9 +7,9 @@
     <p>  It has to be unique.  </p>
     <input type="text" placeholder="user handle" ng-model="handleCtx.currentHandle" />
     <div>
-      <button title="go back" ng-click="handleCtx.goBackOneHandleSuggestion()"><</button>
-      <button title="go forward" ng-click="handleCtx.goForwardOneHandleSuggestion()">&gt;</button>
-      <button title="show me a new one" ng-click="handleCtx.refreshSuggestedHandle()">S</button>
+      <button title="go back" ng-click="handleCtx.goBackOneHandleSuggestion()" class="icon-arrow-left2"></button>
+      <button title="go forward" ng-click="handleCtx.goForwardOneHandleSuggestion()" class="icon-arrow-right2"></button>
+      <button title="show me a new one" ng-click="handleCtx.refreshSuggestedHandle()" class="icon-loop2"></button>
       <label class="HandleForm__CheckboxLabel"><input type="checkbox" ng-change="handleCtx.toggleHandleAlphaOnly()" ng-model="handleCtx.handleSearchDefaultHandleAlphaOnly">no numbers</label>
       <button class="LinkButton" title="This is your public nickname.  We have made a suggestion for you but you can change it.  It has to be unique.  We are not in the business of name police and we encourage people to be creative but we reserve the right to prevent certain combinations if people complain.">what is this?</button>
       <p>We encourage people to be creative but reserve the right to deny certain names if deemed too offensive.</p>

@@ -12,9 +12,9 @@
     <link rel="stylesheet" type="text/css" href="./style/style.css">
 
   </head>
-  <body>
+  <body ng-class="{'Body--Home' : mainNavCtx.isHome}">
 
-    <div data-id="AppContainer">
+    <div class="AppContainer">
       <sm-page-header></sm-page-header>
       <div class="InnerAppContainer">
         <div ui-view autoscroll="false"></div>

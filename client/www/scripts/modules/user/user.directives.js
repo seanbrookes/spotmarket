@@ -33,7 +33,9 @@ User.directive('smUserProfileView', [
         'UserSessionService',
         'UserServices',
         '$log',
-        function($scope, Upload, UserSessionService, UserServices, $log) {
+        '$stateParams',
+        '$state',
+        function($scope, Upload, UserSessionService, UserServices, $log, $stateParams, $state) {
           $scope.profileCtx = {avatarSrc:'', croppedImage:''};
           $scope.profileAvatar = {
             userId:'',
@@ -46,7 +48,37 @@ User.directive('smUserProfileView', [
           $scope.profileCtx.currentProfile = {
             avatarImage: ''
           };
+          $scope.profileCtx.isEditMode = false;
+          $scope.profileCtx.toggleEditMode = function() {
+            if (!$scope.profileCtx.isEditMode && UserSessionService.isCurrentUserLoggedIn()) {
+              $scope.profileCtx.isEditMode = true;
+            }
+            else if (!$scope.profileCtx.isEditMode && !UserSessionService.isCurrentUserLoggedIn()) {
+              $state.go('login');
+            }
+            else {
+              $scope.profileCtx.isEditMode = false;
+            }
+          };
+          $scope.profileCtx.isEditCurrentUser = function() {
+            return $scope.profileCtx.isEditMode;
+          };
+          $scope.profileCtx.saveCurrentProfile = function() {
+            UserServices.saveUser($scope.profileCtx.currentProfile)
+              .then(function(response) {
+                $log.debug('Save my profile');
+                $scope.profileCtx.isEditMode = false;
+              });
+          };
 
+          $scope.profileCtx.isReadOnlyCurrentUser = function() {
+            // am I current user
+            if ((!$stateParams.handle) && (!$scope.profileCtx.isEditMode)) {
+              return true;
+            }
+            return false;
+            // is the form in edit mode
+          };
 
           $scope.profileCtx.saveProfileImage = function() {
             $log.debug('|  Save the Profile Image ', $scope.profileCtx.myCroppedImage );
@@ -83,25 +115,55 @@ User.directive('smUserProfileView', [
           angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);
 
 
+
+          $scope.profileCtx.triggerEditMode = function() {
+            $scope.profileCtx.isEditMode = true;
+          };
+
           $scope.profileCtx.init = function() {
-            // check if current user has a profile avatar
-            UserSessionService.getCurrentUserByToken()
-              .then(function(response) {
-                if (response.id) {
-                  UserServices.getProfileAvatar(response.id)
-                    .then(function(response) {
-                      if (response && response.avatarImage) {
-                        $log.debug('got the user avatar', response);
-                        $scope.profileCtx.currentProfile.avatarImage = response.avatarImage;
-                        $scope.profileCtx.currentProfile.userId = response.userId;
-                        $scope.profileCtx.currentProfile.avatarId = response.id;
 
-                      }
-                      return $scope.profileCtx.currentProfile;
-                    });
 
-                }
-              });
+            // check if we have an id/handle param
+            // if so then load up that user data
+            // if not load current user data
+            // provide edit button
+
+
+            if ($stateParams.handle) {
+              // could be id or handle
+              //
+              // populate editor
+              $log.debug('LOOKUP PROFILE BY HANDLE');
+            }
+            else {
+              $log.debug('WE ARE THIS USER');
+              // check if current user has a profile avatar
+              UserSessionService.getCurrentUserByToken()
+                .then(function(response) {
+                  if (response.id) {
+
+                    $scope.profileCtx.currentProfile = response;
+
+
+
+
+                    //UserServices.getProfileAvatar(response.id)
+                    //  .then(function(response) {
+                    //    if (response && response.avatarImage) {
+                    //      $log.debug('got the user avatar', response);
+                    //      $scope.profileCtx.currentProfile.avatarImage = response.avatarImage;
+                    //      $scope.profileCtx.currentProfile.userId = response.userId;
+                    //      $scope.profileCtx.currentProfile.avatarId = response.id;
+                    //
+                    //    }
+                    //    return $scope.profileCtx.currentProfile;
+                    //  });
+
+                  }
+                });
+            }
+
+
 
 
 
@@ -279,8 +341,14 @@ User.directive('smUserRegistration', [
           if (!$scope.registrationCtx) {
             $scope.registrationCtx = {};
           }
+          $scope.registrationCtx.isExistingEmail = false;
           $scope.registrationCtx.urlNavRequest = function(state) {
             $state.go(state);
+          };
+          $scope.registrationCtx.clearCurrentUser = function() {
+            UserSessionService.clearCurrentCacheUser();
+            window.location.reload();
+
           };
           $scope.registrationCtx.submitRegistration = function() {
 
@@ -311,7 +379,7 @@ User.directive('smUserRegistration', [
                 if (tempCurrentUser && tempCurrentUser.smToken) {
                   // register existing user
                   $scope.registrationCtx.smToken = tempCurrentUser.smToken;
-                  UserServices.registerExistingUser({user:$scope.registrationCtx})
+                  UserSessionService.registerExistingUser({user:$scope.registrationCtx})
                     .then(function(response) {
                       $log.debug('Account created ', $scope.registrationCtx.email );
                       $scope.registrationCtx.registrationComplete = true;
@@ -330,6 +398,7 @@ User.directive('smUserRegistration', [
               $scope.registrationCtx.isPreExistingHandle = true;
             }
             if (currUser.smEmail) {
+              $scope.registrationCtx.isExistingEmail = true;
               $scope.registrationCtx.email = currUser.smEmail;
             }
           };
@@ -470,11 +539,13 @@ User.directive('smUserLogin', [
                     // save the token
                     UserSessionService.setValueByKey('smAuthToken', response.authToken);
                     UserSessionService.setValueByKey('smToken', response.authToken);
-                    UserSessionService.setValueByKey('smEmail', targetEmail);
                     if (response.handle) {
                       UserSessionService.setValueByKey('smHandle', response.handle);
-
                     }
+                    else {
+                      UserSessionService.deleteValueByKey('smHandle');
+                    }
+                    UserSessionService.setValueByKey('smEmail', response.email);
 
                     // clear the login
                     //$scope.loginCtx.init();

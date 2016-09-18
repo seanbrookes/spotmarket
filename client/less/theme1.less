@@ -1,7 +1,7 @@
 @import "theme1-variables";
 @import "registration";
 
-[data-id="AppContainer"] {
+.AppContainer {
   background-color:@bg-color-home;
   margin:0;
   padding:0;
@@ -11,7 +11,59 @@
 }
 .InnerAppContainer {
   flex: 1;
+  background-color:@bg-color-primary;
+  padding:.4rem .5rem .4rem .5rem;
+  height:100%;
+
 }
+.Body--Home {
+  .InnerAppContainer {
+    flex: 1;
+    background-color:#ffffff;
+    padding:0;
+    height:100%;
+
+  }
+  .MainNavViewButton--home {
+    visibility: hidden;
+  }
+}
+/* blog post */
+.main-article {
+  background-color:#ffffff;
+  padding:1.5rem 2rem 1.5rem 2rem;
+
+  .article-title {
+    margin:1.4rem 1.4rem .1rem 1.4rem;
+  }
+  h1, h2, h3, h4 {
+    color:@bg-color-primary;
+  }
+  .post-body {
+    margin-top:.2rem;
+    font-size:118%;
+    color:#444444;
+
+    .BlogHeadlineQuote {
+      font-size:120%;
+      font-style: italic;
+      margin:.3rem 0 .3rem 0;
+      color:@bg-color-primary;
+    }
+    pre {
+      padding:.6rem;
+      background-color:#efefef;
+      border-radius:.4rem;
+      font-family: monospace, monospace;
+    }
+    p {
+      padding:.4rem;
+
+    }
+
+  }
+}
+
 .PageHeader {
 
   .Branding {
@@ -22,6 +74,7 @@
     .logo {
       height: 4rem;
     }
+
     .Title__Tag {
       font-family: Georgia, serif;
       padding:0;
@@ -38,6 +91,7 @@
 
   .Title {
 
+    display:none;
 
     h1 {
       text-transform: uppercase;
@@ -58,6 +112,7 @@
   }
   .GlobalNav {
     position:relative;
+    display:none;
 
     .NavMenuButton {
       font-size:220%;
@@ -106,6 +161,19 @@
   margin-right:1rem;
 }
 
+.MainNavViewButton {
+  color:#999999;
+  display: inline-block;
+  padding:.7rem;
+  background:transparent;
+  border:0;
+  cursor:pointer;
+}
+.MainNavViewButton--active {
+  background:@bg-color-primary;
+
+  color: #ffffff;
+}
 
 .HomeHeroContainer {
 
@@ -145,6 +213,7 @@
 }
 .HomeSecondary__SubContainer {
   border:1px solid #eeeeee;
+  background-color: #ffffff;
   border-radius: 1rem;
   padding:1.3rem 2rem 1.3rem 2rem;
   max-width: 25rem;
@@ -215,6 +284,15 @@ ul.HomeSecondary__FeatureList {
   }
 }
 
+/*
+
+Market view
+*/
+.MarketRange__Container {
+  border:1px solid #eeeeee;
+  border-radius:.2rem;
+}
+
 
 /*
 
@@ -227,7 +305,9 @@ ul.HomeSecondary__FeatureList {
   font-size:120%;
 }
 
-
+.AuthReg__ValidationError {
+  color:red;
+}
 
 
 .LinkButton {
@@ -268,6 +348,36 @@ ul.HomeSecondary__FeatureList {
   //background:#ffffff;
 }
 
+
+.MarketViewContainer {
+  background-color:#ffffff;
+  padding:1rem;
+}
+.UserProfile_MainView {
+  margin-top:2rem;
+  padding:1rem;
+  font-size:120%;
+  color:#999999;
+  min-height:30rem;
+
+  .UserProfile__KeyPair {
+    div {
+      border:1px solid #efefef;
+      border-radius:.3rem;
+      padding:1.2rem;
+      width:26rem;
+
+    }
+  }
+  label {
+    display:inline-block;
+    padding:1rem;
+    font-size:110%;
+    width:14rem;
+  }
+
+
+}
 
 .AppFooter {
   background:#111111;
@@ -323,7 +433,7 @@ small size views
       }
     }
     .GlobalNav {
-      //display:none;
+      display:none;
     }
   }
   .HomeSecondary__Container {

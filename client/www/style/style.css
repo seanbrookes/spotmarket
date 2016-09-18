@@ -26,6 +26,14 @@ button {
 }
 ul {
   list-style: none;
+  padding: 0;
+  margin: 0;
+}
+button {
+  border: 1px solid #dddddd;
+  background: #efefef;
+  padding: .5rem;
+  border-radius: .2rem;
 }
 @font-face {
   font-family: 'icomoon';
@@ -1530,8 +1538,7 @@ ul {
 }
 .AutoSuggestContainer .AutoSuggest__Menu {
   position: absolute;
-  top: 5.2rem;
-  left: .4rem;
+  top: 1.2rem;
   width: 25rem;
   border: 1px solid #dddddd;
   background-color: #ffffff;
@@ -1803,6 +1810,7 @@ img-crop .loading .fixed-height {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  background-color: #ffffff;
 }
 .AuthRegFormTitle {
   font-size: 125%;
@@ -1837,7 +1845,7 @@ img-crop .loading .fixed-height {
 .UserLogin__RememberMeLabel {
   visibility: hidden;
 }
-[data-id="AppContainer"] {
+.AppContainer {
   background-color: #ffffff;
   margin: 0;
   padding: 0;
@@ -1847,6 +1855,52 @@ img-crop .loading .fixed-height {
 }
 .InnerAppContainer {
   flex: 1;
+  background-color: #608052;
+  padding: .4rem .5rem .4rem .5rem;
+  height: 100%;
+}
+.Body--Home .InnerAppContainer {
+  flex: 1;
+  background-color: #ffffff;
+  padding: 0;
+  height: 100%;
+}
+.Body--Home .MainNavViewButton--home {
+  visibility: hidden;
+}
+/* blog post */
+.main-article {
+  background-color: #ffffff;
+  padding: 1.5rem 2rem 1.5rem 2rem;
+}
+.main-article .article-title {
+  margin: 1.4rem 1.4rem .1rem 1.4rem;
+}
+.main-article h1,
+.main-article h2,
+.main-article h3,
+.main-article h4 {
+  color: #608052;
+}
+.main-article .post-body {
+  margin-top: .2rem;
+  font-size: 118%;
+  color: #444444;
+}
+.main-article .post-body .BlogHeadlineQuote {
+  font-size: 120%;
+  font-style: italic;
+  margin: .3rem 0 .3rem 0;
+  color: #608052;
+}
+.main-article .post-body pre {
+  padding: .6rem;
+  background-color: #efefef;
+  border-radius: .4rem;
+  font-family: monospace, monospace;
+}
+.main-article .post-body p {
+  padding: .4rem;
 }
 .PageHeader .Branding {
   margin-left: 2rem;
@@ -1867,6 +1921,9 @@ img-crop .loading .fixed-height {
 .PageHeader .Branding .Title__Tag--market {
   color: #000000;
 }
+.PageHeader .Title {
+  display: none;
+}
 .PageHeader .Title h1 {
   text-transform: uppercase;
   color: #162071;
@@ -1881,12 +1938,13 @@ img-crop .loading .fixed-height {
 }
 .PageHeader .GlobalNav {
   position: relative;
+  display: none;
 }
 .PageHeader .GlobalNav .NavMenuButton {
   font-size: 220%;
   border: 0;
   background: transparent;
-  color: #007b29;
+  color: #608052;
   cursor: pointer;
 }
 .PageHeader .GlobalNav .GlobalNav__List {
@@ -1916,6 +1974,18 @@ img-crop .loading .fixed-height {
   cursor: pointer;
   display: block;
   font-size: 110%;
+}
+.MainNavViewButton {
+  color: #999999;
+  display: inline-block;
+  padding: .7rem;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+.MainNavViewButton--active {
+  background: #608052;
+  color: #ffffff;
 }
 .HomeHeroContainer {
   background-image: url("images/home-hero.jpg");
@@ -1949,6 +2019,7 @@ img-crop .loading .fixed-height {
 }
 .HomeSecondary__SubContainer {
   border: 1px solid #eeeeee;
+  background-color: #ffffff;
   border-radius: 1rem;
   padding: 1.3rem 2rem 1.3rem 2rem;
   max-width: 25rem;
@@ -2011,6 +2082,14 @@ ul.HomeSecondary__FeatureList {
 }
 /*
 
+Market view
+*/
+.MarketRange__Container {
+  border: 1px solid #eeeeee;
+  border-radius: .2rem;
+}
+/*
+
   User Reg and login
 */
 .AuthTextInput {
@@ -2018,6 +2097,9 @@ ul.HomeSecondary__FeatureList {
   margin: .3rem auto .3rem auto;
   width: 12rem;
   font-size: 120%;
+}
+.AuthReg__ValidationError {
+  color: red;
 }
 .LinkButton {
   border: none;
@@ -2035,7 +2117,7 @@ ul.HomeSecondary__FeatureList {
   color: #444444;
 }
 .Button--primary {
-  background-color: #007b29;
+  background-color: #608052;
   color: #ffffff;
   cursor: pointer;
   padding: .6rem;
@@ -2045,6 +2127,29 @@ ul.HomeSecondary__FeatureList {
 .BodyHeadline {
   font-size: 270%;
   font-weight: 400;
+}
+.MarketViewContainer {
+  background-color: #ffffff;
+  padding: 1rem;
+}
+.UserProfile_MainView {
+  margin-top: 2rem;
+  padding: 1rem;
+  font-size: 120%;
+  color: #999999;
+  min-height: 30rem;
+}
+.UserProfile_MainView .UserProfile__KeyPair div {
+  border: 1px solid #efefef;
+  border-radius: .3rem;
+  padding: 1.2rem;
+  width: 26rem;
+}
+.UserProfile_MainView label {
+  display: inline-block;
+  padding: 1rem;
+  font-size: 110%;
+  width: 14rem;
 }
 .AppFooter {
   background: #111111;
@@ -2092,6 +2197,9 @@ small size views
   .PageHeader .Branding .Title__Tag {
     font-size: 150%;
     margin-left: .5rem;
+  }
+  .PageHeader .GlobalNav {
+    display: none;
   }
   .HomeSecondary__Container {
     padding: .1rem;
@@ -2208,6 +2316,9 @@ small size views
   margin: .12rem 0 .12rem 0;
   padding: .12rem;
 }
+.AvatarEditor {
+  display: none;
+}
 .AskForm__FieldContainer label {
   width: 12rem;
 }
@@ -2319,7 +2430,7 @@ small size views
   margin: .4rem 0 .3rem 0;
 }
 .AskWizardContainer {
-  background: #fdfdfd;
+  background: transparent;
   padding: .4rem 0 .4rem 0;
 }
 .AskWizardContainer__Item {
@@ -2329,26 +2440,13 @@ small size views
   margin: 0 3rem 0 3rem;
   border: 1px solid #e1e1e1;
   border-radius: .4rem;
-}
-.AskWizardContainer__WhatItem {
   background: #ffffff;
-}
-.MarketViewContainer {
-  display: none;
 }
 .MarketViewContainer--active {
   display: block;
 }
-.MarketViewButton {
-  border: 1px solid #dddddd;
-  border-radius: .6rem;
-  background: #e1e1e1;
-  color: #444444;
-}
-.MarketViewButton--active {
-  background: white;
-  color: #000063;
-  border-bottom: none;
+.MarketRange__Input {
+  width: 3.5rem;
 }
 .UserMarketMap--Main {
   height: 40rem;
@@ -2359,7 +2457,7 @@ small size views
   width: 70rem;
 }
 .MarketAskList .MarketAskList__Card {
-  min-width: 40rem;
+  min-width: 24rem;
   margin: .4rem .7rem .2rem 0;
   border: 1px solid #eeeeee;
   padding: .5rem;

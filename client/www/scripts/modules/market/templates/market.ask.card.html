@@ -7,7 +7,7 @@
     <button class="LinkButton">{{ask.seller.handle}}</button>
   </div>
   <div class="Layout Spread">
-    <span>{{ask.address.city}}, {{ask.address.state}}</span>
+    <sm-geo-location-display address="ask.address"></sm-geo-location-display>
     <span class="MarketAskCard__Distance">{{ask.distance}} kms</span>
   </div>
   <div class="Layout">
