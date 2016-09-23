@@ -1,0 +1,6 @@
+<div class="MarketViewContainer" ng-controller="OrgMainController">
+  <sm-common-search label="Search organizations" search-type="Org" ></sm-common-search>
+  <button ng-click="orgProfileCtx.triggerCreateNewOrg()">New organization</button>
+  <sm-org-list-view></sm-org-list-view>
+  <sm-org-profile-view ng-show="orgCtx.isShowOrgProfileForm"></sm-org-profile-view>
+</div>

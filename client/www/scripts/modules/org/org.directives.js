@@ -1,8 +1,8 @@
-User.directive('smUserProfileMain', [
+Org.directive('smOrgProfileMain', [
   function() {
     return {
       restrict: 'E',
-      templateUrl: './scripts/modules/user/templates/user.profile.main.html',
+      templateUrl: './scripts/modules/org/templates/org.profile.main.html',
       controler: [
         '$scope',
         '$log',
@@ -22,74 +22,152 @@ User.directive('smUserProfileMain', [
     }
   }
 ]);
-User.directive('smUserProfileView', [
+Org.directive('smOrgListView', [
   function() {
     return {
       restrict: 'E',
-      templateUrl: './scripts/modules/user/templates/user.profile.view.html',
+      templateUrl: './scripts/modules/org/templates/org.list.view.html',
+      controller: [
+        '$scope',
+        '$log',
+        'OrgServices',
+        function($scope, $log, OrgServices) {
+
+          $scope.orgListCtx = {
+            currentOrgList: []
+          };
+          $scope.orgListCtx.init = function() {
+            OrgServices.getOrgs({})
+              .then(function(response) {
+                if (response && response.map) {
+                  $scope.orgListCtx.currentOrgList = response;
+                }
+              })
+          };
+          $scope.orgListCtx.init();
+        }
+      ]
+    }
+  }
+]);
+Org.directive('smOrgSearchResultsView', [
+  function() {
+    return {
+      restrict: 'E',
+      templateUrl: './scripts/modules/org/templates/org.search.results.view.html',
+      controller: [
+        '$scope',
+        '$log',
+        '$stateParams',
+        function($scope, $log, $stateParams) {
+          $scope.orgSearchCtx = {
+            results: []
+          };
+          $scope.orgSearchCtx.searchOrgs = function() {
+            if ($scope.orgSearchCtx.currentSearch && $scope.orgSearchCtx.currentSearch.query) {
+              OrgServices.searchOrgs($scope.orgSearchCtx.currentSearch.query)
+                .then(function(response) {
+                  if (response && response.map) {
+                    $scope.orgSearchCtx.results = response;
+                  }
+                })
+            }
+          };
+
+          $scope.orgSearchCtx.init = function() {
+            if ($stateParams.query) {
+              if (!$scope.orgSearchCtx.currentSearch) {
+                $scope.orgSearchCtx.currentSearch = {};
+              }
+              $scope.orgSearchCtx.currentSearch.query = $stateParams.query;
+              $scope.orgSearchCtx.searchOrgs();
+            }
+          };
+          $scope.orgSearchCtx.init();
+
+        }
+      ]
+    }
+  }
+]);
+Org.directive('smOrgProfileView', [
+  function() {
+    return {
+      restrict: 'E',
+      templateUrl: './scripts/modules/org/templates/org.profile.view.html',
       controller: [
         '$scope',
         'Upload',
-        'UserSessionService',
-        'UserServices',
+        'OrgSessionService',
+        'OrgServices',
         '$log',
         '$stateParams',
         '$state',
-        function($scope, Upload, UserSessionService, UserServices, $log, $stateParams, $state) {
-          $scope.userProfileCtx = {avatarSrc:'', croppedImage:''};
+        function($scope, Upload, OrgSessionService, OrgServices, $log, $stateParams, $state) {
+          $scope.orgProfileCtx = {avatarSrc:'', croppedImage:''};
+          $scope.orgProfileCtx.currentProfile = {};
           $scope.profileAvatar = {
             userId:'',
             avatarImg: ''
           };
 
+          $scope.orgProfileCtx.triggerCreateNewOrg = function() {
+            $scope.orgCtx.isShowOrgProfileForm = true;
+          };
+          $scope.orgProfileCtx.cancelNewOrgProfile = function() {
+            $scope.orgCtx.isShowOrgProfileForm = false;
+            $scope.orgProfileCtx.currentProfile = {};
+          };
+
 
           $scope.myImage='';
-          $scope.userProfileCtx.myCroppedImage = '';
-          $scope.userProfileCtx.currentProfile = {
+          $scope.orgProfileCtx.myCroppedImage = '';
+          $scope.orgProfileCtx.currentProfile = {
             avatarImage: ''
           };
-          $scope.userProfileCtx.isEditMode = false;
-          $scope.userProfileCtx.toggleEditMode = function() {
-            if (!$scope.userProfileCtx.isEditMode && UserSessionService.isCurrentUserLoggedIn()) {
-              $scope.userProfileCtx.isEditMode = true;
+          $scope.orgProfileCtx.isEditMode = false;
+          $scope.orgProfileCtx.toggleEditMode = function() {
+            if (!$scope.orgProfileCtx.isEditMode && OrgSessionService.isCurrentOrgLoggedIn()) {
+              $scope.orgProfileCtx.isEditMode = true;
             }
-            else if (!$scope.userProfileCtx.isEditMode && !UserSessionService.isCurrentUserLoggedIn()) {
+            else if (!$scope.orgProfileCtx.isEditMode && !OrgSessionService.isCurrentOrgLoggedIn()) {
               $state.go('login');
             }
             else {
-              $scope.userProfileCtx.isEditMode = false;
+              $scope.orgProfileCtx.isEditMode = false;
             }
           };
-          $scope.userProfileCtx.isEditCurrentUser = function() {
-            return $scope.userProfileCtx.isEditMode;
+          $scope.orgProfileCtx.isEditCurrentOrg = function() {
+            return $scope.orgProfileCtx.isEditMode;
           };
-          $scope.userProfileCtx.saveCurrentProfile = function() {
-            UserServices.saveUser($scope.userProfileCtx.currentProfile)
+          $scope.orgProfileCtx.saveCurrentProfile = function() {
+            OrgServices.saveOrg($scope.orgProfileCtx.currentProfile)
               .then(function(response) {
                 $log.debug('Save my profile');
-                $scope.userProfileCtx.isEditMode = false;
+                $scope.orgProfileCtx.isEditMode = false;
+                $scope.orgProfileCtx.currentProfile = {};
               });
           };
 
-          $scope.userProfileCtx.isReadOnlyCurrentUser = function() {
+          $scope.orgProfileCtx.isReadOnlyCurrentOrg = function() {
             // am I current user
-            if ((!$stateParams.handle) && (!$scope.userProfileCtx.isEditMode)) {
+            if ((!$stateParams.handle) && (!$scope.orgProfileCtx.isEditMode)) {
               return true;
             }
             return false;
             // is the form in edit mode
           };
 
-          $scope.userProfileCtx.saveProfileImage = function() {
-            $log.debug('|  Save the Profile Image ', $scope.userProfileCtx.myCroppedImage );
+          $scope.orgProfileCtx.saveProfileImage = function() {
+            $log.debug('|  Save the Profile Image ', $scope.orgProfileCtx.myCroppedImage );
             var profileAvatarUpdate = {
-              userId: $scope.userProfileCtx.currentProfile.userId
+              userId: $scope.orgProfileCtx.currentProfile.userId
             };
-            if ($scope.userProfileCtx.currentProfile.avatarId) {
-              profileAvatarUpdate.id = $scope.userProfileCtx.currentProfile.avatarId;
+            if ($scope.orgProfileCtx.currentProfile.avatarId) {
+              profileAvatarUpdate.id = $scope.orgProfileCtx.currentProfile.avatarId;
             }
-            profileAvatarUpdate.avatarImage = $scope.userProfileCtx.myCroppedImage;
-            UserServices.saveProfileAvatar(profileAvatarUpdate)
+            profileAvatarUpdate.avatarImage = $scope.orgProfileCtx.myCroppedImage;
+            OrgServices.saveProfileAvatar(profileAvatarUpdate)
               .then(function(response) {
                 document.location.reload();
               })
@@ -105,7 +183,7 @@ User.directive('smUserProfileView', [
             var reader = new FileReader();
             reader.onload = function (evt) {
               $scope.$apply(function($scope){
-                $scope.userProfileCtx.avatarSrc = evt.target.result;
+                $scope.orgProfileCtx.avatarSrc = evt.target.result;
               });
             };
             reader.readAsDataURL(file);
@@ -116,11 +194,11 @@ User.directive('smUserProfileView', [
 
 
 
-          $scope.userProfileCtx.triggerEditMode = function() {
-            $scope.userProfileCtx.isEditMode = true;
+          $scope.orgProfileCtx.triggerEditMode = function() {
+            $scope.orgProfileCtx.isEditMode = true;
           };
 
-          $scope.userProfileCtx.init = function() {
+          $scope.orgProfileCtx.init = function() {
 
 
             // check if we have an id/handle param
@@ -138,29 +216,7 @@ User.directive('smUserProfileView', [
             else {
               $log.debug('WE ARE THIS USER');
               // check if current user has a profile avatar
-              UserSessionService.getCurrentUserByToken()
-                .then(function(response) {
-                  if (response.id) {
 
-                    $scope.userProfileCtx.currentProfile = response;
-
-
-
-
-                    //UserServices.getProfileAvatar(response.id)
-                    //  .then(function(response) {
-                    //    if (response && response.avatarImage) {
-                    //      $log.debug('got the user avatar', response);
-                    //      $scope.userProfileCtx.currentProfile.avatarImage = response.avatarImage;
-                    //      $scope.userProfileCtx.currentProfile.userId = response.userId;
-                    //      $scope.userProfileCtx.currentProfile.avatarId = response.id;
-                    //
-                    //    }
-                    //    return $scope.userProfileCtx.currentProfile;
-                    //  });
-
-                  }
-                });
             }
 
 
@@ -168,7 +224,7 @@ User.directive('smUserProfileView', [
 
 
           };
-          $scope.userProfileCtx.init();
+          $scope.orgProfileCtx.init();
         }
 
       ],
@@ -181,7 +237,7 @@ User.directive('smUserProfileView', [
   }
 ]);
 
-User.directive('smTrackedCommand', [
+Org.directive('smTrackedCommand', [
   '$log',
   '$timeout',
   function($log, $timeout) {
@@ -212,22 +268,22 @@ User.directive('smTrackedCommand', [
     }
   }
 ]);
-User.directive('smUserContactInput', [
+Org.directive('smOrgContactInput', [
   '$timeout',
   'CommonServices',
   function($timeout, CommonServices) {
     return {
       restrict:'E',
-      templateUrl: './scripts/modules/user/templates/user.contact.input.html',
+      templateUrl: './scripts/modules/org/templates/org.contact.input.html',
       controller: [
         '$scope',
         '$log',
-        'UserServices',
-        'UserSessionService',
+        'OrgServices',
+        'OrgSessionService',
         'smSocket',
-        function($scope, $log, UserServices, UserSessionService, smSocket ) {
+        function($scope, $log, OrgServices, OrgSessionService, smSocket ) {
 
-          smSocket.emit('fetchUserTag');
+          smSocket.emit('fetchOrgTag');
 
           smSocket.on('smHandle', function(data) {
             //$log.debug('|');
@@ -252,8 +308,8 @@ User.directive('smUserContactInput', [
             $scope.contactCtx.isShowValidation = false;
             $scope.contactCtx.isShowCallToAction = false;
             $scope.contactCtx.isShowThankYou = false;
-            var currentUserEmail = UserSessionService.getValueByKey('smEmail');
-            if (currentUserEmail) { //  user has already submitted their email
+            var currentOrgEmail = OrgSessionService.getValueByKey('smEmail');
+            if (currentOrgEmail) { //  user has already submitted their email
 
               $scope.contactCtx.isShowGreeting = false;
               $scope.contactCtx.isShowContactForm = false;
@@ -273,22 +329,22 @@ User.directive('smUserContactInput', [
             if ($scope.contactCtx && $scope.contactCtx.email) {
 
               var emailToSubmit = $scope.contactCtx.email;
-              if (UserServices.isValidEmail(emailToSubmit)) {
+              if (OrgServices.isValidEmail(emailToSubmit)) {
 
                 smSocket.emit('sendEmail', emailToSubmit);
-                var currentUser = UserSessionService.getCurrentUserByToken()
-                  .then(function(currentUser) {
-                    // check if currentUser has existing email
-                    if (currentUser && currentUser.email && (currentUser.email !== emailToSubmit)) {
+                var currentOrg = OrgSessionService.getCurrentOrgByToken()
+                  .then(function(currentOrg) {
+                    // check if currentOrg has existing email
+                    if (currentOrg && currentOrg.email && (currentOrg.email !== emailToSubmit)) {
                       // if so create alias with existing email
                       //  CREATE ALIAS HERE
 
-                      UserServices.saveEmailAlias(currentUser);
+                      OrgServices.saveEmailAlias(currentOrg);
                     }
-                    currentUser.email = emailToSubmit;
-                    UserSessionService.setValueByKey('smEmail', emailToSubmit);
+                    currentOrg.email = emailToSubmit;
+                    OrgSessionService.setValueByKey('smEmail', emailToSubmit);
                     // reset email to new value
-                    UserServices.saveUser(currentUser)
+                    OrgServices.saveOrg(currentOrg)
                       .then(function(response) {
                         $scope.contactCtx.isShowGreeting = false;
                         $scope.contactCtx.isShowContactForm = false;
@@ -308,7 +364,7 @@ User.directive('smUserContactInput', [
             }
           };
           init();
-          $scope.$parent.trackViewInit('smUserContactInput');
+          $scope.$parent.trackViewInit('smOrgContactInput');
         }
 
       ],
@@ -325,19 +381,19 @@ User.directive('smUserContactInput', [
   }
 ]);
 
-User.directive('smUserRegistration', [
+Org.directive('smOrgRegistration', [
   function() {
     return {
       restrict: 'E',
-      templateUrl: './scripts/modules/user/templates/user.registration.html',
+      templateUrl: './scripts/modules/org/templates/org.registration.html',
       controller: [
         '$scope',
         '$log',
-        'UserServices',
-        'UserSessionService',
+        'OrgServices',
+        'OrgSessionService',
         'smGlobalValues',
         '$state',
-        function($scope, $log, UserServices, UserSessionService, smGlobalValues, $state) {
+        function($scope, $log, OrgServices, OrgSessionService, smGlobalValues, $state) {
           if (!$scope.registrationCtx) {
             $scope.registrationCtx = {};
           }
@@ -345,8 +401,8 @@ User.directive('smUserRegistration', [
           $scope.registrationCtx.urlNavRequest = function(state) {
             $state.go(state);
           };
-          $scope.registrationCtx.clearCurrentUser = function() {
-            UserSessionService.clearCurrentCacheUser();
+          $scope.registrationCtx.clearCurrentOrg = function() {
+            OrgSessionService.clearCurrentCacheOrg();
             window.location.reload();
 
           };
@@ -356,7 +412,7 @@ User.directive('smUserRegistration', [
               $log.warn('you need to agree to the terms and conditions');
               return;
             }
-            if (!UserServices.isValidEmail($scope.registrationCtx.email)) {
+            if (!OrgServices.isValidEmail($scope.registrationCtx.email)) {
               $log.warn('email address does not seem to be valid');
               return;
             }
@@ -369,17 +425,17 @@ User.directive('smUserRegistration', [
               return;
             }
             // check if user already has an account
-            UserServices.findUserByEmail($scope.registrationCtx.email)
+            OrgServices.findOrgByEmail($scope.registrationCtx.email)
               .then(function(response) {
                 if (response && response.length > 0) {
                   $log.warn('email address already linked to an account');
                   return;
                 }
-                var tempCurrentUser = UserSessionService.getCurrentUserFromClientState();
-                if (tempCurrentUser && tempCurrentUser.smToken) {
+                var tempCurrentOrg = OrgSessionService.getCurrentOrgFromClientState();
+                if (tempCurrentOrg && tempCurrentOrg.smToken) {
                   // register existing user
-                  $scope.registrationCtx.smToken = tempCurrentUser.smToken;
-                  UserSessionService.registerExistingUser({user:$scope.registrationCtx})
+                  $scope.registrationCtx.smToken = tempCurrentOrg.smToken;
+                  OrgSessionService.registerExistingOrg({user:$scope.registrationCtx})
                     .then(function(response) {
                       $log.debug('Account created ', $scope.registrationCtx.email );
                       $scope.registrationCtx.registrationComplete = true;
@@ -389,17 +445,17 @@ User.directive('smUserRegistration', [
 
           };
           $scope.registrationCtx.init = function() {
-            var currUser = UserSessionService.getCurrentUserFromClientState();
-            if (currUser.smAuthToken) {
+            var currOrg = OrgSessionService.getCurrentOrgFromClientState();
+            if (currOrg.smAuthToken) {
               $state.go('home');
             }
-            if (currUser.smHandle) {
-              $scope.registrationCtx.handle = currUser.smHandle;
+            if (currOrg.smHandle) {
+              $scope.registrationCtx.handle = currOrg.smHandle;
               $scope.registrationCtx.isPreExistingHandle = true;
             }
-            if (currUser.smEmail) {
+            if (currOrg.smEmail) {
               $scope.registrationCtx.isExistingEmail = true;
-              $scope.registrationCtx.email = currUser.smEmail;
+              $scope.registrationCtx.email = currOrg.smEmail;
             }
           };
           $scope.registrationCtx.init();
@@ -409,19 +465,19 @@ User.directive('smUserRegistration', [
   }
 ]);
 
-User.directive('smUserHandle', [
+Org.directive('smOrgHandle', [
   function() {
     return {
       restrict: 'E',
       scope: {
         ctx:'='
       },
-      templateUrl: './scripts/modules/user/templates/user.handle.html',
+      templateUrl: './scripts/modules/org/templates/org.handle.html',
       controller: [
         '$scope',
-        'UserServices',
-        'UserSessionService',
-        function($scope, UserServices, UserSessionService) {
+        'OrgServices',
+        'OrgSessionService',
+        function($scope, OrgServices, OrgSessionService) {
           $scope.handleCtx = {};
           $scope.handleCtx.handleSuggestionHistory = [];
           $scope.handleCtx.handleSuggestionHistoryIndex = 0;
@@ -434,15 +490,15 @@ User.directive('smUserHandle', [
            * */
           $scope.handleCtx.refreshSuggestedHandle = function () {
             var options = {aphaOnly: $scope.handleCtx.handleSearchDefaultHandleAlphaOnly};
-            $scope.handleCtx.currentHandle = UserSessionService.generateNewUserTag(options)
+            $scope.handleCtx.currentHandle = OrgSessionService.generateNewOrgTag(options)
               .then(function (response) {
                 $scope.handleCtx.currentHandle = response;
-                UserSessionService.addUserHandleSuggestionToHistory($scope.handleCtx.currentHandle);
+                OrgSessionService.addOrgHandleSuggestionToHistory($scope.handleCtx.currentHandle);
                 $scope.handleCtx.handleSuggestionHistoryIndex = 0;
               });
           };
           $scope.handleCtx.goBackOneHandleSuggestion = function () {
-            var currentHistory = $scope.handleCtx.handleSuggestionHistory = UserSessionService.getUserHandleSuggestionHistory();
+            var currentHistory = $scope.handleCtx.handleSuggestionHistory = OrgSessionService.getOrgHandleSuggestionHistory();
             var currentIndex = $scope.handleCtx.handleSuggestionHistoryIndex;
 
             var historyLength = currentHistory.length;
@@ -456,7 +512,7 @@ User.directive('smUserHandle', [
             }
           };
           $scope.handleCtx.goForwardOneHandleSuggestion = function () {
-            var currentHistory = $scope.handleCtx.handleSuggestionHistory = UserSessionService.getUserHandleSuggestionHistory();
+            var currentHistory = $scope.handleCtx.handleSuggestionHistory = OrgSessionService.getOrgHandleSuggestionHistory();
             var currentIndex = $scope.handleCtx.handleSuggestionHistoryIndex;
 
             var historyLength = currentHistory.length;
@@ -475,7 +531,7 @@ User.directive('smUserHandle', [
 
           $scope.handleCtx.init = function(user) {
             if (!user) {
-              user = UserSessionService.getCurrentUserFromClientState();
+              user = OrgSessionService.getCurrentOrgFromClientState();
             }
             if (user.smHandle) {
               $scope.handleCtx.currentHandle = user.smHandle;
@@ -499,28 +555,28 @@ User.directive('smUserHandle', [
     }
   }
 ]);
-User.directive('smUserLogin', [
+Org.directive('smOrgLogin', [
   function() {
     return {
       restrict: 'E',
-      templateUrl: './scripts/modules/user/templates/user.login.html',
+      templateUrl: './scripts/modules/org/templates/org.login.html',
       controller: [
         '$scope',
         '$log',
-        'UserSessionService',
+        'OrgSessionService',
         '$state',
-        function($scope, $log, UserSessionService, $state) {
+        function($scope, $log, OrgSessionService, $state) {
 
           $scope.loginCtx = {
             isLoginActive:false,
-            isUserAuth:false,
+            isOrgAuth:false,
             rememberMe:true
           };
 
           $scope.loginCtx.init = function() {
-            if (UserSessionService.getCurrentAuthToken()) {
+            if (OrgSessionService.getCurrentAuthToken()) {
               // user is authenticated
-              $scope.loginCtx.isUserAuth = true;
+              $scope.loginCtx.isOrgAuth = true;
               $state.go('home');
 
             }
@@ -532,20 +588,20 @@ User.directive('smUserLogin', [
           $scope.submitLoginRequest =  function() {
             var targetEmail = $scope.loginCtx.email;
             if (targetEmail && $scope.loginCtx.password ) {
-              UserSessionService.requestLoginToken($scope.loginCtx)
+              OrgSessionService.requestLoginToken($scope.loginCtx)
                 .then(function(response) {
 
                   if (response.authToken) {
                     // save the token
-                    UserSessionService.setValueByKey('smAuthToken', response.authToken);
-                    UserSessionService.setValueByKey('smToken', response.authToken);
+                    OrgSessionService.setValueByKey('smAuthToken', response.authToken);
+                    OrgSessionService.setValueByKey('smToken', response.authToken);
                     if (response.handle) {
-                      UserSessionService.setValueByKey('smHandle', response.handle);
+                      OrgSessionService.setValueByKey('smHandle', response.handle);
                     }
                     else {
-                      UserSessionService.deleteValueByKey('smHandle');
+                      OrgSessionService.deleteValueByKey('smHandle');
                     }
-                    UserSessionService.setValueByKey('smEmail', response.email);
+                    OrgSessionService.setValueByKey('smEmail', response.email);
 
                     // clear the login
                     //$scope.loginCtx.init();
@@ -569,18 +625,18 @@ User.directive('smUserLogin', [
     }
   }
 ]);
-User.directive('smUserForgotPassword', [
+Org.directive('smOrgForgotPassword', [
   function() {
     return {
       restrict: 'E',
-      templateUrl: './scripts/modules/user/templates/user.forgot.password.html',
+      templateUrl: './scripts/modules/org/templates/org.forgot.password.html',
       controller: [
         '$scope',
         '$log',
-        'UserServices',
-        'UserSessionService',
+        'OrgServices',
+        'OrgSessionService',
         'smGlobalValues',
-        function($scope, $log, UserServices, UserSessionService, smGlobalValues) {
+        function($scope, $log, OrgServices, OrgSessionService, smGlobalValues) {
           if (!$scope.forgotPasswordCtx) {
             $scope.forgotPasswordCtx = {};
           }
@@ -591,7 +647,7 @@ User.directive('smUserForgotPassword', [
               // make sure email address is valid
 
               // check to see if there is a userProfile with this email address
-              UserServices.findUserByEmail($scope.forgotPasswordCtx.email)
+              OrgServices.findOrgByEmail($scope.forgotPasswordCtx.email)
                 .then(function(response) {
                   if (response.email) {
                     // yay
@@ -619,25 +675,25 @@ User.directive('smUserForgotPassword', [
     }
   }
 ]);
-User.directive('ggtUserMoreInfoList', [
+Org.directive('ggtOrgMoreInfoList', [
   function() {
     return {
       restrict: 'E',
-      templateUrl: './scripts/modules/user/templates/user.list.html',
+      templateUrl: './scripts/modules/org/templates/org.list.html',
       controller: [
         '$scope',
         '$log',
-        'UserServices',
-        function($scope, $log, UserServices) {
-          if (!$scope.userCtx) {
-            $scope.userCtx = {};
+        'OrgServices',
+        function($scope, $log, OrgServices) {
+          if (!$scope.orgCtx) {
+            $scope.orgCtx = {};
           }
-          if (!$scope.userCtx.allUsers) {
-            $scope.userCtx.allUsers = [];
+          if (!$scope.orgCtx.allOrgs) {
+            $scope.orgCtx.allOrgs = [];
           }
           smSocket.on('newMoreInfoSignUp', function(data) {
             $log.debug('you hea', data);
-            $scope.userCtx.allUsers = data;
+            $scope.orgCtx.allOrgs = data;
 
           });
         }

@@ -1938,7 +1938,6 @@ img-crop .loading .fixed-height {
 }
 .PageHeader .GlobalNav {
   position: relative;
-  display: none;
 }
 .PageHeader .GlobalNav .NavMenuButton {
   font-size: 220%;
@@ -2088,6 +2087,9 @@ Market view
   border: 1px solid #eeeeee;
   border-radius: .2rem;
 }
+.AuthReg__ValidationError {
+  display: none;
+}
 /*
 
   User Reg and login
@@ -2112,6 +2114,21 @@ Market view
   border: none;
   background: transparent;
   cursor: pointer;
+}
+.AuthLoginViewContainer {
+  min-height: 36rem;
+}
+.HandleForm__Note {
+  max-width: 26rem;
+}
+.HandleForm__InputContainer {
+  margin-top: 1rem;
+}
+.HandleForm__ButtonContainer {
+  margin-bottom: 1rem;
+}
+.HandleForm__Input {
+  width: 20rem;
 }
 .Button {
   color: #444444;
@@ -2146,6 +2163,25 @@ Market view
   width: 26rem;
 }
 .UserProfile_MainView label {
+  display: inline-block;
+  padding: 1rem;
+  font-size: 110%;
+  width: 14rem;
+}
+.OrgProfile_MainView {
+  margin-top: 2rem;
+  padding: 1rem;
+  font-size: 120%;
+  color: #999999;
+  min-height: 30rem;
+}
+.OrgProfile_MainView .OrgProfile__KeyPair div {
+  border: 1px solid #efefef;
+  border-radius: .3rem;
+  padding: 1.2rem;
+  width: 26rem;
+}
+.OrgProfile_MainView label {
   display: inline-block;
   padding: 1rem;
   font-size: 110%;

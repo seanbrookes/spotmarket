@@ -283,6 +283,54 @@ Common.directive('smHopFarmReport', [
   }
 ]);
 
+Common.directive('smCommonSearch', [
+  function() {
+    return {
+      restrict: 'E',
+      scope: {
+        searchType: '@',
+        label: '@'
+      },
+      templateUrl: './scripts/modules/common/templates/common.search.html',
+      controller: [
+        '$scope',
+        '$log',
+        '$stateParams',
+        function($scope, $log, $stateParams) {
+          $scope.searchCtx = {
+            keyWords: '',
+            label:''
+          };
+          $scope.searchCtx.submitSearch = function() {
+            $log.debug('| Submit search', $scope.searchType);
+            $log.debug('| Submit search', $scope.searchCtx.keyWords);
+            if ($scope.searchCtx.keyWords) {
+              switch($scope.searchType) {
+
+                case 'User':
+
+                  break;
+
+                case 'Org':
+
+                  break;
+
+                default:
+                  //search everything
+              }
+            }
+          };
+          if ($scope.label) {
+
+            $scope.searchCtx.label = $scope.label;
+          }
+
+
+        }
+      ]
+    }
+  }
+]);
 Common.directive('smCommonGlobalNav', [
   function() {
     return {

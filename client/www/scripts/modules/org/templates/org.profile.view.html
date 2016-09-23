@@ -1,0 +1,52 @@
+<div class="OrgProfile OrgProfile__Container Column CenterItems">
+
+  <div class="OrgProfile_MainView">
+    <div class="OrgProfile__KeyPair Layout">
+      <label class="OrgProfile__Label">Handle</label>
+      <input class="OrgProfile__Input" title="edit org handle" ng-model="orgProfileCtx.currentProfile.handle" />
+    </div>
+    <div class="OrgProfile__KeyPair Layout">
+      <label class="OrgProfile__Label">Name</label>
+      <input class="OrgProfile__Input" title="edit profile handle" ng-model="orgProfileCtx.currentProfile.name" />
+    </div>
+    <div class="OrgProfile__KeyPair Layout">
+      <label class="OrgProfile__Label">Phone</label>
+      <input class="OrgProfile__Input" title="edit profile last name"  ng-model="orgProfileCtx.currentProfile.phone" />
+    </div>
+    <div class="OrgProfile__KeyPair Layout">
+      <label class="OrgProfile__Label">Url</label>
+      <input class="OrgProfile__Input" title="edit profile last name" ng-model="orgProfileCtx.currentProfile.url" />
+    </div>
+    <div class="OrgProfile__KeyPair Layout">
+      <label class="OrgProfile__Label">Email</label>
+      <input class="OrgProfile__Input" title="edit profile email" ng-model="orgProfileCtx.currentProfile.email" />
+    </div>
+  </div>
+  <div class="ButtonGroup ButtonGroup__Container">
+    <button ng-click="orgProfileCtx.cancelNewOrgProfile()">Cancel</button>
+    <button ng-click="orgProfileCtx.saveCurrentProfile()">Save</button>
+  </div>
+
+  <div class="AvatarEditor AvatarEditor__Container">
+    <div class="ProfileAvatarSrcPreviewContainer Layout">
+      <div class="cropArea">
+        <img-crop image="orgProfileCtx.avatarSrc" result-image="orgProfileCtx.myCroppedImage"></img-crop>
+      </div>
+      <div>
+        <img ng-src="{{orgProfileCtx.currentProfile.avatarImage}}" />
+      </div>
+    </div>
+    <div>Cropped Image:</div>
+    <div class="Layout">
+      <img ng-src="{{orgProfileCtx.myCroppedImage}}" />
+      <button type="submit" ng-click="orgProfileCtx.saveProfileImage()">submit</button>
+    </div>
+    <hr />
+    Upload Image
+    <input type="file" ngf-select="" ng-model="orgProfileCtx.avatarSrc" name="file" ngf-max-size="2MB" ngf-accept="'image/*'">
+
+  </div>
+
+
+
+</div>

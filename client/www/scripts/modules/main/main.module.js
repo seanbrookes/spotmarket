@@ -32,6 +32,7 @@ var Main = angular.module('Main', [
   'Geo',
   'Tracking',
   'User',
+  'Org',
   'Product',
   'Ask',
   'Common',
@@ -45,7 +46,8 @@ Main.constant('ACTION_CONST', {
 Main.constant('NAV_CONST', {
   WELCOME_VIEW: 'WelcomeView',
   ABOUT_VIEW: 'AboutView',
-  PROFILE_VIEW: 'ProfileView',
+  USER_VIEW: 'UserProfileView',
+  ORG_VIEW: 'OrgProfileView',
   MARKET_VIEW: 'MarketView',
   GEO_VIEW: 'GeoView',
   ASK_VIEW: 'AskView',
@@ -158,17 +160,33 @@ Main.config([
         url: '/blog',
         templateUrl: './scripts/modules/blog/templates/blog.main.html'
       })
-      .state('user', {
-        url: '/user',
-        templateUrl: './scripts/modules/user/templates/user.main.html'
+      //.state('user', {
+      //  url: '/user',
+      //  templateUrl: './scripts/modules/user/templates/user.main.html'
+      //})
+      .state('userprofile', {
+        url:'/user',
+        templateUrl:'./scripts/modules/user/templates/user.profile.main.html'
       })
-      .state('profile', {
-        url: '/profile/:handle',
+      .state('userprofile.detail', {
+        url: '/user/:handle',
         templateUrl: './scripts/modules/user/templates/user.profile.main.html'
       })
-      .state('profile_all', {
-        url:'/profile',
-        templateUrl:'./scripts/modules/user/templates/user.profile.main.html'
+      .state('userprofile.searchresults', {
+        url: '/usersearch?query',
+        templateUrl: './scripts/modules/user/templates/user.search.results.main.html'
+      })
+      .state('orgprofile', {
+        url:'/org',
+        templateUrl:'./scripts/modules/org/templates/org.profile.main.html'
+      })
+      .state('orgprofile.detail', {
+        url: '/org/:handle',
+        templateUrl: './scripts/modules/org/templates/org.profile.main.html'
+      })
+      .state('orgprofile.searchresults', {
+        url: '/orgsearch/?query',
+        templateUrl: './scripts/modules/org/templates/org.search.results.main.html'
       })
       .state('market', {
         url: '/market',

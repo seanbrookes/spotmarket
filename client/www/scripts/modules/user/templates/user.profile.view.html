@@ -1,51 +1,49 @@
 <div class="UserProfile UserProfile__Container Column CenterItems">
-  <div class="UserProfile__Search">Search profiles<input type="text" placeholder="search" /></div>
-
   <div class="UserProfile_MainView">
     <div class="UserProfile__KeyPair Layout">
       <label class="UserProfile__Label">Handle</label>
-      <div class="UserProfile__Display" ng-show="!profileCtx.isEditCurrentUser()">{{profileCtx.currentProfile.handle}}</div>
-      <input class="UserProfile__Input" title="edit profile handle" ng-show="profileCtx.isEditCurrentUser()" ng-model="profileCtx.currentProfile.handle" />
+      <div class="UserProfile__Display" ng-show="!userProfileCtx.isEditCurrentUser()">{{userProfileCtx.currentProfile.handle}}</div>
+      <input class="UserProfile__Input" title="edit profile handle" ng-show="userProfileCtx.isEditCurrentUser()" ng-model="userProfileCtx.currentProfile.handle" />
     </div>
     <div class="UserProfile__KeyPair Layout">
       <label class="UserProfile__Label">First name</label>
-      <div class="UserProfile__Display" ng-show="!profileCtx.isEditCurrentUser()">{{profileCtx.currentProfile.firstName}}</div>
-      <input class="UserProfile__Input" title="edit profile handle" ng-show="profileCtx.isEditCurrentUser()" ng-model="profileCtx.currentProfile.firstName" />
+      <div class="UserProfile__Display" ng-show="!userProfileCtx.isEditCurrentUser()">{{userProfileCtx.currentProfile.firstName}}</div>
+      <input class="UserProfile__Input" title="edit profile handle" ng-show="userProfileCtx.isEditCurrentUser()" ng-model="userProfileCtx.currentProfile.firstName" />
     </div>
     <div class="UserProfile__KeyPair Layout">
       <label class="UserProfile__Label">Last name</label>
-      <div class="UserProfile__Display" ng-show="!profileCtx.isEditCurrentUser()">{{profileCtx.currentProfile.lastName}}</div>
-      <input class="UserProfile__Input" title="edit profile last name" ng-show="profileCtx.isEditCurrentUser()" ng-model="profileCtx.currentProfile.lastName" />
+      <div class="UserProfile__Display" ng-show="!userProfileCtx.isEditCurrentUser()">{{userProfileCtx.currentProfile.lastName}}</div>
+      <input class="UserProfile__Input" title="edit profile last name" ng-show="userProfileCtx.isEditCurrentUser()" ng-model="userProfileCtx.currentProfile.lastName" />
     </div>
     <div class="UserProfile__KeyPair Layout">
       <label class="UserProfile__Label">Email</label>
-      <div class="UserProfile__Display" ng-show="!profileCtx.isEditCurrentUser()">{{profileCtx.currentProfile.email}}</div>
-      <input class="UserProfile__Input" title="edit profile email" ng-show="profileCtx.isEditCurrentUser()" ng-model="profileCtx.currentProfile.email" />
+      <div class="UserProfile__Display" ng-show="!userProfileCtx.isEditCurrentUser()">{{userProfileCtx.currentProfile.email}}</div>
+      <input class="UserProfile__Input" title="edit profile email" ng-show="userProfileCtx.isEditCurrentUser()" ng-model="userProfileCtx.currentProfile.email" />
     </div>
   </div>
   <div class="ButtonGroup ButtonGroup__Container">
-    <button ng-show="profileCtx.isEditCurrentUser()" ng-click="profileCtx.toggleEditMode()">Cancel</button>
-    <button ng-show="profileCtx.isEditCurrentUser()" ng-click="profileCtx.saveCurrentProfile()">Save</button>
-    <button ng-show="profileCtx.isReadOnlyCurrentUser()" ng-click="profileCtx.toggleEditMode()">Edit</button>
+    <button ng-show="userProfileCtx.isEditCurrentUser()" ng-click="userProfileCtx.toggleEditMode()">Cancel</button>
+    <button ng-show="userProfileCtx.isEditCurrentUser()" ng-click="userProfileCtx.saveCurrentProfile()">Save</button>
+    <button ng-show="userProfileCtx.isReadOnlyCurrentUser()" ng-click="userProfileCtx.toggleEditMode()">Edit</button>
   </div>
 
   <div class="AvatarEditor AvatarEditor__Container">
     <div class="ProfileAvatarSrcPreviewContainer Layout">
       <div class="cropArea">
-        <img-crop image="profileCtx.avatarSrc" result-image="profileCtx.myCroppedImage"></img-crop>
+        <img-crop image="userProfileCtx.avatarSrc" result-image="userProfileCtx.myCroppedImage"></img-crop>
       </div>
       <div>
-        <img ng-src="{{profileCtx.currentProfile.avatarImage}}" />
+        <img ng-src="{{userProfileCtx.currentProfile.avatarImage}}" />
       </div>
     </div>
     <div>Cropped Image:</div>
     <div class="Layout">
-      <img ng-src="{{profileCtx.myCroppedImage}}" />
-      <button type="submit" ng-click="profileCtx.saveProfileImage()">submit</button>
+      <img ng-src="{{userProfileCtx.myCroppedImage}}" />
+      <button type="submit" ng-click="userProfileCtx.saveProfileImage()">submit</button>
     </div>
     <hr />
     Upload Image
-    <input type="file" ngf-select="" ng-model="profileCtx.avatarSrc" name="file" ngf-max-size="2MB" ngf-accept="'image/*'">
+    <input type="file" ngf-select="" ng-model="userProfileCtx.avatarSrc" name="file" ngf-max-size="2MB" ngf-accept="'image/*'">
 
   </div>
 

@@ -62,6 +62,13 @@ Market.directive('smMarketMarketView', [
           $scope.resetBounds = [];
           $scope.markers = {};
           $scope.center = {};
+          $scope.filterSourceData = {
+            variants:[],
+            sellers: [],
+            cropYears: [],
+            modes: [],
+            counts: {}
+          };
 
           if (!$scope.currentUser.smCurrentPosition) {
             // alert('message from MarketView: There is no current position!!!');
@@ -70,6 +77,35 @@ Market.directive('smMarketMarketView', [
           function loadAllAsks() {
             $scope.userMarketCtx.allAsks = AskServices.getAsks()
               .then(function(response) {
+                if (response && response.map) {
+                  response.map(function(askItem) {
+                    if (askItem.lotPrices && askItem.lotPrices.map) {
+                      askItem.lotPrices.map(function(lotPrice) {
+                        $scope.filterSourceData.modes.push(lotPrice.productMode);
+                        if (!$scope.filterSourceData.counts[lotPrice.productMode]) {
+                          $scope.filterSourceData.counts[lotPrice.productMode] = 1;
+                        }
+                        else {
+                          $scope.filterSourceData.counts[lotPrice.productMode] += 1;
+                        }
+                      });
+                      $scope.filterSourceData.variants.push(askItem.variant);
+                      if (!$scope.filterSourceData.counts[askItem.variant]) {
+                        $scope.filterSourceData.counts[askItem.variant] = 1;
+                      }
+                      else {
+                        $scope.filterSourceData.counts[askItem.variant] += 1;
+                      }
+                      $scope.filterSourceData.sellers.push(askItem.seller.handle);
+                      if (!$scope.filterSourceData.counts[askItem.seller.handle]) {
+                        $scope.filterSourceData.counts[askItem.seller.handle] = 1;
+                      }
+                      else {
+                        $scope.filterSourceData.counts[askItem.seller.handle] += 1;
+                      }
+                    }
+                  });
+                }
                 $scope.userMarketCtx.allAsks = response;
               });
 
