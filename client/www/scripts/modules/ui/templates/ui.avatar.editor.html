@@ -1,0 +1,22 @@
+<div class="smAvatarEditor smAvatarEditor__Container Layout">
+  <div ng-show="avatarEditorCtx.isShowCropPreview">
+    <img ng-src="{{avatarEditorCtx.imageCropResult}}" />
+    <div class="smAvatarEditor__ButtonContainer">
+      <button ng-show="avatarEditorCtx.isShowReset" ng-click="avatarEditorCtx.stepBack()">back</button>
+      <button ng-show="avatarEditorCtx.isShowReset" ng-click="avatarEditorCtx.resetEditor()">reset</button>
+    </div>
+  </div>
+  <div ng-show="!avatarEditorCtx.isShowCropPreview">
+    <sm-ui-image-crop
+      data-width="300"
+      data-height="300"
+      data-shape="circle"
+      data-step="imageCropStep"
+      data-result="avatarEditorCtx.imageCropResult"
+      toggleCropReset="toggleCropReset"
+      ng-show="avatarEditorCtx.showImageCropper" >
+    </sm-ui-image-crop>
+  </div>
+
+</div>
+

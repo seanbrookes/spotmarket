@@ -111,7 +111,7 @@ User.service('UserServices', [
       else {
         return _profileAvatars = svc.getProfileAvatars()
           .then(function(response) {
-            var retVal;
+            var retVal = {};
             response.map(function(avatar) {
 
               if (avatar.userId === profileId) {
@@ -119,7 +119,7 @@ User.service('UserServices', [
               }
 
             });
-            if (retVal.avatarImage) {
+            if (retVal && retVal.avatarImage) {
               return retVal;
             }
             // profile doesen't have an avatar yet
@@ -127,7 +127,7 @@ User.service('UserServices', [
             var newProfileAvatar = {
               createdDate: new Date().getTime(),
               userId:profileId,
-              avatarImg: getDefaultAvatarImgString()
+              avatarImage: getDefaultAvatarImgString()
             };
             return ProfileAvatar.create(newProfileAvatar)
               .$promise
@@ -233,6 +233,46 @@ User.service('UserServices', [
           })
           .catch(function(error) {
             $log.warn('bad find user by email', error);
+            return error;
+          })
+      }
+    };
+    svc.findUserByHandle = function(handle) {
+      if (handle) {
+        return UserProfile.find({filter:{where:{handle:handle}}})
+          .$promise
+          .then(function(response) {
+            var returnVal = {};
+            if (response.map) {
+              returnVal = response[0];
+            }
+            else if (response.handle) {
+              returnVal = response;
+            }
+            if (!returnVal.avatarImage) {
+              returnVal.avatarImage = getDefaultAvatarImgString();
+            }
+            if (!returnVal.bannerImage) {
+              returnVal.bannerImage = 'http://localhost:4545/images/default-hero.png';
+            }
+            if (!$scope.userProfileCtx.currentProfile.bannerBgColor) {
+              returnVal.bannerBgColor = '#608052';
+            }
+            if (!returnVal.bio) {
+              returnVal.bio = "No bio information available yet";
+            }
+            try {
+              returnVal.bio = $sce.trustAsHtml(returnVal.bio);
+
+            }
+            catch(error) {
+              returnVal.bio = '';
+
+            }
+            return returnVal;
+          })
+          .catch(function(error) {
+            $log.warn('bad find org by handle', error);
             return error;
           })
       }

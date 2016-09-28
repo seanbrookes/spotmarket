@@ -10,22 +10,58 @@
       <textarea class="AskForm__DescriptionText" ng-model="askCtx.currentAsk.description"></textarea>
     </div>
     <div>
-      <label class="AskForm__Label">Images</label>
-      <input type="file" ngf-select ng-model="picFile" name="file" multiple
-             accept="image/*" ngf-max-size="2MB" required>
-      <button ng-click="uploadPic(picFile)">Upload images</button>
-      <br><br>
-      <ul>
-        <li ng-repeat="f in files" >{{f.name}} {{f.$errorParam}}
-          <span class="progress" ng-show="f.progress >= 0">
-            <div style="width:{{f.progress}}%"
-                 ng-bind="f.progress + '%'"></div>
-          </span>
-        </li>
-        <li ng-repeat="f in errFiles" >{{f.name}} {{f.$error}} {{f.$errorParam}}
-        </li>
-      </ul>
-      {{errorMsg}}
+      <!--<div class="component">-->
+        <!--<div class="overlay">-->
+          <!--<div class="overlay-inner">-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--&lt;!&ndash; This image must be on the same domain as the demo or it will not work on a local file system &ndash;&gt;-->
+        <!--&lt;!&ndash; http://en.wikipedia.org/wiki/Cross-origin_resource_sharing &ndash;&gt;-->
+        <!--<img class="resize-image" src={{askCtx.cropImgString}} alt="image for resizing">-->
+        <!--<button class="btn-crop js-crop">Crop<img class="icon-crop" src="img/crop.svg"></button>-->
+      <!--</div>-->
+
+
+
+
+
+
+
+
+
+
+      <p ng-hide="imageCropResult||imageCropStep!=1">Let's get started &rarr; <a ng-click="showImageCropper=true;imageCropStep=1">Crop Image</a></p>
+      <p ng-show="imageCropResult">Wanna start over? &rarr; <a ng-click="imageCropResult=null;imageCropStep=1">Reset</a></p>
+
+<image-crop
+ data-width="300"
+ data-height="300"
+ data-shape="circle"
+ data-step="imageCropStep"
+ data-result="imageCropResult"
+ ng-show="showImageCropper" >
+</image-crop>
+
+<hr>
+<h2>Result</h2>
+<div ng-show="imageCropResult">
+ <img ng-src="{{ imageCropResult }}" alt="The Cropped Image">
+ <p>And this is the actual data uri which represents the cropped image, which you'll then upload to your server:</p>
+ <textarea class="result-datauri">{{ imageCropResult }}</textarea>
+</div>
+
+<p ng-hide="imageCropResult">Not cropped yet</p>
+
+
+
+
+
+
+<!--<label class="AskForm__Label">Images</label>-->
+      <!--<input type="file" ngf-select ng-model="askCtx.picFile" name="file" multiple-->
+             <!--accept="image/*" ngf-max-size="2MB" required>-->
+      <!--<button ng-click="uploadPic(picFile)">Upload images</button>-->
+
     </div>
 
 </div>

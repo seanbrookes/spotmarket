@@ -1,52 +1,26 @@
 <div class="UserProfile UserProfile__Container Column CenterItems">
-  <div class="UserProfile_MainView">
-    <div class="UserProfile__KeyPair Layout">
-      <label class="UserProfile__Label">Handle</label>
-      <div class="UserProfile__Display" ng-show="!userProfileCtx.isEditCurrentUser()">{{userProfileCtx.currentProfile.handle}}</div>
-      <input class="UserProfile__Input" title="edit profile handle" ng-show="userProfileCtx.isEditCurrentUser()" ng-model="userProfileCtx.currentProfile.handle" />
-    </div>
-    <div class="UserProfile__KeyPair Layout">
-      <label class="UserProfile__Label">First name</label>
-      <div class="UserProfile__Display" ng-show="!userProfileCtx.isEditCurrentUser()">{{userProfileCtx.currentProfile.firstName}}</div>
-      <input class="UserProfile__Input" title="edit profile handle" ng-show="userProfileCtx.isEditCurrentUser()" ng-model="userProfileCtx.currentProfile.firstName" />
-    </div>
-    <div class="UserProfile__KeyPair Layout">
-      <label class="UserProfile__Label">Last name</label>
-      <div class="UserProfile__Display" ng-show="!userProfileCtx.isEditCurrentUser()">{{userProfileCtx.currentProfile.lastName}}</div>
-      <input class="UserProfile__Input" title="edit profile last name" ng-show="userProfileCtx.isEditCurrentUser()" ng-model="userProfileCtx.currentProfile.lastName" />
-    </div>
-    <div class="UserProfile__KeyPair Layout">
-      <label class="UserProfile__Label">Email</label>
-      <div class="UserProfile__Display" ng-show="!userProfileCtx.isEditCurrentUser()">{{userProfileCtx.currentProfile.email}}</div>
-      <input class="UserProfile__Input" title="edit profile email" ng-show="userProfileCtx.isEditCurrentUser()" ng-model="userProfileCtx.currentProfile.email" />
-    </div>
-  </div>
-  <div class="ButtonGroup ButtonGroup__Container">
-    <button ng-show="userProfileCtx.isEditCurrentUser()" ng-click="userProfileCtx.toggleEditMode()">Cancel</button>
-    <button ng-show="userProfileCtx.isEditCurrentUser()" ng-click="userProfileCtx.saveCurrentProfile()">Save</button>
-    <button ng-show="userProfileCtx.isReadOnlyCurrentUser()" ng-click="userProfileCtx.toggleEditMode()">Edit</button>
-  </div>
 
-  <div class="AvatarEditor AvatarEditor__Container">
-    <div class="ProfileAvatarSrcPreviewContainer Layout">
-      <div class="cropArea">
-        <img-crop image="userProfileCtx.avatarSrc" result-image="userProfileCtx.myCroppedImage"></img-crop>
-      </div>
-      <div>
-        <img ng-src="{{userProfileCtx.currentProfile.avatarImage}}" />
+  <div class="UserProfile__BannerImageContainer" ng-style="{'background-color':userProfileCtx.currentProfile.bannerBgColor}">
+    <div class="UserProfile__BannerBG">
+      <img class="UserProfile__BannerImage" src="{{userProfileCtx.currentProfile.bannerImage}}" />
+    </div>
+    <div class="UserProfile__AvatarContainer">
+      <div class="UserProfile__AvatarContainerBG">
+        <img  class="UserProfile__AvatarImg" ng-src="{{userProfileCtx.currentProfile.avatarImage}}" />
       </div>
     </div>
-    <div>Cropped Image:</div>
-    <div class="Layout">
-      <img ng-src="{{userProfileCtx.myCroppedImage}}" />
-      <button type="submit" ng-click="userProfileCtx.saveProfileImage()">submit</button>
-    </div>
-    <hr />
-    Upload Image
-    <input type="file" ngf-select="" ng-model="userProfileCtx.avatarSrc" name="file" ngf-max-size="2MB" ngf-accept="'image/*'">
-
   </div>
+  <div class="Layout ProfileView__MainBody">
+    <div class="UserProfile__ContactContainer">
+      <div class="UserProfile__ContactInner">
+        <sm-user-profile-contact></sm-user-profile-contact>
+      </div>
 
+    </div>
+    <div class="UserProfile__BioContainer">
+      <div class="UserProfile__BioInner" ng-bind-html="userProfileCtx.currentProfile.bio"></div>
 
+    </div>
+  </div>
 
 </div>

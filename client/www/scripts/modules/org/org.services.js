@@ -6,7 +6,8 @@ Org.service('OrgServices', [
   'ProfileAvatar',
   'AliasEmail',
   '$log',
-  function(Org, smGlobalValues, OrgSessionService, UserLocation, ProfileAvatar, AliasEmail, $log) {
+  '$sce',
+  function(Org, smGlobalValues, OrgSessionService, UserLocation, ProfileAvatar, AliasEmail, $log, $sce) {
     var svc = this;
 
     var _profileAvatars = [];
@@ -127,7 +128,7 @@ Org.service('OrgServices', [
             var newProfileAvatar = {
               createdDate: new Date().getTime(),
               userId:profileId,
-              avatarImg: getDefaultAvatarImgString()
+              avatarImage: getDefaultAvatarImgString()
             };
             return ProfileAvatar.create(newProfileAvatar)
               .$promise
@@ -233,6 +234,43 @@ Org.service('OrgServices', [
           })
           .catch(function(error) {
             $log.warn('bad find user by email', error);
+            return error;
+          })
+      }
+    };
+    svc.findOrgByHandle = function(handle) {
+      if (handle) {
+        return Org.find({filter:{where:{handle:handle}}})
+          .$promise
+          .then(function(response) {
+            var returnVal = {};
+            if (response.map) {
+              returnVal = response[0];
+            }
+            else if (response.handle) {
+              returnVal = response;
+            }
+            if (!returnVal.avatarImage) {
+              returnVal.avatarImage = getDefaultAvatarImgString();
+            }
+            if (!returnVal.bannerImage) {
+              returnVal.bannerImage = 'https://pbs.twimg.com/profile_banners/707402364391567364/1473356620/1500x500';
+            }
+            if (!returnVal.bio) {
+              returnVal.bio = "No bio information available yet";
+            }
+            try {
+              returnVal.bio = $sce.trustAsHtml(returnVal.bio);
+
+            }
+            catch(error) {
+              returnVal.bio = '';
+
+            }
+            return returnVal;
+          })
+          .catch(function(error) {
+            $log.warn('bad find org by handle', error);
             return error;
           })
       }

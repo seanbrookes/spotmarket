@@ -12,7 +12,7 @@
     <link rel="stylesheet" type="text/css" href="./style/style.css">
 
   </head>
-  <body ng-class="{'Body--Home' : mainNavCtx.isHome}">
+  <body ng-class="{'Body--Home' : mainNavCtx.isHome}" class="Column CenterItems">
 
     <div class="AppContainer">
       <sm-page-header></sm-page-header>
@@ -90,8 +90,9 @@
     <!-- angular plugins and directives -->
     <script src="./scripts/vendor/angular/ui-utils.js"></script>
     <script src="./scripts/vendor/angular/angular-cookies.min.js"></script>
-    <script src="./scripts/vendor/angular/ng-img-crop.js"></script>
+
     <script src="./scripts/vendor/angular/angular-animate.min.js"></script>
+    <script src="./scripts/vendor/angular/image-crop.js"></script>
     <script src="./scripts/vendor/angular/angular-ui-router.js"></script>
     <script src="./scripts/vendor/angular/angular-growl.min.js"></script>
     <script src="./scripts/vendor/angular/angular-leaflet-directive.js"></script>
@@ -175,6 +176,7 @@
     <script src="./scripts/modules/ui/ui.module.js"></script>
     <script src="./scripts/modules/ui/ui.controllers.js"></script>
     <script src="./scripts/modules/ui/ui.directives.js"></script>
+    <script src="scripts/modules/ui/ui.react.js"></script>
     <script src="./scripts/modules/ui/ui.services.js"></script>
 
     <!-- tracking -->

@@ -8,6 +8,7 @@
   display: flex;
   min-height: 100vh;
   flex-direction: column;
+  max-width:1500px;
 }
 .InnerAppContainer {
   flex: 1;
@@ -28,6 +29,33 @@
     visibility: hidden;
   }
 }
+
+.LinkButton {
+  border:none;
+  background:transparent;
+  color: blue;
+  text-decoration: underline;
+  cursor:pointer
+}
+.CommandButton{
+  border:none;
+  background:transparent;
+  cursor:pointer;
+}
+.Button {
+  color:#444444;
+}
+
+.Button--primary {
+  background-color: @bg-color-button-primary;
+  color: @color-button-primary;
+  cursor:pointer;
+  padding:.6rem;
+  font-size:110%;
+  border-radius: .3rem;
+}
+
+
 /* blog post */
 .main-article {
   background-color:#ffffff;
@@ -312,19 +340,7 @@ Market view
 }
 
 
-.LinkButton {
-  border:none;
-  background:transparent;
-  color: blue;
-  text-decoration: underline;
-  cursor:pointer
-}
-.CommandButton{
-  border:none;
-  background:transparent;
-  cursor:pointer;
 
-}
 .AuthLoginViewContainer {
   min-height:36rem;
 }
@@ -341,18 +357,7 @@ Market view
   width:20rem;
 }
 
-.Button {
-  color:#444444;
-}
 
-.Button--primary {
-  background-color: @bg-color-button-primary;
-  color: @color-button-primary;
-  cursor:pointer;
-  padding:.6rem;
-  font-size:110%;
-  border-radius: .3rem;
-}
 
 .BodyHeadline {
   font-size:270%;
@@ -373,7 +378,6 @@ Market view
   padding:1rem;
   font-size:120%;
   color:#999999;
-  min-height:30rem;
 
   .UserProfile__KeyPair {
     div {
@@ -391,6 +395,10 @@ Market view
     width:14rem;
   }
 
+
+}
+.ProfileView__MainBody {
+  width:100%;
 
 }
 

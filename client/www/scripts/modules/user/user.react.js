@@ -1,3 +1,40 @@
+sm.UserProfileContact = React.createClass({displayName: "UserProfileContact",
+  render: function() {
+    var component = this;
+    var store = component.props.store;
+    var child;
+
+    var output = (
+
+      React.createElement("div", {className: "UserProfile_ContactView"}, 
+        React.createElement("div", {className: "UserProfile__KeyPair Layout"}, 
+          React.createElement("label", {className: "UserProfile__Label"}, "Handle"), 
+          React.createElement("div", null, store.handle)
+        ), 
+        React.createElement("div", {className: "UserProfile__KeyPair Layout"}, 
+          React.createElement("label", {className: "UserProfile__Label"}, "First name"), 
+          React.createElement("div", null, store.firstName)
+        ), 
+        React.createElement("div", {className: "UserProfile__KeyPair Layout"}, 
+          React.createElement("label", {className: "UserProfile__Label"}, "Last name"), 
+          React.createElement("div", null, store.lasttName)
+        ), 
+        React.createElement("div", {className: "UserProfile__KeyPair Layout"}, 
+          React.createElement("label", {className: "UserProfile__Label"}, "Phone"), 
+          React.createElement("div", null, store.phone)
+        ), 
+        React.createElement("div", {className: "UserProfile__KeyPair Layout"}, 
+          React.createElement("label", {className: "UserProfile__Label"}, "Email"), 
+          React.createElement("div", null, store.email)
+        )
+      )
+
+    );
+
+    return output;
+  }
+
+});
 sm.TrackedCommand = React.createClass({displayName: "TrackedCommand",
 
   handleClick: function() {

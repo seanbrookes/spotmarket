@@ -571,68 +571,68 @@ sm.SingleImageUpload = React.createClass({
     var imageTag, imageStatsList, canvasTag;
 
     if (currImg && currImg.url) {
-      imageTag =  (React.createElement("img", {className: "AvatarPreview__Image AvatarPreview__Image--landscape", src: currImg.url}));
-      canvasTag =  (React.createElement("img", {class: "resize-image", src: currImg.url, alt: "image for resizing"}));
+      imageTag =  (<img className="AvatarPreview__Image AvatarPreview__Image--landscape" src={currImg.url} />);
+      canvasTag =  (<img class="resize-image" src={currImg.url} alt="image for resizing" />);
 
       imageStatsList = (
-        React.createElement("div", {className: "AvatarPreviewStats AvatarPreviewStats__Container"}, 
-          React.createElement("ul", {className: "AvatarPreviewStats__List"}, 
-            React.createElement("li", null, 
-              React.createElement("div", {className: "Layout"}, 
-                React.createElement("label", {className: "AvatarPreviewStats__Label"}, "type"), 
-                React.createElement("div", {className: "AvatarPreviewStats__Value"}, currImg.type)
-              )
-            ), 
-            React.createElement("li", null, 
-              React.createElement("div", {className: "Layout"}, 
-                React.createElement("label", {className: "AvatarPreviewStats__Label"}, "name"), 
-                React.createElement("div", {className: "AvatarPreviewStats__Value"}, currImg.name)
-              )
-            ), 
-            React.createElement("li", null, 
-              React.createElement("div", {className: "Layout"}, 
-                React.createElement("label", {className: "AvatarPreviewStats__Label"}, "size"), 
-                React.createElement("div", {className: "AvatarPreviewStats__Value"}, currImg.size, "kb")
-              )
-            ), 
-            React.createElement("li", null, 
-              React.createElement("div", {className: "Layout"}, 
-                React.createElement("label", {className: "AvatarPreviewStats__Label"}, "height"), 
-                React.createElement("div", {className: "AvatarPreviewStats__Value"}, currImg.height)
-              )
-            ), 
-            React.createElement("li", null, 
-              React.createElement("div", {className: "Layout"}, 
-                React.createElement("label", {className: "AvatarPreviewStats__Label"}, "width"), 
-                React.createElement("div", {className: "AvatarPreviewStats__Value"}, currImg.width)
-              )
-            )
-          )
-        )
+        <div className="AvatarPreviewStats AvatarPreviewStats__Container">
+          <ul className="AvatarPreviewStats__List">
+            <li>
+              <div className="Layout">
+                <label className="AvatarPreviewStats__Label">type</label>
+                <div className="AvatarPreviewStats__Value">{currImg.type}</div>
+              </div>
+            </li>
+            <li>
+              <div className="Layout">
+                <label className="AvatarPreviewStats__Label">name</label>
+                <div className="AvatarPreviewStats__Value">{currImg.name}</div>
+              </div>
+            </li>
+            <li>
+              <div className="Layout">
+                <label className="AvatarPreviewStats__Label">size</label>
+                <div className="AvatarPreviewStats__Value">{currImg.size}kb</div>
+              </div>
+            </li>
+            <li>
+              <div className="Layout">
+                <label className="AvatarPreviewStats__Label">height</label>
+                <div className="AvatarPreviewStats__Value">{currImg.height}</div>
+              </div>
+            </li>
+            <li>
+              <div className="Layout">
+                <label className="AvatarPreviewStats__Label">width</label>
+                <div className="AvatarPreviewStats__Value">{currImg.width}</div>
+              </div>
+            </li>
+          </ul>
+        </div>
       );
 
     }
 
 
     return (
-      React.createElement("div", {className: "Layout"}, 
-        React.createElement("div", null, 
-          React.createElement("form", {onSubmit: this.uploadFile}, 
-            React.createElement("input", {type: "file", name: "file", onChange: this.previewFile, ref: "file", defaultValue: this.state.file}), React.createElement("br", null), 
-            React.createElement("input", {type: "submit"})
-          ), 
-          React.createElement("div", {className: "AvatarPreview AvatarPreview__Container Column Center CenterItems CenterAlign"}, 
-            imageTag
-          ), 
-          React.createElement("div", {className: "AvatarPreview AvatarPreview__CropView"}, 
-            canvasTag
-          )
-        ), 
-        React.createElement("div", {className: "AvatarUploadStats AvatarUploadStats__Container"}, 
-          imageStatsList
-        )
+      <div className="Layout">
+        <div>
+          <form onSubmit={this.uploadFile}>
+            <input type="file" name="file" onChange={this.previewFile} ref="file" defaultValue={this.state.file} /><br />
+            <input type="submit" />
+          </form>
+          <div className="AvatarPreview AvatarPreview__Container Column Center CenterItems CenterAlign">
+            {imageTag}
+          </div>
+          <div className="AvatarPreview AvatarPreview__CropView">
+            {canvasTag}
+          </div>
+        </div>
+        <div className="AvatarUploadStats AvatarUploadStats__Container">
+          {imageStatsList}
+        </div>
 
-      )
+      </div>
     );
   }
 });

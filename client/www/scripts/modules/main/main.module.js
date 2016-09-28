@@ -20,7 +20,6 @@ var Main = angular.module('Main', [
   'angularSpinner',
   'angularMoment',
   'leaflet-directive',
-  'ngImgCrop',
   'lbServices',
   'ngFileUpload',
   'UI',
@@ -47,7 +46,7 @@ Main.constant('NAV_CONST', {
   WELCOME_VIEW: 'WelcomeView',
   ABOUT_VIEW: 'AboutView',
   USER_VIEW: 'UserProfileView',
-  ORG_VIEW: 'OrgProfileView',
+  ORG_VIEW: 'OrgView',
   MARKET_VIEW: 'MarketView',
   GEO_VIEW: 'GeoView',
   ASK_VIEW: 'AskView',
@@ -168,7 +167,7 @@ Main.config([
         url:'/user',
         templateUrl:'./scripts/modules/user/templates/user.profile.main.html'
       })
-      .state('userprofile.detail', {
+      .state('userprofile_detail', {
         url: '/user/:handle',
         templateUrl: './scripts/modules/user/templates/user.profile.main.html'
       })
@@ -176,15 +175,15 @@ Main.config([
         url: '/usersearch?query',
         templateUrl: './scripts/modules/user/templates/user.search.results.main.html'
       })
-      .state('orgprofile', {
+      .state('org', {
         url:'/org',
-        templateUrl:'./scripts/modules/org/templates/org.profile.main.html'
+        templateUrl:'./scripts/modules/org/templates/org.main.html'
       })
-      .state('orgprofile.detail', {
+      .state('org_profile', {
         url: '/org/:handle',
-        templateUrl: './scripts/modules/org/templates/org.profile.main.html'
+        templateUrl: './scripts/modules/org/templates/org.main.html'
       })
-      .state('orgprofile.searchresults', {
+      .state('org_searchresults', {
         url: '/orgsearch/?query',
         templateUrl: './scripts/modules/org/templates/org.search.results.main.html'
       })

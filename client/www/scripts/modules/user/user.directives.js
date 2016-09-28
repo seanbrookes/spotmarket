@@ -22,11 +22,28 @@ User.directive('smUserProfileMain', [
     }
   }
 ]);
-User.directive('smUserProfileView', [
+User.directive('smUserProfileContact', [
   function() {
     return {
       restrict: 'E',
-      templateUrl: './scripts/modules/user/templates/user.profile.view.html',
+      link: function(scope, el, attrs) {
+
+        scope.$watch('userProfileCtx.currentProfile', function(newVal, oldVal) {
+          if (newVal && newVal.handle) {
+            ReactDOM.render(React.createElement(sm.UserProfileContact, {store:newVal}), el[0]);
+
+          }
+        }, true);
+      }
+
+    }
+  }
+]);
+User.directive('smUserProfileForm', [
+  function() {
+    return {
+      restrict: 'E',
+      templateUrl: './scripts/modules/user/templates/user.profile.form.html',
       controller: [
         '$scope',
         'Upload',
@@ -39,7 +56,7 @@ User.directive('smUserProfileView', [
           $scope.userProfileCtx = {avatarSrc:'', croppedImage:''};
           $scope.profileAvatar = {
             userId:'',
-            avatarImg: ''
+            avatarImage: ''
           };
 
 
@@ -143,21 +160,195 @@ User.directive('smUserProfileView', [
                   if (response.id) {
 
                     $scope.userProfileCtx.currentProfile = response;
+                    if (!$scope.userProfileCtx.currentProfile.bannerImage) {
+                      $scope.userProfileCtx.currentProfile.bannerImage = 'http://localhost:4545/images/default-hero.png';
+                    }
+                    if (!$scope.userProfileCtx.currentProfile.bannerBgColor) {
+                      $scope.userProfileCtx.currentProfile.bannerBgColor = '#608052';
+                    }
+                    if (!$scope.userProfileCtx.currentProfile.bio) {
+                      $scope.userProfileCtx.currentProfile.bio = "No bio information available yet";
+                    }
+
+
+
+                    UserServices.getProfileAvatar(response.id)
+                      .then(function(response) {
+                        if (response && response.avatarImage) {
+                          $log.debug('got the user avatar', response);
+                          $scope.userProfileCtx.currentProfile.avatarImage = response.avatarImage;
+                          $scope.userProfileCtx.currentProfile.userId = response.userId;
+                          $scope.userProfileCtx.currentProfile.avatarId = response.id;
+
+                        }
+                        return $scope.userProfileCtx.currentProfile;
+                      });
+
+                  }
+                });
+            }
 
 
 
 
-                    //UserServices.getProfileAvatar(response.id)
-                    //  .then(function(response) {
-                    //    if (response && response.avatarImage) {
-                    //      $log.debug('got the user avatar', response);
-                    //      $scope.userProfileCtx.currentProfile.avatarImage = response.avatarImage;
-                    //      $scope.userProfileCtx.currentProfile.userId = response.userId;
-                    //      $scope.userProfileCtx.currentProfile.avatarId = response.id;
-                    //
-                    //    }
-                    //    return $scope.userProfileCtx.currentProfile;
-                    //  });
+
+          };
+          $scope.userProfileCtx.init();
+        }
+
+      ],
+      link: function(scope, el, attrs) {
+
+
+
+      }
+    }
+  }
+]);
+User.directive('smUserProfileView', [
+  function() {
+    return {
+      restrict: 'E',
+      templateUrl: './scripts/modules/user/templates/user.profile.view.html',
+      controller: [
+        '$scope',
+        'Upload',
+        'UserSessionService',
+        'UserServices',
+        '$log',
+        '$stateParams',
+        '$state',
+        function($scope, Upload, UserSessionService, UserServices, $log, $stateParams, $state) {
+          $scope.userProfileCtx = {avatarSrc:'', croppedImage:''};
+          $scope.profileAvatar = {
+            userId:'',
+            avatarImage: ''
+          };
+
+
+          $scope.myImage='';
+          $scope.userProfileCtx.myCroppedImage = '';
+          $scope.userProfileCtx.currentProfile = {
+            avatarImage: ''
+          };
+          $scope.userProfileCtx.isEditMode = false;
+          $scope.userProfileCtx.toggleEditMode = function() {
+            if (!$scope.userProfileCtx.isEditMode && UserSessionService.isCurrentUserLoggedIn()) {
+              $scope.userProfileCtx.isEditMode = true;
+            }
+            else if (!$scope.userProfileCtx.isEditMode && !UserSessionService.isCurrentUserLoggedIn()) {
+              $state.go('login');
+            }
+            else {
+              $scope.userProfileCtx.isEditMode = false;
+            }
+          };
+          $scope.userProfileCtx.isEditCurrentUser = function() {
+            return $scope.userProfileCtx.isEditMode;
+          };
+          $scope.userProfileCtx.saveCurrentProfile = function() {
+            UserServices.saveUser($scope.userProfileCtx.currentProfile)
+              .then(function(response) {
+                $log.debug('Save my profile');
+                $scope.userProfileCtx.isEditMode = false;
+              });
+          };
+
+          $scope.userProfileCtx.isReadOnlyCurrentUser = function() {
+            // am I current user
+            if ((!$stateParams.handle) && (!$scope.userProfileCtx.isEditMode)) {
+              return true;
+            }
+            return false;
+            // is the form in edit mode
+          };
+
+          $scope.userProfileCtx.saveProfileImage = function() {
+            $log.debug('|  Save the Profile Image ', $scope.userProfileCtx.myCroppedImage );
+            var profileAvatarUpdate = {
+              userId: $scope.userProfileCtx.currentProfile.userId
+            };
+            if ($scope.userProfileCtx.currentProfile.avatarId) {
+              profileAvatarUpdate.id = $scope.userProfileCtx.currentProfile.avatarId;
+            }
+            profileAvatarUpdate.avatarImage = $scope.userProfileCtx.myCroppedImage;
+            UserServices.saveProfileAvatar(profileAvatarUpdate)
+              .then(function(response) {
+                document.location.reload();
+              })
+              .catch(function(error) {
+                $log.warn('bad save profile avatar ', error);
+              });
+
+
+          };
+
+          var handleFileSelect = function(evt) {
+            var file = evt.currentTarget.files[0];
+            var reader = new FileReader();
+            reader.onload = function (evt) {
+              $scope.$apply(function($scope){
+                $scope.userProfileCtx.avatarSrc = evt.target.result;
+              });
+            };
+            reader.readAsDataURL(file);
+          };
+
+
+          angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);
+
+
+
+          $scope.userProfileCtx.triggerEditMode = function() {
+            $scope.userProfileCtx.isEditMode = true;
+          };
+
+          $scope.userProfileCtx.init = function() {
+
+
+            // check if we have an id/handle param
+            // if so then load up that user data
+            // if not load current user data
+            // provide edit button
+
+
+            if ($stateParams.handle) {
+              // could be id or handle
+              //
+              // populate editor
+              $log.debug('LOOKUP PROFILE BY HANDLE');
+            }
+            else {
+              $log.debug('WE ARE THIS USER');
+              // check if current user has a profile avatar
+              UserSessionService.getCurrentUserByToken()
+                .then(function(response) {
+                  if (response.id) {
+
+                    $scope.userProfileCtx.currentProfile = response;
+                    if (!$scope.userProfileCtx.currentProfile.bannerImage) {
+                      $scope.userProfileCtx.currentProfile.bannerImage = 'http://localhost:4545/images/default-hero.png';
+                    }
+                    if (!$scope.userProfileCtx.currentProfile.bannerBgColor) {
+                      $scope.userProfileCtx.currentProfile.bannerBgColor = '#608052';
+                    }
+                    if (!$scope.userProfileCtx.currentProfile.bio) {
+                      $scope.userProfileCtx.currentProfile.bio = "No bio information available yet";
+                    }
+
+
+
+                    UserServices.getProfileAvatar(response.id)
+                      .then(function(response) {
+                        if (response && response.avatarImage) {
+                          $log.debug('got the user avatar', response);
+                          $scope.userProfileCtx.currentProfile.avatarImage = response.avatarImage;
+                          $scope.userProfileCtx.currentProfile.userId = response.userId;
+                          $scope.userProfileCtx.currentProfile.avatarId = response.id;
+
+                        }
+                        return $scope.userProfileCtx.currentProfile;
+                      });
 
                   }
                 });

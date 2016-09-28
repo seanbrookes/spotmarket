@@ -1770,6 +1770,74 @@ img-crop .loading .fixed-height {
   height: 100%;
   position: absolute;
 }
+/* Some of these styles you can override, things like colors,
+ * however some styles are required for the structure, and are critical to this module behaving properly!
+ */
+/* Core component styles */
+.ng-image-crop {
+  text-align: center;
+  margin: 0 auto;
+  position: relative;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+/* Each of the 3 steps in the process are contained within sections */
+.ng-image-crop > section {
+  background: #ccc;
+}
+/* The cropping button */
+.ng-image-crop button {
+  margin-top: 10px;
+}
+/* The dashed cropping guideline */
+.ng-image-crop .cropping-guide {
+  display: block;
+  background: rgba(255, 255, 255, 0.3);
+  border: 2px dashed white;
+  position: absolute;
+  pointer-events: none;
+}
+/* The circular themed cropping guideline */
+.ng-image-crop--circle .cropping-guide {
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+}
+/* The canvas where the user positions the image via dragging and zooming */
+.ng-image-crop .cropping-canvas {
+  background: rgba(255, 255, 255, 0.3);
+  margin: 0 auto;
+  cursor: move;
+}
+/* The overlayed draggable zoom handle in the corner of the module */
+.ng-image-crop .zoom-handle {
+  display: block;
+  position: absolute;
+  bottom: 1px;
+  left: 1px;
+  background: rgba(255, 255, 255, 0.7);
+  width: 80px;
+  height: 80px;
+  cursor: move;
+  border-radius: 200px 50px;
+}
+/* The text within the zoom handle */
+.ng-image-crop .zoom-handle > span {
+  color: rgba(0, 0, 0, 0.5);
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  display: block;
+  position: relative;
+  top: 32px;
+}
 .dropdown {
   z-index: 4000;
 }
@@ -1852,6 +1920,7 @@ img-crop .loading .fixed-height {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
+  max-width: 1500px;
 }
 .InnerAppContainer {
   flex: 1;
@@ -1867,6 +1936,29 @@ img-crop .loading .fixed-height {
 }
 .Body--Home .MainNavViewButton--home {
   visibility: hidden;
+}
+.LinkButton {
+  border: none;
+  background: transparent;
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.CommandButton {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+.Button {
+  color: #444444;
+}
+.Button--primary {
+  background-color: #608052;
+  color: #ffffff;
+  cursor: pointer;
+  padding: .6rem;
+  font-size: 110%;
+  border-radius: .3rem;
 }
 /* blog post */
 .main-article {
@@ -2103,18 +2195,6 @@ Market view
 .AuthReg__ValidationError {
   color: red;
 }
-.LinkButton {
-  border: none;
-  background: transparent;
-  color: blue;
-  text-decoration: underline;
-  cursor: pointer;
-}
-.CommandButton {
-  border: none;
-  background: transparent;
-  cursor: pointer;
-}
 .AuthLoginViewContainer {
   min-height: 36rem;
 }
@@ -2130,17 +2210,6 @@ Market view
 .HandleForm__Input {
   width: 20rem;
 }
-.Button {
-  color: #444444;
-}
-.Button--primary {
-  background-color: #608052;
-  color: #ffffff;
-  cursor: pointer;
-  padding: .6rem;
-  font-size: 110%;
-  border-radius: .3rem;
-}
 .BodyHeadline {
   font-size: 270%;
   font-weight: 400;
@@ -2154,7 +2223,6 @@ Market view
   padding: 1rem;
   font-size: 120%;
   color: #999999;
-  min-height: 30rem;
 }
 .UserProfile_MainView .UserProfile__KeyPair div {
   border: 1px solid #efefef;
@@ -2167,6 +2235,9 @@ Market view
   padding: 1rem;
   font-size: 110%;
   width: 14rem;
+}
+.ProfileView__MainBody {
+  width: 100%;
 }
 .OrgProfile_MainView {
   margin-top: 2rem;
@@ -2352,8 +2423,138 @@ small size views
   margin: .12rem 0 .12rem 0;
   padding: .12rem;
 }
+.OrgProfile__ContactContainer {
+  width: 27%;
+  padding: 1rem;
+  border: 1px solid #efefef;
+  border-radius: .5rem;
+}
+.OrgProfile__BioContainer {
+  margin-left: 1rem;
+  padding: 1rem;
+  border: 1px solid #efefef;
+  border-radius: .5rem;
+}
+.OrgProfile__BannerImageContainer {
+  height: 320px;
+  padding-bottom: 60px;
+  position: relative;
+  width: 100%;
+  z-index: 4;
+  margin-bottom: 2.6rem;
+}
+.OrgProfile__BannerImageContainer .OrgProfile__BannerBG {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+}
+.OrgProfile__BannerImageContainer .OrgProfile__BannerBG .OrgProfile__BannerImage {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -9999px;
+  bottom: -9999px;
+  margin: auto 0;
+  width: 100%;
+}
+.OrgProfile__BannerImageContainer .OrgProfile__AvatarContainer {
+  position: absolute;
+  top: 200px;
+  left: 45px;
+}
+.OrgProfile__BannerImageContainer .OrgProfile__AvatarContainer .OrgProfile__AvatarContainerBG {
+  border-radius: 1rem;
+  overflow: hidden;
+}
+.OrgProfile__BannerImageContainer .OrgProfile__AvatarContainer .OrgProfile__AvatarImg {
+  width: 13rem;
+}
+.OrgProfile__Textarea {
+  width: 30rem;
+  height: 20rem;
+}
+.UserProfile__ContactContainer {
+  width: 27%;
+  padding: 1rem;
+  border: 1px solid #efefef;
+  border-radius: .5rem;
+}
+.UserProfile__BioContainer {
+  margin-left: 1rem;
+  padding: 1rem;
+  border: 1px solid #efefef;
+  border-radius: .5rem;
+}
+.UserProfile__BannerImageContainer {
+  height: 320px;
+  padding-bottom: 60px;
+  position: relative;
+  width: 100%;
+  z-index: 4;
+  margin-bottom: 2.6rem;
+}
+.UserProfile__BannerImageContainer .UserProfile__BannerBG {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+}
+.UserProfile__BannerImageContainer .UserProfile__BannerBG .UserProfile__BannerImage {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -9999px;
+  bottom: -9999px;
+  margin: auto 0;
+  width: 100%;
+}
+.UserProfile__BannerImageContainer .UserProfile__AvatarContainer {
+  position: absolute;
+  top: 200px;
+  left: 45px;
+}
+.UserProfile__BannerImageContainer .UserProfile__AvatarContainer .UserProfile__AvatarContainerBG {
+  border-radius: 1rem;
+  overflow: hidden;
+}
+.UserProfile__BannerImageContainer .UserProfile__AvatarContainer .UserProfile__AvatarImg {
+  width: 13rem;
+}
+.UserProfile__Textarea {
+  width: 30rem;
+  height: 20rem;
+}
 .AvatarEditor {
   display: none;
+}
+.AvatarPreview__Container {
+  border: 1px solid #efefef;
+  width: 17rem;
+  height: 17rem;
+  overflow: hidden;
+  background: #111111;
+}
+.AvatarPreview__Image--square {
+  width: 17rem;
+  height: 17rem;
+}
+.AvatarPreview__Image--portrait {
+  height: 17rem;
+}
+.AvatarPreview__Image--landscape {
+  width: 17rem;
+}
+.AvatarPreviewStats__Label {
+  width: 4.2rem;
+}
+.AvatarPreviewStats__Value {
+  font-size: 112%;
+  padding: .2rem;
 }
 .AskForm__FieldContainer label {
   width: 12rem;
@@ -2520,4 +2721,72 @@ small size views
   padding: .3rem;
   border: 1px solid #dddddd;
   border-radius: .3rem;
+}
+/* Some of these styles you can override, things like colors,
+ * however some styles are required for the structure, and are critical to this module behaving properly!
+ */
+/* Core component styles */
+.ng-image-crop {
+  text-align: center;
+  margin: 0 auto;
+  position: relative;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+/* Each of the 3 steps in the process are contained within sections */
+.ng-image-crop > section {
+  background: #ccc;
+}
+/* The cropping button */
+.ng-image-crop button {
+  margin-top: 10px;
+}
+/* The dashed cropping guideline */
+.ng-image-crop .cropping-guide {
+  display: block;
+  background: rgba(255, 255, 255, 0.3);
+  border: 2px dashed white;
+  position: absolute;
+  pointer-events: none;
+}
+/* The circular themed cropping guideline */
+.ng-image-crop--circle .cropping-guide {
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+}
+/* The canvas where the user positions the image via dragging and zooming */
+.ng-image-crop .cropping-canvas {
+  background: rgba(255, 255, 255, 0.3);
+  margin: 0 auto;
+  cursor: move;
+}
+/* The overlayed draggable zoom handle in the corner of the module */
+.ng-image-crop .zoom-handle {
+  display: block;
+  position: absolute;
+  bottom: 1px;
+  left: 1px;
+  background: rgba(255, 255, 255, 0.7);
+  width: 80px;
+  height: 80px;
+  cursor: move;
+  border-radius: 200px 50px;
+}
+/* The text within the zoom handle */
+.ng-image-crop .zoom-handle > span {
+  color: rgba(0, 0, 0, 0.5);
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  display: block;
+  position: relative;
+  top: 32px;
 }

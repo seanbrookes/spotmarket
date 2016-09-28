@@ -1,3 +1,40 @@
+sm.UserProfileContact = React.createClass({
+  render: function() {
+    var component = this;
+    var store = component.props.store;
+    var child;
+
+    var output = (
+
+      <div className="UserProfile_ContactView">
+        <div className="UserProfile__KeyPair Layout">
+          <label className="UserProfile__Label">Handle</label>
+          <div>{store.handle}</div>
+        </div>
+        <div className="UserProfile__KeyPair Layout">
+          <label className="UserProfile__Label">First name</label>
+          <div>{store.firstName}</div>
+        </div>
+        <div className="UserProfile__KeyPair Layout">
+          <label className="UserProfile__Label">Last name</label>
+          <div>{store.lasttName}</div>
+        </div>
+        <div className="UserProfile__KeyPair Layout">
+          <label className="UserProfile__Label">Phone</label>
+          <div>{store.phone}</div>
+        </div>
+        <div className="UserProfile__KeyPair Layout">
+          <label className="UserProfile__Label">Email</label>
+          <div>{store.email}</div>
+        </div>
+      </div>
+
+    );
+
+    return output;
+  }
+
+});
 sm.TrackedCommand = React.createClass({
 
   handleClick: function() {

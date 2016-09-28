@@ -59,7 +59,7 @@ Main.directive('smMainNav', [
               case NAV_CONST.USER_VIEW:
                 return 'userprofile';
               case NAV_CONST.ORG_VIEW:
-                return 'orgprofile';
+                return 'org';
               default:
                 return 'home';
             }
@@ -74,7 +74,7 @@ Main.directive('smMainNav', [
                 return NAV_CONST.ASK_VIEW;
               case 'userprofile':
                 return NAV_CONST.USER_VIEW;
-              case 'orgprofile':
+              case 'org':
                 return NAV_CONST.ORG_VIEW;
               default:
                 return NAV_CONST.WELCOME_VIEW;

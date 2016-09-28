@@ -137,6 +137,8 @@ Ask.directive('smAskMarketView', [
               productVariantIndirectMatchCollection: []
             }
           };
+          $scope.askCtx.picFile = {};
+          $scope.askCtx.cropImgString = '';
           $scope.askCtx.seller.handleSuggestionHistory = [];
           $scope.askCtx.seller.handleSuggestionHistoryIndex = 0;
           $scope.askCtx.seller.handleSearchDefaultHandleAlphaOnly = false;
@@ -169,12 +171,27 @@ Ask.directive('smAskMarketView', [
             ]
           };
 
+
+
+          $scope.imageCropResult = null;
+          $scope.showImageCropper = false;
+
+          $scope.$watch('imageCropResult', function(newVal) {
+            if (newVal) {
+              console.log('imageCropResult', newVal);
+            }
+
+          });
+
+
           $scope.uploadPic = function (file) {
             var currentUser = UserSessionService.getCurrentUserFromClientState();
             file.upload = Upload.upload({
-              url: 'http://localhost:4546/askupload',
-              data: {file: file, smToken: currentUser.smToken, askId: 'booga-booga-googa'}
+              url: 'http://localhost:4546/imageupload',
+              headers : {'Content-Type': 'multipart/form-data'},
+              data: {file: file, smToken: currentUser.smToken, askid: 'booga-booga-googa'}
             });
+
 
             file.upload.then(function (response) {
               $timeout(function () {
@@ -587,6 +604,23 @@ Ask.directive('smAskMarketView', [
         }
       ],
       link: function (scope, el, attrs) {
+
+        scope.$watch('askCtx.picFile', function(newVal, oldVal) {
+          if (newVal && newVal[0]) {
+            console.log('pick file', scope.askCtx.picFile);
+
+            var reader = new FileReader();
+
+            reader.readAsDataURL(scope.askCtx.picFile[0]);
+
+            reader.addEventListener("load", function (output) {
+
+              scope.askCtx.cropImgString = output.target.result;
+
+            });
+
+          }
+        }, true);
 
         scope.$watch('askCtx.currentAsk.seller.email', function (emailVal) {
           if (emailVal) {

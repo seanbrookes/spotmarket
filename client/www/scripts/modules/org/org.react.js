@@ -1,36 +1,70 @@
-sm.TrackedCommand = React.createClass({displayName: "TrackedCommand",
-
-  handleClick: function() {
-    var component = this;
-    if (component.props.scope && component.props.scope.action) {
-      var scope = component.props.scope;
-      var action = scope.action.split(',');
-      var actionMethod = _.trim(action[action.length-1]);
-      action.pop();
-      scope.$apply(function() {
-        scope.$parent[actionMethod](_.trim(action.toString()));
-      });
-    }
-  },
-
+sm.ProfileContact = React.createClass({displayName: "ProfileContact",
   render: function() {
     var component = this;
-    var scope = component.props.scope;
+    var store = component.props.store;
     var child;
-    var isDisabled = false;
-    if (scope.disabled) {
-      if (scope.disabled !== 'false') {
-        isDisabled = true;
-      }
-    }
-    //if (scope.childTag) {
-    //  child = React.createElement(scope.childTag, scope.childAttributes);
-    //}
-    //else {
-    //  child = scope.label;
-    //}
 
-    return (React.createElement("button", {className: scope.className, disabled: isDisabled, onClick: this.handleClick}, scope.label))
+    var output = (
+
+        React.createElement("div", {className: "OrgProfile_ContactView"}, 
+          React.createElement("div", {className: "OrgProfile__KeyPair Layout"}, 
+            React.createElement("label", {className: "OrgProfile__Label"}, "Handle"), 
+            React.createElement("div", null, store.handle)
+          ), 
+          React.createElement("div", {className: "OrgProfile__KeyPair Layout"}, 
+            React.createElement("label", {className: "OrgProfile__Label"}, "Name"), 
+            React.createElement("div", null, store.name)
+          ), 
+          React.createElement("div", {className: "OrgProfile__KeyPair Layout"}, 
+            React.createElement("label", {className: "OrgProfile__Label"}, "Phone"), 
+            React.createElement("div", null, store.phone)
+          ), 
+          React.createElement("div", {className: "OrgProfile__KeyPair Layout"}, 
+            React.createElement("label", {className: "OrgProfile__Label"}, "Url"), 
+            React.createElement("div", null, store.url)
+          ), 
+          React.createElement("div", {className: "OrgProfile__KeyPair Layout"}, 
+            React.createElement("label", {className: "OrgProfile__Label"}, "Email"), 
+            React.createElement("div", null, store.email)
+          )
+        )
+
+    );
+
+    return output;
   }
 
 });
+
+sm.OrgListView = React.createClass({displayName: "OrgListView",
+  render: function() {
+    var component = this;
+    var store = component.props.store;
+    var child;
+
+
+    var output = [];
+    if (store.map) {
+      store.map(function(org) {
+        var orgLink = '/#/org/' + org.handle;
+        output.push(
+          React.createElement("li", {"ng-repeat": "org in orgListCtx.currentOrgList"}, 
+            "Name: ", React.createElement("a", {href: orgLink}, org.handle)
+          )
+        );
+      });
+    }
+
+
+    return (
+      React.createElement("div", null, 
+        React.createElement("ul", null, 
+          output
+        )
+
+      )
+    );
+  }
+
+});
+

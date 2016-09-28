@@ -26,7 +26,6 @@ Org.directive('smOrgListView', [
   function() {
     return {
       restrict: 'E',
-      templateUrl: './scripts/modules/org/templates/org.list.view.html',
       controller: [
         '$scope',
         '$log',
@@ -46,7 +45,16 @@ Org.directive('smOrgListView', [
           };
           $scope.orgListCtx.init();
         }
-      ]
+      ],
+      link: function(scope, el, attrs) {
+        scope.$watch('orgListCtx.currentOrgList', function(newVal, oldVal) {
+          if (newVal && newVal.map) {
+            ReactDOM.render(React.createElement(sm.OrgListView, {store:newVal}), el[0]);
+
+          }
+
+        }, true);
+      }
     }
   }
 ]);
@@ -90,11 +98,11 @@ Org.directive('smOrgSearchResultsView', [
     }
   }
 ]);
-Org.directive('smOrgProfileView', [
+Org.directive('smOrgProfileForm', [
   function() {
     return {
       restrict: 'E',
-      templateUrl: './scripts/modules/org/templates/org.profile.view.html',
+      templateUrl: './scripts/modules/org/templates/org.profile.form.html',
       controller: [
         '$scope',
         'Upload',
@@ -108,15 +116,17 @@ Org.directive('smOrgProfileView', [
           $scope.orgProfileCtx.currentProfile = {};
           $scope.profileAvatar = {
             userId:'',
-            avatarImg: ''
+            avatarImage: ''
           };
 
           $scope.orgProfileCtx.triggerCreateNewOrg = function() {
+            $scope.orgCtx.isShowAllOrgList = false;
             $scope.orgCtx.isShowOrgProfileForm = true;
           };
           $scope.orgProfileCtx.cancelNewOrgProfile = function() {
             $scope.orgCtx.isShowOrgProfileForm = false;
             $scope.orgProfileCtx.currentProfile = {};
+            $scope.orgCtx.isShowAllOrgList = true;
           };
 
 
@@ -230,13 +240,113 @@ Org.directive('smOrgProfileView', [
       ],
       link: function(scope, el, attrs) {
 
+        scope.$watch('orgCtx.currentOrgProfile', function(newVal, oldVal) {
+          if (newVal && newVal.name) {
+            scope.orgProfileCtx.currentProfile = newVal;
+          }
+        }, true);
 
 
       }
     }
   }
 ]);
+Org.directive('smOrgProfileContact', [
+  function() {
+    return {
+      restrict: 'E',
+      link: function(scope, el, attrs) {
 
+        scope.$watch('orgProfileCtx.currentProfile', function(newVal, oldVal) {
+          if (newVal && newVal.name) {
+            ReactDOM.render(React.createElement(sm.ProfileContact, {store:newVal}), el[0]);
+
+          }
+        }, true);
+      }
+
+    }
+  }
+]);
+Org.directive('smOrgProfileView', [
+  function() {
+    return {
+      restrict: 'E',
+      scope: {
+        org: '='
+      },
+      templateUrl: './scripts/modules/org/templates/org.profile.view.html',
+      controller: [
+        '$scope',
+        'Upload',
+        'OrgSessionService',
+        'OrgServices',
+        '$log',
+        '$stateParams',
+        '$state',
+        function($scope, Upload, OrgSessionService, OrgServices, $log, $stateParams, $state) {
+          $scope.orgProfileCtx = {avatarSrc:'', croppedImage:''};
+          $scope.orgProfileCtx.currentProfile = {};
+          $scope.profileAvatar = {
+            userId:'',
+            avatarImage: ''
+          };
+
+
+
+          $scope.myImage='';
+          $scope.orgProfileCtx.avatarImage = '';
+          $scope.orgProfileCtx.currentProfile = {
+            avatarImage: ''
+          };
+
+
+
+
+
+          $scope.orgProfileCtx.init = function() {
+
+            if ($scope.org) {
+              $scope.orgProfileCtx.currentProfile = $scope.org;
+            }
+
+            // check if we have an id/handle param
+            // if so then load up that user data
+            // if not load current user data
+            // provide edit button
+
+
+            if ($stateParams.handle) {
+              // could be id or handle
+              //
+              // populate editor
+              $log.debug('LOOKUP PROFILE BY HANDLE');
+            }
+            else {
+              $log.debug('WE ARE THIS USER');
+              // check if current user has a profile avatar
+            }
+
+          };
+          $scope.orgProfileCtx.init();
+        }
+
+      ],
+      link: function(scope, el, attrs) {
+
+        scope.$watch('org.handle', function(newVal, oldVal) {
+          if (newVal) {
+            scope.orgProfileCtx.currentProfile = scope.org;
+          }
+
+        }, true);
+
+
+
+      }
+    }
+  }
+]);
 Org.directive('smTrackedCommand', [
   '$log',
   '$timeout',
