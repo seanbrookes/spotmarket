@@ -8,8 +8,8 @@
     <div ng-style="croppingGuideStyles" class="cropping-guide"></div>
     <div class="zoom-handle" ng-mousemove="onHandleMouseMove($event)" ng-mousedown="onHandleMouseDown($event)"
          ng-mouseup="onHandleMouseUp($event)"><span>&larr; zoom &rarr;</span></div>
-    <button ng-click="crop()">Crop</button>
-    <button ng-click="imgCropReset()">Reset</button>
+    <button  ng-click="imgCropReset()">Reset</button>
+    <button class="Button--primary" ng-click="crop()">Crop preview</button>
   </section>
   <section ng-style="sectionStyles" class="image-crop-section-final" ng-show="step==3">
     <img class="image-crop-final" ng-src="{{ croppedDataUri }}"/>

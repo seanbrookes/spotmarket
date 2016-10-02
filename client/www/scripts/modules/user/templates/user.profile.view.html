@@ -1,24 +1,37 @@
 <div class="UserProfile UserProfile__Container Column CenterItems">
 
-  <div class="UserProfile__BannerImageContainer" ng-style="{'background-color':userProfileCtx.currentProfile.bannerBgColor}">
-    <div class="UserProfile__BannerBG">
+  <div class="UserProfile__BannerImageContainer">
+
+    <div ng-hide="userProfileCtx.isEditAvatarMode || userProfileCtx.isEditBannerImageMode" class="UserProfile__BannerBG"  ng-style="{'background-color':userProfileCtx.currentProfile.bannerBgColor}">
       <img class="UserProfile__BannerImage" src="{{userProfileCtx.currentProfile.bannerImage}}" />
+      <button class="LinkButton" ng-click="userProfileCtx.triggerEditBannerImage()">change background</button>
     </div>
-    <div class="UserProfile__AvatarContainer">
+    <sm-ui-banner-image-editor profile="userProfileCtx.currentProfile" ng-show="userProfileCtx.isEditBannerImageMode"></sm-ui-banner-image-editor>
+
+    <div ng-hide="userProfileCtx.isEditAvatarMode" class="UserProfile__AvatarContainer">
       <div class="UserProfile__AvatarContainerBG">
-        <img  class="UserProfile__AvatarImg" ng-src="{{userProfileCtx.currentProfile.avatarImage}}" />
+        <img class="UserProfile__AvatarImg" ng-src="{{userProfileCtx.currentProfile.avatarImage}}" />
       </div>
+      <button class="LinkButton" ng-click="userProfileCtx.triggerEditAvatar()">change avatar</button>
     </div>
+
+    <sm-ui-avatar-editor profile="userProfileCtx.currentProfile" ng-show="userProfileCtx.isEditAvatarMode"></sm-ui-avatar-editor>
+
+
   </div>
   <div class="Layout ProfileView__MainBody">
     <div class="UserProfile__ContactContainer">
       <div class="UserProfile__ContactInner">
         <sm-user-profile-contact></sm-user-profile-contact>
+        <button ng-show="!userProfileCtx.isEditContactMode" class="LinkButton" ng-click="userProfileCtx.triggerEditContact()">edit contact info</button>
       </div>
-
     </div>
     <div class="UserProfile__BioContainer">
-      <div class="UserProfile__BioInner" ng-bind-html="userProfileCtx.currentProfile.bio"></div>
+      <div ng-show="!userProfileCtx.isEditBioMode" class="UserProfile__BioInner" ng-bind-html="userProfileCtx.currentProfile.bio"></div>
+      <button ng-show="!userProfileCtx.isEditBioMode" class="LinkButton" ng-click="userProfileCtx.triggerEditBio()">edit bio</button>
+      <textarea ng-show="userProfileCtx.isEditBioMode" ng-model="userProfileCtx.currentProfile.bio"></textarea>
+      <button ng-show="userProfileCtx.isEditBioMode" class="LinkButton" ng-click="userProfileCtx.saveBio()">save bio</button>
+
 
     </div>
   </div>

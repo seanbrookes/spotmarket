@@ -2,8 +2,9 @@
   <div ng-show="avatarEditorCtx.isShowCropPreview">
     <img ng-src="{{avatarEditorCtx.imageCropResult}}" />
     <div class="smAvatarEditor__ButtonContainer">
-      <button ng-show="avatarEditorCtx.isShowReset" ng-click="avatarEditorCtx.stepBack()">back</button>
-      <button ng-show="avatarEditorCtx.isShowReset" ng-click="avatarEditorCtx.resetEditor()">reset</button>
+      <button ng-show="avatarEditorCtx.isShowReset" ng-click="avatarEditorCtx.stepBack()">Back</button>
+      <button ng-show="avatarEditorCtx.isShowReset" ng-click="avatarEditorCtx.resetEditor()">Reset</button>
+      <button ng-click="avatarEditorCtx.saveImage()" class="Button--primary">Save</button>
     </div>
   </div>
   <div ng-show="!avatarEditorCtx.isShowCropPreview">

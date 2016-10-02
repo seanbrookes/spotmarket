@@ -1,37 +1,95 @@
 sm.UserProfileContact = React.createClass({displayName: "UserProfileContact",
+  getInitialState() {
+    return {handle:''}
+  },
+  profilePropertyChange(propertyName, event) {
+    var val = event.target.value;
+    var scope = this.props.scope;
+    scope.$apply(function() {
+      scope.userProfileCtx.currentProfile[propertyName] = val;
+    });
+    console.log('I am changing');
+
+    this.setState({handle:val});
+  },
+  saveContactEdit() {
+    var scope = this.props.scope;
+    scope.$apply(function() {
+      scope.userProfileCtx.saveContact();
+    });
+  },
+  cancelContactEdit() {
+    var scope = this.props.scope;
+    scope.$apply(function() {
+      scope.userProfileCtx.cancelContactEdit();
+    });
+  },
+
   render: function() {
     var component = this;
-    var store = component.props.store;
-    var child;
+    var scope = component.props.scope;
+    var userProfile = scope.userProfileCtx.currentProfile;
 
-    var output = (
 
+    var contactComponent = (
       React.createElement("div", {className: "UserProfile_ContactView"}, 
         React.createElement("div", {className: "UserProfile__KeyPair Layout"}, 
           React.createElement("label", {className: "UserProfile__Label"}, "Handle"), 
-          React.createElement("div", null, store.handle)
+          React.createElement("div", null, userProfile.handle)
         ), 
         React.createElement("div", {className: "UserProfile__KeyPair Layout"}, 
           React.createElement("label", {className: "UserProfile__Label"}, "First name"), 
-          React.createElement("div", null, store.firstName)
+           React.createElement("div", null, userProfile.firstName)
         ), 
         React.createElement("div", {className: "UserProfile__KeyPair Layout"}, 
           React.createElement("label", {className: "UserProfile__Label"}, "Last name"), 
-          React.createElement("div", null, store.lasttName)
+          React.createElement("div", null, userProfile.lastName)
         ), 
         React.createElement("div", {className: "UserProfile__KeyPair Layout"}, 
           React.createElement("label", {className: "UserProfile__Label"}, "Phone"), 
-          React.createElement("div", null, store.phone)
+          React.createElement("div", null, userProfile.phone)
         ), 
         React.createElement("div", {className: "UserProfile__KeyPair Layout"}, 
           React.createElement("label", {className: "UserProfile__Label"}, "Email"), 
-          React.createElement("div", null, store.email)
+          React.createElement("div", null, userProfile.email)
         )
       )
-
     );
 
-    return output;
+    if (scope.userProfileCtx.isEditContactMode) {
+      contactComponent = (
+        React.createElement("div", {className: "UserProfile_ContactView"}, 
+          React.createElement("div", {className: "UserProfile__KeyPair Layout"}, 
+            React.createElement("label", {className: "UserProfile__Label"}, "Handle"), 
+            React.createElement("div", null, userProfile.handle), "          "), 
+          React.createElement("div", {className: "UserProfile__KeyPair Layout"}, 
+            React.createElement("label", {className: "UserProfile__Label"}, "First name"), 
+            React.createElement("input", {type: "text", onChange: this.profilePropertyChange.bind(this, 'firstName'), value: userProfile.firstName})
+          ), 
+          React.createElement("div", {className: "UserProfile__KeyPair Layout"}, 
+            React.createElement("label", {className: "UserProfile__Label"}, "Last name"), 
+            React.createElement("input", {type: "text", onChange: this.profilePropertyChange.bind(this, 'lastName'), value: userProfile.lastName})
+          ), 
+          React.createElement("div", {className: "UserProfile__KeyPair Layout"}, 
+            React.createElement("label", {className: "UserProfile__Label"}, "Phone"), 
+            React.createElement("input", {type: "text", onChange: this.profilePropertyChange.bind(this, 'phone'), value: userProfile.phone})
+          ), 
+          React.createElement("div", {className: "UserProfile__KeyPair Layout"}, 
+            React.createElement("label", {className: "UserProfile__Label"}, "Email"), 
+            React.createElement("input", {type: "text", onChange: this.profilePropertyChange.bind(this, 'email'), value: userProfile.email})
+          ), 
+          React.createElement("div", {className: "ButtonGroup ButtonGroup__Container"}, 
+            React.createElement("button", {onClick: this.cancelContactEdit}, "cancel"), 
+            React.createElement("button", {onClick: this.saveContactEdit}, "save")
+          )
+        )
+      );
+    }
+
+
+
+
+    return contactComponent;
   }
 
 });

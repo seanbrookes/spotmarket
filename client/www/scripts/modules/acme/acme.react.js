@@ -1,9 +1,36 @@
-sm.BannerImageUpload = React.createClass({
-  displayName: "BannerImageUpload",
+sm.BannerImageCropper = React.createClass({
+  displayName: "BannerImageCropper",
   getInitialState() { return {currentImage:{}, rangeVal: 100}; },
+  scaleImageWidth(image, scale) {
+    var originalImage = this.state.originalImage;
+    if (originalImage) {
+      var newWidth = originalImage.width * (scale / 100);
+      if (newWidth < 1500) {
+        image.width = 1500;
+      }
+      else {
+        image.width = newWidth;
+      }
+      if (image.height < 380) {
+        image.height = 380;
+      }
+
+      var currentImage = this.state.currentImage;
+
+      currentImage.width = image.width;
+      currentImage.height = image.height;
+
+      this.setState({currentImage:currentImage});
+
+    }
+
+  },
   updateRange: function(e) {
     // update textual value
     this.setState({ rangeVal: e.currentTarget.valueAsNumber });
+    var currentImage = this.state.currentImage;
+
+    this.scaleImageWidth(currentImage, this.state.rangeVal);
   },
   previewFile(event) {
 
@@ -38,7 +65,7 @@ sm.BannerImageUpload = React.createClass({
         currFileObject.width = image.width;
         currFileObject.height = image.height;
 
-        this.setState({currentImage:currFileObject});
+        this.setState({currentImage:currFileObject, originalImage:currFileObject});
 
 
       }.bind(this));
@@ -97,7 +124,7 @@ sm.BannerImageUpload = React.createClass({
     if (currImg && currImg.url) {
       imageTag =  (React.createElement("img", {className: "BannerImagePreview__Image BannerImagePreview__Image--landscape", src: currImg.url}));
 
-      if (scope.bannerImageCtx.isShowImageStats) {
+      if (scope.bannerImageCtx && scope.bannerImageCtx.isShowImageStats) {
         imageStatsList = (
           React.createElement("div", {className: "BannerImagePreviewStats BannerImagePreviewStats__Container"}, 
             React.createElement("h2", {className: "BannerImagePreviewStats__Title"}, "Image stats"), React.createElement("button", {onClick: this.closeStatsDialog}, "(x)"), 

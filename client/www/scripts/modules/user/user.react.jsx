@@ -1,37 +1,95 @@
 sm.UserProfileContact = React.createClass({
+  getInitialState() {
+    return {handle:''}
+  },
+  profilePropertyChange(propertyName, event) {
+    var val = event.target.value;
+    var scope = this.props.scope;
+    scope.$apply(function() {
+      scope.userProfileCtx.currentProfile[propertyName] = val;
+    });
+    console.log('I am changing');
+
+    this.setState({handle:val});
+  },
+  saveContactEdit() {
+    var scope = this.props.scope;
+    scope.$apply(function() {
+      scope.userProfileCtx.saveContact();
+    });
+  },
+  cancelContactEdit() {
+    var scope = this.props.scope;
+    scope.$apply(function() {
+      scope.userProfileCtx.cancelContactEdit();
+    });
+  },
+
   render: function() {
     var component = this;
-    var store = component.props.store;
-    var child;
+    var scope = component.props.scope;
+    var userProfile = scope.userProfileCtx.currentProfile;
 
-    var output = (
 
+    var contactComponent = (
       <div className="UserProfile_ContactView">
         <div className="UserProfile__KeyPair Layout">
           <label className="UserProfile__Label">Handle</label>
-          <div>{store.handle}</div>
+          <div>{userProfile.handle}</div>
         </div>
         <div className="UserProfile__KeyPair Layout">
           <label className="UserProfile__Label">First name</label>
-          <div>{store.firstName}</div>
+           <div>{userProfile.firstName}</div>
         </div>
         <div className="UserProfile__KeyPair Layout">
           <label className="UserProfile__Label">Last name</label>
-          <div>{store.lasttName}</div>
+          <div>{userProfile.lastName}</div>
         </div>
         <div className="UserProfile__KeyPair Layout">
           <label className="UserProfile__Label">Phone</label>
-          <div>{store.phone}</div>
+          <div>{userProfile.phone}</div>
         </div>
         <div className="UserProfile__KeyPair Layout">
           <label className="UserProfile__Label">Email</label>
-          <div>{store.email}</div>
+          <div>{userProfile.email}</div>
         </div>
       </div>
-
     );
 
-    return output;
+    if (scope.userProfileCtx.isEditContactMode) {
+      contactComponent = (
+        <div className="UserProfile_ContactView">
+          <div className="UserProfile__KeyPair Layout">
+            <label className="UserProfile__Label">Handle</label>
+            <div>{userProfile.handle}</div>          </div>
+          <div className="UserProfile__KeyPair Layout">
+            <label className="UserProfile__Label">First name</label>
+            <input type="text" onChange={this.profilePropertyChange.bind(this, 'firstName')} value={userProfile.firstName} />
+          </div>
+          <div className="UserProfile__KeyPair Layout">
+            <label className="UserProfile__Label">Last name</label>
+            <input type="text" onChange={this.profilePropertyChange.bind(this, 'lastName')} value={userProfile.lastName} />
+          </div>
+          <div className="UserProfile__KeyPair Layout">
+            <label className="UserProfile__Label">Phone</label>
+            <input type="text" onChange={this.profilePropertyChange.bind(this, 'phone')} value={userProfile.phone} />
+          </div>
+          <div className="UserProfile__KeyPair Layout">
+            <label className="UserProfile__Label">Email</label>
+            <input type="text" onChange={this.profilePropertyChange.bind(this, 'email')} value={userProfile.email} />
+          </div>
+          <div className="ButtonGroup ButtonGroup__Container">
+            <button onClick={this.cancelContactEdit}>cancel</button>
+            <button onClick={this.saveContactEdit}>save</button>
+          </div>
+        </div>
+      );
+    }
+
+
+
+
+    return contactComponent;
   }
 
 });

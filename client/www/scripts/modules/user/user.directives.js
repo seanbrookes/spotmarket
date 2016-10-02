@@ -30,10 +30,14 @@ User.directive('smUserProfileContact', [
 
         scope.$watch('userProfileCtx.currentProfile', function(newVal, oldVal) {
           if (newVal && newVal.handle) {
-            ReactDOM.render(React.createElement(sm.UserProfileContact, {store:newVal}), el[0]);
-
+            ReactDOM.render(React.createElement(sm.UserProfileContact, {scope:scope}), el[0]);
           }
         }, true);
+
+        scope.$watch('userProfileCtx.isEditContactMode', function(newVal, oldVal) {
+          ReactDOM.render(React.createElement(sm.UserProfileContact, {scope:scope}), el[0]);
+        }, true);
+
       }
 
     }
@@ -54,6 +58,8 @@ User.directive('smUserProfileForm', [
         '$state',
         function($scope, Upload, UserSessionService, UserServices, $log, $stateParams, $state) {
           $scope.userProfileCtx = {avatarSrc:'', croppedImage:''};
+          $scope.userProfileCtx.isEditBioMode = false;
+
           $scope.profileAvatar = {
             userId:'',
             avatarImage: ''
@@ -87,6 +93,14 @@ User.directive('smUserProfileForm', [
                 $scope.userProfileCtx.isEditMode = false;
               });
           };
+          $scope.userProfileCtx.saveBio = function() {
+            UserServices.saveUser($scope.userProfileCtx.currentProfile)
+              .then(function(response) {
+                $scope.userProfileCtx.isEditBioMode = true;
+              });
+
+          };
+
 
           $scope.userProfileCtx.isReadOnlyCurrentUser = function() {
             // am I current user
@@ -219,12 +233,18 @@ User.directive('smUserProfileView', [
         '$stateParams',
         '$state',
         function($scope, Upload, UserSessionService, UserServices, $log, $stateParams, $state) {
-          $scope.userProfileCtx = {avatarSrc:'', croppedImage:''};
+          if (!$scope.userProfileCtx) {
+            $scope.userProfileCtx = {};
+
+          }
           $scope.profileAvatar = {
             userId:'',
             avatarImage: ''
           };
-
+          $scope.userProfileCtx.isEditBioMode = false;
+          $scope.userProfileCtx.isEditContactMode = false;
+          $scope.userProfileCtx.isEditAvatarMode = false;
+          $scope.userProfileCtx.isEditBannerImageMode = false;
 
           $scope.myImage='';
           $scope.userProfileCtx.myCroppedImage = '';
@@ -246,12 +266,52 @@ User.directive('smUserProfileView', [
           $scope.userProfileCtx.isEditCurrentUser = function() {
             return $scope.userProfileCtx.isEditMode;
           };
+          $scope.saveCurrentProfile = function() {
+            UserServices.saveUser($scope.userProfileCtx.currentProfile)
+              .then(function(response) {
+                $scope.userProfileCtx.isEditMode = false;
+                $scope.userProfileCtx.isEditAvatarMode = false;
+              });
+          };
           $scope.userProfileCtx.saveCurrentProfile = function() {
             UserServices.saveUser($scope.userProfileCtx.currentProfile)
               .then(function(response) {
-                $log.debug('Save my profile');
                 $scope.userProfileCtx.isEditMode = false;
               });
+          };
+          $scope.userProfileCtx.saveBio = function() {
+            UserServices.saveUser($scope.userProfileCtx.currentProfile)
+              .then(function(response) {
+                $scope.userProfileCtx.currentProfile = response;
+                $scope.userProfileCtx.isEditMode = false;
+                $scope.userProfileCtx.isEditBioMode = false;
+              });
+          };
+          $scope.userProfileCtx.saveContact = function() {
+            UserServices.saveUser($scope.userProfileCtx.currentProfile)
+              .then(function(response) {
+                $scope.userProfileCtx.currentProfile = response;
+                $scope.userProfileCtx.isEditMode = false;
+                $scope.userProfileCtx.isEditContactMode = false;
+              });
+          };
+          $scope.userProfileCtx.cancelContactEdit = function() {
+            $scope.userProfileCtx.isEditContactMode = false;
+          };
+          $scope.userProfileCtx.triggerEditBio = function() {
+            $scope.userProfileCtx.isEditBioMode = true;
+          };
+          $scope.userProfileCtx.triggerEditAvatar = function() {
+            $scope.userProfileCtx.isEditAvatarMode = true;
+          };
+          $scope.userProfileCtx.triggerEditContact = function() {
+            $scope.userProfileCtx.isEditContactMode = true;
+          };
+          $scope.userProfileCtx.triggerEditBannerImage = function() {
+            $scope.userProfileCtx.isEditBannerImageMode = true;
+          };
+          $scope.userProfileCtx.triggerPreviewBannerImage = function() {
+            $scope.userProfileCtx.isEditBannerImageMode = false;
           };
 
           $scope.userProfileCtx.isReadOnlyCurrentUser = function() {
@@ -279,8 +339,6 @@ User.directive('smUserProfileView', [
               .catch(function(error) {
                 $log.warn('bad save profile avatar ', error);
               });
-
-
           };
 
           var handleFileSelect = function(evt) {
@@ -336,19 +394,6 @@ User.directive('smUserProfileView', [
                       $scope.userProfileCtx.currentProfile.bio = "No bio information available yet";
                     }
 
-
-
-                    UserServices.getProfileAvatar(response.id)
-                      .then(function(response) {
-                        if (response && response.avatarImage) {
-                          $log.debug('got the user avatar', response);
-                          $scope.userProfileCtx.currentProfile.avatarImage = response.avatarImage;
-                          $scope.userProfileCtx.currentProfile.userId = response.userId;
-                          $scope.userProfileCtx.currentProfile.avatarId = response.id;
-
-                        }
-                        return $scope.userProfileCtx.currentProfile;
-                      });
 
                   }
                 });

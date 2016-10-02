@@ -1,7 +1,37 @@
+UI.directive('smUiBannerImageEditor', [
+  function() {
+    return {
+      restrict: 'E',
+      scope: {
+        profile: '='
+      },
+      templateUrl: './scripts/modules/ui/templates/ui.banner.image.editor.html',
+      controller: [
+        '$scope',
+        function($scope) {
+          $scope.bannerImageCtx = {};
+          $scope.bannerImageCtx.currentFile = {};
+          $scope.bannerImageCtx.isShowImageStats = true;
+
+          $scope.bannerImageCtx.closeImageStats = function() {
+            $scope.bannerImageCtx.isShowImageStats = false;
+          };
+
+        }
+      ],
+      link: function(scope, el, attrs) {
+
+      }
+    }
+  }
+]);
 UI.directive('smUiAvatarEditor', [
   function() {
     return {
       restrict: 'E',
+      scope: {
+        profile: '='
+      },
       templateUrl: './scripts/modules/ui/templates/ui.avatar.editor.html',
       controller: [
         '$scope',
@@ -38,6 +68,10 @@ UI.directive('smUiAvatarEditor', [
               $scope.imageCropStep = ($scope.imageCropStep -1);
             }
           };
+          $scope.avatarEditorCtx.saveImage = function() {
+            $scope.profile.avatarImage = $scope.avatarEditorCtx.imageCropResult;
+            $scope.$parent.saveCurrentProfile();
+          };
           $scope.$watch('imageCropStep', function(newVal, oldVal) {
             //if (newVal !== oldVal) {
               console.log('Step Changed', newVal);
@@ -71,6 +105,14 @@ UI.directive('smUiAvatarEditor', [
     }
   }
 ]);
+/*
+*
+* Borrowed heavily from https://github.com/andyshora/angular-image-crop
+*  AngularJS Directive - Image Crop v1.1.0
+*  Copyright (c) 2014 Andy Shora, andyshora@gmail.com, andyshora.com
+*  Licensed under the MPL License [http://www.nihilogic.dk/licenses/mpl-license.txt]
+*
+* */
 UI.directive('smUiImageCrop', [
   function() {
 
@@ -488,7 +530,7 @@ UI.directive('smUiImageCrop', [
     };
   }
 ]);
-UI.directive('smUiSingleImageUpload', [
+UI.directive('smUiBannerImageUpload', [
   function() {
     return {
       restrict: 'E',
@@ -499,10 +541,14 @@ UI.directive('smUiSingleImageUpload', [
         }
       ],
       link: function(scope, el, attrs) {
-        ReactDOM.render(React.createElement(sm.SingleImageUpload, {scope:scope}), el[0]);
+        ReactDOM.render(React.createElement(sm.BannerImageUpload, {scope:scope}), el[0]);
         //scope.$watch('entity.id', function(newVal, oldVal) {
         //
         //}, true);
+        scope.$watch('bannerImageCtx.isShowImageStats', function(newVal, oldVal) {
+          ReactDOM.render(React.createElement(sm.BannerImageUpload, {scope:scope}), el[0]);
+
+        }, true);
       }
     }
   }

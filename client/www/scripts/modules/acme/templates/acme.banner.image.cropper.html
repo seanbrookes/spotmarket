@@ -1,0 +1,18 @@
+<div  class="smBannerImageCropper smBannerImageCropper__Container">
+  <div class="smBannerImageCropper__PreviewContainer">
+    <img class="smBannerImageCropper__PreviewImage" src="" />
+  </div>
+  <div class="Canvas__Container">
+    <canvas class="smBannerImageCropper__Canvas"></canvas>
+  </div>
+  <label class="AskForm__Label">Images</label>
+  <input type="file" ngf-select="bannerImageCtx.uploadFiles($file, $invalidFiles)"  name="file"
+         accept="image/*" ngf-max-size="10MB" required>
+  <button ng-click="bannerImageCtx.chopInHalf()">50% chop</button>
+  <button ng-click="uploadPic(picFile)">Upload images</button>
+  <input class="smBannerImageCropper__ScaleInput" type="range" min="1" max="100" />
+  <button class="smBannerImageCropper__PreviewButton Button--primary">Preview crop</button>
+  <div>
+    <img ngSrc="{{bannerImageCtx.currentImage.src}}" />
+  </div>
+</div>
