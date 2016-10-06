@@ -1838,6 +1838,12 @@ img-crop .loading .fixed-height {
   position: relative;
   top: 32px;
 }
+.CanvasCropper {
+  background-color: #adffdc;
+}
+.CanvasCropper__Container {
+  min-height: 40rem;
+}
 .dropdown {
   z-index: 4000;
 }
@@ -1917,9 +1923,7 @@ img-crop .loading .fixed-height {
   background-color: #ffffff;
   margin: 0;
   padding: 0;
-  display: flex;
   min-height: 100vh;
-  flex-direction: column;
   max-width: 1500px;
 }
 .InnerAppContainer {
@@ -1936,6 +1940,14 @@ img-crop .loading .fixed-height {
 }
 .Body--Home .MainNavViewButton--home {
   visibility: hidden;
+}
+.Body--Profile .InnerAppContainer {
+  flex: 1;
+  padding: 1rem 0 1rem 0;
+  height: 100%;
+}
+.Body--Profile .MarketViewContainer {
+  padding: 0;
 }
 .LinkButton {
   border: none;
@@ -2494,11 +2506,23 @@ small size views
 }
 .UserProfile__BannerImageContainer {
   height: 320px;
+}
+.UserProfile__BannerImageContainer--EditorMode {
+  height: 32rem;
+}
+.UserProfile__BannerImageContainer {
+  height: 320px;
   padding-bottom: 60px;
   position: relative;
   width: 100%;
   z-index: 4;
   margin-bottom: 2.6rem;
+}
+.UserProfile__BannerImageContainer .BannerBG__EditLink {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 400;
 }
 .UserProfile__BannerImageContainer .UserProfile__BannerBG {
   position: absolute;
@@ -2512,10 +2536,8 @@ small size views
   position: absolute;
   left: 0;
   right: 0;
-  top: -9999px;
-  bottom: -9999px;
   margin: auto 0;
-  width: 100%;
+  height: 380px;
 }
 .UserProfile__BannerImageContainer .UserProfile__AvatarContainer {
   position: absolute;

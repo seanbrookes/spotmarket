@@ -91,6 +91,9 @@ User.directive('smUserProfileForm', [
               .then(function(response) {
                 $log.debug('Save my profile');
                 $scope.userProfileCtx.isEditMode = false;
+                $scope.userProfileCtx.isEditMode = false;
+                $scope.userProfileCtx.isEditBannerImageMode = false;
+                $scope.userProfileCtx.isEditAvatarMode = false;
               });
           };
           $scope.userProfileCtx.saveBio = function() {
@@ -271,12 +274,15 @@ User.directive('smUserProfileView', [
               .then(function(response) {
                 $scope.userProfileCtx.isEditMode = false;
                 $scope.userProfileCtx.isEditAvatarMode = false;
+                $scope.userProfileCtx.isEditBannerImageMode = false;
               });
           };
           $scope.userProfileCtx.saveCurrentProfile = function() {
             UserServices.saveUser($scope.userProfileCtx.currentProfile)
               .then(function(response) {
                 $scope.userProfileCtx.isEditMode = false;
+                $scope.userProfileCtx.isEditBannerImageMode = false;
+                $scope.userProfileCtx.isEditAvatarMode = false;
               });
           };
           $scope.userProfileCtx.saveBio = function() {
@@ -375,6 +381,25 @@ User.directive('smUserProfileView', [
               //
               // populate editor
               $log.debug('LOOKUP PROFILE BY HANDLE');
+
+              UserServices.findUserByHandle($stateParams.handle)
+                .then(function(response) {
+                  if (response.id) {
+
+                    $scope.userProfileCtx.currentProfile = response;
+                    if (!$scope.userProfileCtx.currentProfile.bannerImage) {
+                      $scope.userProfileCtx.currentProfile.bannerImage = 'http://localhost:4545/images/default-hero.png';
+                    }
+                    if (!$scope.userProfileCtx.currentProfile.bannerBgColor) {
+                      $scope.userProfileCtx.currentProfile.bannerBgColor = '#608052';
+                    }
+                    if (!$scope.userProfileCtx.currentProfile.bio) {
+                      $scope.userProfileCtx.currentProfile.bio = "No bio information available yet";
+                    }
+
+
+                  }
+                });
             }
             else {
               $log.debug('WE ARE THIS USER');

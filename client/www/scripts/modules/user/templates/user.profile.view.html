@@ -1,25 +1,33 @@
-<div class="UserProfile UserProfile__Container Column CenterItems">
-
-  <div class="UserProfile__BannerImageContainer">
+<div class="UserProfile UserProfile__Container FlexEnd Column CenterItems">
+  <div ng-class="{'UserProfile__BannerImageContainer--EditMode': userProfileCtx.isEditBannerImageMode, 'UserProfile__BannerImageContainer': !userProfileCtx.isEditBannerImageMode}">
 
     <div ng-hide="userProfileCtx.isEditAvatarMode || userProfileCtx.isEditBannerImageMode" class="UserProfile__BannerBG"  ng-style="{'background-color':userProfileCtx.currentProfile.bannerBgColor}">
       <img class="UserProfile__BannerImage" src="{{userProfileCtx.currentProfile.bannerImage}}" />
-      <button class="LinkButton" ng-click="userProfileCtx.triggerEditBannerImage()">change background</button>
+      <button class="LinkButton BannerBG__EditLink" ng-click="userProfileCtx.triggerEditBannerImage()">change background</button>
     </div>
-    <sm-ui-banner-image-editor profile="userProfileCtx.currentProfile" ng-show="userProfileCtx.isEditBannerImageMode"></sm-ui-banner-image-editor>
+    <button class="LinkButton" ng-click="userProfileCtx.triggerEditBannerImage()">change background</button>
+    <sm-ui-canvas-cropper profile="userProfileCtx.currentProfile"
+                          selector="banner"
+                          width="1500"
+                          height="380"
+                          property="bannerImage"
+                          ng-show="userProfileCtx.isEditBannerImageMode"></sm-ui-canvas-cropper>
 
-    <div ng-hide="userProfileCtx.isEditAvatarMode" class="UserProfile__AvatarContainer">
+    <div ng-hide="userProfileCtx.isEditAvatarMode || userProfileCtx.isEditBannerImageMode" class="UserProfile__AvatarContainer">
       <div class="UserProfile__AvatarContainerBG">
         <img class="UserProfile__AvatarImg" ng-src="{{userProfileCtx.currentProfile.avatarImage}}" />
       </div>
       <button class="LinkButton" ng-click="userProfileCtx.triggerEditAvatar()">change avatar</button>
     </div>
 
-    <sm-ui-avatar-editor profile="userProfileCtx.currentProfile" ng-show="userProfileCtx.isEditAvatarMode"></sm-ui-avatar-editor>
-
+    <!--<sm-ui-canvas-cropper profile="userProfileCtx.currentProfile"-->
+                          <!--selector="avatar"-->
+                          <!--property="avatarImage"-->
+                          <!--ng-show="userProfileCtx.isEditAvatarMode"-->
+                          <!--width="300" height="300"></sm-ui-canvas-cropper>-->
 
   </div>
-  <div class="Layout ProfileView__MainBody">
+  <div ng-hide="userProfileCtx.isEditBannerImageMode" class="Layout ProfileView__MainBody">
     <div class="UserProfile__ContactContainer">
       <div class="UserProfile__ContactInner">
         <sm-user-profile-contact></sm-user-profile-contact>

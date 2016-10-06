@@ -17,9 +17,18 @@ Main.controller('MainController', [
         $log.debug('|');
         $log.debug('|');
         $log.debug('|   CHANGE STATE ', toState.name);
+        $scope.mainNavCtx.isHome = false;
+        $scope.mainNavCtx.isProfileView = false;
+
         if (toState.name === 'home') {
           $timeout(function() {
             $scope.mainNavCtx.isHome = true;
+          }, 25);
+        }
+        else if (toState.name === 'userprofile_detail' || toState.name === 'org_profile') {
+
+          $timeout(function() {
+            $scope.mainNavCtx.isProfileView = true;
           }, 25);
         }
         else {

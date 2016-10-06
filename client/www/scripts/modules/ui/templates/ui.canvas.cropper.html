@@ -1,0 +1,58 @@
+<div class="CanvasCropper CanvasCropper__Container">
+  <img id="imageid" src="" />
+  <div class="MainCanvas MainCanvas__Container">
+
+    <canvas id="MainCanvas" width="{{width}}" height="{{height}}"></canvas>
+  </div>
+  <div class="Layout">
+    <canvas id="FrameCanvas" height="300" width="300"></canvas>
+
+
+    <div>
+      <div id="controls" class="Layout">
+        <input id="ScaleSlider" type="range" min="1" max="100" step="5" value="100"/>
+        <input id="files" type="file" />
+        <button id="CropButton" ng-click="cropperCtx.cropIt()">Crop it</button>
+        <button id="ResetButton" onclick="reset()">Clear</button>
+      </div>
+
+
+
+
+      <div class="ImageMetrics" id="ImageMetrics">
+        <div class="Layout">
+          <label>scale:</label>
+          <output id="scaleOutput">100</output>
+        </div>
+        <div class="Layout">
+          <label>scaleLimit:</label>
+          <output id="scaleLimit">0</output>
+        </div>
+        <div class="Layout">
+          <label>scaled percent:</label>
+          <output id="scalePercent"></output>
+        </div>
+        <div class="Layout">
+          <label>source width:</label>
+          <output id="sourceWidth"></output>
+        </div>
+        <div class="Layout">
+          <label>source height:</label>
+          <output id="sourceHeight"></output>
+        </div>
+        <div class="Layout">
+          <label>scaled width:</label>
+          <output id="scaledWidth"></output>
+        </div>
+        <div class="Layout">
+          <label>scaled height:</label>
+          <output id="scaledHeight"></output>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+
+
+</div>

@@ -255,7 +255,7 @@ User.service('UserServices', [
             if (!returnVal.bannerImage) {
               returnVal.bannerImage = 'http://localhost:4545/images/default-hero.png';
             }
-            if (!$scope.userProfileCtx.currentProfile.bannerBgColor) {
+            if (!returnVal.bannerBgColor) {
               returnVal.bannerBgColor = '#608052';
             }
             if (!returnVal.bio) {
