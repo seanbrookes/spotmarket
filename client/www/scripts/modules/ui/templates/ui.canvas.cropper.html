@@ -1,23 +1,15 @@
 <div class="CanvasCropper CanvasCropper__Container">
   <img id="imageid" src="" />
-  <div class="MainCanvas MainCanvas__Container">
-
-    <canvas id="MainCanvas" width="{{width}}" height="{{height}}"></canvas>
-  </div>
+  <div class="MainCanvas MainCanvas__Container"></div>
   <div class="Layout">
-    <canvas id="FrameCanvas" height="300" width="300"></canvas>
-
-
+    <div class="FrameCanvas__Container"></div>
     <div>
       <div id="controls" class="Layout">
-        <input id="ScaleSlider" type="range" min="1" max="100" step="5" value="100"/>
-        <input id="files" type="file" />
+        <div class="ScaleSlider__Container"></div>
+        <div class="CropperInput__Container"></div>
         <button id="CropButton" ng-click="cropperCtx.cropIt()">Crop it</button>
         <button id="ResetButton" onclick="reset()">Clear</button>
       </div>
-
-
-
 
       <div class="ImageMetrics" id="ImageMetrics">
         <div class="Layout">

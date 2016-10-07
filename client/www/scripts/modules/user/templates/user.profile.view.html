@@ -20,28 +20,30 @@
       <button class="LinkButton" ng-click="userProfileCtx.triggerEditAvatar()">change avatar</button>
     </div>
 
-    <!--<sm-ui-canvas-cropper profile="userProfileCtx.currentProfile"-->
-                          <!--selector="avatar"-->
-                          <!--property="avatarImage"-->
-                          <!--ng-show="userProfileCtx.isEditAvatarMode"-->
-                          <!--width="300" height="300"></sm-ui-canvas-cropper>-->
+    <sm-ui-canvas-cropper profile="userProfileCtx.currentProfile"
+                          selector="avatar"
+                          property="avatarImage"
+                          ng-show="userProfileCtx.isEditAvatarMode"
+                          width="300" height="300"></sm-ui-canvas-cropper>
 
   </div>
   <div ng-hide="userProfileCtx.isEditBannerImageMode" class="Layout ProfileView__MainBody">
+
     <div class="UserProfile__ContactContainer">
       <div class="UserProfile__ContactInner">
         <sm-user-profile-contact></sm-user-profile-contact>
         <button ng-show="!userProfileCtx.isEditContactMode" class="LinkButton" ng-click="userProfileCtx.triggerEditContact()">edit contact info</button>
       </div>
     </div>
+
     <div class="UserProfile__BioContainer">
       <div ng-show="!userProfileCtx.isEditBioMode" class="UserProfile__BioInner" ng-bind-html="userProfileCtx.currentProfile.bio"></div>
       <button ng-show="!userProfileCtx.isEditBioMode" class="LinkButton" ng-click="userProfileCtx.triggerEditBio()">edit bio</button>
-      <textarea ng-show="userProfileCtx.isEditBioMode" ng-model="userProfileCtx.currentProfile.bio"></textarea>
+      <div ng-show="userProfileCtx.isEditBioMode" text-angular="" ng-model="userProfileCtx.currentProfile.bio"></div>
+
       <button ng-show="userProfileCtx.isEditBioMode" class="LinkButton" ng-click="userProfileCtx.saveBio()">save bio</button>
-
-
     </div>
+
   </div>
 
 </div>

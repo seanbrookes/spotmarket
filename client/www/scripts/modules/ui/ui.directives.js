@@ -1,5 +1,6 @@
 UI.directive('smUiCanvasCropper', [
-  function() {
+  '$timeout',
+  function($timeout) {
     return {
       scope: {
         width: '@',
@@ -16,7 +17,11 @@ UI.directive('smUiCanvasCropper', [
             stateName: 'welcome',
             files: []
           };
+          $scope.files = [];
           $scope.canvasCropper = {};
+          $scope.canvasCropper.zoom = {};
+
+          $scope.cropperCtx.srcFile = null;
 
           if (!$scope.width) {
             $scope.width = 1500;
@@ -27,17 +32,52 @@ UI.directive('smUiCanvasCropper', [
       ],
       link: function(scope, el, attrs) {
 
-        var element = document.getElementById('files');
+        function handleFileSelect(evt) {
+          var files = evt.target.files; // FileList object
+          $timeout(function () {
+            scope.cropperCtx.srcFile = files[0];
+          }, 300);
+          scope.files = files;
+        }
+
+        var inputContainerNode = el.find('.CropperInput__Container');
+        inputContainerNode.innerHTML = '';
+        var fileInput = document.createElement('input');
+        inputContainerNode.append(fileInput);
+        fileInput.type = 'file';
+        fileInput.name = 'file';
+        fileInput.addEventListener('change', handleFileSelect, false);
+
+        scope.$watch('canvasCropper.zoom.value', function(newVal, oldVal) {
+          if (newVal) {
+            if (scope.cropperCtx.currentImage && scope.cropperCtx.currentImage.width) {
+              scope.canvasCropper.setZoomValue(Number(newVal));
+              scope.canvasCropper.zoomScale();
+              scope.canvasCropper.drawFrameCanvas();
+            }
+          }
+        }, true);
+
         var reader = new FileReader();
-        element.addEventListener("change", function (event) {
-          scope.cropperCtx.files = event.target.files;
+
+        scope.$watch('cropperCtx.srcFile', function(newVal, oldVal) {
+          //scope.cropperCtx.files = event.target.files;
 
           reader.onload = function(event) {
             scope.cropperCtx.currentImage = new Image();
 
             scope.cropperCtx.currentImage.onload = function (e) {
-              var h = scope.height;
-              var w = scope.width;
+              var h = Number(scope.height);
+              var w = Number(scope.width);
+              $timeout(function() {
+                scope.canvasCropper.zoom = {
+                  max: scope.cropperCtx.currentImage.width,
+                  min: w,
+                  value: scope.cropperCtx.currentImage.width
+                };
+
+              }, 24);
+
               if (scope.cropperCtx.currentImage.width < w) {
                 console.warn('this image is not very big and will be stretched consider using a larger one');
                 var delta = w - scope.cropperCtx.currentImage.width;
@@ -53,16 +93,20 @@ UI.directive('smUiCanvasCropper', [
 
                 scope.cropperCtx.currentImage.height = h;
               }
-              scope.canvasCropper.initEditorView(scope.cropperCtx.currentImage);
-              scope.canvasCropper.zoomScale();
-              scope.canvasCropper.drawFrameCanvas();
+              $timeout(function() {
+                scope.canvasCropper.initEditorView(scope.cropperCtx.currentImage);
+                scope.canvasCropper.zoomScale();
+                scope.canvasCropper.drawFrameCanvas();
+
+              }, 25);
             };
             scope.cropperCtx.currentImage.src = reader.result;
 
           };
-          reader.readAsDataURL(scope.cropperCtx.files[0]);
+          if (scope.cropperCtx.srcFile) {
+            reader.readAsDataURL(scope.cropperCtx.srcFile);
+          }
         });
-
 
         scope.cropperCtx.cropIt = function() {
           scope.profile[scope.property] = scope.canvasCropper.cropIt();
@@ -95,49 +139,6 @@ UI.directive('smUiCanvasCropper', [
 
 
         }, true);
-        //scope.cropperCtx.cropIt = function() {
-        //  var quality = 0.7;
-        //  var output = mainCanvas.toDataURL('image/jpeg', quality);
-        //  var textArea = document.getElementById('Output');
-        //  textArea.value = output;
-        //
-        //
-        //  document.getElementById("imageid").style.display='block';
-        //  document.getElementById("Output").style.display='block';
-        //  document.getElementById("controls").style.display= 'none';
-        //  document.getElementById("ImageMetrics").style.display= 'none';
-        //  document.getElementById('MainCanvas');  // Main Canvas for cropping images
-        //  document.getElementById('FrameCanvas'); // Guide Canvas indicating state of zoom and scroll
-        //  document.getElementById('ScaleSlider'); // Zoom scale control
-        //
-        //  document.getElementById("CropButton").style.display='none';
-        //  document.getElementById("ResetButton").style.display='none';
-        //
-        //  // stats display
-        //  document.getElementById('scaleOutput');
-        //  document.getElementById('scaledWidth');
-        //  document.getElementById('scaledHeight');
-        //  document.getElementById('sourceWidth');
-        //  document.getElementById('sourceHeight');
-        //  document.getElementById('scaleLimit');
-        //  document.getElementById('scalePercent');
-        //
-        //
-        //
-        //
-        //  frameCanvas.style.display = 'none';
-        //  mainCanvas.style.display = 'none';
-        //
-        //
-        //
-        //  scope.profile.bannerImage = output;
-        //  scope.$parent.saveCurrentProfile();
-        //  that.reset();
-        //};
-
-
-
-
 
         // stats
 
@@ -173,9 +174,26 @@ UI.directive('smUiCanvasCropper', [
 
           scope.canvasCropper = (function() {
 
-            var mainCanvas = document.getElementById('MainCanvas');  // Main Canvas for cropping images
-            var frameCanvas = document.getElementById('FrameCanvas'); // Guide Canvas indicating state of zoom and scroll
-            var scaleSlider = document.getElementById('ScaleSlider'); // Zoom scale control
+
+            var mainContainerNode = el.find('.MainCanvas__Container');
+            mainContainerNode.innerHTML = '';
+            var mainCanvas = document.createElement('canvas');
+            mainContainerNode.append(mainCanvas);
+            mainCanvas.width = Number(scope.width);
+            mainCanvas.height = Number(scope.height);
+
+            var frameContainerNode = el.find('.FrameCanvas__Container');
+            frameContainerNode.innerHTML = '';
+            var frameCanvas = document.createElement('canvas');
+            frameContainerNode.append(frameCanvas);
+            frameCanvas.width = 300;
+            frameCanvas.height = 300;
+
+            var zoomContainerNode = el.find('.ScaleSlider__Container');
+            zoomContainerNode.innerHTML = '';
+            var scaleSlider = document.createElement('input');
+            scaleSlider.type = 'range';
+            zoomContainerNode.append(scaleSlider);
 
             var mainContext;
             var guideContext;
@@ -195,53 +213,16 @@ UI.directive('smUiCanvasCropper', [
             var shrinkLimit = false; // if either width or height of scaled image matches the main canvas dimensions
             var guideCurrY;  // where the frame guide is vertically
 
-
-
-
-            document.getElementById("ScaleSlider").style.display='none';
-            document.getElementById("CropButton").style.display='none';
-           // document.getElementById("ResetButton").style.display='none';
-
-            w = scope.width;
-            h = scope.height;
+            w = Number(scope.width);
+            h = Number(scope.height);
 
 
             function _cropIt() {
               var quality = 0.7;
               var output = mainCanvas.toDataURL('image/jpeg', quality);
 
-
-
-              document.getElementById("imageid").style.display='block';
-
-              //document.getElementById('MainCanvas');  // Main Canvas for cropping images
-              //document.getElementById('FrameCanvas'); // Guide Canvas indicating state of zoom and scroll
-              //document.getElementById('ScaleSlider'); // Zoom scale control
-
-              document.getElementById("controls").style.display= 'block';
-
-              document.getElementById("CropButton").style.display='none';
-              //document.getElementById("ResetButton").style.display='none';
-              document.getElementById("ImageMetrics").style.display='none';
-
-
-
-
-              frameCanvas.style.display = 'none';
-              //mainCanvas.style.display = 'none';
-
-
-
               return output;
-
-
             }
-
-
-
-
-
-
 
             var getMouseRef = function(event, element) {
               var offsetX = 0, offsetY = 0, mx, my;
@@ -268,58 +249,13 @@ UI.directive('smUiCanvasCropper', [
               }
             }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             function drawMainCanvas() {
               mainContext.clearRect(0, 0, w, h);
               mainContext.drawImage(workingCanvas, srcXCoord, srcYCoord, w, h, 0, 0, w, h);
             }
 
-
-
             function _zoomScale() {
-              scale = scaleSlider.value;
+             // scale = _zoomValue;
 
               if (scale <= w) {
                 scale = w;
@@ -337,7 +273,7 @@ UI.directive('smUiCanvasCropper', [
 
 
               if (!shrinkLimit) {
-                scalePercent = (scale / scaleSlider.max);
+                scalePercent = scale / image.width;
                 scaledWidth = image.width * scalePercent;
                 scaledHeight = image.height * scalePercent;
               }
@@ -501,7 +437,7 @@ UI.directive('smUiCanvasCropper', [
 
 
 // assign event handlers
-            scaleSlider.oninput = updateRange;
+
 
             mainCanvas.addEventListener('mouseup', function(e) {
               dragging = false;
@@ -594,6 +530,7 @@ UI.directive('smUiCanvasCropper', [
             return {
               initEditorView: function(imageArg) {
                 image = imageArg;
+                scale = Number(image.width);
                 shrinkLimit = false;
                 scalePercent = 0;
                 setOrientation();
@@ -603,9 +540,11 @@ UI.directive('smUiCanvasCropper', [
                 guideContext = frameCanvas.getContext('2d');
                 workingCanvas = document.createElement('canvas');
                 workingContext = workingCanvas.getContext('2d');
-                scaleSlider.max = image.width;
-                scaleSlider.value = image.width;
+                scaleSlider.max = Number(image.width);
+                scaleSlider.value = Number(image.width);
                 scaleSlider.min = w;
+                scaleSlider.oninput = updateRange;
+
                 minimumScale = w;
                 scaledWidth = image.width;
                 scaledHeight = image.height;
@@ -615,46 +554,38 @@ UI.directive('smUiCanvasCropper', [
 
                 document.getElementById("controls").style.display='block';
                 document.getElementById("ImageMetrics").style.display='block';
-                document.getElementById("ScaleSlider").style.display='inline-block';
+               // document.getElementById("ScaleSlider").style.display='inline-block';
                 document.getElementById("CropButton").style.display='inline-block';
                 document.getElementById("ResetButton").style.display='inline-block';
                 mainCanvas.style.display='block';
                 frameCanvas.style.display='block';
               },
               zoomScale: function() {
-                _zoomScale();
+                if (image) {
+                  _zoomScale();
+
+                }
               },
               drawFrameCanvas: function() {
-                _drawFrameCanvas();
+                if (image) {
+                  _drawFrameCanvas();
+
+                }
+
               },
               cropIt: function() {
                 return _cropIt();
               },
+              setZoomValue: function(value) {
+                scale = value;
+              },
               reset: function() {
-                //mainCanvas = document.getElementById('MainCanvas');  // Main Canvas for cropping images
-                //frameCanvas = document.getElementById('FrameCanvas'); // Guide Canvas indicating state of zoom and scroll
-                //scaleSlider = document.getElementById('ScaleSlider'); // Zoom scale control
-
-                //mainContext;
-                //guideContext;
-              //  var w, h; // global main canvas target width and height
-                //var workingCanvas; // working canvas (virtual)
-               // var workingContext; // working context
                 dragging = false; // flag indicating if draggin is active (mouse down within canvas)
                 orientation = 'landscape'; // default orientation
                 image = null; // working image
                 shrinkLimit = false; // if either width or height of scaled image matches the main canvas dimensions
-               // var guideCurrY;  // where the frame guide is vertically
-
-
-
-
-                document.getElementById("ScaleSlider").style.display='none';
-                document.getElementById("CropButton").style.display='none';
-                //document.getElementById("ResetButton").style.display='none';
-
-                w = scope.width;
-                h = scope.height;
+                w = Number(scope.width);
+                h = Number(scope.height);
                 mainCanvas.width = w;
 
               }

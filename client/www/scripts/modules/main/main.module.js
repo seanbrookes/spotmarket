@@ -18,6 +18,8 @@ var Main = angular.module('Main', [
   'ngAnimate',
   'angular-growl',
   'angularSpinner',
+  'angularTrix',
+  'textAngular',
   'angularMoment',
   'leaflet-directive',
   'lbServices',

@@ -96,13 +96,16 @@ User.directive('smUserProfileForm', [
                 $scope.userProfileCtx.isEditAvatarMode = false;
               });
           };
-          $scope.userProfileCtx.saveBio = function() {
-            UserServices.saveUser($scope.userProfileCtx.currentProfile)
-              .then(function(response) {
-                $scope.userProfileCtx.isEditBioMode = true;
-              });
-
-          };
+          //$scope.userProfileCtx.saveBio = function() {
+          //
+          //
+          //
+          //  UserServices.saveUser($scope.userProfileCtx.currentProfile)
+          //    .then(function(response) {
+          //      $scope.userProfileCtx.isEditBioMode = true;
+          //    });
+          //
+          //};
 
 
           $scope.userProfileCtx.isReadOnlyCurrentUser = function() {
@@ -236,6 +239,7 @@ User.directive('smUserProfileView', [
         '$stateParams',
         '$state',
         function($scope, Upload, UserSessionService, UserServices, $log, $stateParams, $state) {
+          var rTEditor;
           if (!$scope.userProfileCtx) {
             $scope.userProfileCtx = {};
 
@@ -286,6 +290,16 @@ User.directive('smUserProfileView', [
               });
           };
           $scope.userProfileCtx.saveBio = function() {
+
+
+
+
+
+
+
+
+
+
             UserServices.saveUser($scope.userProfileCtx.currentProfile)
               .then(function(response) {
                 $scope.userProfileCtx.currentProfile = response;
