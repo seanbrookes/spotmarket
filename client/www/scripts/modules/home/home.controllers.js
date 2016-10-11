@@ -1,4 +1,4 @@
-Home.controller('HomeMainController', [
+sm.Home.controller('HomeMainController', [
   '$scope',
   '$log',
   function($scope) {

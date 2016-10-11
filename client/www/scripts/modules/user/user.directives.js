@@ -1,4 +1,4 @@
-User.directive('smUserProfileMain', [
+sm.User.directive('smUserProfileMain', [
   function() {
     return {
       restrict: 'E',
@@ -22,7 +22,7 @@ User.directive('smUserProfileMain', [
     }
   }
 ]);
-User.directive('smUserProfileContact', [
+sm.User.directive('smUserProfileContact', [
   function() {
     return {
       restrict: 'E',
@@ -43,7 +43,7 @@ User.directive('smUserProfileContact', [
     }
   }
 ]);
-User.directive('smUserProfileForm', [
+sm.User.directive('smUserProfileForm', [
   function() {
     return {
       restrict: 'E',
@@ -225,7 +225,7 @@ User.directive('smUserProfileForm', [
     }
   }
 ]);
-User.directive('smUserProfileView', [
+sm.User.directive('smUserProfileView', [
   function() {
     return {
       restrict: 'E',
@@ -456,7 +456,7 @@ User.directive('smUserProfileView', [
   }
 ]);
 
-User.directive('smTrackedCommand', [
+sm.User.directive('smTrackedCommand', [
   '$log',
   '$timeout',
   function($log, $timeout) {
@@ -487,7 +487,7 @@ User.directive('smTrackedCommand', [
     }
   }
 ]);
-User.directive('smUserContactInput', [
+sm.User.directive('smUserContactInput', [
   '$timeout',
   'CommonServices',
   function($timeout, CommonServices) {
@@ -600,7 +600,7 @@ User.directive('smUserContactInput', [
   }
 ]);
 
-User.directive('smUserRegistration', [
+sm.User.directive('smUserRegistration', [
   function() {
     return {
       restrict: 'E',
@@ -684,7 +684,7 @@ User.directive('smUserRegistration', [
   }
 ]);
 
-User.directive('smUserHandle', [
+sm.User.directive('smUserHandle', [
   function() {
     return {
       restrict: 'E',
@@ -774,7 +774,7 @@ User.directive('smUserHandle', [
     }
   }
 ]);
-User.directive('smUserLogin', [
+sm.User.directive('smUserLogin', [
   function() {
     return {
       restrict: 'E',
@@ -844,7 +844,7 @@ User.directive('smUserLogin', [
     }
   }
 ]);
-User.directive('smUserForgotPassword', [
+sm.User.directive('smUserForgotPassword', [
   function() {
     return {
       restrict: 'E',
@@ -894,7 +894,7 @@ User.directive('smUserForgotPassword', [
     }
   }
 ]);
-User.directive('ggtUserMoreInfoList', [
+sm.User.directive('ggtUserMoreInfoList', [
   function() {
     return {
       restrict: 'E',

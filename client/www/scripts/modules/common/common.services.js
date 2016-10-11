@@ -1,5 +1,6 @@
-Common.service('CommonServices', [
-  function() {
+sm.Common.service('CommonServices', [
+  '$http',
+  function($http) {
     var svc = this;
 
     svc.isValidEmail = function(email) {
@@ -16,6 +17,17 @@ Common.service('CommonServices', [
       return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
         s4() + '-' + s4() + s4() + s4();
 
+    };
+    svc.getListOfCountries = function() {
+      return $http.get('./scripts/modules/common/countries.json')
+        .then(function(response) {
+          return response.data;
+        })
+        .catch(function(error) {
+          $log.warn('| bad get countries list', error);
+          return;
+
+        });
     };
 
     return svc;

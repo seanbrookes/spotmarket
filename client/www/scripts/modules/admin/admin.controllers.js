@@ -1,4 +1,4 @@
-Admin.controller('AdminMainController', [
+sm.Admin.controller('AdminMainController', [
   '$scope',
   '$log',
   function($scope, $log) {

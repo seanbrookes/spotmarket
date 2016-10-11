@@ -1,1 +1,1 @@
-var Tracking = angular.module('Tracking', []);
+sm.Tracking = angular.module('Tracking', []);

@@ -7,7 +7,7 @@
 *
 *
 * */
-Market.directive('smMarketMarketView', [
+sm.Market.directive('smMarketMarketView', [
   '$log',
   '$timeout',
   'NAV_CONST',
@@ -63,25 +63,86 @@ Market.directive('smMarketMarketView', [
           $scope.markers = {};
           $scope.center = {};
           $scope.filterSourceData = {
-            variants:[],
-            sellers: [],
-            cropYears: [],
-            modes: [],
+            variants:[{value:'all',checked:true}],
+            sellers: [{value:'all',checked:true}],
+            cropYears: [{value:'all',checked:true}],
+            modes: [{value:'all',checked:true}],
             counts: {}
           };
+
 
           if (!$scope.currentUser.smCurrentPosition) {
             // alert('message from MarketView: There is no current position!!!');
             //return;
           }
+
+
+
+          function pushIfUnique(collection, value) {
+            // eg sellers
+            var retArray = [];
+            if (collection && Array.isArray(collection)) {
+              var retArray = collection;
+
+              var isUnique = true;
+
+              for (var i = 0;i < retArray.length;i++) {
+                if (retArray[i].value === value) {
+                  isUnique = false;
+                  break;
+                }
+              }
+              if (isUnique) {
+                retArray.push({
+                  value:value,
+                  checked:true
+                });
+              }
+            }
+
+            return retArray;
+
+          }
+
+          function getUniqueSummary(collection) {
+            // eg sellers
+            var retArray = [];
+
+            if (collection && collection.map) {
+              collection.map(function(item) {
+
+              });
+            }
+
+
+            return retArray;
+
+          }
+
+          //
+          //$scope.filters = {
+          //  cropYear:[],
+          //  seller:[],
+          //  orgs:[],
+          //  modes:[],
+          //  variants:[]
+          //};
           function loadAllAsks() {
             $scope.userMarketCtx.allAsks = AskServices.getAsks()
               .then(function(response) {
                 if (response && response.map) {
                   response.map(function(askItem) {
                     if (askItem.lotPrices && askItem.lotPrices.map) {
+
+                      /*
+                      *
+                      * Lot price aggregation
+                      *
+                      * */
                       askItem.lotPrices.map(function(lotPrice) {
-                        $scope.filterSourceData.modes.push(lotPrice.productMode);
+                     //   $scope.filterSourceData.modes.push(lotPrice.productMode);
+                        $scope.filterSourceData.modes = pushIfUnique($scope.filterSourceData.modes, lotPrice.productMode);
+
                         if (!$scope.filterSourceData.counts[lotPrice.productMode]) {
                           $scope.filterSourceData.counts[lotPrice.productMode] = 1;
                         }
@@ -89,23 +150,55 @@ Market.directive('smMarketMarketView', [
                           $scope.filterSourceData.counts[lotPrice.productMode] += 1;
                         }
                       });
-                      $scope.filterSourceData.variants.push(askItem.variant);
+
+
+
+                      /*
+                       *
+                       * Variants aggregation
+                       *
+                       * */
+                      $scope.filterSourceData.variants = pushIfUnique($scope.filterSourceData.variants, askItem.variant);
+
                       if (!$scope.filterSourceData.counts[askItem.variant]) {
                         $scope.filterSourceData.counts[askItem.variant] = 1;
                       }
                       else {
                         $scope.filterSourceData.counts[askItem.variant] += 1;
                       }
-                      $scope.filterSourceData.sellers.push(askItem.seller.handle);
-                      if (!$scope.filterSourceData.counts[askItem.seller.handle]) {
-                        $scope.filterSourceData.counts[askItem.seller.handle] = 1;
-                      }
-                      else {
-                        $scope.filterSourceData.counts[askItem.seller.handle] += 1;
-                      }
+
+
+                      //
+                      /*
+                       *
+                       * sellers aggregation
+                       *
+                       * */
+                      //$timeout(function() {
+                        $scope.filterSourceData.sellers = pushIfUnique($scope.filterSourceData.sellers, askItem.seller.handle);
+                        if (!$scope.filterSourceData.counts[askItem.seller.handle]) {
+                          $scope.filterSourceData.counts[askItem.seller.handle] = 1;
+                        }
+                        else {
+                          $scope.filterSourceData.counts[askItem.seller.handle] += 1;
+                        }
+
+                      //}, 25);
                     }
                   });
                 }
+
+                $scope.messyArray = [];
+                for (var filterProperty in $scope.filterSourceData.counts) {
+                  if ($scope.filterSourceData.counts.hasOwnProperty(filterProperty)) {
+                    // do stuff
+                    $scope.messyArray.push({
+                      name: filterProperty,
+                      count: $scope.filterSourceData.counts[filterProperty]
+                    });
+                  }
+                }
+                $scope.userMarketCtx.srcAsks = response;
                 $scope.userMarketCtx.allAsks = response;
               });
 
@@ -330,6 +423,53 @@ Market.directive('smMarketMarketView', [
         }
       ],
       link: function(scope, el, attrs) {
+
+        scope.$watch('filterSourceData.sellers', function(sellers, oldValue) {
+          var activeSellers = [];
+          sellers.map(function(sellerItem) {
+            if (sellerItem.checked) {
+              if (sellerItem.value !== 'all') {
+                activeSellers.push(sellerItem);
+              }
+            }
+          });
+
+          if (scope.userMarketCtx.allAsks && scope.userMarketCtx.allAsks.map) {
+            scope.userMarketCtx.allAsks = [];
+            scope.userMarketCtx.srcAsks.map(function(askItem) {
+              for (var i = 0;i < activeSellers.length;i++) {
+                if (askItem.seller.handle === activeSellers[i].value) {
+                  scope.userMarketCtx.allAsks.push(askItem);
+                }
+              }
+            });
+          }
+        }, true);
+
+
+        scope.$watch('filterSourceData.variants', function(variants, oldValue) {
+          var activeVariants = [];
+          variants.map(function(variantItem) {
+            if (variantItem.checked) {
+              if (variantItem.value !== 'all') {
+                activeVariants.push(variantItem);
+              }
+            }
+          });
+
+          if (scope.userMarketCtx.allAsks && scope.userMarketCtx.allAsks.map) {
+            scope.userMarketCtx.allAsks = [];
+            scope.userMarketCtx.srcAsks.map(function(askItem) {
+              for (var i = 0;i < activeVariants.length;i++) {
+                if (askItem.variant === activeVariants[i].value) {
+                  scope.userMarketCtx.allAsks.push(askItem);
+                }
+              }
+            });
+          }
+        }, true);
+
+
         scope.userMarketMap = L.map('UserMarketMap');
         function initMap() {
           if (!scope.userMarketMap) {
@@ -450,7 +590,80 @@ Market.directive('smMarketMarketView', [
     }
   }
 ]);
-Market.directive('smMarketAskCard', [
+sm.Market.directive('smMarketFilterList', [
+  function() {
+    return {
+      restrict: 'E',
+      scope: {
+        filter: '@',
+        data: '='
+      },
+      controller: [
+        '$scope',
+        function($scope) {
+          $scope.filters = $scope.data[$scope.filter];
+          $scope.toggleFilterChecked = function(item) {
+            // loop over the filters and toggle the checked state of the item
+            var allOverRide = false;
+            $scope.filters = [];
+            var overRideAllChecked = true;
+            if (item.value === 'all') {
+              allOverRide = true;
+              if (item.checked) { // oposite
+                overRideAllChecked = false;
+              }
+              else {
+                overRideAllChecked = true;
+              }
+            }
+
+            for (var i = 0;i <  $scope.data[$scope.filter].length;i++) {
+              var filterItem = $scope.data[$scope.filter][i];
+              var allIndex;
+              if (filterItem.value === 'all') {
+                allIndex = i;
+              }
+              if (allOverRide) {
+                if (allOverRide && overRideAllChecked) {
+                  filterItem.checked = true;
+                }
+                else if (allOverRide && !overRideAllChecked) {
+                  filterItem.checked = false;
+                }
+              }
+              else {
+                if (filterItem.value === item.value) {
+                  filterItem.checked = !filterItem.checked;
+                  if (!filterItem.checked) {
+                    // uncheck the item with all in it
+                    allOverRide = false;
+                  }
+                }
+              }
+
+              if (!allOverRide) {
+                // make sure all is unchecked
+                $scope.data[$scope.filter][allIndex].checked = false;
+
+              }
+              $scope.filters.push(filterItem);
+            }
+
+          };
+        }
+      ],
+      link: function(scope, el, attrs) {
+          scope.$watch('filters', function(filters) {
+            if (filters) {
+              ReactDOM.render(React.createElement(sm.MarketFilterList, {store:scope}), el[0]);
+            }
+          }, true);
+
+      }
+    }
+  }
+]);
+sm.Market.directive('smMarketAskCard', [
   '$log',
   'NAV_CONST',
   function($log, NAV_CONST){
@@ -480,7 +693,7 @@ Market.directive('smMarketAskCard', [
  *
  *
  * */
-Market.directive('smMarketMain', [
+sm.Market.directive('smMarketMain', [
   '$log',
   'NAV_CONST',
   function($log, NAV_CONST) {
@@ -538,7 +751,7 @@ Market.directive('smMarketMain', [
     }
   }
 ]);
-Market.directive('smMarketNavigator', [
+sm.Market.directive('smMarketNavigator', [
   '$log',
   'NAV_CONST',
   function($log, NAV_CONST) {
@@ -572,7 +785,7 @@ Market.directive('smMarketNavigator', [
  *
  *
  * */
-Market.directive('smMarketWelcome', [
+sm.Market.directive('smMarketWelcome', [
   '$log',
   'MARKET_CONST',
   function($log, MARKET_CONST) {

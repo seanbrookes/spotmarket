@@ -1,4 +1,4 @@
-Acme.directive('ggtAcme', [
+sm.Acme.directive('ggtAcme', [
   function() {
     return {
       restrict:'E',
@@ -7,7 +7,7 @@ Acme.directive('ggtAcme', [
   }
 ]);
 //https://www.youtube.com/watch?v=3BSZR00b_Nw
-Acme.directive('smBannerImageCropper', [
+sm.Acme.directive('smBannerImageCropper', [
   function() {
     return {
       restrict: 'E',

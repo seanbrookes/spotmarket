@@ -1,1 +1,1 @@
-var Common = angular.module('Common', []);
+sm.Common = angular.module('Common', []);

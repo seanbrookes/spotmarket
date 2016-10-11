@@ -1,1 +1,1 @@
-var Acme = angular.module('Acme', []);
+sm.Acme = angular.module('Acme', []);

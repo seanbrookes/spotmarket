@@ -1,4 +1,4 @@
-Admin.service('AdminServices', [
+sm.Admin.service('AdminServices', [
 
   function() {
     var svc = this;

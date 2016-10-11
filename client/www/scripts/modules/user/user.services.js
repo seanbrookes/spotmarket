@@ -1,4 +1,4 @@
-User.service('UserServices', [
+sm.User.service('UserServices', [
   'UserProfile',
   'smGlobalValues',
   'UserSessionService',
@@ -307,7 +307,7 @@ User.service('UserServices', [
     return svc;
   }
 ]);
-User.service('UserSessionService', [
+sm.User.service('UserSessionService', [
   'UserProfile',
   '$cookies',
   '$log',

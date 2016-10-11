@@ -1,1 +1,1 @@
-var Product = angular.module('Product', []);
+sm.Product = angular.module('Product', []);

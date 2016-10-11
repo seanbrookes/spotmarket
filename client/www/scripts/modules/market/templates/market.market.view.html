@@ -1,16 +1,23 @@
 <div class="MarketViewContainer">
   <div class="Layout">
 
-    <!--<div>-->
-      <!--Filters go here-->
-      <!--<p>variety</p>-->
-      <!--<p>mode</p>-->
-      <!--<p>crop year</p>-->
-      <!--<p>package size</p>-->
-      <!--<p>volume</p>-->
-      <!--<p>origin</p>-->
-      <!--<p>seller</p>-->
-    <!--</div>-->
+    <div class="Layout">
+      <div>
+        <h2>sellers</h2>
+        <sm-market-filter-list filter="sellers" data="filterSourceData"></sm-market-filter-list>
+      </div>
+      <div>
+        <h2>variants</h2>
+        <sm-market-filter-list filter="variants" data="filterSourceData"></sm-market-filter-list>
+      </div>
+      <div>
+        <h2>modes</h2>
+        <sm-market-filter-list filter="modes" data="filterSourceData"></sm-market-filter-list>
+      </div>
+    </div>
+
+
+
     <div>
       <div ng-show="!currentUser.smCurrentPosition">
         <p>you haven't specified a region you are interested in.  You can do that <button class="LinkButton">here</button></p>
@@ -21,9 +28,13 @@
 
         <div class="MarketRange MarketRange__Container">
           <!--<h2 class="MarketRange__Title">What is for sale within</h2>-->
+          <sm-ask-where-view></sm-ask-where-view>
+          <sm-geo-current-location-display></sm-geo-current-location-display>
+          <button class="LinkButton" ng-click="$parent.mainNavCtx.activateView($event)" data-name="GeoView">change</button>
+
           <p class="MarketRange__Title">What is for sale within</p>
-          <input class="MarketRange__Input" type="text" ng-model="marketRangeKms" /> kms of
-          <sm-geo-current-location-display></sm-geo-current-location-display>?<button class="LinkButton" ng-click="$parent.mainNavCtx.activateView($event)" data-name="GeoView">change</button>
+          <input class="MarketRange__Input" type="text" ng-model="marketRangeKms" /> kms
+          <!--<sm-geo-current-location-display></sm-geo-current-location-display>?<button class="LinkButton" ng-click="$parent.mainNavCtx.activateView($event)" data-name="GeoView">change</button>-->
           <br />
           <!--<button ng-click="updateMarketRange()">update range</button>-->
           <input type="range" min="0" max="10000" ng-model="marketRangeKms" ng-change="sliderUpdateMarketRange()"/>
@@ -31,6 +42,10 @@
       </div>
 
     </div>
+
+
+
+
   </div>
 
 

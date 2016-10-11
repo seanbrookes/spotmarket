@@ -1,1 +1,1 @@
-var Admin = angular.module('Admin', []);
+sm.Admin = angular.module('Admin', []);

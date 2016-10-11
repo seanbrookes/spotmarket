@@ -1,4 +1,4 @@
-Geo.service('GeoServices', [
+sm.Geo.service('GeoServices', [
   '$http',
   '$log',
   '$q',

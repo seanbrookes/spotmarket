@@ -1,4 +1,4 @@
-Product.controller('ProductMainController', [
+sm.Product.controller('ProductMainController', [
   '$scope',
   '$log',
   '$http',

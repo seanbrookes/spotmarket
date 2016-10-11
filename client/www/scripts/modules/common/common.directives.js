@@ -1,5 +1,5 @@
 
-Common.directive('smHopFarmReport', [
+sm.Common.directive('smHopFarmReport', [
   '$timeout',
   function($timeout) {
     return {
@@ -283,7 +283,7 @@ Common.directive('smHopFarmReport', [
   }
 ]);
 
-Common.directive('smCommonSearch', [
+sm.Common.directive('smCommonSearch', [
   function() {
     return {
       restrict: 'E',
@@ -331,7 +331,7 @@ Common.directive('smCommonSearch', [
     }
   }
 ]);
-Common.directive('smCommonGlobalNav', [
+sm.Common.directive('smCommonGlobalNav', [
   function() {
     return {
       restrict: 'E',
@@ -396,7 +396,7 @@ Common.directive('smCommonGlobalNav', [
     }
   }
 ]);
-Common.directive('smUserHeaderRegister', [
+sm.Common.directive('smUserHeaderRegister', [
   function() {
     return {
       restrict: 'E',
@@ -412,7 +412,7 @@ Common.directive('smUserHeaderRegister', [
     }
   }
 ]);
-Common.directive('smUserHeaderLogout', [
+sm.Common.directive('smUserHeaderLogout', [
   function() {
     return {
       restrict: 'E',
@@ -440,7 +440,7 @@ Common.directive('smUserHeaderLogout', [
     }
   }
 ]);
-Common.directive('smPageHeader', [
+sm.Common.directive('smPageHeader', [
   'UserSessionService',
   function(UserSessionService) {
     return {
@@ -493,7 +493,7 @@ Common.directive('smPageHeader', [
  *
  *
  * */
-Common.directive('slCommonEnter', function () {
+sm.Common.directive('slCommonEnter', function () {
   return function (scope, element, attrs) {
     element.bind("keydown keypress", function (event) {
       if(event.which === 13) {
@@ -513,7 +513,7 @@ Common.directive('slCommonEnter', function () {
  * by single clicking the content
  *
  * */
-Common.directive('slCommonSelectOnClick', function () {
+sm.Common.directive('slCommonSelectOnClick', function () {
   return {
     restrict: 'A',
     link: function (scope, element, attrs) {
@@ -523,7 +523,7 @@ Common.directive('slCommonSelectOnClick', function () {
     }
   };
 });
-Common.directive('slCommonLoadingIndicator', [
+sm.Common.directive('slCommonLoadingIndicator', [
   function() {
     return {
       template: '<span us-spinner="{{props}}"></span>',
@@ -543,7 +543,7 @@ Common.directive('slCommonLoadingIndicator', [
     }
   }
 ]);
-Common.directive('smCommonTest', [
+sm.Common.directive('smCommonTest', [
   '$http',
   function($http) {
     return {

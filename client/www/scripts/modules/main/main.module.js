@@ -1,3 +1,21 @@
+if (!Array.prototype.filter) {
+  Array.prototype.filter = function(fun /*, thisp*/) {
+    var len = this.length >>> 0;
+    if (typeof fun != "function")
+      throw new TypeError();
+
+    var res = [];
+    var thisp = arguments[1];
+    for (var i = 0; i < len; i++) {
+      if (i in this) {
+        var val = this[i]; // in case fun mutates this
+        if (fun.call(thisp, val, i, this))
+          res.push(val);
+      }
+    }
+    return res;
+  };
+}
 window.isLocal = function(){
   var host = window.location.hostname;
   var port = window.location.port;
@@ -11,7 +29,7 @@ window.isLocal = function(){
 };
 window.sm = {};
 
-var Main = angular.module('Main', [
+sm.Main = angular.module('Main', [
   'ui.router',
   'ngResource',
   'ngSanitize',
@@ -21,6 +39,7 @@ var Main = angular.module('Main', [
   'angularTrix',
   'textAngular',
   'angularMoment',
+  '720kb.datepicker',
   'leaflet-directive',
   'lbServices',
   'ngFileUpload',
@@ -30,6 +49,7 @@ var Main = angular.module('Main', [
   'Home',
   'Admin',
   'Market',
+  'Crop',
   'Geo',
   'Tracking',
   'User',
@@ -40,11 +60,11 @@ var Main = angular.module('Main', [
   'ui.utils'
 ]);
 
-Main.constant('ACTION_CONST', {
+sm.Main.constant('ACTION_CONST', {
   LOGO_HOME: 'main logo home nav'
 });
 
-Main.constant('NAV_CONST', {
+sm.Main.constant('NAV_CONST', {
   WELCOME_VIEW: 'WelcomeView',
   ABOUT_VIEW: 'AboutView',
   USER_VIEW: 'UserProfileView',
@@ -56,7 +76,7 @@ Main.constant('NAV_CONST', {
 });
 
 
-Main.constant('smGlobalConstants', {
+sm.Main.constant('smGlobalConstants', {
   isLocal: false,
   productionUrlBase:'http://spotmarketapi.herokuapp.com/api/',
   localUrlBase: 'http://localhost:4546/api',
@@ -74,12 +94,12 @@ Main.constant('smGlobalConstants', {
  - isCurrentUserLoggedIn returns false if there is no smAuthToken
 
 */
-Main.value('smGlobalValues', {
+sm.Main.value('smGlobalValues', {
     currentUser: {}
   }
 );
 
-Main.config([
+sm.Main.config([
   'LoopBackResourceProvider',
   'smGlobalConstants',
   function(LoopBackResourceProvider, smGlobalConstants) {
@@ -107,12 +127,12 @@ Main.config([
   // Change the URL where to access the LoopBack REST API server
 
 }]);
-Main.config(['$httpProvider', function($httpProvider) {
+sm.Main.config(['$httpProvider', function($httpProvider) {
   $httpProvider.defaults.useXDomain = true;
   delete $httpProvider.defaults.headers.common['X-Requested-With'];
 }
 ]);
-Main.config([
+sm.Main.config([
   '$stateProvider',
   '$urlRouterProvider',
 
@@ -208,7 +228,7 @@ Main.config([
 
   }
 ]);
-Main.config([
+sm.Main.config([
   '$httpProvider',
   function ($httpProvider) {
     console.log('|');
@@ -220,7 +240,7 @@ Main.config([
     $httpProvider.interceptors.push('smRequestInterceptor');
   }
 ]);
-Main.run([
+sm.Main.run([
   '$rootScope',
   '$state',
   'Track',

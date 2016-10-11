@@ -1,4 +1,4 @@
-Main.directive('smMainNav', [
+sm.Main.directive('smMainNav', [
   function() {
     return {
       restrict: 'E',

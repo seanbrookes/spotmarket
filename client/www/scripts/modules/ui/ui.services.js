@@ -1,4 +1,4 @@
-UI.service('UIServices', [
+sm.UI.service('UIServices', [
   'ProductType',
   'ProductSubType',
   function(ProductType, ProductSubType) {

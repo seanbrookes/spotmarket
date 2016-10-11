@@ -1,4 +1,4 @@
-Admin.directive('smAdminMain', [
+sm.Admin.directive('smAdminMain', [
   function() {
     return {
       restrict:'E',
@@ -9,7 +9,7 @@ Admin.directive('smAdminMain', [
     }
   }
 ]);
-Admin.directive('smAdminAskManager', [
+sm.Admin.directive('smAdminAskManager', [
   '$log',
   function($log) {
     return {
@@ -188,7 +188,7 @@ Admin.directive('smAdminAskManager', [
     }
   }
 ]);
-Admin.directive('smAdminProductType', [
+sm.Admin.directive('smAdminProductType', [
   function() {
     return {
       restrict:'E',
@@ -329,7 +329,7 @@ Admin.directive('smAdminProductType', [
     }
   }
 ]);
-Admin.directive('smAdminTracksRecent', [
+sm.Admin.directive('smAdminTracksRecent', [
   '$timeout',
   function($timeout) {
     return {
@@ -422,7 +422,7 @@ Admin.directive('smAdminTracksRecent', [
  });
 *
 * */
-Admin.directive('smAdminUsersList', [
+sm.Admin.directive('smAdminUsersList', [
 
   function() {
     return {

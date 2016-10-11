@@ -1,7 +1,7 @@
 <div class="MarketViewContainer" ng-controller="OrgMainController">
-  <h1>Spotmarket Organizations</h1>
+  <h1 ng-show="orgCtx.isShowAllOrgList">Spotmarket Organizations</h1>
   <!--<sm-common-search label="Search organizations" search-type="Org" ></sm-common-search>-->
-  <button class="LinkButton" ng-click="orgProfileCtx.triggerCreateNewOrg()">New organization</button>
+  <button ng-show="orgCtx.isShowAllOrgList" class="LinkButton" ng-click="orgProfileCtx.triggerCreateNewOrg()">New organization</button>
 
   <sm-org-list-view ng-show="orgCtx.isShowAllOrgList"></sm-org-list-view>
   <sm-org-profile-view org="orgCtx.currentOrgProfile"></sm-org-profile-view>

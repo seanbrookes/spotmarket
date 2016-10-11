@@ -1,4 +1,4 @@
-User.controller('AskMainController', [
+sm.User.controller('AskMainController', [
   '$scope',
   '$log',
   '$http',

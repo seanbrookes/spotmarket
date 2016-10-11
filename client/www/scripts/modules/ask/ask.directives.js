@@ -1,4 +1,4 @@
-Ask.directive('smAskWhatView', [
+sm.Ask.directive('smAskWhatView', [
   '$log',
   function ($log) {
     return {
@@ -17,7 +17,7 @@ Ask.directive('smAskWhatView', [
   }
 
 ]);
-Ask.directive('smAskWhatDetailView', [
+sm.Ask.directive('smAskWhatDetailView', [
   '$log',
   function ($log) {
     return {
@@ -36,7 +36,7 @@ Ask.directive('smAskWhatDetailView', [
   }
 
 ]);
-Ask.directive('smAskSellerView', [
+sm.Ask.directive('smAskSellerView', [
   '$log',
   function ($log) {
     return {
@@ -51,7 +51,7 @@ Ask.directive('smAskSellerView', [
     }
   }
 ]);
-Ask.directive('smAskWhereView', [
+sm.Ask.directive('smAskWhereView', [
   '$log',
   function ($log) {
     return {
@@ -66,7 +66,7 @@ Ask.directive('smAskWhereView', [
     }
   }
 ]);
-Ask.directive('smAskShippingView', [
+sm.Ask.directive('smAskShippingView', [
   '$log',
   function ($log) {
     return {
@@ -81,7 +81,7 @@ Ask.directive('smAskShippingView', [
     }
   }
 ]);
-Ask.directive('smAskPriceView', [
+sm.Ask.directive('smAskPriceView', [
   '$log',
   function ($log) {
     return {
@@ -101,12 +101,13 @@ Ask.directive('smAskPriceView', [
     }
   }
 ]);
-Ask.directive('smAskMarketView', [
+sm.Ask.directive('smAskMarketView', [
   '$log',
   'CommonServices',
   'UserSessionService',
   'orderByFilter',
-  function ($log, CommonServices, UserSessionService, orderBy) {
+  'OrgServices',
+  function ($log, CommonServices, UserSessionService, orderBy, OrgServices) {
     return {
       restrict: 'E',
       scope: {
@@ -137,6 +138,8 @@ Ask.directive('smAskMarketView', [
               productVariantIndirectMatchCollection: []
             }
           };
+          $scope.askCtx.listOfContries = [];
+          $scope.askCtx.listOfGrowers = [];
           $scope.askCtx.picFile = {};
           $scope.askCtx.cropImgString = '';
           $scope.askCtx.seller.handleSuggestionHistory = [];
@@ -147,7 +150,8 @@ Ask.directive('smAskMarketView', [
             productType: '',  // ask converts to a string for name property shortand
             variant: '',
             headline: '',
-            lotPrices: []
+            lotPrices: [],
+            testHistory: []
           };
           $scope.askCtx.productModes = {
             beerHops: [
@@ -171,7 +175,26 @@ Ask.directive('smAskMarketView', [
             ]
           };
 
+          $scope.askCtx.testCtx = {isShowTestEditor:false};
+          $scope.askCtx.testCtx.toggleTestEditor = function() {
+            $scope.askCtx.testCtx.isShowTestEditor = !$scope.askCtx.testCtx.isShowTestEditor;
+          };
+          $scope.askCtx.testCtx.currentTest= {};
+          $scope.askCtx.testCtx.removeTest = function(index) {
+            if ((index > -1) && $scope.askCtx.currentAsk && $scope.askCtx.currentAsk.testHistory && $scope.askCtx.currentAsk.testHistory.length > 0) {
+              $scope.askCtx.currentAsk.testHistory.splice(index, 1);
+            }
+          };
+          $scope.askCtx.testCtx.saveCurrentTest = function() {
+            if ($scope.askCtx.testCtx.currentTest && $scope.askCtx.testCtx.currentTest.date && $scope.askCtx.testCtx.currentTest.alpha && $scope.askCtx.testCtx.currentTest.lab) {
+              if (!$scope.askCtx.currentAsk.testHistory) {
+                $scope.askCtx.currentAsk.testHistory = [];
 
+              }
+              $scope.askCtx.currentAsk.testHistory.push($scope.askCtx.testCtx.currentTest);
+              $scope.askCtx.testCtx.currentTest = {};
+            }
+          };
 
           $scope.imageCropResult = null;
           $scope.showImageCropper = false;
@@ -220,9 +243,81 @@ Ask.directive('smAskMarketView', [
               productVariantDirectMatchCollection: [],
               productVariantIndirectMatchCollection: []
             };
+            $scope.askCtx.listOfGrowers = function() {
+
+            }
+            $scope.askCtx.listOfGrowers = OrgServices.getOrgs()
+              .then(function(responseOrgs) {
+                var extraEntries = [
+                  {
+                    name: 'other'
+                  },
+                  {
+                    name: 'unknown'
+                  }
+                ];
+                $scope.askCtx.listOfGrowers = extraEntries.concat(responseOrgs);
+              });
+
             $scope.askCtx.seller.handleSuggestionHistory = [];
             $scope.askCtx.seller.handleSuggestionHistoryIndex = 0;
             $scope.askCtx.seller.handleSearchDefaultHandleAlphaOnly = false;
+
+            $scope.askCtx.listOfCropYears = [
+              2012,
+              2013,
+              2014,
+              2015,
+              2016,
+              2017
+            ];
+
+            $scope.askCtx.listOfContries = CommonServices.getListOfCountries()
+              .then(function(response) {
+                var popularCountries = [
+                  {
+                    Name: 'Canada'
+                  },
+                  {
+                    Name: 'United States'
+                  },
+                  {
+                    Name: 'New Zealand'
+                  },
+                  {
+                    Name: 'United Kingdom'
+                  },
+                  {
+                    Name: 'Australia'
+                  },
+                  {
+                    Name: 'South Africa'
+                  },
+                  {
+                    Name: 'Czech Republic'
+                  },
+                  {
+                    Name: 'Germany'
+                  },
+                  {
+                    Name: 'Belgium'
+                  },
+                  {
+                    Name: 'France'
+                  },
+                  {
+                    Name: 'China'
+                  },
+                  {
+                    Name: 'Poland'
+                  },
+                  {
+                    Name: 'Slovenia'
+                  }
+                ];
+                $scope.askCtx.listOfCountries = popularCountries.concat(response);
+              });
+
 
             if (!user) {
               user = UserSessionService.getCurrentUserFromClientState();
@@ -778,7 +873,7 @@ Ask.directive('smAskMarketView', [
     }
   }
 ]);
-Ask.directive('smAskBeerhopsView', [
+sm.Ask.directive('smAskBeerhopsView', [
   function () {
     return {
       restrict: 'E',
@@ -791,7 +886,7 @@ Ask.directive('smAskBeerhopsView', [
     }
   }
 ]);
-Ask.directive('smAskPriceLot', [
+sm.Ask.directive('smAskPriceLot', [
   function () {
     return {
       restrict: 'E',

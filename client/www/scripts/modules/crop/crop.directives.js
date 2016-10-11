@@ -1,4 +1,4 @@
-sm.Product.directive('ggtProduct', [
+sm.Crop.directive('smCrop', [
   function() {
     return {
       restrict:'E',

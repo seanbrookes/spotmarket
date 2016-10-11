@@ -1,4 +1,4 @@
-Main.controller('MainController', [
+sm.Main.controller('MainController', [
   '$scope',
   '$log',
   'NAV_CONST',

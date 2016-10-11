@@ -1,4 +1,4 @@
-Tracking.service('TrackingServices', [
+sm.Tracking.service('TrackingServices', [
   'Track',
   '$log',
   function(Track, $log) {

@@ -1,1 +1,1 @@
-var Home = angular.module('Home', []);
+sm.Home = angular.module('Home', []);

@@ -1,4 +1,4 @@
-Market.service('MarketServices', [
+sm.Market.service('MarketServices', [
   'UserProfile',
   function(UserProfile) {
     var svc = this;

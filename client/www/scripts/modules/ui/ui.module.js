@@ -1,1 +1,1 @@
-var UI = angular.module('UI', []);
+sm.UI = angular.module('UI', []);

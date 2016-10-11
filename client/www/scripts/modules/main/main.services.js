@@ -1,4 +1,4 @@
-Main.factory('smRequestInterceptor', [
+sm.Main.factory('smRequestInterceptor', [
   '$q',
   '$location',
   '$log',
@@ -47,7 +47,7 @@ Main.factory('smRequestInterceptor', [
     };
   }
 ]);
-Main.factory('smGeolocationService', [
+sm.Main.factory('smGeolocationService', [
   '$q',
   '$log',
   '$window',
@@ -80,7 +80,7 @@ Main.factory('smGeolocationService', [
     getCurrentPosition: getCurrentPosition
   };
 }]);
-Main.factory('smSocket',[
+sm.Main.factory('smSocket',[
   '$rootScope',
   '$log',
   'smGlobalConstants',

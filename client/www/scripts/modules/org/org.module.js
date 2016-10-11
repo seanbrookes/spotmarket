@@ -1,1 +1,1 @@
-var Org = angular.module('Org', []);
+sm.Org = angular.module('Org', []);

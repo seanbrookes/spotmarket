@@ -1,5 +1,5 @@
 
-Main.directive('smHomeContent', [
+sm.Main.directive('smHomeContent', [
   function() {
     return {
       restrict: 'E',

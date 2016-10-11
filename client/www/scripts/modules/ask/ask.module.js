@@ -1,1 +1,1 @@
-var Ask = angular.module('Ask', []);
+sm.Ask = angular.module('Ask', []);

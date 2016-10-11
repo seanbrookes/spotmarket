@@ -1,4 +1,4 @@
-UI.directive('smUiCanvasCropper', [
+sm.UI.directive('smUiCanvasCropper', [
   '$timeout',
   function($timeout) {
     return {
@@ -628,7 +628,7 @@ UI.directive('smUiCanvasCropper', [
     }
   }
 ]);
-UI.directive('smUiBannerImageEditor', [
+sm.UI.directive('smUiBannerImageEditor', [
   function() {
     return {
       restrict: 'E',
@@ -655,7 +655,7 @@ UI.directive('smUiBannerImageEditor', [
     }
   }
 ]);
-UI.directive('smUiAvatarEditor', [
+sm.UI.directive('smUiAvatarEditor', [
   function() {
     return {
       restrict: 'E',
@@ -744,7 +744,7 @@ UI.directive('smUiAvatarEditor', [
 *  Licensed under the MPL License [http://www.nihilogic.dk/licenses/mpl-license.txt]
 *
 * */
-UI.directive('smUiImageCrop', [
+sm.UI.directive('smUiImageCrop', [
   function() {
 
     return {
@@ -1161,7 +1161,7 @@ UI.directive('smUiImageCrop', [
     };
   }
 ]);
-UI.directive('smUiBannerImageUpload', [
+sm.UI.directive('smUiBannerImageUpload', [
   function() {
     return {
       restrict: 'E',
@@ -1184,7 +1184,7 @@ UI.directive('smUiBannerImageUpload', [
     }
   }
 ]);
-UI.directive('smUiCurrencyToggle', [
+sm.UI.directive('smUiCurrencyToggle', [
   '$log',
   function($log) {
     return {
@@ -1214,7 +1214,7 @@ UI.directive('smUiCurrencyToggle', [
     }
   }
 ]);
-UI.directive('smModalDialog', [
+sm.UI.directive('smModalDialog', [
   '$log',
   function($log) {
     return {
@@ -1240,7 +1240,7 @@ UI.directive('smModalDialog', [
   }
 ]);
 
-UI.directive('smUiAutoSuggest', [
+sm.UI.directive('smUiAutoSuggest', [
   '$log',
   '$timeout',
   function($log, $timeout) {

@@ -1,4 +1,4 @@
-Org.controller('OrgMainController', [
+sm.Org.controller('OrgMainController', [
   '$scope',
   '$log',
   '$http',

@@ -7,7 +7,7 @@
  *
  *
  * */
-Geo.directive('smGeoMarketView', [
+sm.Geo.directive('smGeoMarketView', [
   '$log',
   'NAV_CONST',
   '$timeout',
@@ -384,7 +384,7 @@ Geo.directive('smGeoMarketView', [
   }
 ]);
 
-Geo.directive('smGeoLocationDisplay', [
+sm.Geo.directive('smGeoLocationDisplay', [
   function() {
     return {
       restrict: 'E',
@@ -432,7 +432,7 @@ Geo.directive('smGeoLocationDisplay', [
 
   }
 ]);
-Geo.directive('smGeoCurrentLocationDisplay', [
+sm.Geo.directive('smGeoCurrentLocationDisplay', [
   function() {
     return {
       restrict: 'E',

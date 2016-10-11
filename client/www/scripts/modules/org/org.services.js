@@ -1,4 +1,4 @@
-Org.service('OrgServices', [
+sm.Org.service('OrgServices', [
   'Org',
   'smGlobalValues',
   'OrgSessionService',
@@ -305,7 +305,7 @@ Org.service('OrgServices', [
     return svc;
   }
 ]);
-Org.service('OrgSessionService', [
+sm.Org.service('OrgSessionService', [
   'Org',
   '$cookies',
   '$log',

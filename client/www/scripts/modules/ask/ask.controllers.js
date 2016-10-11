@@ -1,1 +1,1 @@
-Ask.controller('AskMainController', []);
+sm.Ask.controller('AskMainController', []);

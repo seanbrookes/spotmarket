@@ -2011,7 +2011,7 @@ img-crop .loading .fixed-height {
   border-radius: 6rem;
 }
 .PageHeader .Branding .logo {
-  height: 4rem;
+  height: 7.2rem;
 }
 .PageHeader .Branding .Title__Tag {
   font-family: Georgia, serif;
@@ -2292,11 +2292,47 @@ Market view
 .smBannerImageCropper__Canvas {
   background-color: #efefef;
 }
+#trix-toolbar-1 .button_groups button.code {
+  display: none;
+}
+#trix-toolbar-1 .button_groups button.increase {
+  display: none;
+}
+#trix-toolbar-1 .button_groups button.decrease {
+  display: none;
+}
+#trix-toolbar-1 .button_groups button.strike {
+  display: none;
+}
+#trix-toolbar-1 .button_groups .history_tools {
+  display: none;
+}
+#trix-toolbar-1 .button_groups .history_tools {
+  display: none;
+}
+#trix-toolbar-2 .button_groups button.code {
+  display: none;
+}
+#trix-toolbar-2 .button_groups button.increase {
+  display: none;
+}
+#trix-toolbar-2 .button_groups button.strike {
+  display: none;
+}
+#trix-toolbar-2 .button_groups button.list {
+  display: none;
+}
+#trix-toolbar-2 .button_groups button.decrease {
+  display: none;
+}
+#trix-toolbar-2 .button_groups .history_tools {
+  display: none;
+}
 /*
 
-                                                             smaller than full size
+ smaller than full size
 
-                                                             */
+ */
 @media (max-width: 1280px) {
   .Title {
     display: none;

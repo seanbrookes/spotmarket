@@ -1,16 +1,15 @@
-sm.Product.service('ProductServices', [
-  'ProductType',
-  'ProductSubType',
-  function(ProductType, ProductSubType) {
+sm.Crop.service('CropServices', [
+  'Crop',
+  function(Crop) {
     var svc = this;
 
-    svc.saveProductType = function(productType) {
-      if (!productType.createdDate) {
-        productType.createdDate = (new Date).getTime();
+    svc.saveCrop = function(crop) {
+      if (!crop.createdDate) {
+        crop.createdDate = (new Date).getTime();
       }
-      productType.lastUpdate = (new Date).getTime();
-      if (productType.id) {
-        return ProductType.upsert(productType)
+      crop.lastUpdate = (new Date).getTime();
+      if (crop.id) {
+        return Crop.upsert(crop)
           .$promise
           .then(function(response) {
             return response;
@@ -18,40 +17,40 @@ sm.Product.service('ProductServices', [
 
       }
       else {
-        return ProductType.create(productType)
+        return Crop.create(crop)
           .$promise
           .then(function(response) {
             return response;
           });
       }
     };
-    svc.deleteProductType = function(productTypeId) {
-      if (productTypeId) {
-        return ProductType.deleteById({id:productTypeId})
+    svc.deleteCrop = function(cropId) {
+      if (cropId) {
+        return Crop.deleteById({id:cropId})
           .$promise
           .then(function(response) {
             return response;
           })
       }
     };
-    svc.getProductTypes = function(filter) {
+    svc.getCrops = function(filter) {
       if (!filter) {
         filter = {};
       }
-      return ProductType.find(filter)
+      return Crop.find(filter)
         .$promise
         .then(function(response) {
           return response || [];
         });
     };
 
-    svc.saveProductSubType = function(productSubType) {
-      if (!productSubType.createdDate) {
-        productSubType.createdDate = (new Date).getTime();
+    svc.saveCropSubType = function(cropSubType) {
+      if (!cropSubType.createdDate) {
+        cropSubType.createdDate = (new Date).getTime();
       }
-      productSubType.lastUpdate = (new Date).getTime();
-      if (productSubType.id) {
-        return ProductSubType.upsert(productSubType)
+      cropSubType.lastUpdate = (new Date).getTime();
+      if (cropSubType.id) {
+        return CropSubType.upsert(cropSubType)
           .$promise
           .then(function(response) {
             return response;
@@ -59,27 +58,27 @@ sm.Product.service('ProductServices', [
 
       }
       else {
-        return ProductSubType.create(productSubType)
+        return CropSubType.create(cropSubType)
           .$promise
           .then(function(response) {
             return response;
           });
       }
     };
-    svc.deleteProductSubType = function(productSubTypeId) {
-      if (productSubTypeId) {
-        return ProductSubType.deleteById({id:productSubTypeId})
+    svc.deleteCropSubType = function(cropSubTypeId) {
+      if (cropSubTypeId) {
+        return CropSubType.deleteById({id:cropSubTypeId})
           .$promise
           .then(function(response) {
             return response;
           })
       }
     };
-    svc.getProductSubTypes = function(filter) {
+    svc.getCropSubTypes = function(filter) {
       if (!filter) {
         filter = {};
       }
-      return ProductSubType.find(filter)
+      return CropSubType.find(filter)
         .$promise
         .then(function(response) {
           return response || [];

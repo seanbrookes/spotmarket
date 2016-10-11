@@ -1,2 +1,2 @@
-var Market = angular.module('Market', []);
+sm.Market = angular.module('Market', []);
 

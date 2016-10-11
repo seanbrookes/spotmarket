@@ -1,4 +1,4 @@
-Home.service('HomeServices', [
+sm.Home.service('HomeServices', [
   function() {
     var svc = this;
 

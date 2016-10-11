@@ -1,1 +1,1 @@
-var User = angular.module('User', []);
+sm.User = angular.module('User', []);

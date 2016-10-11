@@ -1,4 +1,4 @@
-Org.directive('smOrgProfileMain', [
+sm.Org.directive('smOrgProfileMain', [
   function() {
     return {
       restrict: 'E',
@@ -22,7 +22,7 @@ Org.directive('smOrgProfileMain', [
     }
   }
 ]);
-Org.directive('smOrgListView', [
+sm.Org.directive('smOrgListView', [
   function() {
     return {
       restrict: 'E',
@@ -58,7 +58,7 @@ Org.directive('smOrgListView', [
     }
   }
 ]);
-Org.directive('smOrgSearchResultsView', [
+sm.Org.directive('smOrgSearchResultsView', [
   function() {
     return {
       restrict: 'E',
@@ -98,7 +98,7 @@ Org.directive('smOrgSearchResultsView', [
     }
   }
 ]);
-Org.directive('smOrgProfileForm', [
+sm.Org.directive('smOrgProfileForm', [
   function() {
     return {
       restrict: 'E',
@@ -222,6 +222,7 @@ Org.directive('smOrgProfileForm', [
               //
               // populate editor
               $log.debug('LOOKUP PROFILE BY HANDLE');
+              $scope.orgCtx.isShowAllOrgList = false;
             }
             else {
               $log.debug('WE ARE THIS USER');
@@ -251,7 +252,7 @@ Org.directive('smOrgProfileForm', [
     }
   }
 ]);
-Org.directive('smOrgProfileContact', [
+sm.Org.directive('smOrgProfileContact', [
   function() {
     return {
       restrict: 'E',
@@ -268,7 +269,7 @@ Org.directive('smOrgProfileContact', [
     }
   }
 ]);
-Org.directive('smOrgProfileView', [
+sm.Org.directive('smOrgProfileView', [
   function() {
     return {
       restrict: 'E',
@@ -347,7 +348,7 @@ Org.directive('smOrgProfileView', [
     }
   }
 ]);
-Org.directive('smTrackedCommand', [
+sm.Org.directive('smTrackedCommand', [
   '$log',
   '$timeout',
   function($log, $timeout) {
@@ -378,7 +379,7 @@ Org.directive('smTrackedCommand', [
     }
   }
 ]);
-Org.directive('smOrgContactInput', [
+sm.Org.directive('smOrgContactInput', [
   '$timeout',
   'CommonServices',
   function($timeout, CommonServices) {
@@ -491,7 +492,7 @@ Org.directive('smOrgContactInput', [
   }
 ]);
 
-Org.directive('smOrgRegistration', [
+sm.Org.directive('smOrgRegistration', [
   function() {
     return {
       restrict: 'E',
@@ -575,7 +576,7 @@ Org.directive('smOrgRegistration', [
   }
 ]);
 
-Org.directive('smOrgHandle', [
+sm.Org.directive('smOrgHandle', [
   function() {
     return {
       restrict: 'E',
@@ -665,7 +666,7 @@ Org.directive('smOrgHandle', [
     }
   }
 ]);
-Org.directive('smOrgLogin', [
+sm.Org.directive('smOrgLogin', [
   function() {
     return {
       restrict: 'E',
@@ -735,7 +736,7 @@ Org.directive('smOrgLogin', [
     }
   }
 ]);
-Org.directive('smOrgForgotPassword', [
+sm.Org.directive('smOrgForgotPassword', [
   function() {
     return {
       restrict: 'E',
@@ -785,7 +786,7 @@ Org.directive('smOrgForgotPassword', [
     }
   }
 ]);
-Org.directive('ggtOrgMoreInfoList', [
+sm.Org.directive('ggtOrgMoreInfoList', [
   function() {
     return {
       restrict: 'E',

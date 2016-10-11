@@ -1,4 +1,4 @@
-Ask.service('AskServices', [
+sm.Ask.service('AskServices', [
   'Ask',
   'PendingAsk',
   'LotPrice',

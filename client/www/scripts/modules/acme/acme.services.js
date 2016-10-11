@@ -1,4 +1,4 @@
-Acme.service('AcmeServices', [
+sm.Acme.service('AcmeServices', [
   'UserProfile',
   function(UserProfile) {
     var svc = this;

@@ -1,4 +1,4 @@
-Acme.controller('AcmeMainController', [
+sm.Acme.controller('AcmeMainController', [
   '$scope',
   '$log',
   '$http',
