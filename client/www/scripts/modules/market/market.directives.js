@@ -95,7 +95,8 @@ sm.Market.directive('smMarketMarketView', [
               if (isUnique) {
                 retArray.push({
                   value:value,
-                  checked:true
+                  checked:true,
+                  disabled:false
                 });
               }
             }
@@ -119,85 +120,93 @@ sm.Market.directive('smMarketMarketView', [
 
           }
 
-          //
-          //$scope.filters = {
-          //  cropYear:[],
-          //  seller:[],
-          //  orgs:[],
-          //  modes:[],
-          //  variants:[]
-          //};
+          function zeroCounts() {
+            var countsObj = $scope.filterSourceData.counts;
+
+            for (var property in countsObj) {
+              if (countsObj.hasOwnProperty(property)) {
+                // do stuff
+                $scope.filterSourceData.counts[property] = 0;
+              }
+            }
+          }
+
+          $scope.setFiltersAndCounts = function(askList) {
+
+            if (askList && askList.length) {
+              //$scope.filterSourceData.counts[lotPrice.productMode] = 0;
+              //$scope.filterSourceData.counts[askItem.variant] = 0;
+              zeroCounts();
+              askList.map(function(askItem) {
+                if (askItem.lotPrices && askItem.lotPrices.map) {
+
+                  /*
+                   *
+                   * Lot price aggregation
+                   *
+                   * */
+                  askItem.lotPrices.map(function(lotPrice) {
+                    //   $scope.filterSourceData.modes.push(lotPrice.productMode);
+                    $scope.filterSourceData.modes = pushIfUnique($scope.filterSourceData.modes, lotPrice.productMode);
+
+                    if (!$scope.filterSourceData.counts[lotPrice.productMode]) {
+                      $scope.filterSourceData.counts[lotPrice.productMode] = 1;
+                    }
+                    else {
+                      $scope.filterSourceData.counts[lotPrice.productMode] += 1;
+                    }
+                  });
+
+
+
+                  /*
+                   *
+                   * Variants aggregation
+                   *
+                   * */
+                  $scope.filterSourceData.variants = pushIfUnique($scope.filterSourceData.variants, askItem.variant);
+
+                  if (!$scope.filterSourceData.counts[askItem.variant]) {
+                    $scope.filterSourceData.counts[askItem.variant] = 1;
+                  }
+                  else {
+                    $scope.filterSourceData.counts[askItem.variant] += 1;
+                  }
+
+
+                  //
+                  /*
+                   *
+                   * sellers aggregation
+                   *
+                   * */
+                  //$timeout(function() {
+                  $scope.filterSourceData.sellers = pushIfUnique($scope.filterSourceData.sellers, askItem.seller.handle);
+                  if (!$scope.filterSourceData.counts[askItem.seller.handle]) {
+                    $scope.filterSourceData.counts[askItem.seller.handle] = 1;
+                  }
+                  else {
+                    $scope.filterSourceData.counts[askItem.seller.handle] += 1;
+                  }
+
+                  //}, 25);
+                }
+              });
+            }
+
+
+
+
+
+          };
           function loadAllAsks() {
             $scope.userMarketCtx.allAsks = AskServices.getAsks()
               .then(function(response) {
                 if (response && response.map) {
-                  response.map(function(askItem) {
-                    if (askItem.lotPrices && askItem.lotPrices.map) {
+                  $scope.setFiltersAndCounts(response);
 
-                      /*
-                      *
-                      * Lot price aggregation
-                      *
-                      * */
-                      askItem.lotPrices.map(function(lotPrice) {
-                     //   $scope.filterSourceData.modes.push(lotPrice.productMode);
-                        $scope.filterSourceData.modes = pushIfUnique($scope.filterSourceData.modes, lotPrice.productMode);
-
-                        if (!$scope.filterSourceData.counts[lotPrice.productMode]) {
-                          $scope.filterSourceData.counts[lotPrice.productMode] = 1;
-                        }
-                        else {
-                          $scope.filterSourceData.counts[lotPrice.productMode] += 1;
-                        }
-                      });
-
-
-
-                      /*
-                       *
-                       * Variants aggregation
-                       *
-                       * */
-                      $scope.filterSourceData.variants = pushIfUnique($scope.filterSourceData.variants, askItem.variant);
-
-                      if (!$scope.filterSourceData.counts[askItem.variant]) {
-                        $scope.filterSourceData.counts[askItem.variant] = 1;
-                      }
-                      else {
-                        $scope.filterSourceData.counts[askItem.variant] += 1;
-                      }
-
-
-                      //
-                      /*
-                       *
-                       * sellers aggregation
-                       *
-                       * */
-                      //$timeout(function() {
-                        $scope.filterSourceData.sellers = pushIfUnique($scope.filterSourceData.sellers, askItem.seller.handle);
-                        if (!$scope.filterSourceData.counts[askItem.seller.handle]) {
-                          $scope.filterSourceData.counts[askItem.seller.handle] = 1;
-                        }
-                        else {
-                          $scope.filterSourceData.counts[askItem.seller.handle] += 1;
-                        }
-
-                      //}, 25);
-                    }
-                  });
                 }
 
-                $scope.messyArray = [];
-                for (var filterProperty in $scope.filterSourceData.counts) {
-                  if ($scope.filterSourceData.counts.hasOwnProperty(filterProperty)) {
-                    // do stuff
-                    $scope.messyArray.push({
-                      name: filterProperty,
-                      count: $scope.filterSourceData.counts[filterProperty]
-                    });
-                  }
-                }
                 $scope.userMarketCtx.srcAsks = response;
                 $scope.userMarketCtx.allAsks = response;
               });
@@ -253,154 +262,157 @@ sm.Market.directive('smMarketMarketView', [
             *
             *
             * */
+            function renderLocalData(askData) {
+              var returnCollection = $scope.userMarketCtx.localAskCollection;
+              var collectionCoords = [];
+              var mapViewCoordsCollection = [];
+              $scope.bounds = [];
+              $scope.resetBounds = [];
+              $scope.markers = {};
+              $scope.center = {};
+              $scope.layers = {};
 
-              UserMarket.createUserMarket({filter:filter})
-                .$promise
-                .then(function(response) {
-                  $log.debug('Market Asks', response);
-                  var returnCollection = response.data;
-                  var collectionCoords = [];
-                  var mapViewCoordsCollection = [];
-                  $scope.bounds = [];
-                  $scope.resetBounds = [];
-                  $scope.markers = {};
-                  $scope.center = {};
-                  $scope.layers = {};
+              returnCollection.map(function(mapItem) {
+                mapItem.position.lat = mapItem.position.coordinates[1];
+                mapItem.position.lng = mapItem.position.coordinates[0];
+                var compPoint = {
+                  lat: mapItem.position.coordinates[1],
+                  lng: mapItem.position.coordinates[0]
+                };
+                lats.push(mapItem.position.lat);
+                lngs.push(mapItem.position.lng);
 
-                  returnCollection.map(function(mapItem) {
-                    mapItem.position.lat = mapItem.position.coordinates[1];
-                    mapItem.position.lng = mapItem.position.coordinates[0];
-                    var compPoint = {
-                      lat: mapItem.position.coordinates[1],
-                      lng: mapItem.position.coordinates[0]
-                    };
-                    lats.push(mapItem.position.lat);
-                    lngs.push(mapItem.position.lng);
+                mapItem.distance = GeoServices.getDistanceFromLatLonInKm(distanceSrcPoint, compPoint)
 
-                    mapItem.distance = GeoServices.getDistanceFromLatLonInKm(distanceSrcPoint, compPoint)
+                collectionCoords.push([mapItem.position.lat, mapItem.position.lng]);
+                mapViewCoordsCollection.push([L.latLng(mapItem.position.lat, mapItem.position.lng)]);
 
-                    collectionCoords.push([mapItem.position.lat, mapItem.position.lng]);
-                    mapViewCoordsCollection.push([L.latLng(mapItem.position.lat, mapItem.position.lng)]);
+                /*
+                 *
+                 * marker initializations
+                 *
+                 * */
+                //var marker = L.marker([mapItem.position.lat, mapItem.position.lng])
+                //  .addTo(mainUserMarketMap);
 
-                    /*
-                     *
-                     * marker initializations
-                     *
-                     * */
-                    //var marker = L.marker([mapItem.position.lat, mapItem.position.lng])
-                    //  .addTo(mainUserMarketMap);
-
-                    $scope.markers[mapItem.id] = {
-                      lat: mapItem.position.lat,
-                      lng: mapItem.position.lng
-                    };
-                    $scope.markersCollection.push( {
-                      lat: mapItem.position.lat,
-                      lng: mapItem.position.lng
-                    });
+                $scope.markers[mapItem.id] = {
+                  lat: mapItem.position.lat,
+                  lng: mapItem.position.lng
+                };
+                $scope.markersCollection.push( {
+                  lat: mapItem.position.lat,
+                  lng: mapItem.position.lng
+                });
 
 
-                  });
+              });
 
-                  if (lats && lngs) {
-                    // sort damn coordinates to find the two corners of the box
-                    // I must be missing something b/c this should be automated
-                    var northWest = GeoServices.getBoundingCoordinateByName(GEO_CONST.NW_COORDINATE, collectionCoords);
-                    var northEast = GeoServices.getBoundingCoordinateByName(GEO_CONST.NE_COORDINATE, collectionCoords);
-                    var southWest = GeoServices.getBoundingCoordinateByName(GEO_CONST.SW_COORDINATE, collectionCoords);
-                    var southEast = GeoServices.getBoundingCoordinateByName(GEO_CONST.SE_COORDINATE, collectionCoords);
+              if (lats && lngs) {
+                // sort damn coordinates to find the two corners of the box
+                // I must be missing something b/c this should be automated
+                var northWest = GeoServices.getBoundingCoordinateByName(GEO_CONST.NW_COORDINATE, collectionCoords);
+                var northEast = GeoServices.getBoundingCoordinateByName(GEO_CONST.NE_COORDINATE, collectionCoords);
+                var southWest = GeoServices.getBoundingCoordinateByName(GEO_CONST.SW_COORDINATE, collectionCoords);
+                var southEast = GeoServices.getBoundingCoordinateByName(GEO_CONST.SE_COORDINATE, collectionCoords);
 
 
-                    var minLat = Math.min.apply(null, lats),
-                      maxLat = Math.max.apply(null, lats);
-                    var minLng = Math.min.apply(null, lngs),
-                      maxLng = Math.max.apply(null, lngs);
+                var minLat = Math.min.apply(null, lats),
+                  maxLat = Math.max.apply(null, lats);
+                var minLng = Math.min.apply(null, lngs),
+                  maxLng = Math.max.apply(null, lngs);
 
-                    northWest = [maxLat, minLng];
-                    northEast = [maxLat, maxLng];
-                    southWest = [minLat, minLng];
-                    southEast = [minLat, maxLng];
+                northWest = [maxLat, minLng];
+                northEast = [maxLat, maxLng];
+                southWest = [minLat, minLng];
+                southEast = [minLat, maxLng];
 
-                    // var bounds = [[minlat,minlng],[maxlat,maxlng]];
+                // var bounds = [[minlat,minlng],[maxlat,maxlng]];
 
-                    $scope.bounds = leafletBoundsHelpers.createBoundsFromArray([northEast, southWest]);
-                    $scope.resetBounds = leafletBoundsHelpers.createBoundsFromArray([northEast, northEast]);
+                $scope.bounds = leafletBoundsHelpers.createBoundsFromArray([northEast, southWest]);
+                $scope.resetBounds = leafletBoundsHelpers.createBoundsFromArray([northEast, northEast]);
 
+              }
+
+
+              function isMarkersPopulated(markers) {
+                for(var prop in markers) {
+                  if (markers.hasOwnProperty(prop)) {
+                    return true;
                   }
+                }
+
+                return false;
+              }
+              $scope.center = {
+                lat: currentPosition.geometry.coordinates[1],
+                lng: currentPosition.geometry.coordinates[0]
+              };
+              $scope.hasResults = false;
 
 
-                  function isMarkersPopulated(markers) {
-                    for(var prop in markers) {
-                      if (markers.hasOwnProperty(prop)) {
-                        return true;
-                      }
-                    }
+              /*
+               *
+               * We have at least 1 ask
+               *
+               * - we need a minimum sized zoom level
+               * - should be based on on range value
+               * - range should be depicted as a translucent circle like a radar range view
+               * - users should be able to toggle the range view on and off
+               *
+               * */
+              if ($scope.resetBounds.northEast && $scope.resetBounds.northEast.lat && (!isNaN($scope.resetBounds.northEast.lat)) && isMarkersPopulated($scope.markers)) {
+                angular.extend($scope, {
+                  markers: $scope.markers
+                });
+                $scope.hasResults = true;
 
-                    return false;
-                  }
-                  $scope.center = {
+                if (!$scope.userMarketCtx.currentMap) {
+                  $scope.userMarketCtx.currentMap = {};
+                }
+                $scope.userMarketCtx.currentMap = {
+                  center: {
                     lat: currentPosition.geometry.coordinates[1],
                     lng: currentPosition.geometry.coordinates[0]
+                  },
+                  bounds: $scope.bounds
+                };
+
+                $scope.toggleMapLoad = !$scope.toggleMapLoad;
+              }
+              else {
+                northEast = [currentPosition.geometry.coordinates[1], currentPosition.geometry.coordinates[0]];
+                southWest = [currentPosition.geometry.coordinates[1], currentPosition.geometry.coordinates[0]];
+                $scope.hasResults = false;
+
+                $timeout(function() {
+
+                  if (!$scope.userMarketCtx.currentMap) {
+                    $scope.userMarketCtx.currentMap = {};
+                  }
+                  $scope.userMarketCtx.currentMap = {
+                    center: {
+                      lat: currentPosition.geometry.coordinates[1],
+                      lng: currentPosition.geometry.coordinates[0]
+                    },
+                    bounds: $scope.bounds
                   };
-                  $scope.hasResults = false;
 
+                  $scope.toggleMapLoad = !$scope.toggleMapLoad;
+                }, 400);
+              }
+              $scope.marketAsks = returnCollection;
+            }
 
-                  /*
-                   *
-                   * We have at least 1 ask
-                   *
-                   * - we need a minimum sized zoom level
-                   * - should be based on on range value
-                   * - range should be depicted as a translucent circle like a radar range view
-                   * - users should be able to toggle the range view on and off
-                   *
-                   * */
-                  if ($scope.resetBounds.northEast && $scope.resetBounds.northEast.lat && (!isNaN($scope.resetBounds.northEast.lat)) && isMarkersPopulated($scope.markers)) {
-                    angular.extend($scope, {
-                      markers: $scope.markers
-                    });
-                    $scope.hasResults = true;
-
-                    if (!$scope.userMarketCtx.currentMap) {
-                      $scope.userMarketCtx.currentMap = {};
-                    }
-                    $scope.userMarketCtx.currentMap = {
-                      center: {
-                        lat: currentPosition.geometry.coordinates[1],
-                        lng: currentPosition.geometry.coordinates[0]
-                      },
-                      bounds: $scope.bounds
-                    };
-
-                    $scope.toggleMapLoad = !$scope.toggleMapLoad;
-                  }
-                  else {
-                    northEast = [currentPosition.geometry.coordinates[1], currentPosition.geometry.coordinates[0]];
-                    southWest = [currentPosition.geometry.coordinates[1], currentPosition.geometry.coordinates[0]];
-                    $scope.hasResults = false;
-
-                    $timeout(function() {
-
-                      if (!$scope.userMarketCtx.currentMap) {
-                        $scope.userMarketCtx.currentMap = {};
-                      }
-                      $scope.userMarketCtx.currentMap = {
-                        center: {
-                          lat: currentPosition.geometry.coordinates[1],
-                            lng: currentPosition.geometry.coordinates[0]
-                        },
-                        bounds: $scope.bounds
-                      };
-
-                      $scope.toggleMapLoad = !$scope.toggleMapLoad;
-                    }, 400);
-                  }
-                  $scope.marketAsks = returnCollection;
-
-                })
-                .catch(function(error) {
-                  $log.warn('bad get asks', error);
-                });
+            UserMarket.createUserMarket({filter:filter})
+              .$promise
+              .then(function(response) {
+                //$log.debug('Market Asks', response);
+                $scope.userMarketCtx.localAskCollection = response.data || [];
+                renderLocalData();
+              })
+              .catch(function(error) {
+                $log.warn('bad get asks', error);
+              });
           };
           $scope.userMarketCtx.init = function() {
             // get current user
@@ -418,55 +430,97 @@ sm.Market.directive('smMarketMarketView', [
           };
           //if ($scope.activeView === $scope.userMarketCtx.viewName) {
 
-            $scope.userMarketCtx.init();
+          $scope.userMarketCtx.init();
           //}
         }
       ],
       link: function(scope, el, attrs) {
 
-        scope.$watch('filterSourceData.sellers', function(sellers, oldValue) {
-          var activeSellers = [];
-          sellers.map(function(sellerItem) {
-            if (sellerItem.checked) {
-              if (sellerItem.value !== 'all') {
-                activeSellers.push(sellerItem);
+        function processChainedFilterSet(filterName, inputSet) {
+          var propertyRef = 'variant';
+          if (!filterName) {
+            filterName = 'variants';
+          }
+          if (filterName === 'modes') {
+            propertyRef = 'mode';
+          }
+          if (filterName === 'cropYear') {
+            propertyRef = 'cropYear';
+          }
+          if (filterName === 'sellers') {
+            propertyRef = 'seller';
+          }
+
+          var retVal = [];
+          // now do other filters
+          // variants
+          var isFilterListAll = false;
+          scope.filterSourceData[filterName].map(function (filterItem) {
+            if (filterItem.checked) {
+              if (filterItem.value === 'all') {
+                isFilterListAll = true;
+                retVal = inputSet;
               }
             }
           });
+          if (!isFilterListAll) {
+            var activeFilterItems = [];
+            var currentFilteredAsks = [];
+            scope.filterSourceData[filterName].map(function (filterItem) {
+              if (filterItem.checked) {
+                activeFilterItems.push(filterItem);
+              }
+            });
 
-          if (scope.userMarketCtx.allAsks && scope.userMarketCtx.allAsks.map) {
-            scope.userMarketCtx.allAsks = [];
-            scope.userMarketCtx.srcAsks.map(function(askItem) {
-              for (var i = 0;i < activeSellers.length;i++) {
-                if (askItem.seller.handle === activeSellers[i].value) {
-                  scope.userMarketCtx.allAsks.push(askItem);
+            inputSet.map(function (askItem) {
+              for (var i = 0; i < activeFilterItems.length; i++) {
+                if (filterName === 'sellers') {
+                  if (askItem[propertyRef].handle === activeFilterItems[i].value) {
+                    currentFilteredAsks.push(askItem);
+                  }
+                }
+                else {
+                  if (askItem[propertyRef] === activeFilterItems[i].value) {
+                    currentFilteredAsks.push(askItem);
+                  }
                 }
               }
             });
+            retVal = currentFilteredAsks;
           }
+          return retVal;
+        }
+
+        scope.$watch('filterSourceData.sellers', function(sellers, oldValue) {
+
+          scope.userMarketCtx.allAsks = processChainedFilterSet('sellers', scope.userMarketCtx.srcAsks);
+
+          if (scope.userMarketCtx.allAsks && scope.userMarketCtx.allAsks.length > 0) {
+
+            scope.userMarketCtx.allAsks = processChainedFilterSet('variants', scope.userMarketCtx.allAsks);
+            if (scope.userMarketCtx.allAsks && scope.userMarketCtx.allAsks.length > 0) {
+
+              scope.userMarketCtx.allAsks = processChainedFilterSet('modes', scope.userMarketCtx.allAsks);
+            }
+
+          }
+          scope.setFiltersAndCounts(scope.userMarketCtx.allAsks);
+
         }, true);
 
 
         scope.$watch('filterSourceData.variants', function(variants, oldValue) {
-          var activeVariants = [];
-          variants.map(function(variantItem) {
-            if (variantItem.checked) {
-              if (variantItem.value !== 'all') {
-                activeVariants.push(variantItem);
-              }
-            }
-          });
 
-          if (scope.userMarketCtx.allAsks && scope.userMarketCtx.allAsks.map) {
-            scope.userMarketCtx.allAsks = [];
-            scope.userMarketCtx.srcAsks.map(function(askItem) {
-              for (var i = 0;i < activeVariants.length;i++) {
-                if (askItem.variant === activeVariants[i].value) {
-                  scope.userMarketCtx.allAsks.push(askItem);
-                }
-              }
-            });
+          scope.userMarketCtx.allAsks = processChainedFilterSet('variants', scope.userMarketCtx.srcAsks);
+
+          if (scope.userMarketCtx.allAsks && scope.userMarketCtx.allAsks.length > 0) {
+
+            scope.userMarketCtx.allAsks = processChainedFilterSet('sellers', scope.userMarketCtx.allAsks);
+            if (scope.userMarketCtx.allAsks && scope.userMarketCtx.allAsks.length > 0) {
+              scope.userMarketCtx.allAsks = processChainedFilterSet('modes', scope.userMarketCtx.allAsks);
+            }
           }
+          scope.setFiltersAndCounts(scope.userMarketCtx.allAsks);
         }, true);
 
 
@@ -548,11 +602,6 @@ sm.Market.directive('smMarketMarketView', [
             }, 900);
           }
         }, true);
-
-
-
-
-
         scope.$watch('toggleMapLoad', function(newVal, oldVal) {
         //  if (scope.activeView === scope.userMarketCtx.viewName) {
             if (scope.userMarketCtx && scope.userMarketCtx.currentMap.center) {
@@ -581,11 +630,48 @@ sm.Market.directive('smMarketMarketView', [
             }
           }
         }, true);
-        //scope.userMarketMap = L.map('UserMarketMap').setView([49.955, -122.483], 7);
-        //L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-        //  attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        //}).addTo(scope.userMarketMap);
 
+
+      }
+    }
+  }
+]);
+sm.Market.directive('smMarketAskList', [
+  //sm.MarketAskList
+  function() {
+    return {
+      restrict: 'E',
+      controller: [
+        '$scope',
+        '$filter',
+        function($scope, $filter) {
+          $scope.sortDir = {};
+          $scope.sortDir['variant'] = true;
+          $scope.sortDir['seller'] = true;
+          $scope.sortDir['mode'] = true;
+          $scope.sortDir['totalAvailable'] = true;
+          $scope.sortDir['distance'] = true;
+          $scope.sortDir['age'] = true;
+          $scope.sortDir['countryOfOrigin'] = true;
+          $scope.sortDir['analyzed'] = true;
+
+          $scope.isReverse = function(colName) {
+            return $scope.sortDir[colName] = !$scope.sortDir[colName];
+          };
+          $scope.sortEntities = function(colName) {
+            $scope.userMarketCtx.allAsks = $filter('orderBy')($scope.userMarketCtx.allAsks, colName, $scope.isReverse(colName));
+          };
+        }
+      ],
+      link: function(scope, el, attrs) {
+
+        scope.$watch('userMarketCtx.allAsks', function(newVal, oldVal) {
+          if (newVal) {
+            ReactDOM.render(React.createElement(sm.MarketAskList, {store:scope}), el[0]);
+
+          }
+
+        }, true);
       }
     }
   }
@@ -653,11 +739,16 @@ sm.Market.directive('smMarketFilterList', [
         }
       ],
       link: function(scope, el, attrs) {
-          scope.$watch('filters', function(filters) {
-            if (filters) {
-              ReactDOM.render(React.createElement(sm.MarketFilterList, {store:scope}), el[0]);
-            }
-          }, true);
+        scope.$watch('filters', function(filters) {
+          if (filters) {
+            ReactDOM.render(React.createElement(sm.MarketFilterList, {store:scope}), el[0]);
+          }
+        }, true);
+        scope.$watch('data.counts', function(filters) {
+          if (filters) {
+            ReactDOM.render(React.createElement(sm.MarketFilterList, {store:scope}), el[0]);
+          }
+        }, true);
 
       }
     }
@@ -677,7 +768,7 @@ sm.Market.directive('smMarketAskCard', [
         '$scope',
         function($scope) {
 
-          console.log($scope.ask);
+         // console.log($scope.ask);
         }
       ]
 

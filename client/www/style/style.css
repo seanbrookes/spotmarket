@@ -2153,7 +2153,7 @@ ul.HomeSecondary__FeatureList {
   margin: .2rem 0 .2rem 0;
 }
 .ContactInput {
-  max-width: 35rem;
+  max-width: 45rem;
   margin-top: 1.3rem;
   margin-bottom: 2rem;
 }
@@ -2767,10 +2767,11 @@ small size views
 .AskWizardContainer {
   background: transparent;
   padding: .4rem 0 .4rem 0;
+  max-width: 90rem;
 }
 .AskWizardContainer__Item {
   min-height: 22rem;
-  max-width: 40rem;
+  width: 40rem;
   padding: 1rem;
   margin: 0 3rem 0 3rem;
   border: 1px solid #e1e1e1;

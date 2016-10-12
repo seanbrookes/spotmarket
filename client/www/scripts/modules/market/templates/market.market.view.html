@@ -1,7 +1,7 @@
 <div class="MarketViewContainer">
   <div class="Layout">
 
-    <div class="Layout">
+    <div>
       <div>
         <h2>sellers</h2>
         <sm-market-filter-list filter="sellers" data="filterSourceData"></sm-market-filter-list>
@@ -19,6 +19,11 @@
 
 
     <div>
+
+
+
+
+
       <div ng-show="!currentUser.smCurrentPosition">
         <p>you haven't specified a region you are interested in.  You can do that <button class="LinkButton">here</button></p>
         <p>or you can <button class="LinkButton">see everything</button></p>
@@ -41,39 +46,59 @@
         </div>
       </div>
 
-    </div>
 
 
 
 
-  </div>
 
+      <div ng-show="currentUser.smCurrentPosition">
 
-  <div ng-show="currentUser.smCurrentPosition">
+        <h3>The following is for sale</h3>
+        <!--<div class="Layout">-->
+        <!--<div>-->
+        <!--<ul class="MarketAskList MarketAskList&#45;&#45;local">-->
+        <!--<li ng-repeat="ask in marketAsks">-->
+        <!--<sm-market-ask-card ask="ask"></sm-market-ask-card>-->
+        <!--</li>-->
+        <!--</ul>-->
 
-    <h3>The following is for sale</h3>
-    <div class="Layout">
+        <!--</div>-->
+        <!--<div id="MarketMap">-->
+        <!--<div id="UserMarketMap" class="UserMarketMap&#45;&#45;Main"></div>-->
+        <!--</div>-->
+
+        <!--</div>-->
+      </div>
       <div>
-        <ul class="MarketAskList MarketAskList--local">
-          <li ng-repeat="ask in marketAsks">
-            <sm-market-ask-card ask="ask"></sm-market-ask-card>
-          </li>
-        </ul>
+        <sm-market-ask-list></sm-market-ask-list>
+        <!--<ul class="MarketAskList MarketAskList&#45;&#45;all">-->
+        <!--<li ng-repeat="ask in userMark  etCtx.allAsks" >-->
+        <!--<sm-market-ask-card ask="ask"></sm-market-ask-card>-->
 
+        <!--</li>-->
+        <!--</ul>-->
       </div>
-      <div id="MarketMap">
-        <div id="UserMarketMap" class="UserMarketMap--Main"></div>
-      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     </div>
-  </div>
-  <div>
-    most recent for sale
-    <ul class="MarketAskList MarketAskList--all">
-      <li ng-repeat="ask in userMarketCtx.allAsks" >
-        <sm-market-ask-card ask="ask"></sm-market-ask-card>
 
-      </li>
-    </ul>
+
+
+
   </div>
+
+
+
 </div>
