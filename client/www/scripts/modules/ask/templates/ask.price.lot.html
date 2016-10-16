@@ -1,14 +1,17 @@
 <div class="LotPricingContainer">
 
+  <sm-ui-currency-toggle price-src="lotCtx.currentLot"></sm-ui-currency-toggle>
+
   <div class="LotPricingRow Layout">
     <label class="LotPricing_Label">Lot price: $</label>
-    <input placeholder="0" type="number" class="LotPriceInput" ng-model="lotCtx.currentLot.price" />
-    <sm-ui-currency-toggle price-src="lotCtx.currentLot"></sm-ui-currency-toggle>
-  </div>
-  <div class="LotPricingRow Layout">
-    <label class="LotPricing_Label">Lot size:</label>
-    <input placeholder="lot size" class="LotSizeInput" type="number" ng-model="lotCtx.currentLot.size" />
+    <input placeholder="0" type="number" class="LotPriceInput" ng-change="lotCtx.convertIt()" ng-model="lotCtx.currentLot.price" />
+    <p> per </p>
     <select ng-model="lotCtx.currentLot.measure" ng-options="option.value as option.value for option in lotCtx.measureOptions"></select>
+  </div>
+  <p>${{lotCtx.currentLot.convertedPrice}}(USD)</p>
+  <div class="LotPricingRow Layout">
+    <label class="LotPricing_Label">Package:</label>
+    <textarea placeholder="eg: 10lb bale" class="LotSizeInput" ng-model="lotCtx.currentLot.package" ></textarea>
   </div>
 
 

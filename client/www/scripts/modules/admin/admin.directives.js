@@ -121,11 +121,20 @@ sm.Admin.directive('smAdminAskManager', [
                     * ask.id
                     *
                     * */
-                    lotPrice.seller = responseAsk.seller;
+                    lotPrice.sellerHandle = responseAsk.seller.handle;
                     lotPrice.position = responseAsk.position;
                     lotPrice.productType = responseAsk.productType;
                     lotPrice.variant = responseAsk.variant;
-                    lotPrice.mode = responseAsk.mode;
+                    lotPrice.quantity = responseAsk.quantity;
+                    lotPrice.quantityMeasure = responseAsk.quantityMeasure;
+                    lotPrice.cropYear = responseAsk.cropYear;
+                    lotPrice.grower = responseAsk.grower.handle;
+                    lotPrice.countryOfOrigin = responseAsk.countryOfOrigin;
+                    lotPrice.analysis = false;
+                    if (responseAsk.testHistory && responseAsk.testHistory.length && responseAsk.testHistory.length > 0) {
+                      lotPrice.analysis = true;
+                    }
+                    lotPrice.productMode = responseAsk.productMode;
                     lotPrice.askId = responseAsk.id;
 
                     $timeout(function() {

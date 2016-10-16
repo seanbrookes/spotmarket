@@ -13,26 +13,20 @@
       <a href="/#/user/{{askCtx.currentAsk.seller.handle}}">{{askCtx.currentAsk.seller.handle}}</a>
       <br />
       <!--<sm-ask-seller-view></sm-ask-seller-view>-->
-      <span class="AskFormLabel">Your current location: </span>
+      <span class="AskFormLabel">Point of sale: </span>
       <sm-ask-where-view></sm-ask-where-view>
     </div>
   </div>
   <div class="AskWizardContainer">
-    <div class="Layout">
-      <div class="AskWizardContainer__Item AskWizardContainer__WhatItem">
-        <sm-ask-what-view></sm-ask-what-view>
-
-      </div>
-      <div class="AskWizardContainer__Item AskWizardContainer__PriceItem">
-        <sm-ask-price-view></sm-ask-price-view>
-      </div>
-    </div>
+    <sm-ask-what-view></sm-ask-what-view>
 
     <div class="Layout FlexEnd" >
       <button ng-click="askCtx.clearCurrentAsk()">cancel</button>
       <button class="Button--primary" ng-disabled="!askCtx.isCurrentAskValid()" ng-click="saveAsk()">save</button>
     </div>
+
   </div>
+  <sm-ask-history-view profile="askCtx.currentAsk.seller"></sm-ask-history-view>
 
 
 </div>

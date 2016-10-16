@@ -36,12 +36,59 @@
       </div>
     </div>
 
-    <div class="UserProfile__BioContainer">
-      <div ng-show="!userProfileCtx.isEditBioMode" class="UserProfile__BioInner" ng-bind-html="userProfileCtx.currentProfile.bio"></div>
-      <button ng-show="!userProfileCtx.isEditBioMode" class="LinkButton" ng-click="userProfileCtx.triggerEditBio()">edit bio</button>
-      <div ng-show="userProfileCtx.isEditBioMode" text-angular="" ng-model="userProfileCtx.currentProfile.bio"></div>
+    <div>
+      <!-- tabs about / preferences -->
+      <div class="Layout">
+        <button ng-click="userProfileCtx.showMainView('about')">About</button>
+        <button ng-click="userProfileCtx.showMainView('preferences')">Preferences</button>
+      </div>
 
-      <button ng-show="userProfileCtx.isEditBioMode" class="LinkButton" ng-click="userProfileCtx.saveBio()">save bio</button>
+      <div ng-show="userProfileCtx.amIActive('about')" class="UserProfile__AboutContainer">
+        <div ng-show="!userProfileCtx.isEditBioMode" class="UserProfile__BioInner" ng-bind-html="userProfileCtx.currentProfile.bio"></div>
+        <button ng-show="!userProfileCtx.isEditBioMode" class="LinkButton" ng-click="userProfileCtx.triggerEditBio()">edit bio</button>
+        <div ng-show="userProfileCtx.isEditBioMode" text-angular="" ng-model="userProfileCtx.currentProfile.bio"></div>
+
+        <button ng-show="userProfileCtx.isEditBioMode" class="LinkButton" ng-click="userProfileCtx.saveBio()">save bio</button>
+      </div>
+      <div  ng-show="userProfileCtx.amIActive('preferences')" class="UserProfile__PreferencesContainer">
+
+        <p>Preferences go here</p>
+        <div>
+          <ul>
+            <li>Default Currency:
+              <div class="Layout">
+                <div>USD</div>
+                <label class="switch">
+                  <input type="checkbox" ng-model="userProfileCtx.isDefaultCurrencyChecked" ng-change="userProfileCtx.toggleWeightMeasure()">
+                  <div class="slider round"></div>
+                </label>
+                <div>CAD</div>
+              </div>
+            </li>
+            <li>Default Weight Measure:
+              <div class="Layout">
+                <div>LBs</div>
+                <label class="switch">
+                  <input type="checkbox" ng-model="userProfileCtx.isDefaultWeightMeasureChecked" ng-change="userProfileCtx.toggleWeightMeasure()">
+                  <div class="slider round"></div>
+                </label>
+                <div>KGs</div>
+              </div>
+            </li>
+            <li>Default Distance Measure:
+              <div class="Layout">
+                <div>KMs</div>
+                <label class="switch">
+                  <input type="checkbox" ng-model="userProfileCtx.isDefaultDistanceMeasureChecked" ng-change="userProfileCtx.toggleDistanceMeasure()">
+                  <div class="slider round"></div>
+                </label>
+                <div>Miles</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
     </div>
 
   </div>

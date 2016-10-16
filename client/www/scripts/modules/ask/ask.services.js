@@ -86,6 +86,20 @@ sm.Ask.service('AskServices', [
           return response || [];
         });
     };
+    svc.getProfileAskHistory = function(handle) {
+      var filter = {
+        where: {
+          seller:{
+            handle:handle
+          }
+        }
+      };
+      return svc.getAsks(filter)
+        .then(function(response) {
+          return response;
+        });
+
+    };
     svc.deleteAsk = function(askId) {
       if (askId) {
         return Ask.deleteById({id:askId})
@@ -99,7 +113,7 @@ sm.Ask.service('AskServices', [
       if (!filter) {
         filter = {};
       }
-      return Ask.find(filter)
+      return LotPrice.find(filter)
         .$promise
         .then(function(response) {
           return response || [];
@@ -109,6 +123,7 @@ sm.Ask.service('AskServices', [
     svc.saveLotPrice = function(lotPriceArg) {
       if (lotPriceArg && lotPriceArg.id) {
         // update
+        lotPriceArg.lastUpdate = new Date().getTime();
         return LotPrice.upsert(lotPriceArg)
           .$promise
           .then(function(response) {
@@ -121,6 +136,8 @@ sm.Ask.service('AskServices', [
       }
       else {
         // create
+        lotPriceArg.createdDate = new Date().getTime();
+        lotPriceArg.lastUpdate = lotPriceArg.createdDate;
         return LotPrice.create(lotPriceArg)
           .$promise
           .then(function(response) {

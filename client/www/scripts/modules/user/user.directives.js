@@ -239,11 +239,19 @@ sm.User.directive('smUserProfileView', [
         '$stateParams',
         '$state',
         function($scope, Upload, UserSessionService, UserServices, $log, $stateParams, $state) {
-          var rTEditor;
+
           if (!$scope.userProfileCtx) {
             $scope.userProfileCtx = {};
 
           }
+          $scope.userProfileCtx.mainViews = {
+            about: {
+              active: true
+            },
+            preferences: {
+              active: false
+            }
+          };
           $scope.profileAvatar = {
             userId:'',
             avatarImage: ''
@@ -273,6 +281,46 @@ sm.User.directive('smUserProfileView', [
           $scope.userProfileCtx.isEditCurrentUser = function() {
             return $scope.userProfileCtx.isEditMode;
           };
+          $scope.userProfileCtx.isDefaultWeightMeasureChecked = true; // kg
+          $scope.$watch('userProfileCtx.isDefaultWeightMeasureChecked', function(newVal, oldVal) {
+            if (!$scope.userProfileCtx.currentProfile.preferences) {
+
+              $scope.userProfileCtx.currentProfile.preferences = {};
+            }
+            var val = 'kg';
+            if (!$scope.userProfileCtx.isDefaultWeightMeasureChecked) {
+              val = 'lb';
+            }
+            $scope.userProfileCtx.currentProfile.preferences.weightMeasure = val;
+            $scope.saveCurrentProfile();
+          }, true);
+          $scope.userProfileCtx.isDefaultCurrencyChecked = true; // CAD
+          $scope.$watch('userProfileCtx.isDefaultCurrencyChecked', function(newVal, oldVal) {
+            if (!$scope.userProfileCtx.currentProfile.preferences) {
+
+              $scope.userProfileCtx.currentProfile.preferences = {};
+            }
+            var val = 'CAD';
+            if (!$scope.userProfileCtx.isDefaultCurrencyChecked) {
+              val = 'USD';
+            }
+            $scope.userProfileCtx.currentProfile.preferences.currency = val;
+            $scope.saveCurrentProfile();
+          }, true);
+          $scope.userProfileCtx.isDefaultDisanceMeasureChecked = true; // km
+          $scope.$watch('userProfileCtx.isDefaultCurrencyChecked', function(newVal, oldVal) {
+            if (!$scope.userProfileCtx.currentProfile.preferences) {
+
+              $scope.userProfileCtx.currentProfile.preferences = {};
+            }
+            var val = 'km';
+            if (!$scope.userProfileCtx.isDefaultDisanceMeasureChecked) {
+              val = 'miles';
+            }
+            $scope.userProfileCtx.currentProfile.preferences.distance = val;
+            $scope.saveCurrentProfile();
+          }, true);
+
           $scope.saveCurrentProfile = function() {
             UserServices.saveUser($scope.userProfileCtx.currentProfile)
               .then(function(response) {
@@ -290,15 +338,6 @@ sm.User.directive('smUserProfileView', [
               });
           };
           $scope.userProfileCtx.saveBio = function() {
-
-
-
-
-
-
-
-
-
 
             UserServices.saveUser($scope.userProfileCtx.currentProfile)
               .then(function(response) {
@@ -380,6 +419,19 @@ sm.User.directive('smUserProfileView', [
           $scope.userProfileCtx.triggerEditMode = function() {
             $scope.userProfileCtx.isEditMode = true;
           };
+          $scope.userProfileCtx.showMainView = function(viewName) {
+
+            for (var view in $scope.userProfileCtx.mainViews) {
+              if( $scope.userProfileCtx.mainViews.hasOwnProperty(view) ) {
+                $scope.userProfileCtx.mainViews[view].active = false;
+              }
+            }
+            $scope.userProfileCtx.mainViews[viewName].active = true;
+
+          };
+          $scope.userProfileCtx.amIActive = function(viewName) {
+            return $scope.userProfileCtx.mainViews[viewName].active;
+          };
 
           $scope.userProfileCtx.init = function() {
 
@@ -411,6 +463,21 @@ sm.User.directive('smUserProfileView', [
                       $scope.userProfileCtx.currentProfile.bio = "No bio information available yet";
                     }
 
+                    $scope.userProfileCtx.isDefaultWeightMeasureChecked = true; // kg
+                    $scope.userProfileCtx.isDefaultCurrencyChecked = true;
+
+                    if ($scope.userProfileCtx.currentProfile.preferences && $scope.userProfileCtx.currentProfile.preferences.currency) {
+                      if ($scope.userProfileCtx.currentProfile.preferences.currency === 'USD') {
+                        $scope.userProfileCtx.isDefaultCurrencyChecked = false;
+                      }
+                    }
+                    if ($scope.userProfileCtx.currentProfile.preferences && $scope.userProfileCtx.currentProfile.preferences.weightMeasure) {
+                      if ($scope.userProfileCtx.currentProfile.preferences.weightMeasure === 'lb') {
+                        $scope.userProfileCtx.isDefaultWeightMeasureChecked = false;
+                      }
+                    }
+
+
 
                   }
                 });
@@ -431,6 +498,19 @@ sm.User.directive('smUserProfileView', [
                     }
                     if (!$scope.userProfileCtx.currentProfile.bio) {
                       $scope.userProfileCtx.currentProfile.bio = "No bio information available yet";
+                    }
+                    $scope.userProfileCtx.isDefaultWeightMeasureChecked = true; // kg
+                    $scope.userProfileCtx.isDefaultCurrencyChecked = true;
+
+                    if ($scope.userProfileCtx.currentProfile.preferences && $scope.userProfileCtx.currentProfile.preferences.currency) {
+                      if ($scope.userProfileCtx.currentProfile.preferences.currency === 'USD') {
+                        $scope.userProfileCtx.isDefaultCurrencyChecked = false;
+                      }
+                    }
+                    if ($scope.userProfileCtx.currentProfile.preferences && $scope.userProfileCtx.currentProfile.preferences.weightMeasure) {
+                      if ($scope.userProfileCtx.currentProfile.preferences.weightMeasure === 'lb') {
+                        $scope.userProfileCtx.isDefaultWeightMeasureChecked = false;
+                      }
                     }
 
 

@@ -1,13 +1,13 @@
 /*
 http://www.w3schools.com/cssref/css_websafe_fonts.asp
+http://tawian.io/text-spinners/?utm_source=html5weekly&utm_medium=email
+https://gist.github.com/addyosmani/fd3999ea7fce242756b1?utm_source=html5weekly&utm_medium=email
 */
 /* CSS */
 * {
   margin: 0;
 }
-html, body {
-  height: 100%;
-}
+html, body {height:100%;margin:0;padding:0}
 body {
   font-size: 16px;
   width: 100%;
@@ -15,7 +15,20 @@ body {
   margin: 0;
   padding:0;
   font-family: 'helvetica neue', helvetica, arial, sans-serif;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
 }
+.MainApp__Container {
+  height:100%;
+  flex:1;
+}
+
+
+
+
+
+
 
 input, textarea, keygen, select, button {
   font: inherit;
@@ -42,6 +55,7 @@ button {
 @import "canvas-cropper";
 @import "base";
 @import "layouts";
+@import "date-picker";
 @import "theme1";
 @import "tracking";
 @import "contact-input";

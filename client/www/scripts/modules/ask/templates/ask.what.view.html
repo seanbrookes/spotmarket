@@ -1,80 +1,45 @@
-<div class="AskForm__Container">
+<div class="AskForm__Container Layout">
 
-
-    <sm-ask-what-detail-view  ng-show="askCtx.currentAsk.productType"></sm-ask-what-detail-view>
-
+  <div class="AskForm__SubContainer Layout" ng-show="askCtx.currentAsk.productType">
     <div>
-      <label class="AskForm__Label">
-        Description
-      </label>
-      <trix-editor class="AskForm__DescriptionText" angular-trix ng-model="askCtx.currentAsk.description"></trix-editor>
-    </div>
-  <div>
-    <label class="AskForm__Label">
-      Grower
-    </label>
-    <select ng-model="askCtx.currentAsk.grower" ng-options="grower as grower.name for grower in askCtx.listOfGrowers"></select>
-    <a ui-sref="org" class="LinkButton">Add grower</a>
-  </div>
-  <div>
-    <label class="AskForm__Label">
-      Crop year
-    </label>
-    <select ng-model="askCtx.currentAsk.cropYear"
-            ng-options="year as year for year in askCtx.listOfCropYears" ></select>
-  </div>
-  <div>
-    <label class="AskForm__Label">
-      Quantity available
-    </label>
-    <input ng-model="askCtx.currentAsk.totalQuantity" type="text" />
-  </div>
-  <div>
-    <label class="AskForm__Label">
-      Country of origin
-    </label>
-    <select ng-model="askCtx.currentAsk.countryOfOrigin"
-            ng-options="country.Name as country.Name for country in askCtx.listOfCountries" ></select>
-  </div>
-  <div>
+      <div>
+        <sm-ui-auto-suggest  ng-show="!askCtx.isAskDetailReadOnly" placeholder="eg Cascade" label="Variant" value="askCtx.currentAsk.variant" possible-values="productCtx.currentProductVariants"></sm-ui-auto-suggest>
+        <button  ng-show="askCtx.isAskDetailReadOnly" ng-click="askCtx.requestEditCurrentAskVariant()" class="LinkButton">{{askCtx.currentAsk.variant}}</button>
+      </div>
 
-    <div class="Layout">
-      <h3>Analysis</h3>
-      <button class="LinkButton" ng-click="askCtx.testCtx.toggleTestEditor()">Add test info</button>
-    </div>
-    <div ng-show="askCtx.testCtx.isShowTestEditor">
-      <div>
+      <sm-ui-auto-suggest ng-show="!askCtx.isAskDetailReadOnly" label="Mode" placeholder="eg: T90 pellet, whole, extract" value="askCtx.currentAsk.productMode" possible-values="askCtx.productModes.beerHops"></sm-ui-auto-suggest>
+      <button ng-show="askCtx.isAskDetailReadOnly" ng-click="askCtx.requestEditCurrentAskMode()" class="LinkButton">{{askCtx.currentAsk.productMode}}</button>
+
+      <div ng-show="!askCtx.isAskDetailReadOnly">
         <label class="AskForm__Label">
-          Test date
+          Quantity available
         </label>
-        <datepicker>
-          <input ng-model="askCtx.testCtx.currentTest.date" type="text"/>
-        </datepicker>
-      </div>
-      <div>
-        <label class="AskForm__Label">
-          Alpha levels
-        </label>
-        <input ng-model="askCtx.testCtx.currentTest.alpha" type="text" />
-      </div>
-      <div>
-        <label class="AskForm__Label">
-          Testing lab
-        </label>
-        <trix-editor class="TestForm__LabText" angular-trix ng-model="askCtx.testCtx.currentTest.lab"></trix-editor>
+        <input ng-model="askCtx.currentAsk.quantity" type="number" />
+        <select class="AskForm__Select" ng-model="askCtx.currentAsk.quantityMeasure" ng-options="option.value as option.value for option in askCtx.measureOptions"></select>
 
       </div>
-      <button ng-click="askCtx.testCtx.saveCurrentTest()">Save</button>
+      <button ng-show="askCtx.isAskDetailReadOnly" class="LinkButton">{{askCtx.currentAsk.quantity}}  {{askCtx.currentAsk.quantityMeasure}}</button>
+
+
+      <button ng-show="askCtx.isAskPricingPreReqs()" ng-click="askCtx.togglePricingForm()">Pricing</button>
+
+      <div ng-show="askCtx.isShowPricingForm" class="AskWizardContainer__Item AskWizardContainer__PriceItem">
+        <sm-ask-price-view></sm-ask-price-view>
+      </div>
+
+
+
+
+    </div>
+    <div>
+      <button ng-show="askCtx.isAskDetailReadOnly" ng-click="askCtx.toggleAskDetailReadOnly()">change</button>
     </div>
 
 
-    <button class="LinkButton">test history</button>
-    <ul>
-      <li ng-repeat="test in askCtx.currentAsk.testHistory">{{test.date}} - Alpha: {{test.alpha}} <button ng-click="askCtx.testCtx.removeTest($index)" class="LinkButton">(x)</button></li>
-    </ul>
   </div>
 
-
-
+  <div class="AskForm__SubContainer">
+    <sm-ask-what-detail-view  ng-show="askCtx.currentAsk.productType"></sm-ask-what-detail-view>
+  </div>
 
 </div>

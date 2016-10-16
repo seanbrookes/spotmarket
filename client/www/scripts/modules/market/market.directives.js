@@ -138,59 +138,51 @@ sm.Market.directive('smMarketMarketView', [
               //$scope.filterSourceData.counts[askItem.variant] = 0;
               zeroCounts();
               askList.map(function(askItem) {
-                if (askItem.lotPrices && askItem.lotPrices.map) {
-
-                  /*
-                   *
-                   * Lot price aggregation
-                   *
-                   * */
-                  askItem.lotPrices.map(function(lotPrice) {
-                    //   $scope.filterSourceData.modes.push(lotPrice.productMode);
-                    $scope.filterSourceData.modes = pushIfUnique($scope.filterSourceData.modes, lotPrice.productMode);
-
-                    if (!$scope.filterSourceData.counts[lotPrice.productMode]) {
-                      $scope.filterSourceData.counts[lotPrice.productMode] = 1;
-                    }
-                    else {
-                      $scope.filterSourceData.counts[lotPrice.productMode] += 1;
-                    }
-                  });
+              //  if (askItem.lotPrices && askItem.lotPrices.map) {
 
 
+                $scope.filterSourceData.modes = pushIfUnique($scope.filterSourceData.modes, askItem.productMode);
 
-                  /*
-                   *
-                   * Variants aggregation
-                   *
-                   * */
-                  $scope.filterSourceData.variants = pushIfUnique($scope.filterSourceData.variants, askItem.variant);
-
-                  if (!$scope.filterSourceData.counts[askItem.variant]) {
-                    $scope.filterSourceData.counts[askItem.variant] = 1;
-                  }
-                  else {
-                    $scope.filterSourceData.counts[askItem.variant] += 1;
-                  }
+                if (!$scope.filterSourceData.counts[askItem.productMode]) {
+                  $scope.filterSourceData.counts[askItem.productMode] = 1;
+                }
+                else {
+                  $scope.filterSourceData.counts[askItem.productMode] += 1;
+                }
 
 
-                  //
-                  /*
-                   *
-                   * sellers aggregation
-                   *
-                   * */
-                  //$timeout(function() {
-                  $scope.filterSourceData.sellers = pushIfUnique($scope.filterSourceData.sellers, askItem.seller.handle);
-                  if (!$scope.filterSourceData.counts[askItem.seller.handle]) {
-                    $scope.filterSourceData.counts[askItem.seller.handle] = 1;
-                  }
-                  else {
-                    $scope.filterSourceData.counts[askItem.seller.handle] += 1;
-                  }
+                /*
+                 *
+                 * Variants aggregation
+                 *
+                 * */
+                $scope.filterSourceData.variants = pushIfUnique($scope.filterSourceData.variants, askItem.variant);
+
+                if (!$scope.filterSourceData.counts[askItem.variant]) {
+                  $scope.filterSourceData.counts[askItem.variant] = 1;
+                }
+                else {
+                  $scope.filterSourceData.counts[askItem.variant] += 1;
+                }
+
+
+                //
+                /*
+                 *
+                 * sellers aggregation
+                 *
+                 * */
+                //$timeout(function() {
+                $scope.filterSourceData.sellers = pushIfUnique($scope.filterSourceData.sellers, askItem.sellerHandle);
+                if (!$scope.filterSourceData.counts[askItem.selleHandle]) {
+                  $scope.filterSourceData.counts[askItem.selleHandle] = 1;
+                }
+                else {
+                  $scope.filterSourceData.counts[askItem.sellerHandle] += 1;
+                }
 
                   //}, 25);
-                }
+               // }
               });
             }
 
@@ -203,6 +195,24 @@ sm.Market.directive('smMarketMarketView', [
             $scope.userMarketCtx.allAsks = AskServices.getAsks()
               .then(function(response) {
                 if (response && response.map) {
+                  // restructure to lot-price
+                  //currency
+                  //  :
+                  //  "CAD"
+                  //measure
+                  //  :
+                  //  "kg"
+                  //price
+                  //  :
+                  //  12
+                  //productMode
+                  //  :
+                  //  "Leaf"
+                  //size
+                  //  :
+                  //  1
+
+
                   $scope.setFiltersAndCounts(response);
 
                 }
@@ -282,7 +292,7 @@ sm.Market.directive('smMarketMarketView', [
                 lats.push(mapItem.position.lat);
                 lngs.push(mapItem.position.lng);
 
-                mapItem.distance = GeoServices.getDistanceFromLatLonInKm(distanceSrcPoint, compPoint)
+                mapItem.distance = GeoServices.getDistanceFromLatLonInKm(distanceSrcPoint, compPoint);
 
                 collectionCoords.push([mapItem.position.lat, mapItem.position.lng]);
                 mapViewCoordsCollection.push([L.latLng(mapItem.position.lat, mapItem.position.lng)]);
@@ -448,7 +458,7 @@ sm.Market.directive('smMarketMarketView', [
             propertyRef = 'cropYear';
           }
           if (filterName === 'sellers') {
-            propertyRef = 'seller';
+            propertyRef = 'sellerHandle';
           }
 
           var retVal = [];
@@ -474,15 +484,8 @@ sm.Market.directive('smMarketMarketView', [
 
             inputSet.map(function (askItem) {
               for (var i = 0; i < activeFilterItems.length; i++) {
-                if (filterName === 'sellers') {
-                  if (askItem[propertyRef].handle === activeFilterItems[i].value) {
-                    currentFilteredAsks.push(askItem);
-                  }
-                }
-                else {
-                  if (askItem[propertyRef] === activeFilterItems[i].value) {
-                    currentFilteredAsks.push(askItem);
-                  }
+                if (askItem[propertyRef] === activeFilterItems[i].value) {
+                  currentFilteredAsks.push(askItem);
                 }
               }
             });
@@ -520,7 +523,7 @@ sm.Market.directive('smMarketMarketView', [
               scope.userMarketCtx.allAsks = processChainedFilterSet('modes', scope.userMarketCtx.allAsks);
             }
           }
-          scope.setFiltersAndCounts(scope.userMarketCtx.allAsks);
+          //scope.setFiltersAndCounts(scope.userMarketCtx.allAsks);
         }, true);
 
 
@@ -637,8 +640,8 @@ sm.Market.directive('smMarketMarketView', [
   }
 ]);
 sm.Market.directive('smMarketAskList', [
-  //sm.MarketAskList
-  function() {
+  'GeoServices',
+  function(GeoServices) {
     return {
       restrict: 'E',
       controller: [
@@ -649,11 +652,11 @@ sm.Market.directive('smMarketAskList', [
           $scope.sortDir['variant'] = true;
           $scope.sortDir['seller'] = true;
           $scope.sortDir['mode'] = true;
-          $scope.sortDir['totalAvailable'] = true;
+          $scope.sortDir['quantity'] = true;
           $scope.sortDir['distance'] = true;
           $scope.sortDir['age'] = true;
           $scope.sortDir['countryOfOrigin'] = true;
-          $scope.sortDir['analyzed'] = true;
+          $scope.sortDir['analysis'] = true;
 
           $scope.isReverse = function(colName) {
             return $scope.sortDir[colName] = !$scope.sortDir[colName];
@@ -661,13 +664,37 @@ sm.Market.directive('smMarketAskList', [
           $scope.sortEntities = function(colName) {
             $scope.userMarketCtx.allAsks = $filter('orderBy')($scope.userMarketCtx.allAsks, colName, $scope.isReverse(colName));
           };
+          var currentPosition = JSON.parse($scope.currentUser.smCurrentPosition);
+
+          $scope.distanceSrcPoint = {
+            lng:currentPosition.geometry.coordinates[0],
+            lat:currentPosition.geometry.coordinates[1]
+          };
         }
       ],
       link: function(scope, el, attrs) {
 
+
+
         scope.$watch('userMarketCtx.allAsks', function(newVal, oldVal) {
           if (newVal) {
-            ReactDOM.render(React.createElement(sm.MarketAskList, {store:scope}), el[0]);
+
+            if (scope.userMarketCtx.allAsks && scope.userMarketCtx.allAsks.map) {
+              scope.userMarketCtx.allAsks.map(function(item) {
+                item.position.lat = item.position.coordinates[1];
+                item.position.lng = item.position.coordinates[0];
+                var compPoint = {
+                  lat: item.position.coordinates[1],
+                  lng: item.position.coordinates[0]
+                };
+
+                item.distance = GeoServices.getDistanceFromLatLonInKm(scope.distanceSrcPoint, compPoint);
+
+              });
+
+              ReactDOM.render(React.createElement(sm.MarketAskList, {store:scope}), el[0]);
+            }
+
 
           }
 

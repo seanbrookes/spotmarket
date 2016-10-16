@@ -7,13 +7,14 @@
   padding:0;
   min-height: 100vh;
   max-width:1500px;
+  display: flex;
+  flex-direction: column;
 }
 .InnerAppContainer {
   flex: 1;
   background-color:@bg-color-primary;
-  padding:.4rem .5rem .4rem .5rem;
-  height:100%;
-
+  padding:.4rem .5rem 0 .5rem;
+  height: 100vh;
 }
 .Body--Home {
   .InnerAppContainer {
@@ -336,9 +337,8 @@ Market view
   User Reg and login
 */
 .AuthTextInput {
-  height:1.3rem;
   margin:.3rem auto .3rem auto;
-  width:12rem;
+  width:26rem;
   font-size:120%;
 }
 
@@ -380,6 +380,8 @@ Market view
   background-color:#ffffff;
   padding:1rem;
   overflow: hidden;
+  height:100%;
+  flex:1;
 }
 .UserProfile_MainView {
   margin-top:2rem;
@@ -609,7 +611,6 @@ small size views
 
   }
   .AuthTextInput {
-    height:1.3rem;
     margin:.3rem auto .3rem auto;
     width:100%;
 
