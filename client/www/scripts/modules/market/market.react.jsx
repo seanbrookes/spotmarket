@@ -62,38 +62,66 @@ sm.MarketAskList = React.createClass({
   render() {
     var store = this.props.store;
 
-    var items = [];
+
+    function isOdd(num) { return num % 2;}
+
+    var gridItems = [];
     if (store.userMarketCtx.allAsks && store.userMarketCtx.allAsks.length > 0) {
-      store.userMarketCtx.allAsks.map(function(askItem) {
-        var element = (
-          <li>
-            <div className="MarketAskList__Card">
-              <div className="Layout">
-                <span className="MarketAskCard__Title">{askItem.productType} - {askItem.variant}</span>
-              </div>
-              <div className="Layout">
-                <span className="MarketAskCard__SellerLabel">Seller</span>
-                <a href="/#/user/{{ask.seller.handle}}" class="LinkButton">{askItem.seller.handle}</a>
-                <span className=" img-thumbnail flag flag-icon-background flag-icon-gr"></span>
-              </div>
-              <div className="Layout Spread">
-                <sm-geo-location-display address="ask.address"></sm-geo-location-display>
-                <span className="MarketAskCard__Distance">{askItem.distance} kms</span>
-              </div>
-              <div className="Layout">
-                <span className="MarketAskCard__Time" am-time-ago={askItem.lastUpdate}></span>
-              </div>
-            </div>
-          </li>
-        );
-        items.push(element);
-      });
+      var gridRowClass = 'MarketGrid__Row';
+
+     for (var i = 0;i < store.userMarketCtx.allAsks.length;i++) {
+
+       if (isOdd(i)) {
+         gridRowClass = 'MarketGrid__Row MarketGrid__Row--zebra';
+       }
+       else {
+         gridRowClass = 'MarketGrid__Row';
+       }
+       var rowItem = store.userMarketCtx.allAsks[i];
+       var rowElement = (
+         <tr key={rowItem.id} className={gridRowClass}>
+           <td>
+             <div className="MarketGrid__Cell">{rowItem.variant}</div>
+           </td>
+           <td>
+             <div className="MarketGrid__Cell">{rowItem.sellerHandle}</div>
+           </td>
+           <td>
+             <div className="MarketGrid__Cell">{rowItem.productMode}</div>
+           </td>
+           <td>
+             <div className="MarketGrid__Cell">{rowItem.price}/{rowItem.measure}({rowItem.currency})</div>
+           </td>
+           <td>
+             <div className="MarketGrid__Cell">{rowItem.cropYear}</div>
+           </td>
+           <td>
+             <div className="MarketGrid__Cell">{rowItem.quantity} {rowItem.quantityMeasure}</div>
+           </td>
+           <td>
+             <div className="MarketGrid__Cell">{rowItem.grower}</div>
+           </td>
+           <td>
+             <div className="MarketGrid__Cell">{rowItem.distance}</div>
+           </td>
+           <td>
+             <div className="MarketGrid__Cell">{rowItem.lastUpdate}</div>
+           </td>
+           <td>
+             <div className="MarketGrid__Cell">{rowItem.countryOfOrigin}</div>
+           </td>
+           <td>
+             <div className="MarketGrid__Cell">{rowItem.analysis.toString()}</div>
+           </td>
+         </tr>
+       );
+       gridItems.push(rowElement);
+
+     }
+
     }
-    var output = (
-      <ul>
-        {items}
-      </ul>
-    );
+
+
 
 
 
@@ -102,28 +130,51 @@ sm.MarketAskList = React.createClass({
         <thead>
         <tr>
           <th>
-            <button onClick={this.sortIt.bind(this, 'variant')}  className="CommandLink">variant</button>
+            <button onClick={this.sortIt.bind(this, 'variant')}  className="LinkButton">variant</button>
           </th>
           <th>
-            <button onClick={this.sortIt.bind(this, 'seller')}  className="CommandLink">seller</button>
+            <button onClick={this.sortIt.bind(this, 'sellerHandle')}  className="LinkButton">seller</button>
           </th>
           <th>
-            <button onClick={this.sortIt.bind(this, 'mode')}  className="CommandLink">mode</button>
+            <button onClick={this.sortIt.bind(this, 'productMode')}  className="LinkButton">mode</button>
           </th>
           <th>
-            <button onClick={this.sortIt.bind(this, 'totalQuantity')}  className="CommandLink">quanity</button>
+            <button onClick={this.sortIt.bind(this, 'price')}  className="LinkButton">price</button>
+          </th>
+          <th>
+            <button onClick={this.sortIt.bind(this, 'cropYear')}  className="LinkButton">crop year</button>
+          </th>
+          <th>
+            <button onClick={this.sortIt.bind(this, 'quantity')}  className="LinkButton">quanity</button>
+          </th>
+          <th>
+            <button onClick={this.sortIt.bind(this, 'grower')}  className="LinkButton">grower</button>
+          </th>
+          <th>
+            <button onClick={this.sortIt.bind(this, 'distance')}  className="LinkButton">distance</button>
+          </th>
+          <th>
+            <button onClick={this.sortIt.bind(this, 'postedTime')}  className="LinkButton">posted time</button>
+          </th>
+          <th>
+            <button onClick={this.sortIt.bind(this, 'countryOfOrigin')}  className="LinkButton">origin country</button>
+          </th>
+          <th>
+            <button onClick={this.sortIt.bind(this, 'analysis')}  className="LinkButton">analysis</button>
           </th>
         </tr>
         </thead>
+        <tbody>
+        {gridItems}
+        </tbody>
 
       </table>
     );
 
     return (
       <div>
-        {grid}
         <h3>Market Asks</h3>
-        {output}
+        {grid}
       </div>
     );
   }

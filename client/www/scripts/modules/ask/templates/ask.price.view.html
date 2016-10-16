@@ -1,12 +1,14 @@
 <div> <!-- price display section -->
   <label>Pricing</label>
   <dl>
-    <dt ng-show="askCtx.currentAsk.productType">what</dt>
-    <dd ng-show="askCtx.currentAsk.productType">{{askCtx.currentAsk.productType}} - {{askCtx.currentAsk.variant}} - {{askCtx.productMode}}</dd>
+    <dd ng-show="askCtx.currentAsk.productType">{{askCtx.currentAsk.productType}} - {{askCtx.currentAsk.variant}} - {{askCtx.currentAsk.productMode}}</dd>
     <dt ng-show="askCtx.currentAsk.lotPrices.length > 0">prices</dt>
     <dd ng-show="askCtx.currentAsk.lotPrices.length > 0">
       <ul>
-        <li ng-repeat="price in askCtx.currentAsk.lotPrices">{{price.productMode}} ${{price.price}} per {{price.size}}{{price.measure}}</li>
+        <li ng-repeat="price in askCtx.currentAsk.lotPrices">
+          <div>{{price.productMode}} ${{price.price}} per {{price.measure}}</div>
+          <div>{{price.package}}</div>
+        </li>
       </ul>
     </dd>
   </dl>

@@ -1,5 +1,7 @@
 /*
 http://www.w3schools.com/cssref/css_websafe_fonts.asp
+http://tawian.io/text-spinners/?utm_source=html5weekly&utm_medium=email
+https://gist.github.com/addyosmani/fd3999ea7fce242756b1?utm_source=html5weekly&utm_medium=email
 */
 /* CSS */
 * {
@@ -8,6 +10,8 @@ http://www.w3schools.com/cssref/css_websafe_fonts.asp
 html,
 body {
   height: 100%;
+  margin: 0;
+  padding: 0;
 }
 body {
   font-size: 16px;
@@ -16,6 +20,13 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'helvetica neue', helvetica, arial, sans-serif;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.MainApp__Container {
+  height: 100%;
+  flex: 1;
 }
 input,
 textarea,
@@ -1529,6 +1540,58 @@ button {
 .icon-IcoMoon:before {
   content: "\eaea";
 }
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+/* Hide default HTML checkbox */
+.switch input {
+  display: none;
+}
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+input:checked + .slider {
+  background-color: #2196F3;
+}
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+.slider.round:before {
+  border-radius: 50%;
+}
 .AutoSuggestContainer {
   position: relative;
 }
@@ -1605,6 +1668,19 @@ button {
 }
 .onoffswitch-inner:after {
   content: "USD";
+  padding-right: 10px;
+  background-color: #223FE3;
+  color: #FFFFFF;
+  text-align: right;
+}
+.onoffswitch-inner2:before {
+  content: "kg";
+  padding-left: 10px;
+  background-color: #FA1423;
+  color: #FFFFFF;
+}
+.onoffswitch-inner2:after {
+  content: "lb";
   padding-right: 10px;
   background-color: #223FE3;
   color: #FFFFFF;
@@ -1880,6 +1956,16 @@ img-crop .loading .fixed-height {
   background-color: #ffffff;
   min-height: 40rem;
 }
+.DatePicker__Input {
+  border: 0;
+  background-color: #ffffff;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  width: 7rem;
+}
+.CurrentTest__Alpha {
+  width: 5.6rem;
+}
 .AuthLoginViewContainer {
   display: flex;
   flex-direction: row;
@@ -1925,12 +2011,14 @@ img-crop .loading .fixed-height {
   padding: 0;
   min-height: 100vh;
   max-width: 1500px;
+  display: flex;
+  flex-direction: column;
 }
 .InnerAppContainer {
   flex: 1;
   background-color: #608052;
-  padding: .4rem .5rem .4rem .5rem;
-  height: 100%;
+  padding: .4rem .5rem 0 .5rem;
+  height: 100vh;
 }
 .Body--Home .InnerAppContainer {
   flex: 1;
@@ -2197,9 +2285,8 @@ Market view
   User Reg and login
 */
 .AuthTextInput {
-  height: 1.3rem;
   margin: .3rem auto .3rem auto;
-  width: 12rem;
+  width: 26rem;
   font-size: 120%;
 }
 .AuthReg__ValidationError {
@@ -2228,6 +2315,8 @@ Market view
   background-color: #ffffff;
   padding: 1rem;
   overflow: hidden;
+  height: 100%;
+  flex: 1;
 }
 .UserProfile_MainView {
   margin-top: 2rem;
@@ -2396,7 +2485,6 @@ small size views
     padding: 0 .6rem 0 .6rem;
   }
   .AuthTextInput {
-    height: 1.3rem;
     margin: .3rem auto .3rem auto;
     width: 100%;
   }
@@ -2532,7 +2620,7 @@ small size views
   border: 1px solid #efefef;
   border-radius: .5rem;
 }
-.UserProfile__BioContainer {
+.UserProfile__AboutContainer {
   margin-left: 1rem;
   padding: 1rem;
   border: 1px solid #efefef;
@@ -2662,6 +2750,10 @@ small size views
   margin: 0;
   padding: 0;
 }
+.AskForm__Select {
+  background-color: #ffffff;
+  height: 3rem;
+}
 .AskHeadlineInput {
   display: block;
   width: 48rem;
@@ -2690,6 +2782,9 @@ small size views
 }
 .AskForm__Label {
   display: block;
+}
+.AskForm__Container .AskForm__SubContainer {
+  padding: .5rem 2rem .5rem 2rem;
 }
 .AskForm__Container input[type="text"] {
   width: 25rem;
@@ -2783,6 +2878,15 @@ small size views
 }
 .MarketRange__Input {
   width: 3.5rem;
+}
+.MarketGrid__Row--zebra {
+  background-color: #efefef;
+}
+.MarketGrid__Row--zebra td {
+  border: #fefefe;
+}
+.MarketGrid__Cell {
+  padding: 1rem;
 }
 .UserMarketMap--Main {
   height: 40rem;

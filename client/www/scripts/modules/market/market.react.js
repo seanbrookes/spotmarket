@@ -62,38 +62,66 @@ sm.MarketAskList = React.createClass({
   render() {
     var store = this.props.store;
 
-    var items = [];
+
+    function isOdd(num) { return num % 2;}
+
+    var gridItems = [];
     if (store.userMarketCtx.allAsks && store.userMarketCtx.allAsks.length > 0) {
-      store.userMarketCtx.allAsks.map(function(askItem) {
-        var element = (
-          React.createElement("li", null, 
-            React.createElement("div", {className: "MarketAskList__Card"}, 
-              React.createElement("div", {className: "Layout"}, 
-                React.createElement("span", {className: "MarketAskCard__Title"}, askItem.productType, " - ", askItem.variant)
-              ), 
-              React.createElement("div", {className: "Layout"}, 
-                React.createElement("span", {className: "MarketAskCard__SellerLabel"}, "Seller"), 
-                React.createElement("a", {href: "/#/user/{{ask.seller.handle}}", class: "LinkButton"}, askItem.seller.handle), 
-                React.createElement("span", {className: " img-thumbnail flag flag-icon-background flag-icon-gr"})
-              ), 
-              React.createElement("div", {className: "Layout Spread"}, 
-                React.createElement("sm-geo-location-display", {address: "ask.address"}), 
-                React.createElement("span", {className: "MarketAskCard__Distance"}, askItem.distance, " kms")
-              ), 
-              React.createElement("div", {className: "Layout"}, 
-                React.createElement("span", {className: "MarketAskCard__Time", "am-time-ago": askItem.lastUpdate})
-              )
-            )
-          )
-        );
-        items.push(element);
-      });
+      var gridRowClass = 'MarketGrid__Row';
+
+     for (var i = 0;i < store.userMarketCtx.allAsks.length;i++) {
+
+       if (isOdd(i)) {
+         gridRowClass = 'MarketGrid__Row MarketGrid__Row--zebra';
+       }
+       else {
+         gridRowClass = 'MarketGrid__Row';
+       }
+       var rowItem = store.userMarketCtx.allAsks[i];
+       var rowElement = (
+         React.createElement("tr", {key: rowItem.id, className: gridRowClass}, 
+           React.createElement("td", null, 
+             React.createElement("div", {className: "MarketGrid__Cell"}, rowItem.variant)
+           ), 
+           React.createElement("td", null, 
+             React.createElement("div", {className: "MarketGrid__Cell"}, rowItem.sellerHandle)
+           ), 
+           React.createElement("td", null, 
+             React.createElement("div", {className: "MarketGrid__Cell"}, rowItem.productMode)
+           ), 
+           React.createElement("td", null, 
+             React.createElement("div", {className: "MarketGrid__Cell"}, rowItem.price, "/", rowItem.measure, "(", rowItem.currency, ")")
+           ), 
+           React.createElement("td", null, 
+             React.createElement("div", {className: "MarketGrid__Cell"}, rowItem.cropYear)
+           ), 
+           React.createElement("td", null, 
+             React.createElement("div", {className: "MarketGrid__Cell"}, rowItem.quantity, " ", rowItem.quantityMeasure)
+           ), 
+           React.createElement("td", null, 
+             React.createElement("div", {className: "MarketGrid__Cell"}, rowItem.grower)
+           ), 
+           React.createElement("td", null, 
+             React.createElement("div", {className: "MarketGrid__Cell"}, rowItem.distance)
+           ), 
+           React.createElement("td", null, 
+             React.createElement("div", {className: "MarketGrid__Cell"}, rowItem.lastUpdate)
+           ), 
+           React.createElement("td", null, 
+             React.createElement("div", {className: "MarketGrid__Cell"}, rowItem.countryOfOrigin)
+           ), 
+           React.createElement("td", null, 
+             React.createElement("div", {className: "MarketGrid__Cell"}, rowItem.analysis.toString())
+           )
+         )
+       );
+       gridItems.push(rowElement);
+
+     }
+
     }
-    var output = (
-      React.createElement("ul", null, 
-        items
-      )
-    );
+
+
 
 
 
@@ -102,18 +130,42 @@ sm.MarketAskList = React.createClass({
         React.createElement("thead", null, 
         React.createElement("tr", null, 
           React.createElement("th", null, 
-            React.createElement("button", {onClick: this.sortIt.bind(this, 'variant'), className: "CommandLink"}, "variant")
+            React.createElement("button", {onClick: this.sortIt.bind(this, 'variant'), className: "LinkButton"}, "variant")
           ), 
           React.createElement("th", null, 
-            React.createElement("button", {onClick: this.sortIt.bind(this, 'seller'), className: "CommandLink"}, "seller")
+            React.createElement("button", {onClick: this.sortIt.bind(this, 'sellerHandle'), className: "LinkButton"}, "seller")
           ), 
           React.createElement("th", null, 
-            React.createElement("button", {onClick: this.sortIt.bind(this, 'mode'), className: "CommandLink"}, "mode")
+            React.createElement("button", {onClick: this.sortIt.bind(this, 'productMode'), className: "LinkButton"}, "mode")
           ), 
           React.createElement("th", null, 
-            React.createElement("button", {onClick: this.sortIt.bind(this, 'totalQuantity'), className: "CommandLink"}, "quanity")
+            React.createElement("button", {onClick: this.sortIt.bind(this, 'price'), className: "LinkButton"}, "price")
+          ), 
+          React.createElement("th", null, 
+            React.createElement("button", {onClick: this.sortIt.bind(this, 'cropYear'), className: "LinkButton"}, "crop year")
+          ), 
+          React.createElement("th", null, 
+            React.createElement("button", {onClick: this.sortIt.bind(this, 'quantity'), className: "LinkButton"}, "quanity")
+          ), 
+          React.createElement("th", null, 
+            React.createElement("button", {onClick: this.sortIt.bind(this, 'grower'), className: "LinkButton"}, "grower")
+          ), 
+          React.createElement("th", null, 
+            React.createElement("button", {onClick: this.sortIt.bind(this, 'distance'), className: "LinkButton"}, "distance")
+          ), 
+          React.createElement("th", null, 
+            React.createElement("button", {onClick: this.sortIt.bind(this, 'postedTime'), className: "LinkButton"}, "posted time")
+          ), 
+          React.createElement("th", null, 
+            React.createElement("button", {onClick: this.sortIt.bind(this, 'countryOfOrigin'), className: "LinkButton"}, "origin country")
+          ), 
+          React.createElement("th", null, 
+            React.createElement("button", {onClick: this.sortIt.bind(this, 'analysis'), className: "LinkButton"}, "analysis")
           )
         )
+        ), 
+        React.createElement("tbody", null, 
+        gridItems
         )
 
       )
@@ -121,9 +173,8 @@ sm.MarketAskList = React.createClass({
 
     return (
       React.createElement("div", null, 
-        grid, 
         React.createElement("h3", null, "Market Asks"), 
-        output
+        grid
       )
     );
   }

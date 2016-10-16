@@ -81,6 +81,45 @@ sm.Ask.directive('smAskShippingView', [
     }
   }
 ]);
+sm.Ask.directive('smAskHistoryView', [
+  'AskServices',
+  function(AskServices) {
+    return {
+      restrict: 'E',
+      scope: {
+        profile: '='
+      },
+      controller: [
+        '$scope',
+        function($scope ) {
+          $scope.profileAskHistory = [];
+
+
+        }
+      ],
+      link: function(scope, el, attrs) {
+
+        scope.$watch('profile.handle', function(newVal, oldVal) {
+          if (newVal) {
+            //$scope.profileAskHistory
+            scope.profileAskHistory = AskServices.getProfileAskHistory(scope.profile.handle)
+              .then(function(response) {
+                scope.profileAskHistory = response;
+              });
+          }
+        }, true);
+
+        scope.$watch('profileAskHistory', function(newVal, oldVal) {
+          if (newVal && newVal.length) {
+            ReactDOM.render(React.createElement(sm.AskHistoryView, {store:scope}), el[0]);
+
+          }
+        }, true);
+
+      }
+    }
+  }
+]);
 sm.Ask.directive('smAskPriceView', [
   '$log',
   function ($log) {
@@ -89,8 +128,90 @@ sm.Ask.directive('smAskPriceView', [
       templateUrl: './scripts/modules/ask/templates/ask.price.view.html',
       controller: [
         '$scope',
-        function ($scope) {
+        'orderByFilter',
+        'CommonServices',
+        function ($scope, orderBy, CommonServices) {
           $log.debug('smAskPriceView directive controller');
+
+          var c2uConversion = 'CAD_USD';
+          var u2cConversion = 'USD_CAD';
+
+
+
+          /*
+           *
+           * LOT CTX
+           *
+           * */
+          $scope.lotCtx = {
+            currentLot: {
+              measure: 'kg',
+              currency: 'CAD'
+            }
+          };
+          $scope.lotCtx.currentLot.convertedPrice = null;
+
+          $scope.lotCtx.measureOptions = [
+            {value: 'lb bale'},
+            {value: 'gram'},
+            {value: 'kg'},
+            {value: 'lb'},
+            {value: 'ml'},
+            {value: 'litre'},
+            {value: 'oz (us)'},
+            {value: 'oz (imp)'},
+            {value: 'ton'},
+            {value: 'other'}
+          ];
+
+
+          function resetCurrentLot() {
+            $scope.lotCtx.currentLot = {
+              measure: 'kg',
+              currency: 'CAD'
+            };
+          }
+
+          $scope.lotCtx.currentLot.measure = 'kg';
+
+          $scope.addLotPriceToAsk = function () {
+            if ($scope.lotCtx.currentLot && $scope.lotCtx.currentLot.price && $scope.lotCtx.currentLot.measure) {
+              if ($scope.askCtx.productMode) {
+                $scope.lotCtx.currentLot.productMode = $scope.askCtx.productMode;
+              }
+              $scope.askCtx.currentAsk.lotPrices.push($scope.lotCtx.currentLot);
+              $scope.askCtx.currentAsk.lotPrices = orderBy($scope.askCtx.currentAsk.lotPrices, 'productMode', true);
+              resetCurrentLot();
+            }
+          };
+
+
+
+          $scope.lotCtx.getConvertedPrice = function(price, conversion) {
+            return CommonServices.getExchangeRate(conversion)
+              .then(function(response) {
+                var returnValue =  (Number(price) * Number(response.data[conversion].val));
+                console.log('| exchange value: ', returnValue);
+                return returnValue;
+              })
+              .catch(function(error) {
+                console.warn('| bad convert price', error);
+              });
+          };
+
+          $scope.lotCtx.convertIt = function() {
+            $scope.lotCtx.currentLot.convertedPrice = $scope.lotCtx.getConvertedPrice($scope.lotCtx.currentLot.price, c2uConversion)
+              .then(function(response) {
+                $scope.lotCtx.currentLot.convertedPrice = response.toFixed(2);
+              });
+
+
+          };
+
+
+
+
+
         }
       ],
       link: function (scope, el, attrs) {
@@ -168,65 +289,64 @@ sm.Ask.directive('smAskMarketView', [
                 id: 'beer_hop_mash'
               },
               {
-                name: 'Pellet',
-                id: 'beer_hop_pellet'
+                name: 'T45 Pellet',
+                id: 't45_hop_pellet'
+
+              },
+              {
+                name: 'T90 Pellet',
+                id: 't90_hop_pellet'
 
               }
             ]
           };
+          $scope.askCtx.measureOptions = [
+            {value: 'gram'},
+            {value: 'kg'},
+            {value: 'lb'},
+            {value: 'ml'},
+            {value: 'litre'},
+            {value: 'oz (us)'},
+            {value: 'oz (imp)'},
+            {value: 'ton'}
+          ];
 
-          $scope.askCtx.testCtx = {isShowTestEditor:false};
-          $scope.askCtx.testCtx.toggleTestEditor = function() {
-            $scope.askCtx.testCtx.isShowTestEditor = !$scope.askCtx.testCtx.isShowTestEditor;
-          };
-          $scope.askCtx.testCtx.currentTest= {};
-          $scope.askCtx.testCtx.removeTest = function(index) {
-            if ((index > -1) && $scope.askCtx.currentAsk && $scope.askCtx.currentAsk.testHistory && $scope.askCtx.currentAsk.testHistory.length > 0) {
-              $scope.askCtx.currentAsk.testHistory.splice(index, 1);
-            }
-          };
-          $scope.askCtx.testCtx.saveCurrentTest = function() {
-            if ($scope.askCtx.testCtx.currentTest && $scope.askCtx.testCtx.currentTest.date && $scope.askCtx.testCtx.currentTest.alpha && $scope.askCtx.testCtx.currentTest.lab) {
-              if (!$scope.askCtx.currentAsk.testHistory) {
-                $scope.askCtx.currentAsk.testHistory = [];
 
+          $scope.askCtx.isShowAskDescriptionEditor = false;
+          $scope.askCtx.toggleAskDescription = function() {
+            $scope.askCtx.isShowAskDescriptionEditor = !$scope.askCtx.isShowAskDescriptionEditor;
+          };
+
+          $scope.askCtx.isShowPricingForm = false;
+          $scope.askCtx.isAskDetailReadOnly = false;
+          $scope.askCtx.toggleAskDetailReadOnly = function() {
+            $timeout(function() {
+              $scope.askCtx.isAskDetailReadOnly = !$scope.askCtx.isAskDetailReadOnly;
+              if (!$scope.askCtx.isAskDetailReadOnly) {
+                $scope.askCtx.isShowPricingForm = false;
               }
-              $scope.askCtx.currentAsk.testHistory.push($scope.askCtx.testCtx.currentTest);
-              $scope.askCtx.testCtx.currentTest = {};
+            }, 5);
+          };
+          $scope.askCtx.isAskPricingPreReqs = function() {
+            if ($scope.askCtx.currentAsk.productType &&
+              $scope.askCtx.currentAsk.variant &&
+              $scope.askCtx.currentAsk.productMode &&
+              $scope.askCtx.currentAsk.quantity &&
+              $scope.askCtx.currentAsk.quantityMeasure) {
+              return true;
             }
+            return false;
           };
 
-          $scope.imageCropResult = null;
-          $scope.showImageCropper = false;
+          $scope.askCtx.togglePricingForm = function() {
+            var retVar = $scope.askCtx.isShowPricingForm = !$scope.askCtx.isShowPricingForm;
+            if ($scope.askCtx.isShowPricingForm) {
+              $timeout(function() {
+                $scope.askCtx.isAskDetailReadOnly = true;
 
-          $scope.$watch('imageCropResult', function(newVal) {
-            if (newVal) {
-              console.log('imageCropResult', newVal);
+              }, 5);
             }
-
-          });
-
-
-          $scope.uploadPic = function (file) {
-            var currentUser = UserSessionService.getCurrentUserFromClientState();
-            file.upload = Upload.upload({
-              url: 'http://localhost:4546/imageupload',
-              headers : {'Content-Type': 'multipart/form-data'},
-              data: {file: file, smToken: currentUser.smToken, askid: 'booga-booga-googa'}
-            });
-
-
-            file.upload.then(function (response) {
-              $timeout(function () {
-                file.result = response.data;
-              });
-            }, function (response) {
-              if (response.status > 0)
-                $scope.errorMsg = response.status + ': ' + response.data;
-            }, function (evt) {
-              // Math.min is to fix IE which reports 200% sometimes
-              file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
-            });
+            return retVar;
           };
 
           $scope.init = function (user) {
@@ -245,7 +365,7 @@ sm.Ask.directive('smAskMarketView', [
             };
             $scope.askCtx.listOfGrowers = function() {
 
-            }
+            };
             $scope.askCtx.listOfGrowers = OrgServices.getOrgs()
               .then(function(responseOrgs) {
                 var extraEntries = [
@@ -350,8 +470,9 @@ sm.Ask.directive('smAskMarketView', [
 
             // check if user has user preferences for lot price option
             // set default user price lot measure option
-            $scope.lotCtx.currentLot.measure = 'kg';
-            //lotCtx.currentLot.measure
+            $scope.askCtx.currentAsk.cropYear = 2016;
+            $scope.askCtx.currentAsk.quantityMeasure = 'kg';
+
           }; // end init
 
 
@@ -377,38 +498,7 @@ sm.Ask.directive('smAskMarketView', [
             title: 'Lot size metric'
           };
 
-          /*
-           *
-           * LOT CTX
-           *
-           * */
-          $scope.lotCtx = {
-            currentLot: {
-              measure: 'kg',
-              size: 1,
-              currency: 'CAD'
-            }
-          };
-          $scope.lotCtx.measureOptions = [
-            {value: 'bale'},
-            {value: 'gram'},
-            {value: 'kg'},
-            {value: 'lb'},
-            {value: 'ml'},
-            {value: 'litre'},
-            {value: 'oz (us)'},
-            {value: 'oz (imp)'},
-            {value: 'ton'},
-            {value: 'other'}
-          ];
 
-
-          function resetCurrentLot() {
-            $scope.lotCtx.currentLot = {
-              measure: 'kg',
-              size: 1
-            };
-          }
 
           function loadProductTypes() {
             ProductServices.getProductTypes()
@@ -556,15 +646,7 @@ sm.Ask.directive('smAskMarketView', [
           $scope.askCtx.clearCurrentProductType = function () {
             $scope.currentAsk.productType = '';
           };
-          $scope.askCtx.onOtherLotMeasureChoice = function () {
-            $scope.isShowOtherLotMeasureInput = true;
-            $scope.lotCtx.currentLot.measure = '';
-          };
-          $scope.askCtx.onLotMeasureChoice = function () {
-            $scope.isShowOtherLotMeasureInput = false;
-            // save as personal preference
-            $scope.lotCtx.currentLot.otherMeasure = '';
-          };
+
           $scope.askCtx.isFormValid = function () {
             if ($scope.askCtx.currentAsk.productType && $scope.askCtx.currentAsk.variant && ($scope.askCtx.currentAsk.lotPrices.length > 0)) {
               return true;
@@ -572,7 +654,7 @@ sm.Ask.directive('smAskMarketView', [
             return false;
           };
           $scope.askCtx.clearCurrentAsk = function () {
-            initializeCurrentAsk();
+           // initializeCurrentAsk();
           };
 
 
@@ -631,16 +713,7 @@ sm.Ask.directive('smAskMarketView', [
             $scope.isShowAddLotPrice = !$scope.isShowAddLotPrice;
             resetCurrentLot();
           };
-          $scope.addLotPriceToAsk = function () {
-            if ($scope.lotCtx.currentLot && $scope.lotCtx.currentLot.price && $scope.lotCtx.currentLot.size && $scope.lotCtx.currentLot.measure) {
-              if ($scope.askCtx.productMode) {
-                $scope.lotCtx.currentLot.productMode = $scope.askCtx.productMode;
-              }
-              $scope.askCtx.currentAsk.lotPrices.push($scope.lotCtx.currentLot);
-              $scope.askCtx.currentAsk.lotPrices = orderBy($scope.askCtx.currentAsk.lotPrices, 'productMode', true);
-              resetCurrentLot();
-            }
-          };
+
           $scope.saveAsk = function () {
             if ($scope.askCtx.currentAsk.seller.email) {
               //alert('| STOP!!! HAVEyour email - you can proceed');
@@ -870,6 +943,50 @@ sm.Ask.directive('smAskMarketView', [
         //}, true);
 
       }
+    }
+  }
+]);
+sm.Ask.directive('smAskTestView', [
+  function() {
+    return {
+      restrict: 'E',
+      scope: {
+        ask: '='
+      },
+      templateUrl:  './scripts/modules/ask/templates/ask.test.view.html',
+      controller: [
+        '$scope',
+        function($scope) {
+          $scope.testCtx = {isShowTestEditor:false};
+          $scope.testCtx.toggleTestEditor = function() {
+            $scope.testCtx.isShowTestEditor = !$scope.testCtx.isShowTestEditor;
+          };
+          $scope.testCtx.currentTest= {};
+          $scope.testCtx.removeTest = function(index) {
+            if ((index > -1) && $scope.ask && $scope.ask.testHistory && $scope.ask.testHistory.length > 0) {
+              $scope.ask.testHistory.splice(index, 1);
+            }
+          };
+          $scope.testCtx.saveCurrentTest = function() {
+            if ($scope.testCtx.currentTest && $scope.testCtx.currentTest.date && $scope.testCtx.currentTest.alpha && $scope.testCtx.currentTest.lab) {
+              if (!$scope.ask.testHistory) {
+                $scope.ask.testHistory = [];
+              }
+              $scope.ask.testHistory.push($scope.testCtx.currentTest);
+              $scope.testCtx.currentTest = {};
+              $scope.testCtx.isShowTestEditor = false;
+            }
+          };
+          $scope.$watch('testCtx.currentTest.date', function(newDate, oldDate) {
+            $scope.testCtx.isShowDatePicker = false;
+          }, true);
+
+          $scope.testCtx.isShowDatePicker = false;
+          $scope.testCtx.toggleShowDatePicker = function() {
+            $scope.testCtx.isShowDatePicker = !$scope.testCtx.isShowDatePicker;
+          };
+        }
+      ]
     }
   }
 ]);
