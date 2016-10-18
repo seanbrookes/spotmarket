@@ -57,7 +57,7 @@ sm.User.directive('smUserProfileForm', [
         '$stateParams',
         '$state',
         function($scope, Upload, UserSessionService, UserServices, $log, $stateParams, $state) {
-          $scope.userProfileCtx = {avatarSrc:'', croppedImage:''};
+          $scope.userProfileCtx = {avatarSrc:'', croppedImage:'', isCurrentUserLoggedIn: false};
           $scope.userProfileCtx.isEditBioMode = false;
 
           $scope.profileAvatar = {
@@ -260,13 +260,20 @@ sm.User.directive('smUserProfileView', [
           $scope.userProfileCtx.isEditContactMode = false;
           $scope.userProfileCtx.isEditAvatarMode = false;
           $scope.userProfileCtx.isEditBannerImageMode = false;
+          $scope.userProfileCtx.isEditMode = false;
 
           $scope.myImage='';
           $scope.userProfileCtx.myCroppedImage = '';
           $scope.userProfileCtx.currentProfile = {
             avatarImage: ''
           };
-          $scope.userProfileCtx.isEditMode = false;
+
+
+
+
+
+
+
           $scope.userProfileCtx.toggleEditMode = function() {
             if (!$scope.userProfileCtx.isEditMode && UserSessionService.isCurrentUserLoggedIn()) {
               $scope.userProfileCtx.isEditMode = true;
@@ -278,9 +285,13 @@ sm.User.directive('smUserProfileView', [
               $scope.userProfileCtx.isEditMode = false;
             }
           };
+
           $scope.userProfileCtx.isEditCurrentUser = function() {
             return $scope.userProfileCtx.isEditMode;
           };
+
+
+          // User Preferences
           $scope.userProfileCtx.isDefaultWeightMeasureChecked = true; // kg
           $scope.$watch('userProfileCtx.isDefaultWeightMeasureChecked', function(newVal, oldVal) {
             if (!$scope.userProfileCtx.currentProfile.preferences) {
@@ -320,6 +331,9 @@ sm.User.directive('smUserProfileView', [
             $scope.userProfileCtx.currentProfile.preferences.distance = val;
             $scope.saveCurrentProfile();
           }, true);
+          // end preferences
+
+
 
           $scope.saveCurrentProfile = function() {
             UserServices.saveUser($scope.userProfileCtx.currentProfile)
@@ -337,6 +351,11 @@ sm.User.directive('smUserProfileView', [
                 $scope.userProfileCtx.isEditAvatarMode = false;
               });
           };
+
+
+
+
+
           $scope.userProfileCtx.saveBio = function() {
 
             UserServices.saveUser($scope.userProfileCtx.currentProfile)
@@ -372,6 +391,10 @@ sm.User.directive('smUserProfileView', [
           $scope.userProfileCtx.triggerPreviewBannerImage = function() {
             $scope.userProfileCtx.isEditBannerImageMode = false;
           };
+
+
+
+
 
           $scope.userProfileCtx.isReadOnlyCurrentUser = function() {
             // am I current user
@@ -433,6 +456,36 @@ sm.User.directive('smUserProfileView', [
             return $scope.userProfileCtx.mainViews[viewName].active;
           };
 
+          $scope.setCurrentProfile = function(profileModel) {
+            $scope.userProfileCtx.currentProfile = profileModel;
+            if (!$scope.userProfileCtx.currentProfile.bannerImage) {
+              $scope.userProfileCtx.currentProfile.bannerImage = 'http://localhost:4545/images/default-hero.png';
+            }
+            if (!$scope.userProfileCtx.currentProfile.bannerBgColor) {
+              $scope.userProfileCtx.currentProfile.bannerBgColor = '#608052';
+            }
+            if (!$scope.userProfileCtx.currentProfile.bio) {
+              $scope.userProfileCtx.currentProfile.bio = "No bio information available yet";
+            }
+
+            $scope.userProfileCtx.isDefaultWeightMeasureChecked = true; // kg
+            $scope.userProfileCtx.isDefaultCurrencyChecked = true;
+
+            if ($scope.userProfileCtx.currentProfile.preferences && $scope.userProfileCtx.currentProfile.preferences.currency) {
+              if ($scope.userProfileCtx.currentProfile.preferences.currency === 'USD') {
+                $scope.userProfileCtx.isDefaultCurrencyChecked = false;
+              }
+            }
+            if ($scope.userProfileCtx.currentProfile.preferences && $scope.userProfileCtx.currentProfile.preferences.weightMeasure) {
+              if ($scope.userProfileCtx.currentProfile.preferences.weightMeasure === 'lb') {
+                $scope.userProfileCtx.isDefaultWeightMeasureChecked = false;
+              }
+            }
+
+
+
+          };
+
           $scope.userProfileCtx.init = function() {
 
 
@@ -452,31 +505,8 @@ sm.User.directive('smUserProfileView', [
                 .then(function(response) {
                   if (response.id) {
 
-                    $scope.userProfileCtx.currentProfile = response;
-                    if (!$scope.userProfileCtx.currentProfile.bannerImage) {
-                      $scope.userProfileCtx.currentProfile.bannerImage = 'http://localhost:4545/images/default-hero.png';
-                    }
-                    if (!$scope.userProfileCtx.currentProfile.bannerBgColor) {
-                      $scope.userProfileCtx.currentProfile.bannerBgColor = '#608052';
-                    }
-                    if (!$scope.userProfileCtx.currentProfile.bio) {
-                      $scope.userProfileCtx.currentProfile.bio = "No bio information available yet";
-                    }
 
-                    $scope.userProfileCtx.isDefaultWeightMeasureChecked = true; // kg
-                    $scope.userProfileCtx.isDefaultCurrencyChecked = true;
-
-                    if ($scope.userProfileCtx.currentProfile.preferences && $scope.userProfileCtx.currentProfile.preferences.currency) {
-                      if ($scope.userProfileCtx.currentProfile.preferences.currency === 'USD') {
-                        $scope.userProfileCtx.isDefaultCurrencyChecked = false;
-                      }
-                    }
-                    if ($scope.userProfileCtx.currentProfile.preferences && $scope.userProfileCtx.currentProfile.preferences.weightMeasure) {
-                      if ($scope.userProfileCtx.currentProfile.preferences.weightMeasure === 'lb') {
-                        $scope.userProfileCtx.isDefaultWeightMeasureChecked = false;
-                      }
-                    }
-
+                    $scope.setCurrentProfile(response);
 
 
                   }
@@ -489,29 +519,10 @@ sm.User.directive('smUserProfileView', [
                 .then(function(response) {
                   if (response.id) {
 
-                    $scope.userProfileCtx.currentProfile = response;
-                    if (!$scope.userProfileCtx.currentProfile.bannerImage) {
-                      $scope.userProfileCtx.currentProfile.bannerImage = 'http://localhost:4545/images/default-hero.png';
-                    }
-                    if (!$scope.userProfileCtx.currentProfile.bannerBgColor) {
-                      $scope.userProfileCtx.currentProfile.bannerBgColor = '#608052';
-                    }
-                    if (!$scope.userProfileCtx.currentProfile.bio) {
-                      $scope.userProfileCtx.currentProfile.bio = "No bio information available yet";
-                    }
-                    $scope.userProfileCtx.isDefaultWeightMeasureChecked = true; // kg
-                    $scope.userProfileCtx.isDefaultCurrencyChecked = true;
+                    $scope.setCurrentProfile(response);
 
-                    if ($scope.userProfileCtx.currentProfile.preferences && $scope.userProfileCtx.currentProfile.preferences.currency) {
-                      if ($scope.userProfileCtx.currentProfile.preferences.currency === 'USD') {
-                        $scope.userProfileCtx.isDefaultCurrencyChecked = false;
-                      }
-                    }
-                    if ($scope.userProfileCtx.currentProfile.preferences && $scope.userProfileCtx.currentProfile.preferences.weightMeasure) {
-                      if ($scope.userProfileCtx.currentProfile.preferences.weightMeasure === 'lb') {
-                        $scope.userProfileCtx.isDefaultWeightMeasureChecked = false;
-                      }
-                    }
+                    $scope.userProfileCtx.isCurrentUserLoggedIn = UserSessionService.isCurrentUserLoggedIn();
+
 
 
                   }
@@ -535,7 +546,42 @@ sm.User.directive('smUserProfileView', [
     }
   }
 ]);
+sm.User.directive('smUserListView', [
+  function() {
+    return {
+      restrict: 'E',
+      controller: [
+        '$scope',
+        '$log',
+        'UserServices',
+        function($scope, $log, UserServices) {
 
+          $scope.userListCtx = {
+            currentUserList: []
+          };
+          $scope.userListCtx.init = function() {
+            UserServices.getPublicUsers()
+              .then(function(response) {
+                if (response && response.map) {
+                  $scope.userListCtx.currentUserList = response;
+                }
+              })
+          };
+          $scope.userListCtx.init();
+        }
+      ],
+      link: function(scope, el, attrs) {
+        scope.$watch('userListCtx.currentUserList', function(newVal, oldVal) {
+          if (newVal && newVal.map) {
+            ReactDOM.render(React.createElement(sm.UserListView, {store:scope}), el[0]);
+
+          }
+
+        }, true);
+      }
+    }
+  }
+]);
 sm.User.directive('smTrackedCommand', [
   '$log',
   '$timeout',

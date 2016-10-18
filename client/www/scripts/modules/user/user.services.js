@@ -277,6 +277,23 @@ sm.User.service('UserServices', [
           })
       }
     };
+    svc.getPublicUsers = function() {
+      return UserProfile.find({})
+        .$promise
+        .then(function(response) {
+          var returnUsers = [];
+          if (response && response.map) {
+            response.map(function(user) {
+              if (user.handle) {
+                delete user.password;
+                returnUsers.push(user);
+              }
+            });
+            return returnUsers;
+          }
+          return response || [];
+        });
+    };
     svc.getUsers = function(filter) {
       if (!filter) {
         filter = {};

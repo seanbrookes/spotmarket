@@ -70,7 +70,14 @@ sm.Market.directive('smMarketMarketView', [
             counts: {}
           };
 
-
+          $scope.userMarketCtx.mainViews = {
+            all: {
+              active: true
+            },
+            map: {
+              active: false
+            }
+          };
           if (!$scope.currentUser.smCurrentPosition) {
             // alert('message from MarketView: There is no current position!!!');
             //return;
@@ -222,7 +229,49 @@ sm.Market.directive('smMarketMarketView', [
               });
 
           }
+
+
+
+
+          $scope.userMarketCtx.showMainView = function(viewName) {
+
+            for (var view in $scope.userMarketCtx.mainViews) {
+              if( $scope.userMarketCtx.mainViews.hasOwnProperty(view) ) {
+                $scope.userMarketCtx.mainViews[view].active = false;
+              }
+            }
+            $scope.initMapData();
+            $scope.userMarketCtx.mainViews[viewName].active = true;
+
+          };
+          $scope.userMarketCtx.amIActive = function(viewName) {
+            return $scope.userMarketCtx.mainViews[viewName].active;
+          };
+
+
+
+
+
+
+
+
+
+
+
+
           loadAllAsks();
+
+
+
+
+
+
+
+
+
+
+
+
           $scope.initMapData = function() {
             lats = [];
             lngs = [];

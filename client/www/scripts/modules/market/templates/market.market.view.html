@@ -21,27 +21,20 @@
     <div>
 
 
-
-
-
-      <div ng-show="!currentUser.smCurrentPosition">
-        <p>you haven't specified a region you are interested in.  You can do that <button class="LinkButton">here</button></p>
-        <p>or you can <button class="LinkButton">see everything</button></p>
+      <div class="Layout" >
+        <button ng-click="userMarketCtx.showMainView('all')">All</button>
+        <button ng-click="userMarketCtx.showMainView('map')">Map (range)</button>
       </div>
 
-      <div ng-show="currentUser.smCurrentPosition">
+      <div >
 
         <div class="MarketRange MarketRange__Container">
-          <!--<h2 class="MarketRange__Title">What is for sale within</h2>-->
-          <!--<sm-ask-where-view></sm-ask-where-view>-->
           <sm-geo-current-location-display></sm-geo-current-location-display>
           <button class="LinkButton" ng-click="$parent.mainNavCtx.activateView($event)" data-name="GeoView">change</button>
 
           <p class="MarketRange__Title">What is for sale within</p>
           <input class="MarketRange__Input" type="text" ng-model="marketRangeKms" /> kms
-          <!--<sm-geo-current-location-display></sm-geo-current-location-display>?<button class="LinkButton" ng-click="$parent.mainNavCtx.activateView($event)" data-name="GeoView">change</button>-->
           <br />
-          <!--<button ng-click="updateMarketRange()">update range</button>-->
           <input type="range" min="0" max="10000" ng-model="marketRangeKms" ng-change="sliderUpdateMarketRange()"/>
         </div>
       </div>
@@ -51,32 +44,32 @@
 
 
 
-      <div ng-show="currentUser.smCurrentPosition">
+      <div  ng-show="userMarketCtx.amIActive('map')">
 
-        <!--<h3>The following is for sale</h3>-->
-        <!--<div class="Layout">-->
-        <!--<div>-->
-        <!--<ul class="MarketAskList MarketAskList&#45;&#45;local">-->
-        <!--<li ng-repeat="ask in marketAsks">-->
-        <!--<sm-market-ask-card ask="ask"></sm-market-ask-card>-->
-        <!--</li>-->
-        <!--</ul>-->
+        <h3>The following is for sale</h3>
+        <div class="Layout">
+        <div>
+        <ul class="MarketAskList MarketAskList--local">
+        <li ng-repeat="ask in marketAsks">
+        <sm-market-ask-card ask="ask"></sm-market-ask-card>
+        </li>
+        </ul>
 
-        <!--</div>-->
-        <!--<div id="MarketMap">-->
-        <!--<div id="UserMarketMap" class="UserMarketMap&#45;&#45;Main"></div>-->
-        <!--</div>-->
+        </div>
+        <div id="MarketMap">
+        <div id="UserMarketMap" class="UserMarketMap--Main"></div>
+        </div>
 
-        <!--</div>-->
+        </div>
       </div>
-      <div>
-        <sm-market-ask-list></sm-market-ask-list>
-        <!--<ul class="MarketAskList MarketAskList&#45;&#45;all">-->
-        <!--<li ng-repeat="ask in userMark  etCtx.allAsks" >-->
-        <!--<sm-market-ask-card ask="ask"></sm-market-ask-card>-->
 
-        <!--</li>-->
-        <!--</ul>-->
+
+
+
+
+
+      <div ng-show="userMarketCtx.amIActive('all')">
+        <sm-market-ask-list></sm-market-ask-list>
       </div>
 
 
