@@ -89,12 +89,10 @@ sm.Ask.service('AskServices', [
     svc.getProfileAskHistory = function(handle) {
       var filter = {
         where: {
-          seller:{
-            handle:handle
-          }
+          sellerHandle:handle
         }
       };
-      return svc.getAsks(filter)
+      return svc.getAsks({filter:filter})
         .then(function(response) {
           return response;
         });

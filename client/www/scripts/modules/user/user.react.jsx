@@ -129,3 +129,37 @@ sm.TrackedCommand = React.createClass({
   }
 
 });
+
+sm.UserListView = React.createClass({
+  render: function() {
+    var component = this;
+    var store = component.props.store;
+    var userList = store.userListCtx.currentUserList;
+    var child;
+
+
+    var output = [];
+    if (userList.map) {
+      userList.map(function(user) {
+        var userLink = '/#/user/' + user.handle;
+        output.push(
+          <li ng-repeat="user in userListCtx.currentUserList">
+            Name: <a href={userLink}>{user.handle}</a>
+          </li>
+        );
+      });
+    }
+
+
+    return (
+      <div>
+        <h3>Other users</h3>
+        <ul>
+          {output}
+        </ul>
+
+      </div>
+    );
+  }
+
+});

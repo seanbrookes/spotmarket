@@ -3,9 +3,9 @@
 
     <div ng-hide="userProfileCtx.isEditAvatarMode || userProfileCtx.isEditBannerImageMode" class="UserProfile__BannerBG"  ng-style="{'background-color':userProfileCtx.currentProfile.bannerBgColor}">
       <img class="UserProfile__BannerImage" src="{{userProfileCtx.currentProfile.bannerImage}}" />
-      <button class="LinkButton BannerBG__EditLink" ng-click="userProfileCtx.triggerEditBannerImage()">change background</button>
+      <button ng-show="userProfileCtx.isCurrentUserLoggedIn" class="LinkButton BannerBG__EditLink" ng-click="userProfileCtx.triggerEditBannerImage()">change background</button>
     </div>
-    <button class="LinkButton" ng-click="userProfileCtx.triggerEditBannerImage()">change background</button>
+
     <sm-ui-canvas-cropper profile="userProfileCtx.currentProfile"
                           selector="banner"
                           width="1500"
@@ -17,8 +17,9 @@
       <div class="UserProfile__AvatarContainerBG">
         <img class="UserProfile__AvatarImg" ng-src="{{userProfileCtx.currentProfile.avatarImage}}" />
       </div>
-      <button class="LinkButton" ng-click="userProfileCtx.triggerEditAvatar()">change avatar</button>
+      <button ng-show="userProfileCtx.isCurrentUserLoggedIn" class="LinkButton" ng-click="userProfileCtx.triggerEditAvatar()">change avatar</button>
     </div>
+
 
     <sm-ui-canvas-cropper profile="userProfileCtx.currentProfile"
                           selector="avatar"
@@ -27,25 +28,28 @@
                           width="300" height="300"></sm-ui-canvas-cropper>
 
   </div>
-  <div ng-hide="userProfileCtx.isEditBannerImageMode" class="Layout ProfileView__MainBody">
+
+
+
+  <div ng-hide="userProfileCtx.isEditBannerImageMode" class="Layout Spread ProfileView__MainBody">
 
     <div class="UserProfile__ContactContainer">
       <div class="UserProfile__ContactInner">
         <sm-user-profile-contact></sm-user-profile-contact>
-        <button ng-show="!userProfileCtx.isEditContactMode" class="LinkButton" ng-click="userProfileCtx.triggerEditContact()">edit contact info</button>
+        <button ng-show="!userProfileCtx.isEditContactMode && userProfileCtx.isCurrentUserLoggedIn" class="LinkButton" ng-click="userProfileCtx.triggerEditContact()">edit contact info</button>
       </div>
     </div>
 
     <div>
       <!-- tabs about / preferences -->
-      <div class="Layout">
+      <div class="Layout" ng-show="userProfileCtx.isCurrentUserLoggedIn">
         <button ng-click="userProfileCtx.showMainView('about')">About</button>
         <button ng-click="userProfileCtx.showMainView('preferences')">Preferences</button>
       </div>
 
       <div ng-show="userProfileCtx.amIActive('about')" class="UserProfile__AboutContainer">
         <div ng-show="!userProfileCtx.isEditBioMode" class="UserProfile__BioInner" ng-bind-html="userProfileCtx.currentProfile.bio"></div>
-        <button ng-show="!userProfileCtx.isEditBioMode" class="LinkButton" ng-click="userProfileCtx.triggerEditBio()">edit bio</button>
+        <button ng-show="!userProfileCtx.isEditBioMode &&  userProfileCtx.isCurrentUserLoggedIn" class="LinkButton" ng-click="userProfileCtx.triggerEditBio()">edit bio</button>
         <div ng-show="userProfileCtx.isEditBioMode" text-angular="" ng-model="userProfileCtx.currentProfile.bio"></div>
 
         <button ng-show="userProfileCtx.isEditBioMode" class="LinkButton" ng-click="userProfileCtx.saveBio()">save bio</button>
@@ -89,6 +93,10 @@
         </div>
       </div>
 
+    </div>
+
+    <div>
+      <sm-user-list-view></sm-user-list-view>
     </div>
 
   </div>
