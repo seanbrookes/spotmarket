@@ -21,7 +21,7 @@
       <button ng-show="askCtx.isAskDetailReadOnly" class="LinkButton">{{askCtx.currentAsk.quantity}}  {{askCtx.currentAsk.quantityMeasure}}</button>
 
 
-      <button ng-show="askCtx.isAskPricingPreReqs()" ng-click="askCtx.togglePricingForm()">Pricing</button>
+      <button ng-show="askCtx.isShowAskPricingButton()" ng-click="askCtx.togglePricingForm()">Pricing</button>
 
       <div ng-show="askCtx.isShowPricingForm" class="AskWizardContainer__Item AskWizardContainer__PriceItem">
         <sm-ask-price-view></sm-ask-price-view>

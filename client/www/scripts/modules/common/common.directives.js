@@ -353,6 +353,7 @@ sm.Common.directive('smCommonGlobalNav', [
 
           $scope.globalNavCtx.isUserAuth = function() {
             if (UserSessionService.getCurrentAuthToken()) {
+              $scope.globalNavCtx.loggedInHandle = UserSessionService.getValueByKey('smHandle');
               return true;
             }
             return false;

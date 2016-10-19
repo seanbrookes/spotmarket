@@ -1,12 +1,21 @@
-<nav class="GlobalNav">
-  <button ng-click="globalNavCtx.toggleGlobalNavMenu()" class="NavMenuButton icon-menu"></button>
-  <ul class="GlobalNav__List" ng-mouseleave="globalNavCtx.activeateMenuClose()" ng-mouseenter="globalNavCtx.activeateMenu()" ng-show="globalNavCtx.isShowGlobalNavMenu">
-    <li class="GlobalNav__ListItem">
-      <button class="CommandButton" ng-show="globalNavCtx.isUserAuth()" ng-click="globalNavCtx.logout()">Logout</button>
-      <button class="CommandButton" ng-show="!globalNavCtx.isUserAuth()" ng-click="globalNavCtx.urlNavRequest('login')">Login</button>
-    </li>
-    <li class="GlobalNav__ListItem">
-      <button class="CommandButton" ng-show="!globalNavCtx.isUserAuth()" ng-click="globalNavCtx.urlNavRequest('register')">Register</button>
-    </li>
-  </ul>
+<nav class="GlobalNav Layout">
+  <div>
+    <button ng-show="globalNavCtx.isUserAuth()" class="CommandButton" >{{globalNavCtx.loggedInHandle}}</button>
+    <div ng-show="!globalNavCtx.isUserAuth()" class="Layout">
+      <button class="CommandButton" ng-click="globalNavCtx.urlNavRequest('login')">Login</button>
+      <button class="CommandButton" ng-click="globalNavCtx.urlNavRequest('register')">Register</button>
+    </div>
+  </div>
+  <!--<div>-->
+    <!--<button ng-click="globalNavCtx.toggleGlobalNavMenu()" class="NavMenuButton icon-menu"></button>-->
+    <!--<ul class="GlobalNav__List" ng-mouseleave="globalNavCtx.activeateMenuClose()" ng-mouseenter="globalNavCtx.activeateMenu()" ng-show="globalNavCtx.isShowGlobalNavMenu">-->
+      <!--<li class="GlobalNav__ListItem">-->
+        <!--<button class="CommandButton" ng-show="globalNavCtx.isUserAuth()" ng-click="globalNavCtx.logout()">Logout</button>-->
+        <!--<button class="CommandButton" ng-show="!globalNavCtx.isUserAuth()" ng-click="globalNavCtx.urlNavRequest('login')">Login</button>-->
+      <!--</li>-->
+      <!--<li class="GlobalNav__ListItem">-->
+        <!--<button class="CommandButton" ng-show="!globalNavCtx.isUserAuth()" ng-click="globalNavCtx.urlNavRequest('register')">Register</button>-->
+      <!--</li>-->
+    <!--</ul>-->
+  <!--</div>-->
 </nav>

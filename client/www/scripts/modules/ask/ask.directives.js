@@ -324,16 +324,23 @@ sm.Ask.directive('smAskMarketView', [
               $scope.askCtx.isAskDetailReadOnly = !$scope.askCtx.isAskDetailReadOnly;
               if (!$scope.askCtx.isAskDetailReadOnly) {
                 $scope.askCtx.isShowPricingForm = false;
+                $scope.askCtx.isShowPriceView = false;
               }
             }, 5);
           };
-          $scope.askCtx.isAskPricingPreReqs = function() {
+          $scope.askCtx.isShowPriceView = false;
+          $scope.askCtx.isShowAskPricingButton = function() {
             if ($scope.askCtx.currentAsk.productType &&
               $scope.askCtx.currentAsk.variant &&
               $scope.askCtx.currentAsk.productMode &&
               $scope.askCtx.currentAsk.quantity &&
               $scope.askCtx.currentAsk.quantityMeasure) {
-              return true;
+              if (!$scope.askCtx.isShowPriceView) {
+                return true;
+              }
+              else {
+                return false;
+              }
             }
             return false;
           };
@@ -345,6 +352,9 @@ sm.Ask.directive('smAskMarketView', [
                 $scope.askCtx.isAskDetailReadOnly = true;
 
               }, 5);
+            }
+            if (retVar) {
+              $scope.askCtx.isShowPriceView = true;
             }
             return retVar;
           };
