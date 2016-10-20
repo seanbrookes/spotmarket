@@ -1597,7 +1597,7 @@ input:checked + .slider:before {
 }
 .AutoSuggestContainer .AutoSuggest__ToggleButton {
   border: 0;
-  background-color: rgba(200, 200, 200, 0.4);
+  background: transparent;
 }
 .AutoSuggestContainer .AutoSuggest__Menu {
   position: absolute;
