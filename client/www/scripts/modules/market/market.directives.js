@@ -248,30 +248,7 @@ sm.Market.directive('smMarketMarketView', [
             return $scope.userMarketCtx.mainViews[viewName].active;
           };
 
-
-
-
-
-
-
-
-
-
-
-
           loadAllAsks();
-
-
-
-
-
-
-
-
-
-
-
-
           $scope.initMapData = function() {
             lats = [];
             lngs = [];
@@ -668,7 +645,7 @@ sm.Market.directive('smMarketMarketView', [
       //    }
 
         }, true);
-        scope.$watch('activeView', function(newVal, oldVal) {
+        scope.$watch('userMarketCtx.mainViews', function(newVal, oldVal) {
           if (newVal && (newVal === scope.userMarketCtx.viewName)) {
             $log.debug('| active view changed to', scope.userMarketCtx.viewName);
             if (scope.currentUser.smCurrentPosition) {

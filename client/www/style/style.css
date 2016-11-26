@@ -2,6 +2,11 @@
 http://www.w3schools.com/cssref/css_websafe_fonts.asp
 http://tawian.io/text-spinners/?utm_source=html5weekly&utm_medium=email
 https://gist.github.com/addyosmani/fd3999ea7fce242756b1?utm_source=html5weekly&utm_medium=email
+
+SPINNERS:
+http://tawian.io/text-spinners/?utm_source=html5weekly&utm_medium=email
+
+
 */
 /* CSS */
 * {
@@ -1915,7 +1920,7 @@ img-crop .loading .fixed-height {
   top: 32px;
 }
 .CanvasCropper {
-  background-color: #adffdc;
+  background-color: #efefef;
 }
 .CanvasCropper__Container {
   min-height: 40rem;
@@ -2009,7 +2014,7 @@ img-crop .loading .fixed-height {
   background-color: #ffffff;
   margin: 0;
   padding: 0;
-  min-height: 100vh;
+  height: 100vh;
   max-width: 1500px;
   display: flex;
   flex-direction: column;
@@ -2018,7 +2023,6 @@ img-crop .loading .fixed-height {
   flex: 1;
   background-color: #608052;
   padding: .4rem .5rem 0 .5rem;
-  height: 100vh;
 }
 .Body--Home .InnerAppContainer {
   flex: 1;
@@ -2059,6 +2063,10 @@ img-crop .loading .fixed-height {
   padding: .6rem;
   font-size: 110%;
   border-radius: .3rem;
+}
+button[disabled].Button--primary {
+  background-color: #8dd19d;
+  color: #888888;
 }
 /* blog post */
 .main-article {
@@ -2246,8 +2254,7 @@ ul.HomeSecondary__FeatureList {
   margin-bottom: 2rem;
 }
 .ContactInput__Input {
-  line-height: 2rem;
-  height: 2rem;
+  height: 4rem;
   border: 1px solid #111111;
   border-radius: .5rem;
   width: 26rem;
@@ -2854,13 +2861,12 @@ small size views
   width: 7rem;
 }
 .LotPricingContainer .LotSizeInput {
-  width: 7rem;
+  width: 18rem;
 }
 .LotPricingContainer .LotPricingRow {
   margin: .4rem 0 .3rem 0;
 }
 .AskWizardContainer {
-  background: transparent;
   padding: .4rem 0 .4rem 0;
   max-width: 90rem;
 }
@@ -2873,8 +2879,41 @@ small size views
   border-radius: .4rem;
   background: #ffffff;
 }
+.TestNumber__Label {
+  width: 10rem;
+}
+.AskForm__SubLabel {
+  display: block;
+  color: #777777;
+}
 .MarketViewContainer--active {
   display: block;
+}
+.MarketView__MainView {
+  width: 84%;
+}
+.MarketView__Sidebar {
+  width: 16%;
+  background-color: #efefef;
+}
+.MarketFilter__Label {
+  font-weight: normal;
+  font-size: 87%;
+  color: #797979;
+}
+.MarketFilter__Label .MarketFilter__InnerLabel {
+  display: inline-block;
+  margin-left: .3rem;
+}
+.MarketView__SectionHeader {
+  font-size: 140%;
+  color: #999999;
+}
+.MarketAskList {
+  margin-right: 2rem;
+}
+.MarketMapView__Container {
+  padding: 1rem;
 }
 .MarketRange__Input {
   width: 3.5rem;
@@ -2886,7 +2925,8 @@ small size views
   border: #fefefe;
 }
 .MarketGrid__Cell {
-  padding: 1rem;
+  padding: .7rem .5rem .7rem .5rem;
+  white-space: nowrap;
 }
 .UserMarketMap--Main {
   height: 40rem;

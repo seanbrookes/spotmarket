@@ -31,9 +31,9 @@ sm.MarketFilterList = React.createClass({
         }
         options.push(
           React.createElement("li", null, 
-            React.createElement("label", null, 
+            React.createElement("label", {className: "MarketFilter__Label"}, 
               React.createElement("input", {disabled: thisPropDisabled, value: filterItem.value, onChange: that.toggleCheckbox.bind(that, filterItem), checked: checkedAttrib, type: "checkbox"}), 
-              React.createElement("span", null, filterItem.value), " - - ", React.createElement("span", null, store.data.counts[filterItem.value])
+              React.createElement("span", {className: "MarketFilter__InnerLabel"}, filterItem.value), " ", React.createElement("span", null, "(", store.data.counts[filterItem.value], ")")
             )
           ))
       });
@@ -78,13 +78,16 @@ sm.MarketAskList = React.createClass({
          gridRowClass = 'MarketGrid__Row';
        }
        var rowItem = store.userMarketCtx.allAsks[i];
+       var sellerLink = '/#/user/' + rowItem.sellerHandle;
        var rowElement = (
          React.createElement("tr", {key: rowItem.id, className: gridRowClass}, 
            React.createElement("td", null, 
              React.createElement("div", {className: "MarketGrid__Cell"}, rowItem.variant)
            ), 
            React.createElement("td", null, 
-             React.createElement("div", {className: "MarketGrid__Cell"}, rowItem.sellerHandle)
+             React.createElement("div", {className: "MarketGrid__Cell"}, 
+               React.createElement("a", {href: sellerLink}, rowItem.sellerHandle)
+             )
            ), 
            React.createElement("td", null, 
              React.createElement("div", {className: "MarketGrid__Cell"}, rowItem.productMode)

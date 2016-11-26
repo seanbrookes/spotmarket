@@ -453,7 +453,7 @@ sm.Ask.directive('smAskMarketView', [
               user = UserSessionService.getCurrentUserFromClientState();
             }
             if (!user.smCurrentPosition) {
-              //alert('Message from AskController we do not have a default location');
+              $log.debug('Message from AskController we do not have a default location');
             }
             else {
               $scope.askCtx.currentAsk.position = user.smCurrentPosition;
@@ -472,10 +472,11 @@ sm.Ask.directive('smAskMarketView', [
               $scope.askCtx.currentAsk.seller.handle = user.smHandle;
             }
             else {
-              $scope.askCtx.currentAsk.seller.handle = UserSessionService.generateNewUserTag()
-                .then(function (response) {
-                  $scope.askCtx.currentAsk.seller.handle = response;
-                });
+              // we should display the handle and email chooser here
+              //$scope.askCtx.currentAsk.seller.handle = UserSessionService.generateNewUserTag()
+              //  .then(function (response) {
+              //    $scope.askCtx.currentAsk.seller.handle = response;
+              //  });
             }
 
             // check if user has user preferences for lot price option

@@ -1,6 +1,9 @@
 <nav class="GlobalNav Layout">
   <div>
-    <button ng-show="globalNavCtx.isUserAuth()" class="CommandButton" >{{globalNavCtx.loggedInHandle}}</button>
+    <div ng-show="globalNavCtx.isUserAuth()" class="Layout">
+      <button ng-show="globalNavCtx.isUserAuth()" class="CommandButton" >{{globalNavCtx.loggedInHandle}}</button>
+      <button class="CommandButton" ng-show="globalNavCtx.isUserAuth()" ng-click="globalNavCtx.logout()">Logout</button>
+    </div>
     <div ng-show="!globalNavCtx.isUserAuth()" class="Layout">
       <button class="CommandButton" ng-click="globalNavCtx.urlNavRequest('login')">Login</button>
       <button class="CommandButton" ng-click="globalNavCtx.urlNavRequest('register')">Register</button>

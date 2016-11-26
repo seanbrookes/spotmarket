@@ -31,9 +31,9 @@ sm.MarketFilterList = React.createClass({
         }
         options.push(
           <li >
-            <label>
+            <label className="MarketFilter__Label">
               <input disabled={thisPropDisabled} value={filterItem.value} onChange={that.toggleCheckbox.bind(that, filterItem)} checked={checkedAttrib} type="checkbox" />
-              <span>{filterItem.value}</span> - - <span>{store.data.counts[filterItem.value]}</span>
+              <span className="MarketFilter__InnerLabel">{filterItem.value}</span> <span>({store.data.counts[filterItem.value]})</span>
             </label>
           </li>)
       });
@@ -78,13 +78,16 @@ sm.MarketAskList = React.createClass({
          gridRowClass = 'MarketGrid__Row';
        }
        var rowItem = store.userMarketCtx.allAsks[i];
+       var sellerLink = '/#/user/' + rowItem.sellerHandle;
        var rowElement = (
          <tr key={rowItem.id} className={gridRowClass}>
            <td>
              <div className="MarketGrid__Cell">{rowItem.variant}</div>
            </td>
            <td>
-             <div className="MarketGrid__Cell">{rowItem.sellerHandle}</div>
+             <div className="MarketGrid__Cell">
+               <a href={sellerLink} >{rowItem.sellerHandle}</a>
+             </div>
            </td>
            <td>
              <div className="MarketGrid__Cell">{rowItem.productMode}</div>

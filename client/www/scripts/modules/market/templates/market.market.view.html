@@ -1,24 +1,24 @@
 <div class="MarketViewContainer">
   <div class="Layout">
 
-    <div>
+    <div class="MarketView__Sidebar">
       <div>
-        <h2>sellers</h2>
+        <h2 class="MarketView__SectionHeader">sellers</h2>
         <sm-market-filter-list filter="sellers" data="filterSourceData"></sm-market-filter-list>
       </div>
       <div>
-        <h2>variants</h2>
+        <h2 class="MarketView__SectionHeader">variants</h2>
         <sm-market-filter-list filter="variants" data="filterSourceData"></sm-market-filter-list>
       </div>
       <div>
-        <h2>modes</h2>
+        <h2 class="MarketView__SectionHeader">modes</h2>
         <sm-market-filter-list filter="modes" data="filterSourceData"></sm-market-filter-list>
       </div>
     </div>
 
 
 
-    <div>
+    <div class="MarketView__MainView">
 
 
       <div class="Layout" >
@@ -44,24 +44,6 @@
 
 
 
-      <div  ng-show="userMarketCtx.amIActive('map')">
-
-        <h3>The following is for sale</h3>
-        <div class="Layout">
-        <div>
-        <ul class="MarketAskList MarketAskList--local">
-        <li ng-repeat="ask in marketAsks">
-        <sm-market-ask-card ask="ask"></sm-market-ask-card>
-        </li>
-        </ul>
-
-        </div>
-        <div id="MarketMap">
-        <div id="UserMarketMap" class="UserMarketMap--Main"></div>
-        </div>
-
-        </div>
-      </div>
 
 
 
@@ -72,6 +54,22 @@
         <sm-market-ask-list></sm-market-ask-list>
       </div>
 
+
+
+      <div class="Layout MarketMapView MarketMapView__Container">
+        <div>
+          <ul class="MarketAskList MarketAskList--local">
+            <li ng-repeat="ask in marketAsks">
+              <sm-market-ask-card ask="ask"></sm-market-ask-card>
+            </li>
+          </ul>
+
+        </div>
+        <div class="MarketMap__Container Layout CenterContent" id="MarketMap">
+          <div id="UserMarketMap" class="UserMarketMap--Main"></div>
+        </div>
+
+      </div>
 
 
 

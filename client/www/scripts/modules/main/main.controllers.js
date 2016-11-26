@@ -14,9 +14,9 @@ sm.Main.controller('MainController', [
     };
     $rootScope.$on('$stateChangeStart',
       function(event, toState, toParams, fromState, fromParams, options){
-        $log.debug('|');
-        $log.debug('|');
-        $log.debug('|   CHANGE STATE ', toState.name);
+        //$log.debug('|');
+        //$log.debug('|');
+        //$log.debug('|   CHANGE STATE ', toState.name);
         $scope.mainNavCtx.isHome = false;
         $scope.mainNavCtx.isProfileView = false;
 

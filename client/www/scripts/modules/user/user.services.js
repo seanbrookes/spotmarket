@@ -6,7 +6,8 @@ sm.User.service('UserServices', [
   'ProfileAvatar',
   'AliasEmail',
   '$log',
-  function(UserProfile, smGlobalValues, UserSessionService, UserLocation, ProfileAvatar, AliasEmail, $log) {
+  '$sce',
+  function(UserProfile, smGlobalValues, UserSessionService, UserLocation, ProfileAvatar, AliasEmail, $log, $sce) {
     var svc = this;
 
     var _profileAvatars = [];
@@ -384,13 +385,10 @@ sm.User.service('UserSessionService', [
       if ((arrayOfWordsOne.length === 0) || (arrayOfWordsTwo.length === 0)) {
         return $http.get("./scripts/modules/user/1syllableadjectives.txt")
           .then(function(response) {
-            $log.debug('|  Here are the damn words', response.data);
             arrayOfWordsOne = response.data.split(/\r\n|\r|\n/g);
-            $log.debug('| word count:', arrayOfWordsOne.length);
 
             return $http.get("./scripts/modules/user/common-english-words-3letters-plus.txt")
               .then(function(response) {
-                $log.debug('|  Here are the damn second words', response.data);
                 arrayOfWordsTwo = response.data.split(',');
                 $log.debug('| word count 2:', arrayOfWordsTwo.length);
                 var randno1 = Math.floor ( Math.random() * arrayOfWordsOne.length );
@@ -434,7 +432,7 @@ sm.User.service('UserSessionService', [
       return UserLocation.find(filter)
         .$promise
         .then(function(responseLocations) {
-          $log.debug('got location history', responseLocations);
+          //$log.debug('got location history', responseLocations);
           return responseLocations;
         })
         .catch(function(error) {

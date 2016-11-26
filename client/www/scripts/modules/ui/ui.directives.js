@@ -1357,7 +1357,7 @@ sm.UI.directive('smUiAutoSuggest', [
           return retVal;
         }
         scope.$watch('possibleValues', function(newVal, oldVal) {
-          console.log('it changes  B!! yay', newVal);
+
         //  $timeout(function() {
           if (newVal && newVal.length > 0) {
             scope.possibleValues = newVal;

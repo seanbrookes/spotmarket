@@ -5,48 +5,52 @@
     <button class="LinkButton" ng-click="testCtx.toggleTestEditor()">Add test info</button>
   </div>
   <div ng-show="testCtx.isShowTestEditor">
-    <div class="Layout">
-      <div>
-        <label class="AskForm__Label">
-          Alpha Acid %
-        </label>
-        <input class="CurrentTest__Alpha" ng-model="testCtx.currentTest.alpha" type="number" /><span>%</span>
-        <br />
-        <label class="AskForm__Label">
-          Beta Acid %
-        </label>
-        <input class="CurrentTest__Alpha" ng-model="testCtx.currentTest.beta" type="number" /><span>%</span>
-        <br />
-        <label class="AskForm__Label">
-          HSI
-        </label>
-        <input class="CurrentTest__Alpha" ng-model="testCtx.currentTest.hsi" type="number" />
-        <br />
-        <label class="AskForm__Label">
-          Oil % (v/w)
-        </label>
-        <input class="CurrentTest__Alpha" ng-model="testCtx.currentTest.oil" type="number" /><span>%</span>
-
+    <div>
+      <label class="AskForm__Label">
+        Test date
+      </label>
+      <div class="Layout">
+        <button ng-click="testCtx.toggleShowDatePicker()"><div class="icon-calendar"></div></button>
+        <datepicker date-format="MMM d, y" selector="form-control" datepicker-toggle="false" datepicker-show="{{testCtx.isShowDatePicker}}">
+          <input class="DatePicker__Input form-control" ng-model="testCtx.currentTest.date" type="text"/>
+        </datepicker>
       </div>
-      <div>
-        <label class="AskForm__Label">
-          Test date
-        </label>
-        <div class="Layout">
-          <button ng-click="testCtx.toggleShowDatePicker()"><div class="icon-calendar"></div></button>
-          <datepicker date-format="MMM d, y" selector="form-control" datepicker-toggle="false" datepicker-show="{{testCtx.isShowDatePicker}}">
-            <input class="DatePicker__Input form-control" ng-model="testCtx.currentTest.date" type="text"/>
-          </datepicker>
-        </div>
-      </div>
-
-
     </div>
+      <div>
+        <div class="Layout">
+          <label class="AskForm__Label TestNumber__Label">
+            Alpha Acid
+          </label>
+          <input class="CurrentTest__Alpha" ng-model="testCtx.currentTest.alpha" type="number" /><span>%</span>
+        </div>
+        <div class="Layout">
+          <label class="AskForm__Label TestNumber__Label">
+            Beta Acid
+          </label>
+          <input class="CurrentTest__Alpha" ng-model="testCtx.currentTest.beta" type="number" /><span>%</span>
+        </div>
+        <div class="Layout">
+          <label class="AskForm__Label TestNumber__Label">
+            HSI
+          </label>
+          <input class="CurrentTest__Alpha" ng-model="testCtx.currentTest.hsi" type="number" />
+        </div>
+        <div class="Layout">
+          <label class="AskForm__Label TestNumber__Label">
+            Oil (v/w)
+          </label>
+          <input class="CurrentTest__Alpha" ng-model="testCtx.currentTest.oil" type="number" /><span>%</span>
+        </div>
+
+
+      </div>
+
 
 
     <div>
       <label class="AskForm__Label">
-        Testing lab info (name, link, address, etc)
+        Testing lab info
+        <span class="AskForm__SubLabel">(name, link, address, etc)</span>
       </label>
       <textarea class="TestForm__LabText" ng-model="testCtx.currentTest.lab"></textarea>
       <!--<trix-editor class="TestForm__LabText" angular-trix ng-model="testCtx.currentTest.lab"></trix-editor>-->
